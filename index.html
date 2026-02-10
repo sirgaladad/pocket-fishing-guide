@@ -1,1 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>White Bass Intelligence | Tale Waters & Tides</title>
+<meta name="description" content="Live white bass fishing intelligence for Arkansas waters — Lake Maumelle, White River, Buffalo National River. Real-time USGS water data and NWS forecasts.">
+<meta name="theme-color" content="#0d1b2a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0d1b2a;--bg2:#1b2838;--bg3:#243447;--bg4:#2d3f52;
+  --accent:#00bcd4;--accent-dk:#0097a7;--accent-lt:#4dd0e1;
+  --text:#e0e6ed;--text2:#8899aa;--text3:#5a6a7a;
+  --green:#4caf50;--orange:#ff9800;--red:#f44336;--blue:#2196f3;
+  --spawn:#ff6b35;--yellow:#ffd54f;
+  --radius:12px;--radius-sm:8px;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+#root{max-width:480px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:70px}
+.header{background:linear-gradient(135deg,#0d2137 0%,#0a3d5c 50%,#0d4a5e 100%);padding:16px 16px 12px;text-align:center;position:sticky;top:0;z-index:100}
+.header .brand{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);opacity:.8;margin-bottom:2px}
+.header h1{font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.5px}
+.header h1 span{color:var(--accent)}
+.water-sel{display:flex;gap:6px;margin-top:10px;justify-content:center;flex-wrap:wrap}
+.water-btn{background:var(--bg3);border:1.5px solid transparent;color:var(--text2);font-size:11px;font-weight:600;padding:6px 12px;border-radius:20px;cursor:pointer;transition:all .2s;font-family:inherit}
+.water-btn.active{background:rgba(0,188,212,.15);border-color:var(--accent);color:var(--accent)}
+.tabs{display:flex;background:var(--bg2);border-top:1px solid var(--bg3);position:fixed;bottom:0;left:0;right:0;z-index:100;max-width:480px;margin:0 auto}
+.tab{flex:1;padding:10px 4px 8px;text-align:center;cursor:pointer;transition:all .2s;border-top:2px solid transparent}
+.tab.active{border-top-color:var(--accent)}
+.tab-icon{font-size:18px;display:block;margin-bottom:2px}
+.tab-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.5px;text-transform:uppercase}
+.tab.active .tab-label{color:var(--accent)}
+.content{padding:12px}
+.card{background:var(--bg2);border-radius:var(--radius);padding:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,.04)}
+.card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:10px}
+.big-temp{font-size:48px;font-weight:800;color:#fff;line-height:1}
+.big-temp .unit{font-size:20px;color:var(--text2);font-weight:600}
+.trend{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:3px 8px;border-radius:12px;margin-left:6px}
+.trend.up{background:rgba(76,175,80,.15);color:var(--green)}
+.trend.down{background:rgba(33,150,243,.15);color:var(--blue)}
+.trend.flat{background:rgba(136,153,170,.15);color:var(--text2)}
+.phase-badge{display:inline-block;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;margin-top:8px}
+.spawn-bar{position:relative;height:28px;background:linear-gradient(90deg,#2196f3 0%,#4fc3f7 20%,#29b6f6 35%,#ff6b35 50%,#f44336 65%,#66bb6a 80%,#ffd54f 100%);border-radius:14px;margin:12px 0 8px;overflow:visible}
+.spawn-marker{position:absolute;top:-4px;width:4px;height:36px;background:#fff;border-radius:2px;transform:translateX(-50%);box-shadow:0 0 8px rgba(255,255,255,.5);z-index:2}
+.spawn-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);padding:0 2px}
+.spawn-milestones{position:relative;height:16px;margin-top:4px}
+.spawn-ms{position:absolute;font-size:9px;color:var(--text2);transform:translateX(-50%);white-space:nowrap}
+.temp-chart{display:flex;align-items:flex-end;gap:4px;height:100px;margin:8px 0}
+.temp-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.temp-bar{width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:height .5s}
+.temp-bar-label{font-size:9px;color:var(--text3)}
+.temp-bar-val{font-size:10px;font-weight:600;color:var(--text2)}
+.wx-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.wx-card{background:var(--bg3);border-radius:var(--radius-sm);padding:8px;text-align:center}
+.wx-card .day{font-size:10px;color:var(--text2);font-weight:600;margin-bottom:4px}
+.wx-card .icon{font-size:24px;margin-bottom:2px}
+.wx-card .hi{font-size:16px;font-weight:700;color:#fff}
+.wx-card .lo{font-size:12px;color:var(--text3)}
+.wx-card .desc{font-size:9px;color:var(--text2);margin-top:2px;line-height:1.2}
+.fw-row{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--bg3)}
+.fw-row:last-child{border:none}
+.fw-day{width:60px;font-size:13px;font-weight:600}
+.fw-rating{padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700;margin-left:auto}
+.fw-rating.best{background:rgba(76,175,80,.2);color:var(--green)}
+.fw-rating.good{background:rgba(255,152,0,.2);color:var(--orange)}
+.fw-rating.fair{background:rgba(136,153,170,.15);color:var(--text2)}
+.fw-note{font-size:11px;color:var(--text2);flex:1;margin:0 12px}
+.pattern-card{background:linear-gradient(135deg,var(--bg3),var(--bg2));border:1px solid var(--accent);border-radius:var(--radius);padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.pattern-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}
+.here-badge{background:var(--accent);color:#000;font-size:10px;font-weight:800;padding:3px 8px;border-radius:10px;display:inline-block;margin-bottom:8px}
+.pattern-name{font-size:18px;font-weight:800;color:#fff;margin-bottom:6px}
+.pattern-desc{font-size:13px;color:var(--text2);line-height:1.5}
+.lure-card{display:flex;gap:12px;padding:12px;background:var(--bg3);border-radius:var(--radius-sm);margin-bottom:8px;align-items:center}
+.lure-num{width:28px;height:28px;background:var(--accent);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.lure-info h4{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
+.lure-info p{font-size:11px;color:var(--text2);line-height:1.3}
+.calendar{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;margin:12px 0}
+.cal-month{text-align:center;font-size:9px;font-weight:600;padding:6px 0 4px;border-radius:4px;position:relative}
+.cal-month .label{color:rgba(0,0,0,.7)}
+.cal-month.current::after{content:'NOW';position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:800;color:var(--accent);letter-spacing:.5px}
+.access-point{padding:12px 0;border-bottom:1px solid var(--bg3)}
+.access-point:last-child{border:none}
+.access-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
+.access-detail{font-size:12px;color:var(--text2);line-height:1.4}
+.access-status{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-top:4px}
+.access-status.open{background:rgba(76,175,80,.2);color:var(--green)}
+.access-status.limited{background:rgba(255,152,0,.2);color:var(--orange)}
+.access-status.closed{background:rgba(244,67,54,.2);color:var(--red)}
+.reg-item{padding:10px 0;border-bottom:1px solid var(--bg3);font-size:13px;color:var(--text);line-height:1.5}
+.reg-item:last-child{border:none}
+.reg-item strong{color:var(--accent)}
+.tip-cat{margin-bottom:16px}
+.tip-cat-title{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.tip{font-size:12px;color:var(--text2);line-height:1.5;padding:4px 0 4px 16px;position:relative}
+.tip::before{content:'•';position:absolute;left:4px;color:var(--accent)}
+.loading{text-align:center;padding:24px;color:var(--text2)}
+.loading .spinner{width:28px;height:28px;border:3px solid var(--bg3);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-msg{text-align:center;padding:16px;color:var(--orange);font-size:13px}
+.retry-btn{background:var(--accent);color:#000;border:none;padding:8px 20px;border-radius:20px;font-weight:700;font-size:12px;cursor:pointer;margin-top:8px;font-family:inherit}
+.refresh-btn{background:none;border:1px solid var(--bg3);color:var(--text2);padding:4px 12px;border-radius:12px;font-size:10px;cursor:pointer;font-family:inherit;font-weight:600;float:right;margin-top:-2px}
+.refresh-btn:active{background:var(--bg3)}
+.footer{text-align:center;padding:16px;font-size:10px;color:var(--text3);line-height:1.5}
+.section-head{font-size:15px;font-weight:700;color:#fff;margin-bottom:12px}
+.divider{height:1px;background:var(--bg3);margin:16px 0}
+.flow-badge{display:inline-flex;align-items:center;gap:4px;background:var(--bg3);padding:4px 10px;border-radius:12px;font-size:12px;color:var(--text2);margin-top:6px}
+.countdown{font-size:13px;color:var(--text2);margin-top:8px}
+.countdown span{color:var(--spawn);font-weight:700}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useCallback } = React;
+
+// ─── WATER BODY DATA ───────────────────────────────────────
+const WATERS = {
+  maumelle: {
+    name: "Lake Maumelle", short: "Maumelle", type: "lake",
+    usgs: "072632995", lat: 34.8306, lon: -92.5806,
+    nwsOffice: "Little Rock",
+    access: [
+      { name: "Sleepy Hollow Access", status: "open", detail: "Paved ramp, parking for 20 trailers. Best access for mid-lake points." },
+      { name: "WestRock Landing", status: "limited", detail: "Under construction — limited parking. Check CAW website for updates." },
+      { name: "Crystal Hill Access", status: "open", detail: "Concrete ramp, good for east-end fishing. Porta-john available." },
+      { name: "Maumelle Park", status: "open", detail: "Bank fishing access, small carry-in launch. Good for kayaks." }
+    ],
+    regs: [
+      "Central Arkansas Water (CAW) watershed — special rules apply",
+      "25 white bass daily limit, no minimum length requirement",
+      "No swimming, wading, or body contact with water",
+      "All boats must be inspected before launch (invasive species prevention)",
+      "No gas-powered boats over 50hp on portions of lake",
+      "Fishing license required — check AGFC for current fees"
+    ],
+    tips: {
+      Behavior: ["White bass stage at creek channel bends before moving to tributaries", "Look for shad schools on your electronics — white bass won't be far"],
+      Timing: ["Best bite is first 2 hours after sunrise in pre-spawn", "Overcast days extend the feeding window significantly"],
+      Access: ["Crystal Hill side heats faster — fish move there first in spring", "Wind-blown points concentrate baitfish and predators"],
+      Safety: ["CAW officers patrol regularly — have your permit visible", "Weather can change fast on Maumelle — check forecast before launching"]
+    }
+  },
+  whiteRiver: {
+    name: "White River", short: "White R.", type: "river",
+    usgs: "07074500", lat: 35.6056, lon: -91.2131,
+    nwsOffice: "Little Rock",
+    access: [
+      { name: "Batesville City Ramp", status: "open", detail: "Concrete ramp with good parking. Popular staging area." },
+      { name: "Calico Rock Access", status: "open", detail: "Paved ramp, excellent for upstream float trips. Camping nearby." },
+      { name: "Guion Access", status: "open", detail: "Gravel ramp. Less crowded — good alternative when Batesville is packed." },
+      { name: "Newport White River Park", status: "open", detail: "Full-service ramp. Great for lower White River runs." }
+    ],
+    regs: [
+      "Arkansas state fishing license required",
+      "White bass: 25 daily limit, no minimum length",
+      "Trout regulations apply below Bull Shoals & Norfork dams",
+      "Generation schedules affect water levels — check USACE before wading",
+      "No trotlines within 100 yards of any dam",
+      "Check AGFC for current season dates and special regulations"
+    ],
+    tips: {
+      Behavior: ["White bass run up tributaries in spring — focus on creek mouths", "In current, white bass face upstream — cast upstream and retrieve with flow"],
+      Timing: ["The spring run typically peaks when water hits 55-60°F", "Watch for generation schedules — falling water concentrates fish"],
+      Structure: ["Rocky points and gravel bars are prime staging areas", "Eddies behind large rocks hold feeding white bass"],
+      Safety: ["Always check dam generation schedules before wading", "Wear a PFD — White River current can be deceptively strong"]
+    }
+  },
+  buffalo: {
+    name: "Buffalo National River", short: "Buffalo R.", type: "river",
+    usgs: "07056000", lat: 35.9828, lon: -92.7464,
+    nwsOffice: "Little Rock",
+    access: [
+      { name: "Rush Landing", status: "open", detail: "National Park Service maintained. Good ramp for lower Buffalo." },
+      { name: "Buffalo Point", status: "open", detail: "NPS campground with ramp access. Reservations recommended in season." },
+      { name: "Gilbert Access", status: "open", detail: "Gravel launch, limited parking. Best for mid-river access." },
+      { name: "Hwy 14 Bridge Access", status: "open", detail: "Bank access and wade fishing. Popular for smallmouth & white bass." }
+    ],
+    regs: [
+      "National Park Service regulations apply — NPS fishing permit may be required",
+      "Arkansas state fishing license required in addition to NPS rules",
+      "White bass: 25 daily limit, no minimum length (state regs)",
+      "Special trout regulations may apply in certain sections",
+      "No litter — pack in, pack out (Leave No Trace)",
+      "Check water levels before floating — the Buffalo can be too low or too high"
+    ],
+    tips: {
+      Behavior: ["White bass enter the Buffalo from the White River during spring runs", "Focus on the lower Buffalo (below Gilbert) for best white bass action"],
+      Timing: ["Spring run timing depends on White River water temps", "Float trips during the run can produce incredible numbers"],
+      Access: ["Water levels fluctuate dramatically — check USGS gauge before going", "The Buffalo is a seasonal fishery for white bass — best March through May"],
+      Safety: ["The Buffalo is a wild river — no dam controls water levels", "Check USGS flow rates: 400-2000 cfs is ideal for fishing floats"]
+    }
+  }
+};
+
+const PHASES = [
+  { name: "Winter Hold", min: 0, max: 45, color: "#4fc3f7", desc: "Fish hold in deep, slow water near main structure. Target main lake points and humps with slow presentations." },
+  { name: "Pre-Spawn Staging", min: 45, max: 50, color: "#29b6f6", desc: "Fish moving to creek channels and staging areas. Look for fish stacking on channel bends." },
+  { name: "Spawn Trigger", min: 50, max: 55, color: "#ff6b35", desc: "Fish moving to tributaries! Time to intercept at creek mouths and tributary entrances." },
+  { name: "Peak Spawn", min: 55, max: 62, color: "#f44336", desc: "Active spawn run in tributaries and creek arms. This is prime time — get out there!" },
+  { name: "Post-Spawn", min: 62, max: 68, color: "#66bb6a", desc: "Fish returning to main body. Target creek mouths and mid-depth structure." },
+  { name: "Summer Pattern", min: 68, max: 999, color: "#ffd54f", desc: "Fish schooling on main structure. Early/late bites best. Look for surface activity." }
+];
+
+const LURES_BY_PHASE = {
+  "Winter Hold": [
+    { name: "1/8oz White Hair Jig", detail: "Slow drag along bottom near deep structure. Tip with minnow." },
+    { name: "Small Silver Jigging Spoon", detail: "Vertical jig over fish on electronics. 2-3ft lifts." },
+    { name: "2\" White Grub on 1/16oz Head", detail: "Swim slowly through staging areas. Keep it near bottom." }
+  ],
+  "Pre-Spawn Staging": [
+    { name: "White 2\" Curly Shad Grub — 1/16oz", detail: "AGFC Chris Racey's #1 pick. Swim through channel bends." },
+    { name: "1/8oz White Spinner", detail: "Slow roll along gravel transitions. Great search bait." },
+    { name: "Blue/Orange Belly Rapala", detail: "Twitch-and-pause over staging flats. Mimics injured shad." }
+  ],
+  "Spawn Trigger": [
+    { name: "White 2\" Curly Shad Grub — 1/16oz", detail: "Cast upstream in tributaries, retrieve with current." },
+    { name: "Small White Rooster Tail", detail: "Fan cast creek mouths. Steady retrieve." },
+    { name: "1/8oz White Spinner", detail: "Run parallel to current seams at tributary entrances." }
+  ],
+  "Peak Spawn": [
+    { name: "White Rooster Tail — 1/16oz", detail: "Cast into current and retrieve steadily. Cover water fast." },
+    { name: "White Curly Tail Grub — 1/16oz", detail: "Dead drift through runs, then swim out. Deadly technique." },
+    { name: "Small Chrome Kastmaster", detail: "Long casts into rapids. Let it swing in current." }
+  ],
+  "Post-Spawn": [
+    { name: "Small White Crankbait", detail: "Burn it past creek mouth transitions. Reaction strikes." },
+    { name: "1/4oz White Spinner", detail: "Cover water along main body shorelines." },
+    { name: "Topwater — White Tiny Torpedo", detail: "Early morning surface bites can be explosive post-spawn." }
+  ],
+  "Summer Pattern": [
+    { name: "White Slab Spoon — 1/2oz", detail: "Vertical jig over schools. Match their depth on electronics." },
+    { name: "Topwater Pencil Popper", detail: "When you see surface busting, throw into the fray." },
+    { name: "Paddle Tail Swimbait — White", detail: "Steady retrieve through schooling fish at dawn/dusk." }
+  ]
+};
+
+const MONTH_NAMES = ["J","F","M","A","M","J","J","A","S","O","N","D"];
+const MONTH_PHASES = [
+  { months: [11,0,1], phase: "Winter Hold", color: "#4fc3f7" },
+  { months: [2], phase: "Pre-Spawn", color: "#29b6f6" },
+  { months: [3], phase: "Spawn Run", color: "#ff6b35" },
+  { months: [4], phase: "Post-Spawn", color: "#66bb6a" },
+  { months: [5,6,7,8], phase: "Summer", color: "#ffd54f" },
+  { months: [9,10], phase: "Fall", color: "#ff8a65" }
+];
+
+function getMonthColor(m) {
+  for (const p of MONTH_PHASES) { if (p.months.includes(m)) return p.color; }
+  return "#555";
+}
+
+function getPhase(temp) {
+  if (temp === null || temp === undefined) return PHASES[0];
+  for (const p of PHASES) { if (temp >= p.min && temp < p.max) return p; }
+  return PHASES[PHASES.length - 1];
+}
+
+function getWxIcon(forecast) {
+  const s = (forecast || "").toLowerCase();
+  if (s.includes("thunder") || s.includes("storm")) return "\u26C8\uFE0F";
+  if (s.includes("rain") || s.includes("shower")) return "\uD83C\uDF27\uFE0F";
+  if (s.includes("snow") || s.includes("sleet")) return "\uD83C\uDF28\uFE0F";
+  if (s.includes("fog")) return "\uD83C\uDF2B\uFE0F";
+  if (s.includes("cloudy") && s.includes("partly")) return "\u26C5";
+  if (s.includes("cloudy") && s.includes("mostly")) return "\uD83C\uDF25\uFE0F";
+  if (s.includes("cloudy") || s.includes("overcast")) return "\u2601\uFE0F";
+  if (s.includes("sunny") || s.includes("clear")) return "\u2600\uFE0F";
+  return "\uD83C\uDF24\uFE0F";
+}
+
+function rateFishing(period) {
+  const s = (period.shortForecast || "").toLowerCase();
+  const temp = period.temperature || 50;
+  let score = 5;
+  if (s.includes("cloudy") || s.includes("overcast")) score += 2;
+  if (s.includes("partly")) score += 1;
+  if (s.includes("rain") && !s.includes("heavy")) score += 1;
+  if (s.includes("heavy rain") || s.includes("storm") || s.includes("thunder")) score -= 3;
+  if (s.includes("snow") || s.includes("ice")) score -= 3;
+  if (s.includes("wind") && s.includes("strong")) score -= 1;
+  if (temp >= 45 && temp <= 70) score += 1;
+  if (temp < 32 || temp > 95) score -= 2;
+  if (score >= 7) return { label: "Best", cls: "best" };
+  if (score >= 5) return { label: "Good", cls: "good" };
+  return { label: "Fair", cls: "fair" };
+}
+
+// ─── API FUNCTIONS ──────────────────────────────────────────
+async function fetchUSGS(siteId) {
+  const url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${siteId}&parameterCd=00010,00060,00065&period=P7D`;
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error("USGS API error");
+  const data = await resp.json();
+  const result = { temp: null, tempTrend24: null, tempTrend7: null, temps7: [], flow: null, gage: null };
+  const series = data?.value?.timeSeries || [];
+  for (const ts of series) {
+    const code = ts.variable?.variableCode?.[0]?.value;
+    const vals = ts.values?.[0]?.value || [];
+    if (vals.length === 0) continue;
+    const latest = vals[vals.length - 1];
+    const latestVal = parseFloat(latest.value);
+    const latestTime = new Date(latest.dateTime);
+    if (code === "00010") {
+      result.temp = latestVal;
+      const t24 = new Date(latestTime - 24*60*60*1000);
+      const v24 = vals.find(v => Math.abs(new Date(v.dateTime) - t24) < 2*60*60*1000);
+      if (v24) result.tempTrend24 = +(latestVal - parseFloat(v24.value)).toFixed(1);
+      const t7 = new Date(latestTime - 7*24*60*60*1000);
+      const v7 = vals.find(v => Math.abs(new Date(v.dateTime) - t7) < 4*60*60*1000);
+      if (v7) result.tempTrend7 = +(latestVal - parseFloat(v7.value)).toFixed(1);
+      const days = {};
+      for (const v of vals) {
+        const d = new Date(v.dateTime).toLocaleDateString('en-US',{weekday:'short'});
+        if (!days[d]) days[d] = [];
+        days[d].push(parseFloat(v.value));
+      }
+      result.temps7 = Object.entries(days).slice(-7).map(([day, arr]) => ({
+        day, avg: +(arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1)
+      }));
+    }
+    if (code === "00060") result.flow = latestVal;
+    if (code === "00065") result.gage = latestVal;
+  }
+  return result;
+}
+
+async function fetchNWS(lat, lon) {
+  const headers = { "User-Agent": "WhiteBassIntel/1.0 (tale-waters-tides)" };
+  const pts = await fetch(`https://api.weather.gov/points/${lat},${lon}`, { headers });
+  if (!pts.ok) throw new Error("NWS points error");
+  const ptsData = await pts.json();
+  const fcUrl = ptsData.properties?.forecast;
+  if (!fcUrl) throw new Error("No forecast URL");
+  const fc = await fetch(fcUrl, { headers });
+  if (!fc.ok) throw new Error("NWS forecast error");
+  const fcData = await fc.json();
+  return fcData.properties?.periods || [];
+}
+
+// ─── COMPONENTS ─────────────────────────────────────────────
+function Loading() { return <div className="loading"><div className="spinner"></div>Loading live data...</div>; }
+function ErrorMsg({ msg, onRetry }) {
+  return <div className="error-msg">{msg}<br/><button className="retry-btn" onClick={onRetry}>Retry</button></div>;
+}
+
+function LiveDataCard({ usgs, waterName }) {
+  if (!usgs) return <Loading />;
+  const temp = usgs.temp;
+  const phase = getPhase(temp);
+  const tempC = (t) => (t !== null && t !== undefined) ? `${t > 0 ? '+' : ''}${t}\u00B0` : '';
+  const trendCls = (v) => v > 0 ? 'up' : v < 0 ? 'down' : 'flat';
+  const trendArr = (v) => v > 0 ? '\u2191' : v < 0 ? '\u2193' : '\u2192';
+  const triggerDist = temp !== null ? Math.max(0, 50 - temp).toFixed(1) : null;
+  const stageDist = temp !== null ? Math.max(0, 45 - temp).toFixed(1) : null;
+
+  return <>
+    <div className="card">
+      <div className="card-title">USGS Live Water Data \u2014 {waterName}</div>
+      {temp !== null ? <>
+        <div className="big-temp">{temp.toFixed(1)}<span className="unit">\u00B0F</span>
+          {usgs.tempTrend24 !== null && <span className={`trend ${trendCls(usgs.tempTrend24)}`}>{trendArr(usgs.tempTrend24)} {tempC(usgs.tempTrend24)} /24hr</span>}
+        </div>
+        {usgs.tempTrend7 !== null && <div style={{marginTop:4,fontSize:12,color:'var(--text2)'}}>7-day trend: <strong style={{color: usgs.tempTrend7 > 0 ? 'var(--green)' : 'var(--blue)'}}>{tempC(usgs.tempTrend7)}</strong></div>}
+        <div className="phase-badge" style={{background:`${phase.color}22`,color:phase.color}}>{phase.name}</div>
+        {triggerDist > 0 && <div className="countdown">Spawn trigger (50\u00B0F): <span>{triggerDist}\u00B0F away</span></div>}
+        {stageDist > 0 && triggerDist > 0 && <div className="countdown">Staging temp (45\u00B0F): <span>{stageDist}\u00B0F away</span></div>}
+      </> : <div style={{color:'var(--text2)',fontSize:13}}>
+        Water temperature not available for this gauge.
+        {usgs.flow !== null && <div className="flow-badge" style={{marginTop:8}}>\uD83D\uDCA7 Flow: {usgs.flow.toLocaleString()} cfs</div>}
+        {usgs.gage !== null && <div className="flow-badge" style={{marginTop:4}}>\uD83D\uDCCF Gage: {usgs.gage.toFixed(2)} ft</div>}
+      </div>}
+      {usgs.flow !== null && temp !== null && <div className="flow-badge">\uD83D\uDCA7 Flow: {usgs.flow.toLocaleString()} cfs</div>}
+    </div>
+  </>;
+}
+
+function SpawnTracker({ temp }) {
+  if (temp === null || temp === undefined) return null;
+  const minT = 35, maxT = 72;
+  const pct = Math.min(100, Math.max(0, ((temp - minT) / (maxT - minT)) * 100));
+  const msPct = (t) => ((t - minT) / (maxT - minT)) * 100;
+  return <div className="card">
+    <div className="card-title">Spawn Temperature Tracker</div>
+    <div className="spawn-bar">
+      <div className="spawn-marker" style={{left: `${pct}%`}}></div>
+    </div>
+    <div className="spawn-labels"><span>{minT}\u00B0F</span><span>{maxT}\u00B0F</span></div>
+    <div className="spawn-milestones">
+      <div className="spawn-ms" style={{left:`${msPct(45)}%`}}>45\u00B0 Stage</div>
+      <div className="spawn-ms" style={{left:`${msPct(50)}%`}}>50\u00B0 Trigger</div>
+      <div className="spawn-ms" style={{left:`${msPct(55)}%`}}>55\u00B0 Peak</div>
+      <div className="spawn-ms" style={{left:`${msPct(62)}%`}}>62\u00B0 Post</div>
+    </div>
+  </div>;
+}
+
+function TempTrend({ temps }) {
+  if (!temps || temps.length === 0) return null;
+  const maxT = Math.max(...temps.map(t => t.avg));
+  const minT = Math.min(...temps.map(t => t.avg));
+  const range = Math.max(maxT - minT, 5);
+  return <div className="card">
+    <div className="card-title">7-Day Water Temperature Trend</div>
+    <div className="temp-chart">
+      {temps.map((t, i) => {
+        const h = Math.max(10, ((t.avg - minT + 2) / (range + 4)) * 100);
+        const warmth = (t.avg - minT) / range;
+        const color = `hsl(${200 - warmth * 160}, 70%, 55%)`;
+        return <div className="temp-bar-wrap" key={i}>
+          <div className="temp-bar-val">{t.avg}\u00B0</div>
+          <div className="temp-bar" style={{height:`${h}%`, background:color}}></div>
+          <div className="temp-bar-label">{t.day}</div>
+        </div>;
+      })}
+    </div>
+  </div>;
+}
+
+function QuickWeather({ forecast }) {
+  if (!forecast || forecast.length === 0) return null;
+  const dayPeriods = forecast.filter(p => p.isDaytime).slice(0, 4);
+  return <div className="card">
+    <div className="card-title">Weather Outlook</div>
+    <div className="wx-cards">
+      {dayPeriods.map((p, i) => <div className="wx-card" key={i}>
+        <div className="day">{p.name?.substring(0, 3)}</div>
+        <div className="icon">{getWxIcon(p.shortForecast)}</div>
+        <div className="hi">{p.temperature}\u00B0</div>
+        <div className="desc">{p.shortForecast}</div>
+      </div>)}
+    </div>
+  </div>;
+}
+
+function ForecastTab({ forecast }) {
+  if (!forecast || forecast.length === 0) return <Loading />;
+  const dayPeriods = forecast.filter(p => p.isDaytime).slice(0, 7);
+  const nightPeriods = forecast.filter(p => !p.isDaytime).slice(0, 7);
+  return <>
+    <div className="card">
+      <div className="card-title">7-Day Fishing Forecast</div>
+      {dayPeriods.map((p, i) => {
+        const rating = rateFishing(p);
+        const night = nightPeriods[i];
+        return <div className="fw-row" key={i}>
+          <div className="fw-day">{p.name?.substring(0, 3)}</div>
+          <div style={{fontSize:20,margin:'0 8px'}}>{getWxIcon(p.shortForecast)}</div>
+          <div style={{flex:1}}>
+            <div style={{fontSize:13,color:'#fff',fontWeight:600}}>{p.temperature}\u00B0{night ? ` / ${night.temperature}\u00B0` : ''}</div>
+            <div style={{fontSize:11,color:'var(--text2)'}}>{p.shortForecast}</div>
+            {p.windSpeed && <div style={{fontSize:10,color:'var(--text3)'}}>\uD83D\uDCA8 {p.windSpeed}</div>}
+          </div>
+          <div className={`fw-rating ${rating.cls}`}>{rating.label}</div>
+        </div>;
+      })}
+    </div>
+    <div className="card">
+      <div className="card-title">Fishing Window Analysis</div>
+      {dayPeriods.map((p, i) => {
+        const rating = rateFishing(p);
+        const notes = [];
+        const s = (p.shortForecast || "").toLowerCase();
+        if (s.includes("cloudy")) notes.push("Cloud cover helps \u2014 low light feeding");
+        if (s.includes("rain") && !s.includes("heavy")) notes.push("Light rain can trigger feeding activity");
+        if (s.includes("storm") || s.includes("thunder")) notes.push("Storms \u2014 fish before the front passes");
+        if (p.temperature > 50 && p.temperature < 70) notes.push("Air temps in prime fishing range");
+        if (p.temperature < 40) notes.push("Cold air temps \u2014 dress warm, fish midday");
+        return <div className="fw-row" key={i} style={{flexDirection:'column',alignItems:'flex-start'}}>
+          <div style={{display:'flex',width:'100%',alignItems:'center',gap:8}}>
+            <span style={{fontWeight:600,fontSize:13,width:60}}>{p.name?.substring(0,3)}</span>
+            <span className={`fw-rating ${rating.cls}`}>{rating.label}</span>
+          </div>
+          {notes.length > 0 && <div style={{fontSize:11,color:'var(--text2)',marginTop:4}}>{notes.join(" \u00B7 ")}</div>}
+        </div>;
+      })}
+    </div>
+  </>;
+}
+
+function IntelTab({ temp }) {
+  const phase = getPhase(temp);
+  const lures = LURES_BY_PHASE[phase.name] || LURES_BY_PHASE["Pre-Spawn Staging"];
+  const currentMonth = new Date().getMonth();
+
+  return <>
+    <div className="pattern-card">
+      <div className="here-badge">\uD83D\uDCCD YOU ARE HERE</div>
+      <div className="pattern-name">{phase.name}</div>
+      <div className="pattern-desc">{phase.desc}</div>
+      {temp !== null && <div style={{marginTop:10,fontSize:13,color:'var(--text2)'}}>Current water temp: <strong style={{color:'#fff'}}>{temp?.toFixed(1)}\u00B0F</strong></div>}
+    </div>
+
+    <div className="card">
+      <div className="card-title">3-Lure Arsenal \u2014 {phase.name}</div>
+      <div style={{fontSize:11,color:'var(--text3)',marginBottom:10}}>AGFC-informed picks for current conditions</div>
+      {lures.map((l, i) => <div className="lure-card" key={i}>
+        <div className="lure-num">{i + 1}</div>
+        <div className="lure-info">
+          <h4>{l.name}</h4>
+          <p>{l.detail}</p>
+        </div>
+      </div>)}
+    </div>
+
+    <div className="card">
+      <div className="card-title">Annual White Bass Calendar</div>
+      <div className="calendar">
+        {MONTH_NAMES.map((m, i) => <div
+          key={i}
+          className={`cal-month ${i === currentMonth ? 'current' : ''}`}
+          style={{background: getMonthColor(i), opacity: i === currentMonth ? 1 : 0.7}}
+        ><span className="label">{m}</span></div>)}
+      </div>
+      <div style={{display:'flex',flexWrap:'wrap',gap:8,marginTop:8}}>
+        {MONTH_PHASES.map((p,i) => <div key={i} style={{display:'flex',alignItems:'center',gap:4,fontSize:10,color:'var(--text2)'}}>
+          <div style={{width:8,height:8,borderRadius:2,background:p.color}}></div>{p.phase}
+        </div>)}
+      </div>
+    </div>
+  </>;
+}
+
+function AccessTab({ water }) {
+  const w = WATERS[water];
+  return <>
+    <div className="card">
+      <div className="card-title">{w.name} Access Points</div>
+      {w.access.map((a, i) => <div className="access-point" key={i}>
+        <div className="access-name">{a.name}</div>
+        <div className="access-detail">{a.detail}</div>
+        <div className={`access-status ${a.status}`}>{a.status === 'open' ? '\u2713 Open' : a.status === 'limited' ? '\u26A0 Limited' : '\u2715 Closed'}</div>
+      </div>)}
+    </div>
+
+    <div className="card">
+      <div className="card-title">Key {w.name} Regulations</div>
+      {w.regs.map((r, i) => <div className="reg-item" key={i}>
+        <strong>\u2022</strong> {r}
+      </div>)}
+    </div>
+
+    <div className="card">
+      <div className="card-title">{w.name} White Bass Pro Tips</div>
+      {Object.entries(w.tips).map(([cat, tips]) => <div className="tip-cat" key={cat}>
+        <div className="tip-cat-title">{cat}</div>
+        {tips.map((t, i) => <div className="tip" key={i}>{t}</div>)}
+      </div>)}
+    </div>
+  </>;
+}
+
+// ─── MAIN APP ───────────────────────────────────────────────
+function App() {
+  const [water, setWater] = useState("maumelle");
+  const [tab, setTab] = useState("dashboard");
+  const [usgs, setUsgs] = useState(null);
+  const [forecast, setForecast] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    setUsgs(null);
+    setForecast(null);
+    const w = WATERS[water];
+    try {
+      const [usgsData, nwsData] = await Promise.allSettled([
+        fetchUSGS(w.usgs),
+        fetchNWS(w.lat, w.lon)
+      ]);
+      if (usgsData.status === "fulfilled") setUsgs(usgsData.value);
+      else console.warn("USGS error:", usgsData.reason);
+      if (nwsData.status === "fulfilled") setForecast(nwsData.value);
+      else console.warn("NWS error:", nwsData.reason);
+      if (usgsData.status === "rejected" && nwsData.status === "rejected") {
+        setError("Unable to load live data. Check your connection and try again.");
+      }
+    } catch (e) {
+      setError("Failed to load data. Please try again.");
+    }
+    setLoading(false);
+  }, [water]);
+
+  useEffect(() => { loadData(); }, [loadData]);
+
+  const temp = usgs?.temp ?? null;
+  const tabs = [
+    { id: "dashboard", icon: "\uD83D\uDCCA", label: "Dashboard" },
+    { id: "forecast", icon: "\uD83C\uDF24\uFE0F", label: "Forecast" },
+    { id: "intel", icon: "\uD83C\uDFA3", label: "Intel" },
+    { id: "access", icon: "\uD83D\uDCCD", label: "Access" }
+  ];
+
+  return <>
+    <div className="header">
+      <div className="brand">Tale Waters & Tides</div>
+      <h1>White Bass <span>Intelligence</span></h1>
+      <div className="water-sel">
+        {Object.entries(WATERS).map(([key, w]) =>
+          <button key={key} className={`water-btn ${water === key ? 'active' : ''}`} onClick={() => setWater(key)}>{w.short}</button>
+        )}
+      </div>
+    </div>
+
+    <div className="content">
+      {error && <ErrorMsg msg={error} onRetry={loadData} />}
+
+      {tab === "dashboard" && <>
+        {loading ? <Loading /> : <>
+          <button className="refresh-btn" onClick={loadData}>\u21BB Refresh</button>
+          <div style={{clear:'both',marginBottom:8}}></div>
+          <LiveDataCard usgs={usgs} waterName={WATERS[water].name} />
+          <SpawnTracker temp={temp} />
+          <TempTrend temps={usgs?.temps7} />
+          <QuickWeather forecast={forecast} />
+        </>}
+      </>}
+
+      {tab === "forecast" && <ForecastTab forecast={forecast} />}
+      {tab === "intel" && <IntelTab temp={temp} />}
+      {tab === "access" && <AccessTab water={water} />}
+
+      <div className="footer">
+        Data: USGS #{WATERS[water].usgs} + NWS {WATERS[water].nwsOffice}<br/>
+        Not a substitute for checking conditions. Fish responsibly.<br/>
+        <span style={{color:'var(--accent)'}}>\u00A9 {new Date().getFullYear()} Tale Waters & Tides, LLC</span>
+      </div>
+    </div>
+
+    <div className="tabs">
+      {tabs.map(t => <div key={t.id} className={`tab ${tab === t.id ? 'active' : ''}`} onClick={() => setTab(t.id)}>
+        <span className="tab-icon">{t.icon}</span>
+        <span className="tab-label">{t.label}</span>
+      </div>)}
+    </div>
+  </>;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
 
