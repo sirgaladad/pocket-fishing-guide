@@ -430,35 +430,50 @@ async function fetchUSGS(siteId) {
   const data = await resp.json();
   const result = { temp: null, tempTrend24: null, tempTrend7: null, temps7: [], flow: null, gage: null, lastReading: null };
   const series = data?.value?.timeSeries || [];
+  // USGS returns water temp (00010) in Celsius — convert to Fahrenheit
+  const cToF = (c) => +(c * 9 / 5 + 32).toFixed(1);
   for (const ts of series) {
     const code = ts.variable?.variableCode?.[0]?.value;
-    const vals = ts.values?.[0]?.value || [];
-    if (vals.length === 0) continue;
-    const latest = vals[vals.length - 1];
-    const latestVal = parseFloat(latest.value);
-    const latestTime = new Date(latest.dateTime);
+    const rawVals = ts.values?.[0]?.value || [];
+    if (rawVals.length === 0) continue;
     if (code === "00010") {
-      result.temp = latestVal;
+      // Filter out equipment malfunction readings (-999999)
+      const vals = rawVals.filter(v => parseFloat(v.value) > -99999);
+      if (vals.length === 0) continue;
+      const latest = vals[vals.length - 1];
+      const latestC = parseFloat(latest.value);
+      const latestF = cToF(latestC);
+      const latestTime = new Date(latest.dateTime);
+      result.temp = latestF;
       result.lastReading = latestTime;
+      // 24-hour trend (in °F)
       const t24 = new Date(latestTime - 24*60*60*1000);
       const v24 = vals.find(v => Math.abs(new Date(v.dateTime) - t24) < 2*60*60*1000);
-      if (v24) result.tempTrend24 = +(latestVal - parseFloat(v24.value)).toFixed(1);
+      if (v24) result.tempTrend24 = +(latestF - cToF(parseFloat(v24.value))).toFixed(1);
+      // 7-day trend (in °F)
       const t7 = new Date(latestTime - 7*24*60*60*1000);
       const v7 = vals.find(v => Math.abs(new Date(v.dateTime) - t7) < 4*60*60*1000);
-      if (v7) result.tempTrend7 = +(latestVal - parseFloat(v7.value)).toFixed(1);
+      if (v7) result.tempTrend7 = +(latestF - cToF(parseFloat(v7.value))).toFixed(1);
+      // Daily averages for 7-day chart (converted to °F)
       const days = {};
       for (const v of vals) {
         const d = new Date(v.dateTime);
         const key = `${d.getMonth()+1}/${d.getDate()}`;
         if (!days[key]) days[key] = { label: d.toLocaleDateString('en-US',{month:'short',day:'numeric'}), vals: [] };
-        days[key].vals.push(parseFloat(v.value));
+        days[key].vals.push(cToF(parseFloat(v.value)));
       }
       result.temps7 = Object.values(days).slice(-7).map(d => ({
         day: d.label, avg: +(d.vals.reduce((a,b)=>a+b,0)/d.vals.length).toFixed(1)
       }));
     }
-    if (code === "00060") result.flow = latestVal;
-    if (code === "00065") result.gage = latestVal;
+    if (code === "00060" || code === "00065") {
+      const latest = rawVals[rawVals.length - 1];
+      const latestVal = parseFloat(latest.value);
+      if (latestVal > -99999) {
+        if (code === "00060") result.flow = latestVal;
+        if (code === "00065") result.gage = latestVal;
+      }
+    }
   }
   return result;
 }
