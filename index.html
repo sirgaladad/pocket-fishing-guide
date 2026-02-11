@@ -6,6 +6,14 @@
 <title>Fishing Intelligence | Tale Waters & Tides</title>
 <meta name="description" content="Live white bass & crappie fishing intelligence for Arkansas waters — Lake Maumelle, White River, Buffalo National River. Real-time USGS water data and NWS forecasts.">
 <meta name="theme-color" content="#0d1b2a">
+<!-- Google Analytics 4 — Replace G-XXXXXXXXXX with your Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -223,6 +231,41 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .refresh-btn:active{background:var(--bg3)}
 .footer{text-align:center;padding:16px;font-size:10px;color:var(--text3);line-height:1.5}
 .flow-badge{display:inline-flex;align-items:center;gap:4px;background:var(--bg3);padding:4px 10px;border-radius:12px;font-size:12px;color:var(--text2);margin-top:6px}
+
+/* ─── TACKLE LINKS ─── */
+.tackle-links{display:flex;gap:6px;margin-top:6px}
+.tackle-link{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:600;text-decoration:none;transition:all .2s;font-family:inherit}
+.tackle-link.yt{background:rgba(255,0,0,.1);color:#ff4444;border:1px solid rgba(255,0,0,.2)}
+.tackle-link.yt:hover{background:rgba(255,0,0,.2)}
+.tackle-link.shop{background:rgba(0,120,215,.1);color:#4a9eff;border:1px solid rgba(0,120,215,.2)}
+.tackle-link.shop:hover{background:rgba(0,120,215,.2)}
+
+/* ─── FEEDBACK WIDGET ─── */
+.fb-fab{position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:var(--accent);color:#000;border:none;font-size:20px;cursor:pointer;box-shadow:0 4px 16px rgba(0,188,212,.4);z-index:200;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.fb-fab:active{transform:scale(.9)}
+.fb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;display:flex;align-items:flex-end;justify-content:center}
+.fb-modal{background:var(--bg2);border-radius:16px 16px 0 0;width:100%;max-width:480px;padding:20px;max-height:80vh;overflow-y:auto}
+.fb-modal h3{font-size:16px;font-weight:700;margin-bottom:12px;color:#fff}
+.fb-rating{display:flex;gap:8px;margin-bottom:14px}
+.fb-rating-btn{flex:1;padding:10px;border-radius:var(--radius-sm);border:2px solid var(--bg3);background:var(--bg3);font-size:24px;cursor:pointer;transition:all .2s;text-align:center}
+.fb-rating-btn.active{border-color:var(--accent);background:rgba(0,188,212,.1)}
+.fb-cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.fb-cat{padding:6px 12px;border-radius:16px;font-size:11px;font-weight:600;border:1.5px solid var(--bg3);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all .2s;font-family:inherit}
+.fb-cat.active{border-color:var(--accent);color:var(--accent);background:rgba(0,188,212,.08)}
+.fb-text{width:100%;background:var(--bg);border:1px solid var(--bg3);border-radius:var(--radius-sm);padding:10px;color:var(--text);font-family:inherit;font-size:13px;resize:vertical;min-height:60px;margin-bottom:14px}
+.fb-text::placeholder{color:var(--text3)}
+.fb-actions{display:flex;gap:8px}
+.fb-submit{flex:1;padding:10px;border:none;border-radius:var(--radius-sm);font-weight:700;font-size:12px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:4px}
+.fb-submit.primary{background:var(--accent);color:#000}
+.fb-submit.secondary{background:var(--bg3);color:var(--text2)}
+.fb-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:10px 20px;border-radius:20px;font-size:12px;font-weight:600;z-index:400;animation:fadeInUp .3s ease}
+@keyframes fadeInUp{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* ─── SUPPORT FOOTER ─── */
+.support-links{display:flex;gap:10px;justify-content:center;margin-top:8px}
+.support-link{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:12px;font-size:10px;font-weight:600;text-decoration:none;transition:all .2s}
+.support-link.kofi{background:rgba(255,94,91,.1);color:#ff5e5b;border:1px solid rgba(255,94,91,.2)}
+.support-link.gh{background:rgba(255,255,255,.06);color:var(--text2);border:1px solid rgba(255,255,255,.1)}
 </style>
 </head>
 <body>
@@ -646,6 +689,65 @@ function ShareSnapshot({ usgs, forecast, water, species }) {
   </>;
 }
 
+/* ── Tackle Link Helpers ── */
+const ytSearch = (q) => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q + " fishing how to");
+const walmartSearch = (q) => "https://www.walmart.com/search?q=" + encodeURIComponent(q + " fishing lure");
+
+/* ── Feedback Widget ── */
+function FeedbackWidget() {
+  const [open, setOpen] = React.useState(false);
+  const [rating, setRating] = React.useState(null);
+  const [cat, setCat] = React.useState("");
+  const [text, setText] = React.useState("");
+  const [toast, setToast] = React.useState(false);
+
+  const categories = ["Bug", "Feature Idea", "Fishing Tip", "General"];
+
+  const buildBody = () => {
+    const parts = [];
+    if (rating !== null) parts.push(`**Rating:** ${rating === 1 ? "\uD83D\uDC4D Thumbs Up" : "\uD83D\uDC4E Thumbs Down"}`);
+    if (cat) parts.push(`**Category:** ${cat}`);
+    if (text) parts.push(`**Feedback:**\n${text}`);
+    parts.push(`\n---\n_Sent from Pocket Fishing Guide v1.0_`);
+    return parts.join("\n\n");
+  };
+
+  const submit = async () => {
+    const body = buildBody();
+    const issueUrl = "https://github.com/sirgaladad/pocket-fishing-guide/issues/new?"
+      + "title=" + encodeURIComponent(`[Feedback] ${cat || "General"}: ${text.slice(0, 50) || "User feedback"}`)
+      + "&body=" + encodeURIComponent(body)
+      + "&labels=" + encodeURIComponent("user-feedback");
+    window.open(issueUrl, "_blank");
+    try { await navigator.clipboard.writeText(body); } catch {}
+    setOpen(false); setRating(null); setCat(""); setText("");
+    setToast(true); setTimeout(() => setToast(false), 3000);
+  };
+
+  return <>
+    <button className="fb-fab" onClick={() => setOpen(!open)} title="Send Feedback">{"\uD83D\uDCEC"}</button>
+    {open && <div className="fb-overlay" onClick={() => setOpen(false)}>
+      <div className="fb-modal" onClick={e => e.stopPropagation()}>
+        <h3 style={{margin:'0 0 4px',fontSize:16}}>Help Us Improve {"\uD83C\uDFA3"}</h3>
+        <p style={{margin:'0 0 12px',fontSize:12,color:'var(--text3)'}}>Your feedback shapes the Pocket Fishing Guide</p>
+        <div className="fb-rating">
+          <button className={`fb-rating-btn ${rating === 1 ? 'active' : ''}`} onClick={() => setRating(1)}>{"\uD83D\uDC4D"}</button>
+          <button className={`fb-rating-btn ${rating === 0 ? 'active' : ''}`} onClick={() => setRating(0)}>{"\uD83D\uDC4E"}</button>
+        </div>
+        <div className="fb-cats">
+          {categories.map(c => <button key={c} className={`fb-cat ${cat === c ? 'active' : ''}`} onClick={() => setCat(c)}>{c}</button>)}
+        </div>
+        <textarea className="fb-text" placeholder="Tell us what's on your mind..." value={text} onChange={e => setText(e.target.value)} rows={3} />
+        <div className="fb-actions">
+          <button className="fb-submit" onClick={() => setOpen(false)} style={{background:'var(--bg3)',color:'var(--text2)'}}>Cancel</button>
+          <button className="fb-submit" onClick={submit} disabled={rating === null && !text}>Send Feedback</button>
+        </div>
+      </div>
+    </div>}
+    {toast && <div className="fb-toast">{"\u2705"} Thanks for your feedback!</div>}
+  </>;
+}
+
 function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
   if (loading) return <Loading />;
   const w = WATERS[water];
@@ -961,6 +1063,10 @@ function IntelTab({ temp, water, species }) {
           <h4>{l.name}</h4>
           {l.sub && <div className="lure-sub">{l.sub}</div>}
           <p>{l.detail}</p>
+          <div className="tackle-links">
+            <a className="tackle-link yt" href={ytSearch(l.name)} target="_blank" rel="noopener">{"\u25B6"} How-To</a>
+            <a className="tackle-link shop" href={walmartSearch(l.name)} target="_blank" rel="noopener">{"\uD83D\uDED2"} Shop</a>
+          </div>
         </div>
       </div>)}
     </div>
@@ -1122,8 +1228,13 @@ function App() {
       <div className="footer">
         Tale Waters & Tides, LLC {"\u00B7"} Data: USGS #{w.usgs} + NWS {w.nwsOffice}<br/>
         <em>Not a substitute for checking conditions. Fish responsibly.</em> {"\uD83C\uDFA3"}
+        <div className="support-links">
+          <a className="support-link kofi" href="https://ko-fi.com/talewaters" target="_blank" rel="noopener">{"\u2615"} Support on Ko-fi</a>
+          <a className="support-link gh" href="https://github.com/sirgaladad/pocket-fishing-guide" target="_blank" rel="noopener">{"\u2B50"} Star on GitHub</a>
+        </div>
       </div>
     </div>
+    <FeedbackWidget />
   </>;
 }
 
