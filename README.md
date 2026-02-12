@@ -7,7 +7,16 @@
 
 A lightweight, mobile-first **fishing intelligence app** for Arkansas waters. Built as a single-file React app that runs entirely in your browser—no servers, no build step, no dependencies to manage. Just real-time fishing data in your pocket.
 
-Currently focused on **Lake Maumelle** (Central Arkansas's primary drinking water reservoir), with secondary support for the **White River** and **Buffalo National River**.
+**Now covering 8 major Arkansas water bodies** with comprehensive White Bass and Crappie fishing intelligence:
+- **Lake Maumelle** (Central AR primary drinking water reservoir) 
+- **White River** (Legendary tailwater and spawn run)
+- **Buffalo National River** (Wild scenic river)
+- **Greers Ferry Lake** (Premier white bass and crappie fishery)
+- **Bull Shoals Lake** (Massive Ozark reservoir)
+- **Beaver Lake** (Northwest AR trophy fishery)
+- **Lake Ouachita** (Arkansas's largest and clearest lake)
+- **DeGray Lake** (Resort lake near Hot Springs)
+- **Lake Conway** (AGFC managed crappie hotspot - currently under renovation)
 
 ---
 
@@ -51,11 +60,19 @@ The app fetches live USGS and NWS data automatically. Your browser does the rest
 
 ### Water Data
 Live water metrics (temperature, flow, gage height) come from **USGS Water Services**:
+- **Greers Ferry Lake**: Gauge 07075900 (primary)
 - **Lake Maumelle**: Gauge 072632995 (temp, flow, gage height)
+- **Bull Shoals Lake**: Gauge 07054500
+- **Beaver Lake**: Gauge 07049000  
+- **Lake Ouachita**: Gauge 07357000
+- **DeGray Lake**: Gauge 07360200 (Caddo River below dam)
 - **White River**: Gauge 07074500 (flow, gage height)
 - **Buffalo National River**: Gauge 07056000 (flow, gage height)
+- **Lake Conway**: AGFC monitoring (currently under renovation - check AGFC for status)
 
 No API key required. Data refreshes on app load and updates every 5–15 minutes.
+
+**Note**: Not all gauges provide real-time water temperature. Where USGS temp data is unavailable, the app provides comprehensive fishing intelligence, access information, and seasonal guidance. Future updates will integrate additional data sources (USACE, AGFC) for complete coverage.
 
 ### Weather Forecasts
 7-day outlooks powered by **NWS API** (weather.gov). No API key needed.
