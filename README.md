@@ -7,7 +7,7 @@
 
 A lightweight, mobile-first **fishing intelligence app** for Arkansas waters. Built as a single-file React app that runs entirely in your browser—no servers, no build step, no dependencies to manage. Just real-time fishing data in your pocket.
 
-**Now covering 8 major Arkansas water bodies** with comprehensive White Bass and Crappie fishing intelligence:
+**Now covering 9 major Arkansas water bodies** with comprehensive White Bass and Crappie fishing intelligence:
 - **Lake Maumelle** (Central AR primary drinking water reservoir) 
 - **White River** (Legendary tailwater and spawn run)
 - **Buffalo National River** (Wild scenic river)
