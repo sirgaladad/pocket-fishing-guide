@@ -1468,7 +1468,7 @@ function App() {
     <div className="header">
       <div className="brand">Tale Waters & Tides</div>
       <h1>{speciesIcon} {speciesLabel} <span>Intelligence</span></h1>
-      <div className="header-sub">{w.name}, AR {"\u00B7"} USGS Live Data</div>
+      <div className="header-sub">{w.name}, AR {"\u00B7"} {w.usgs ? 'USGS Live Data' : 'Live Data'}</div>
       <div className="species-toggle">
         <button className={`species-btn ${species === "wb" ? "active-wb" : ""}`} onClick={() => setSpecies("wb")}>White Bass</button>
         <button className={`species-btn ${species === "cr" ? "active-cr" : ""}`} onClick={() => setSpecies("cr")}>Crappie</button>
