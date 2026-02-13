@@ -839,6 +839,10 @@ function rateFishing(period) {
 
 // ─── API FUNCTIONS ──────────────────────────────────────────
 async function fetchUSGS(siteId) {
+  if (!siteId) {
+    // No USGS gauge for this location
+    return { temp: null, tempTrend24: null, tempTrend7: null, temps7: [], flow: null, gage: null, lastReading: null };
+  }
   const url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${siteId}&parameterCd=00010,00060,00065&period=P7D`;
   const resp = await fetch(url);
   if (!resp.ok) throw new Error("USGS API error");
@@ -1099,7 +1103,7 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
             {usgs.tempTrend24 !== null && <div className={`trend ${trendCls(usgs.tempTrend24)}`}>{trendArr(usgs.tempTrend24)} {fmtTrend(usgs.tempTrend24)} <span style={{fontWeight:400,fontSize:10}}>/24hr</span></div>}
             {usgs.tempTrend7 !== null && <div className={`trend ${trendCls(usgs.tempTrend7)}`}>{trendArr(usgs.tempTrend7)} {fmtTrend(usgs.tempTrend7)} <span style={{fontWeight:400,fontSize:10}}>/7day</span></div>}
           </div>
-          <div className="gauge-meta">USGS #{w.usgs}{usgs.lastReading && <> {"\u00B7"} {usgs.lastReading.toISOString().slice(0,16).replace('T',' ')} CST</>}</div>
+          <div className="gauge-meta">{w.usgs ? `USGS #${w.usgs}` : 'No USGS gauge'}{usgs.lastReading && <> {"\u00B7"} {usgs.lastReading.toISOString().slice(0,16).replace('T',' ')} CST</>}</div>
         </> : <div style={{color:'var(--text2)',fontSize:12}}>Temp not available
           {usgs?.flow !== null && <div className="flow-badge" style={{marginTop:6}}>{"\uD83D\uDCA7"} {usgs.flow.toLocaleString()} cfs</div>}
         </div>}
@@ -1469,7 +1473,7 @@ function App() {
         <button className={`species-btn ${species === "wb" ? "active-wb" : ""}`} onClick={() => setSpecies("wb")}>White Bass</button>
         <button className={`species-btn ${species === "cr" ? "active-cr" : ""}`} onClick={() => setSpecies("cr")}>Crappie</button>
       </div>
-      {timestamp && <div className="header-meta">Data: {timestamp}<br/>USGS #{w.usgs} {"\u00B7"} NWS {w.nwsOffice}</div>}
+      {timestamp && <div className="header-meta">Data: {timestamp}<br/>{w.usgs ? `USGS #${w.usgs}` : 'No USGS gauge'} {"\u00B7"} NWS {w.nwsOffice}</div>}
       <div className="water-sel">
         {Object.entries(WATERS).map(([key, wd]) =>
           <button key={key} className={`water-btn ${water === key ? 'active' : ''}`} onClick={() => setWater(key)}>{wd.short}</button>
@@ -1492,7 +1496,7 @@ function App() {
       {tab === "access" && <AccessTab water={water} />}
 
       <div className="footer">
-        Tale Waters & Tides, LLC {"\u00B7"} Data: USGS #{w.usgs} + NWS {w.nwsOffice}<br/>
+        Tale Waters & Tides, LLC {"\u00B7"} Data: {w.usgs ? `USGS #${w.usgs}` : 'No USGS gauge'} + NWS {w.nwsOffice}<br/>
         <em>Not a substitute for checking conditions. Fish responsibly.</em> {"\uD83C\uDFA3"}
         <div className="support-links">
           <a className="support-link kofi" href="https://ko-fi.com/talewaters" target="_blank" rel="noopener">{"\u2615"} Support on Ko-fi</a>
