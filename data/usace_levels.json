@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-02-14T18:50:58.285Z",
+  "generatedAt": "2026-02-14T18:53:38.982Z",
   "waters": {
     "greers": {
       "status": "ok",
       "provider": "USACE-SWL",
-      "sourceUrl": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/greersf.htm",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/greersf.htm",
       "gage": 454.08,
       "flow": 20,
       "gageTrend24": -0.01,
@@ -36,13 +36,13 @@
     "bullshoals": {
       "status": "ok",
       "provider": "USACE-SWL",
-      "sourceUrl": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bulsdam.htm",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bulsdam.htm",
       "gage": 652.77,
-      "flow": 703,
+      "flow": 716,
       "gageTrend24": 0.24,
       "gageTrend7": 0.18,
-      "flowTrend24": 14,
-      "flowTrend7": -59,
+      "flowTrend24": 27,
+      "flowTrend7": -46,
       "gages7": [
         {
           "day": "Feb 13",
@@ -68,7 +68,7 @@
     "beaver": {
       "status": "ok",
       "provider": "USACE-SWL",
-      "sourceUrl": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/beaver.htm",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/beaver.htm",
       "gage": 1112.53,
       "flow": 20,
       "gageTrend24": -0.03,

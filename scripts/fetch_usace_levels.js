@@ -15,17 +15,17 @@ const SOURCES = {
   greers: {
     name: "Greers Ferry Lake",
     provider: "USACE-SWL",
-    url: "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/greersf.htm",
+    url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/greersf.htm",
   },
   bullshoals: {
     name: "Bull Shoals Lake",
     provider: "USACE-SWL",
-    url: "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bulsdam.htm",
+    url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bulsdam.htm",
   },
   beaver: {
     name: "Beaver Lake",
     provider: "USACE-SWL",
-    url: "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/beaver.htm",
+    url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/beaver.htm",
   },
 };
 
