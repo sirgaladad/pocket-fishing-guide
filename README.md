@@ -31,7 +31,7 @@ A lightweight, mobile-first **fishing intelligence app** for Arkansas waters. Bu
 - **Snapshot Sharing**: Share conditions with fellow anglers (mobile share sheet + clipboard fallback)
 - **Spawn Tracker**: Countdown to spawn-trigger water temperatures
 - **Pro Tips**: Local knowledge per water body and species
-- **Offline-Ready**: PWA architecture—app data loads offline after first visit
+- **Preference Persistence**: Your water body and species selections are remembered across visits
 - **Mobile-First Design**: Optimized for phones, tablets, and desktop
 
 ---
@@ -83,8 +83,8 @@ Each species has 6 fishing phases, each triggered by water temperature ranges:
 - Each phase gets tailored lure picks and tactics
 - Pro tips provide local context
 
-### Offline Support
-App data caches in your browser. Come back tomorrow, and critical info loads from cache while fresh data syncs in the background.
+### Preference Persistence
+Your selected water body and species are saved in your browser via localStorage. Come back tomorrow and the app remembers your last selection — no more defaulting to Lake Maumelle every visit.
 
 ---
 

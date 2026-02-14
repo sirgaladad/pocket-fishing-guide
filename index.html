@@ -6,13 +6,13 @@
 <title>Fishing Intelligence | Tale Waters & Tides</title>
 <meta name="description" content="Live white bass & crappie fishing intelligence for 9 major Arkansas lakes and rivers — Greers Ferry, Bull Shoals, Beaver, Ouachita, Maumelle, DeGray, Conway, White River, Buffalo River. Real-time USGS water data and NWS forecasts.">
 <meta name="theme-color" content="#0d1b2a">
-<!-- Google Analytics 4 — Replace G-XXXXXXXXXX with your Measurement ID -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-929WWD4EZ4"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
+  gtag('config', 'G-929WWD4EZ4');
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1410,13 +1410,27 @@ function AccessTab({ water }) {
 
 // ─── MAIN APP ───────────────────────────────────────────────
 function App() {
-  const [water, setWater] = useState("maumelle");
+  const [water, setWater] = useState(() => {
+    try { return localStorage.getItem('selectedWater') || 'maumelle'; }
+    catch { return 'maumelle'; }
+  });
   const [tab, setTab] = useState("dashboard");
-  const [species, setSpecies] = useState("wb");
+  const [species, setSpecies] = useState(() => {
+    try { return localStorage.getItem('selectedSpecies') || 'wb'; }
+    catch { return 'wb'; }
+  });
   const [usgs, setUsgs] = useState(null);
   const [forecast, setForecast] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    try { localStorage.setItem('selectedWater', water); } catch {}
+  }, [water]);
+
+  useEffect(() => {
+    try { localStorage.setItem('selectedSpecies', species); } catch {}
+  }, [species]);
 
   const loadData = useCallback(async () => {
     setLoading(true);
