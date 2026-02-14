@@ -63,7 +63,7 @@ The requested visual dashboard feature has been **fully implemented** and is now
 2. **Multi-Source Integration**: Combines USGS, NWS, and USACE data sources
 3. **Graceful Degradation**: Handles missing data elegantly with "n/a" and fallback indicators
 4. **Performance Optimized**: Efficient rendering with React state management
-5. **Accessibility**: Hover states and click handlers for interactive cards, with further semantic/ARIA enhancements planned
+5. **Accessibility**: Interactive cards with hover states and click handlers (semantic button elements and ARIA labels can be added as future enhancement)
 
 ### Data Sources
 - **USGS Water Services**: Real-time temperature, flow, and gage height
@@ -107,16 +107,16 @@ The implementation directly addresses all aspects of the original feature reques
 ### Current Status
 - ✅ Code merged to main branch (PR #27)
 - ✅ Feature fully functional in codebase
-- ✅ Documented in CHANGELOG.md under "Unreleased"
-- ⏳ **Pending**: Official version tag/release
+- ✅ Released as version 0.3.0 in CHANGELOG.md (2026-02-14)
+- ✅ Documentation completed
+- ⏳ **Pending**: Git version tag and GitHub release creation
 
 ### Next Steps
-This feature is production-ready and currently marked as "Unreleased" in CHANGELOG.md. To complete the release cycle:
+This feature has been released as v0.3.0 in CHANGELOG.md. To complete the release process:
 
-1. **Create Release Tag**: Tag as version 0.3.0 (recommended)
-2. **Update CHANGELOG**: Move features from "Unreleased" to "0.3.0" with release date
-3. **GitHub Release**: Create GitHub release with release notes
-4. **User Communication**: Notify users via any established channels
+1. **Create Git Tag**: `git tag v0.3.0` to mark the release commit
+2. **GitHub Release**: Create GitHub release with release notes referencing CHANGELOG v0.3.0
+3. **User Communication**: Notify users via any established channels
 
 ---
 
@@ -150,7 +150,7 @@ Navigate to the "Overview" tab (leftmost tab icon: 🗺️) to see the visual da
 
 **Issue #14 is RESOLVED.** The requested visual dashboard feature has been successfully implemented with the Overview tab. The feature provides comprehensive comparison capabilities across all 9 Arkansas water bodies, including heat maps, trend visualizations, and quick access to detailed information - meeting or exceeding all aspects of the original feature request.
 
-The feature is currently merged and functional, awaiting official release tagging as version 0.3.0.
+The feature has been released as version 0.3.0 (February 14, 2026) and is live in production.
 
 ---
 
@@ -158,7 +158,7 @@ The feature is currently merged and functional, awaiting official release taggin
 
 - **Original Issue**: #14 - Feature Idea: Visual dashboard of top streams
 - **Implementation PR**: #27 - Add visual Overview tab with multi-water comparison dashboard
-- **CHANGELOG Entry**: CHANGELOG.md lines 10-16 (Unreleased section)
+- **CHANGELOG Entry**: CHANGELOG.md lines 10-19 (version 0.3.0 release section)
 - **Code Implementation**: index.html lines 1726-1887 (OverviewTab component)
 - **Styling**: index.html lines 274-309 (CSS for overview grid and cards)
 - **Live Deployment**: https://sirgaladad.github.io/pocket-fishing-guide/
