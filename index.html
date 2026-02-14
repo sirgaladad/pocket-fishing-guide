@@ -1429,7 +1429,14 @@ function App() {
   const [species, setSpecies] = useState(() => {
     try {
       const stored = localStorage.getItem('selectedSpecies');
-      return stored === 'wb' || stored === 'cr' ? stored : 'wb';
+      if (stored === 'wb' || stored === 'cr') {
+        return stored;
+      }
+      // Fallback to default and repair invalid or missing value
+      try {
+        localStorage.setItem('selectedSpecies', 'wb');
+      } catch {}
+      return 'wb';
     } catch {
       return 'wb';
     }
