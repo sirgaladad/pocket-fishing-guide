@@ -43,6 +43,23 @@
 
 ---
 
+## Backlog Candidate: Body of Water Selector Enhancements (User Feedback)
+- Feedback: avoid always defaulting to Lake Maumelle; respect user location (geo opt-in, zip, or IP); enable map/smarter navigation with distance + spawn status; allow opt-in alerts or calendar invites for spawn events.
+- Technical feasibility & risks:
+  - Browser geolocation is straightforward client-side; WATERS already has lat/lon for distance calc. Zip/IP lookup would add a third-party dependency and privacy copy. Mobile browsers may block location without strong value messaging.
+  - Lightweight map selector can use Leaflet + OSM tiles (no key) or Mapbox (key + billing). Needs graceful fallback for users who deny location and offline scenarios.
+  - Spawn alerts/calendar require reliable spawn window data. Without a backend, .ics generation could be static per species; true notifications need an email/push service plus consent, and accuracy risk if water temps lag.
+  - Privacy: must present explicit opt-in, explain data use, and provide a clear override to manually choose waters.
+- Draft backlog tasks:
+  - Design: prototype location opt-in flow and manual zip entry; map/list selector showing nearest waters with distance and spawn indicator; opt-in UI copy for alerts/calendar.
+  - Engineering: add preference for last/nearest water; haversine nearest-water lookup from WATERS lat/lon; optional geo/zip/IP lookup path and error handling; embed map selector; spike on static .ics generation and alert delivery service choice.
+  - Product: define consent language + retention; decide spawn status rules (temp thresholds per species), alert cadence, and success metrics; confirm acceptable geo providers (none/zip/IP/GPS) and map tile source.
+- User follow-up questions:
+  - Is coarse location (zip/IP) sufficient, or do they expect precise GPS? Should manual search remain primary if location is denied?
+  - What map experience is desired: default to a list with distance badges, or a map-first view? Should spawn readiness be shown as a simple status chip?
+  - Preferred alert channels: email, push, or downloadable calendar? How often should alerts fire around spawn (e.g., open/peak/closing window)?
+  - Are they comfortable with a fallback to Maumelle when no location is available, or should we default to a neutral picker state?
+
 ## Phase 1: Measurement Foundation
 ### Current Sprint — Build the Metrics Layer
 
