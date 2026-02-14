@@ -1419,7 +1419,9 @@ function App() {
       // Fallback to default and repair invalid or missing value
       try {
         localStorage.setItem('selectedWater', 'maumelle');
-      } catch {}
+      } catch {
+        // Ignore localStorage write errors (e.g., private browsing, quota exceeded)
+      }
       return 'maumelle';
     } catch {
       return 'maumelle';
@@ -1435,7 +1437,9 @@ function App() {
       // Fallback to default and repair invalid or missing value
       try {
         localStorage.setItem('selectedSpecies', 'wb');
-      } catch {}
+      } catch {
+        // Ignore localStorage write errors (e.g., private browsing, quota exceeded)
+      }
       return 'wb';
     } catch {
       return 'wb';
