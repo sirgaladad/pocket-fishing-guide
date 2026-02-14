@@ -4,8 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Fishing Intelligence | Tale Waters & Tides</title>
-<meta name="description" content="Live white bass & crappie fishing intelligence for Arkansas waters — Lake Maumelle, White River, Buffalo National River. Real-time USGS water data and NWS forecasts.">
+<meta name="description" content="Live white bass & crappie fishing intelligence for 9 major Arkansas lakes and rivers — Greers Ferry, Bull Shoals, Beaver, Ouachita, Maumelle, DeGray, Conway, White River, Buffalo River. Real-time USGS water data and NWS forecasts.">
 <meta name="theme-color" content="#0d1b2a">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-929WWD4EZ4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-929WWD4EZ4');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -223,6 +231,41 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .refresh-btn:active{background:var(--bg3)}
 .footer{text-align:center;padding:16px;font-size:10px;color:var(--text3);line-height:1.5}
 .flow-badge{display:inline-flex;align-items:center;gap:4px;background:var(--bg3);padding:4px 10px;border-radius:12px;font-size:12px;color:var(--text2);margin-top:6px}
+
+/* ─── TACKLE LINKS ─── */
+.tackle-links{display:flex;gap:6px;margin-top:6px}
+.tackle-link{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:600;text-decoration:none;transition:all .2s;font-family:inherit}
+.tackle-link.yt{background:rgba(255,0,0,.1);color:#ff4444;border:1px solid rgba(255,0,0,.2)}
+.tackle-link.yt:hover{background:rgba(255,0,0,.2)}
+.tackle-link.shop{background:rgba(0,120,215,.1);color:#4a9eff;border:1px solid rgba(0,120,215,.2)}
+.tackle-link.shop:hover{background:rgba(0,120,215,.2)}
+
+/* ─── FEEDBACK WIDGET ─── */
+.fb-fab{position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:var(--accent);color:#000;border:none;font-size:20px;cursor:pointer;box-shadow:0 4px 16px rgba(0,188,212,.4);z-index:200;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.fb-fab:active{transform:scale(.9)}
+.fb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;display:flex;align-items:flex-end;justify-content:center}
+.fb-modal{background:var(--bg2);border-radius:16px 16px 0 0;width:100%;max-width:480px;padding:20px;max-height:80vh;overflow-y:auto}
+.fb-modal h3{font-size:16px;font-weight:700;margin-bottom:12px;color:#fff}
+.fb-rating{display:flex;gap:8px;margin-bottom:14px}
+.fb-rating-btn{flex:1;padding:10px;border-radius:var(--radius-sm);border:2px solid var(--bg3);background:var(--bg3);font-size:24px;cursor:pointer;transition:all .2s;text-align:center}
+.fb-rating-btn.active{border-color:var(--accent);background:rgba(0,188,212,.1)}
+.fb-cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.fb-cat{padding:6px 12px;border-radius:16px;font-size:11px;font-weight:600;border:1.5px solid var(--bg3);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all .2s;font-family:inherit}
+.fb-cat.active{border-color:var(--accent);color:var(--accent);background:rgba(0,188,212,.08)}
+.fb-text{width:100%;background:var(--bg);border:1px solid var(--bg3);border-radius:var(--radius-sm);padding:10px;color:var(--text);font-family:inherit;font-size:13px;resize:vertical;min-height:60px;margin-bottom:14px}
+.fb-text::placeholder{color:var(--text3)}
+.fb-actions{display:flex;gap:8px}
+.fb-submit{flex:1;padding:10px;border:none;border-radius:var(--radius-sm);font-weight:700;font-size:12px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:4px}
+.fb-submit.primary{background:var(--accent);color:#000}
+.fb-submit.secondary{background:var(--bg3);color:var(--text2)}
+.fb-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:10px 20px;border-radius:20px;font-size:12px;font-weight:600;z-index:400;animation:fadeInUp .3s ease}
+@keyframes fadeInUp{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* ─── SUPPORT FOOTER ─── */
+.support-links{display:flex;gap:10px;justify-content:center;margin-top:8px}
+.support-link{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:12px;font-size:10px;font-weight:600;text-decoration:none;transition:all .2s}
+.support-link.kofi{background:rgba(255,94,91,.1);color:#ff5e5b;border:1px solid rgba(255,94,91,.2)}
+.support-link.gh{background:rgba(255,255,255,.06);color:var(--text2);border:1px solid rgba(255,255,255,.1)}
 </style>
 </head>
 <body>
@@ -235,6 +278,52 @@ const { useState, useEffect, useCallback, useMemo } = React;
 
 // ─── WATER BODY DATA ───────────────────────────────────────
 const WATERS = {
+  greers: {
+    name: "Greers Ferry Lake", short: "Greers Ferry", type: "lake",
+    usgs: "07075900", lat: 35.5597, lon: -92.1526,
+    nwsOffice: "LZK",
+    alert: null,
+    access: [
+      { name: "Dam Site Park", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Main Corps of Engineers park. Full facilities including camping, marina, and boat ramps.",
+        bestFor: "Main lake access, deep structure fishing, bass and crappie",
+        restrictions: "Corps day-use fees apply. 30-day camping limit." },
+      { name: "Heber Springs City Park", type: "boat", status: "open", statusLabel: "Open",
+        detail: "City-operated facility near Heber Springs. Multiple ramps, courtesy dock, parking.",
+        bestFor: "North end access, pre-spawn staging areas, convenient town location",
+        restrictions: "Busiest on weekends spring through fall. Arrive early." },
+      { name: "Sugarloaf Marina", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Private marina with full services. Fuel, supplies, boat rentals available.",
+        bestFor: "Upper lake access, protected coves, crappie staging areas",
+        restrictions: "Private facility. Launch fees apply." },
+      { name: "Devils Fork", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Corps recreation area on south side. Camping, swimming beach, boat ramp.",
+        bestFor: "South shore points, white bass runs into creeks, family-friendly",
+        restrictions: "Corps fees apply. Popular summer destination." }
+    ],
+    regs: [
+      "Arkansas state fishing license required",
+      "White bass: 25 daily limit, no minimum length",
+      "Crappie: 15 daily limit, no minimum length",
+      "US Army Corps of Engineers regulations apply",
+      "No wake zones near all boat ramps and swimming areas",
+      "Check current AGFC regulations for any special restrictions"
+    ],
+    tips: [
+      { cat: "Behavior", text: "Greers Ferry white bass stage in deep water (30-60ft) in winter, then move shallow in spring. Target main lake points and creek channels during pre-spawn." },
+      { cat: "Timing", text: "Spring run peaks when water hits 50-58°F, usually March-April. Fish move into major creeks (South Fork, Little Red River arm)." },
+      { cat: "Structure", text: "Greers Ferry has excellent rock structure. Bluff walls, gravel points, and chunk rock produce year-round. Mark underwater humps with GPS." },
+      { cat: "Post-Spawn", text: "After spawn, white bass suspend over deep water near creek channels. Look for birds working baitfish May-June." },
+      { cat: "Safety", text: "Greers Ferry is a large, deep lake. Weather can change quickly. Monitor wind and storms, especially on main lake." }
+    ],
+    crTips: [
+      { cat: "Behavior", text: "Greers Ferry crappie are known for size. Fish deep brush piles (20-35ft) in winter. AGFC has mapped fish attractors \u2014 download GPS coordinates." },
+      { cat: "Timing", text: "Crappie spawn staging begins at 55°F. Look for shallow buck brush, flooded timber, and boat docks in protected coves March-April." },
+      { cat: "Structure", text: "Standing timber in creek arms holds crappie year-round. Narrows, Sugarloaf area, and upper Devils Fork have excellent timber." },
+      { cat: "Technique", text: "Spider rigging with 8-16 rods is extremely popular on Greers Ferry. Slow-troll crappie jigs over brush at 1.5-2.5 mph." },
+      { cat: "Night Fishing", text: "Submersible lights over deep brush (May-Sept) produce trophy crappie. Fish 18-30ft depths." }
+    ]
+  },
   maumelle: {
     name: "Lake Maumelle", short: "Maumelle", type: "lake",
     usgs: "072632995", lat: 34.8306, lon: -92.5806,
@@ -374,6 +463,226 @@ const WATERS = {
       { cat: "Timing", text: "Lower Buffalo near the White River may hold crappie during spring when water levels allow backwater access." },
       { cat: "Access", text: "Float the lower section below Gilbert for best shot at crappie. Water must be 400+ cfs and relatively stable." },
       { cat: "Safety", text: "Wild river with no controls. Water levels can change fast \u2014 always check USGS gauge." }
+    ]
+  },
+  bullshoals: {
+    name: "Bull Shoals Lake", short: "Bull Shoals", type: "lake",
+    usgs: "07054500", lat: 36.3700, lon: -92.5825,
+    nwsOffice: "SGF",
+    alert: null,
+    access: [
+      { name: "Bull Shoals State Park", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Arkansas State Parks facility. Multiple ramps, marina, camping, visitor center.",
+        bestFor: "Main lake access, deep structure, rental boats available",
+        restrictions: "State park entry fee. Camping reservations recommended." },
+      { name: "Lead Hill Public Use Area", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Corps of Engineers facility. Free launch, limited facilities.",
+        bestFor: "Upper lake access, creek arms, less crowded",
+        restrictions: "No camping. Primitive facilities." },
+      { name: "Oakland Park", type: "boat", status: "open", statusLabel: "Open",
+        detail: "City of Oakland park near dam. Ramp, parking, picnic area.",
+        bestFor: "Dam area fishing, deep water access",
+        restrictions: "Limited parking on busy weekends." },
+      { name: "Tucker Hollow", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Corps recreation area. Camping, ramp, swim beach.",
+        bestFor: "Mid-lake access, family camping and fishing",
+        restrictions: "Corps day-use fees. Busy in summer." }
+    ],
+    regs: [
+      "Arkansas state fishing license required",
+      "White bass: 25 daily limit, no minimum length",
+      "Crappie: 15 daily limit, no minimum length",
+      "Below dam: trout regulations apply - separate license",
+      "US Army Corps of Engineers regulations apply",
+      "Check AGFC for current season dates and any special restrictions"
+    ],
+    tips: [
+      { cat: "Behavior", text: "Bull Shoals white bass school heavily on main lake points in winter. Look for birds and surface activity over 40-80ft water." },
+      { cat: "Timing", text: "Spring run begins when water reaches 48-52°F. Fish stage at creek mouths before moving into major tributaries." },
+      { cat: "Structure", text: "Bull Shoals has incredible bluff walls and rock structure. Vertical jig bluffs in winter, target gravel points in spring." },
+      { cat: "Tailwater", text: "Below dam tailwater produces white bass when fish are running upstream. Best during generation releases April-May." },
+      { cat: "Safety", text: "Bull Shoals is massive (45,000 acres). Wind can create dangerous waves. Check weather before heading to main lake." }
+    ],
+    crTips: [
+      { cat: "Behavior", text: "Bull Shoals crappie suspend over deep structure in winter (30-50ft). Mark schools on electronics, vertical jig slowly." },
+      { cat: "Timing", text: "Crappie move to shallow brush and docks when water hits 58-62°F, typically late March-April." },
+      { cat: "Structure", text: "Target flooded cedar trees in creek arms, boat docks, and submerged brush piles. AGFC fish attractors marked on lake maps." },
+      { cat: "Technique", text: "Bull Shoals crappie run big. Use 1/8oz jigs with 4lb line. Long-line trolling crankbaits is popular in summer." },
+      { cat: "Night Fishing", text: "Lighted docks and brush piles produce excellent summer crappie fishing. Focus on 15-25ft depths." }
+    ]
+  },
+  beaver: {
+    name: "Beaver Lake", short: "Beaver", type: "lake",
+    usgs: "07049000", lat: 36.3722, lon: -93.9731,
+    nwsOffice: "TSA",
+    alert: null,
+    access: [
+      { name: "Dam Site Park", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Corps of Engineers park at Beaver Dam. Full facilities, multiple ramps, camping.",
+        bestFor: "Lower lake access, deep water fishing, striped bass",
+        restrictions: "Corps day-use fees. Popular tournament site." },
+      { name: "Prairie Creek", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Corps recreation area on Highway 62. Well-maintained ramps, camping, marina.",
+        bestFor: "Upper lake access, protected coves, white bass and crappie",
+        restrictions: "Busiest Corps park on Beaver. Arrive early spring weekends." },
+      { name: "Hickory Creek", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Corps park on mid-lake. Good ramp, less crowded than Prairie Creek.",
+        bestFor: "Mid-lake points, creek fishing, quieter alternative",
+        restrictions: "Corps fees apply." },
+      { name: "Rocky Branch", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Upper lake Corps facility. Gravel ramp, primitive camping.",
+        bestFor: "Upper lake creeks, shallow water spawn fishing",
+        restrictions: "Gravel ramp. Check water levels before launching larger boats." }
+    ],
+    regs: [
+      "Arkansas state fishing license required",
+      "White bass: 25 daily limit, no minimum length",
+      "Crappie: 15 daily limit, no minimum length",
+      "Striped bass: 2 daily limit, 20\" minimum length",
+      "US Army Corps of Engineers regulations apply",
+      "Check AGFC for current regulations and any special restrictions"
+    ],
+    tips: [
+      { cat: "Behavior", text: "Beaver Lake white bass migrate up War Eagle Creek, White River arm, and other major tributaries during spring spawn." },
+      { cat: "Timing", text: "Spawn run typically peaks in March-April when water is 50-58°F. Fish stage on main lake points first, then move to creeks." },
+      { cat: "Structure", text: "Beaver has excellent chunk rock, gravel bars, and bluff walls. Winter fish hold deep (40-60ft) on main lake structure." },
+      { cat: "Technique", text: "Jigging spoons and blade baits work well for suspended white bass over deep water. Switch to inline spinners in creeks during spawn." },
+      { cat: "Post-Spawn", text: "After spawn, look for white bass chasing shad on main lake. Surface activity common May-June near creek mouths." }
+    ],
+    crTips: [
+      { cat: "Behavior", text: "Beaver Lake is known for trophy crappie (2-3 lbs common). Fish deep standing timber and brush piles in winter." },
+      { cat: "Timing", text: "Crappie spawn in upper lake coves and creek arms when water reaches 60-65°F. War Eagle Creek and upper White River arm are prime areas." },
+      { cat: "Structure", text: "Look for standing timber in 8-20ft during pre-spawn. Shallow brush, docks, and buck brush hold spawning fish." },
+      { cat: "Technique", text: "Beaver crappie are big and fight hard. Use 1/8-1/4oz jigs. Spider rigging is popular for covering water quickly." },
+      { cat: "Night Fishing", text: "Submersible lights attract shad and crappie. Fish deep brush (20-30ft) in summer. Green lights work best." }
+    ]
+  },
+  ouachita: {
+    name: "Lake Ouachita", short: "Ouachita", type: "lake",
+    usgs: "07357000", lat: 34.5553, lon: -93.1900,
+    nwsOffice: "LZK",
+    alert: null,
+    access: [
+      { name: "Lake Ouachita State Park", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Arkansas State Parks facility near Hot Springs. Full marina, camping, cabins, restaurant.",
+        bestFor: "Lower lake access, deep water fishing, family camping",
+        restrictions: "State park entry fee. Popular destination \u2014 reserve camping ahead." },
+      { name: "Denby Point", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Corps of Engineers recreation area. Multiple ramps, camping, swim beach.",
+        bestFor: "Mid-lake access, protected coves, crappie fishing",
+        restrictions: "Corps day-use fees apply." },
+      { name: "Brady Mountain", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Corps facility on north shore. Good ramp, camping available.",
+        bestFor: "Upper lake access, creek fishing, less crowded",
+        restrictions: "Primitive facilities compared to State Park." },
+      { name: "Crystal Springs", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Private marina with full services. Fuel, supplies, boat rentals.",
+        bestFor: "Upper lake, creek arms, convenient supplies",
+        restrictions: "Private facility. Launch fees apply." }
+    ],
+    regs: [
+      "Arkansas state fishing license required",
+      "White bass: 25 daily limit, no minimum length (verify current AGFC regs)",
+      "Crappie: 15 daily limit, no minimum length",
+      "Striped bass regulations: check AGFC for current limits and lengths",
+      "US Army Corps of Engineers regulations apply",
+      "Lake Ouachita is also known for walleye \u2014 special regulations may apply"
+    ],
+    tips: [
+      { cat: "Behavior", text: "Lake Ouachita white bass winter deep (50-100ft) on main lake structure. Spring staging begins on mid-depth points and humps." },
+      { cat: "Timing", text: "Spring run peaks when water hits 52-58°F. Fish move into Blakely Creek, South Fork, and other major tributaries." },
+      { cat: "Structure", text: "Ouachita is Arkansas's largest and deepest lake (48,000 acres, 200+ ft deep). GPS essential. Mark humps, points, and creek channels." },
+      { cat: "Clarity", text: "Ouachita has exceptional water clarity. Use lighter line and natural colors. Fish can be spooky in clear water." },
+      { cat: "Safety", text: "Large lake with open water. Wind creates serious waves. Monitor weather. Fog is common early mornings." }
+    ],
+    crTips: [
+      { cat: "Behavior", text: "Ouachita crappie suspend over deep structure in winter. Look for schools on electronics in 30-60ft over main lake humps." },
+      { cat: "Timing", text: "Crappie move shallow when water hits 58-63°F. Target buck brush, flooded timber, and boat docks in protected coves." },
+      { cat: "Structure", text: "Upper lake creek arms have excellent standing timber. Blakely Creek, Glazypeau, and Chickasaw Cove are known crappie areas." },
+      { cat: "Clarity", text: "Clear water means crappie can see line. Use 4-6lb fluorocarbon. Natural colors (silver, white, translucent) work best." },
+      { cat: "Technique", text: "Vertical jigging deep timber with light jigs (1/16-1/8oz) is effective. Slow presentation in clear water is key." }
+    ]
+  },
+  conway: {
+    name: "Lake Conway", short: "Conway", type: "lake",
+    usgs: null, lat: 34.9667, lon: -92.3833,
+    nwsOffice: "LZK",
+    alert: "\u26A0 Lake under renovation by AGFC. Water levels may be low. Check AGFC Lake Conway page for current status and access.",
+    access: [
+      { name: "Palarm Creek Access", type: "boat", status: "limited", statusLabel: "Check AGFC",
+        detail: "AGFC boat ramp. Primary access point for Lake Conway.",
+        bestFor: "Main lake access \u2014 verify ramp status during renovation",
+        restrictions: "AGFC regulations. Check current access status due to renovation project." },
+      { name: "Point Remove Access", type: "boat", status: "limited", statusLabel: "Check AGFC",
+        detail: "AGFC facility on north end. Limited parking.",
+        bestFor: "North end fishing \u2014 verify status before going",
+        restrictions: "Limited facilities. AGFC regs apply. Renovation may affect access." }
+    ],
+    regs: [
+      "Arkansas state fishing license required",
+      "Crappie: 15 daily limit, 10\" minimum length (verify current AGFC regs)",
+      "White bass: check AGFC regulations for current limits",
+      "AGFC Game and Fish Commission lake \u2014 special regulations apply",
+      "Lake is undergoing major renovation \u2014 check AGFC website for current rules and access status",
+      "No bow fishing allowed (AGFC regulation)"
+    ],
+    tips: [
+      { cat: "Status", text: "Lake Conway is undergoing AGFC renovation project. Water levels and access may be limited. Always check AGFC website before planning trip." },
+      { cat: "Behavior", text: "Historically, Conway white bass stage near dam and in creek channels during pre-spawn. Fish tend to school heavily." },
+      { cat: "Structure", text: "Conway is known for cypress trees and stumps. Fish break lines and channels near timber." },
+      { cat: "Timing", text: "Spring fishing typically peaks March-April at 50-58°F water temps." }
+    ],
+    crTips: [
+      { cat: "Status", text: "Conway is famous for big crappie, but lake is currently under renovation. Access and fishing may be limited \u2014 check AGFC first." },
+      { cat: "Behavior", text: "Conway crappie traditionally school in cypress stands and flooded timber. Target mid-depth wood structure (6-12ft)." },
+      { cat: "Timing", text: "Pre-spawn staging happens when water reaches 55-60°F. Fish move to shallow cypress and stumps for spawn." },
+      { cat: "Technique", text: "Tight-line jigging around cypress trees is classic Conway technique. Use 1/16oz jigs with live minnows." }
+    ]
+  },
+  degray: {
+    name: "DeGray Lake", short: "DeGray", type: "lake",
+    usgs: "07360200", lat: 34.1958, lon: -93.0694,
+    nwsOffice: "LZK",
+    alert: null,
+    access: [
+      { name: "DeGray Lake Resort State Park", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Premier Arkansas State Park. Full-service marina, lodge, restaurant, camping, golf course.",
+        bestFor: "Main lake access, deep structure fishing, family destination",
+        restrictions: "State park entry fee. Lodge and marina are popular \u2014 book ahead." },
+      { name: "Edgewood Bay", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Corps of Engineers recreation area. Ramp, camping, swim beach.",
+        bestFor: "Upper lake access, cove fishing, camping",
+        restrictions: "Corps day-use fees apply." },
+      { name: "Arlie Moore", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Corps facility near dam. Primitive camping, ramp access.",
+        bestFor: "Dam area fishing, deep water access",
+        restrictions: "Limited facilities. Corps fees." },
+      { name: "Iron Mountain", type: "boat", status: "open", statusLabel: "Open",
+        detail: "Corps park on upper lake. Good ramp, camping.",
+        bestFor: "Upper lake creeks, quieter fishing",
+        restrictions: "Gravel roads to access. Check Corps website for seasonal closures." }
+    ],
+    regs: [
+      "Arkansas state fishing license required",
+      "White bass: 25 daily limit, no minimum length (verify AGFC regs)",
+      "Crappie: 15 daily limit, no minimum length",
+      "US Army Corps of Engineers regulations apply",
+      "DeGray is known for trophy largemouth bass \u2014 consider catch and release for big fish",
+      "Check AGFC for current season dates and any special restrictions"
+    ],
+    tips: [
+      { cat: "Behavior", text: "DeGray white bass suspend over main lake structure in winter. Spring staging happens on secondary points near creek channels." },
+      { cat: "Timing", text: "White bass spawn run peaks when water reaches 50-56°F, usually March-April. Target Caddo River arm and major creek mouths." },
+      { cat: "Structure", text: "DeGray has excellent standing timber in creek arms. Also fish submerged roadbeds, humps, and channel drops." },
+      { cat: "Clarity", text: "DeGray water clarity varies by season. Spring runoff can stain upper creeks. Main lake is typically clear." },
+      { cat: "Resort", text: "DeGray Resort State Park has a full-service marina. Guides available. Good destination for family fishing trips." }
+    ],
+    crTips: [
+      { cat: "Behavior", text: "DeGray crappie hold deep on brush piles and timber in winter (20-40ft). AGFC maintains fish attractors \u2014 get GPS coords." },
+      { cat: "Timing", text: "Crappie spawn when water reaches 60-65°F. Look for shallow standing timber, brush, and boat docks in creek arms." },
+      { cat: "Structure", text: "Caddo River arm and upper creek channels have prime crappie habitat. Target wood cover in 3-12ft during spawn." },
+      { cat: "Technique", text: "DeGray is known for brush pile crappie fishing. Vertical jig with electronics to locate fish on structure." },
+      { cat: "Night Fishing", text: "Summer night fishing with lights over brush piles is very productive. Fish 15-30ft depths. Green lights attract shad." }
     ]
   }
 };
@@ -530,6 +839,10 @@ function rateFishing(period) {
 
 // ─── API FUNCTIONS ──────────────────────────────────────────
 async function fetchUSGS(siteId) {
+  if (!siteId) {
+    // No USGS gauge for this location
+    return { temp: null, tempTrend24: null, tempTrend7: null, temps7: [], flow: null, gage: null, lastReading: null };
+  }
   const url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${siteId}&parameterCd=00010,00060,00065&period=P7D`;
   const resp = await fetch(url);
   if (!resp.ok) throw new Error("USGS API error");
@@ -646,6 +959,65 @@ function ShareSnapshot({ usgs, forecast, water, species }) {
   </>;
 }
 
+/* ── Tackle Link Helpers ── */
+const ytSearch = (q) => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q + " fishing how to");
+const walmartSearch = (q) => "https://www.walmart.com/search?q=" + encodeURIComponent(q + " fishing lure");
+
+/* ── Feedback Widget ── */
+function FeedbackWidget() {
+  const [open, setOpen] = React.useState(false);
+  const [rating, setRating] = React.useState(null);
+  const [cat, setCat] = React.useState("");
+  const [text, setText] = React.useState("");
+  const [toast, setToast] = React.useState(false);
+
+  const categories = ["Bug", "Feature Idea", "Fishing Tip", "General"];
+
+  const buildBody = () => {
+    const parts = [];
+    if (rating !== null) parts.push(`**Rating:** ${rating === 1 ? "\uD83D\uDC4D Thumbs Up" : "\uD83D\uDC4E Thumbs Down"}`);
+    if (cat) parts.push(`**Category:** ${cat}`);
+    if (text) parts.push(`**Feedback:**\n${text}`);
+    parts.push(`\n---\n_Sent from Pocket Fishing Guide v1.0_`);
+    return parts.join("\n\n");
+  };
+
+  const submit = async () => {
+    const body = buildBody();
+    const issueUrl = "https://github.com/sirgaladad/pocket-fishing-guide/issues/new?"
+      + "title=" + encodeURIComponent(`[Feedback] ${cat || "General"}: ${text.slice(0, 50) || "User feedback"}`)
+      + "&body=" + encodeURIComponent(body)
+      + "&labels=" + encodeURIComponent("user-feedback");
+    window.open(issueUrl, "_blank");
+    try { await navigator.clipboard.writeText(body); } catch {}
+    setOpen(false); setRating(null); setCat(""); setText("");
+    setToast(true); setTimeout(() => setToast(false), 3000);
+  };
+
+  return <>
+    <button className="fb-fab" onClick={() => setOpen(!open)} title="Send Feedback">{"\uD83D\uDCEC"}</button>
+    {open && <div className="fb-overlay" onClick={() => setOpen(false)}>
+      <div className="fb-modal" onClick={e => e.stopPropagation()}>
+        <h3 style={{margin:'0 0 4px',fontSize:16}}>Help Us Improve {"\uD83C\uDFA3"}</h3>
+        <p style={{margin:'0 0 12px',fontSize:12,color:'var(--text3)'}}>Your feedback shapes the Pocket Fishing Guide</p>
+        <div className="fb-rating">
+          <button className={`fb-rating-btn ${rating === 1 ? 'active' : ''}`} onClick={() => setRating(1)}>{"\uD83D\uDC4D"}</button>
+          <button className={`fb-rating-btn ${rating === 0 ? 'active' : ''}`} onClick={() => setRating(0)}>{"\uD83D\uDC4E"}</button>
+        </div>
+        <div className="fb-cats">
+          {categories.map(c => <button key={c} className={`fb-cat ${cat === c ? 'active' : ''}`} onClick={() => setCat(c)}>{c}</button>)}
+        </div>
+        <textarea className="fb-text" placeholder="Tell us what's on your mind..." value={text} onChange={e => setText(e.target.value)} rows={3} />
+        <div className="fb-actions">
+          <button className="fb-submit" onClick={() => setOpen(false)} style={{background:'var(--bg3)',color:'var(--text2)'}}>Cancel</button>
+          <button className="fb-submit" onClick={submit} disabled={rating === null && !text}>Send Feedback</button>
+        </div>
+      </div>
+    </div>}
+    {toast && <div className="fb-toast">{"\u2705"} Thanks for your feedback!</div>}
+  </>;
+}
+
 function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
   if (loading) return <Loading />;
   const w = WATERS[water];
@@ -731,7 +1103,7 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
             {usgs.tempTrend24 !== null && <div className={`trend ${trendCls(usgs.tempTrend24)}`}>{trendArr(usgs.tempTrend24)} {fmtTrend(usgs.tempTrend24)} <span style={{fontWeight:400,fontSize:10}}>/24hr</span></div>}
             {usgs.tempTrend7 !== null && <div className={`trend ${trendCls(usgs.tempTrend7)}`}>{trendArr(usgs.tempTrend7)} {fmtTrend(usgs.tempTrend7)} <span style={{fontWeight:400,fontSize:10}}>/7day</span></div>}
           </div>
-          <div className="gauge-meta">USGS #{w.usgs}{usgs.lastReading && <> {"\u00B7"} {usgs.lastReading.toISOString().slice(0,16).replace('T',' ')} CST</>}</div>
+          <div className="gauge-meta">{w.usgs ? `USGS #${w.usgs}` : 'No USGS gauge'}{usgs.lastReading && <> {"\u00B7"} {usgs.lastReading.toISOString().slice(0,16).replace('T',' ')} CST</>}</div>
         </> : <div style={{color:'var(--text2)',fontSize:12}}>Temp not available
           {usgs?.flow !== null && <div className="flow-badge" style={{marginTop:6}}>{"\uD83D\uDCA7"} {usgs.flow.toLocaleString()} cfs</div>}
         </div>}
@@ -961,6 +1333,10 @@ function IntelTab({ temp, water, species }) {
           <h4>{l.name}</h4>
           {l.sub && <div className="lure-sub">{l.sub}</div>}
           <p>{l.detail}</p>
+          <div className="tackle-links">
+            <a className="tackle-link yt" href={ytSearch(l.name)} target="_blank" rel="noopener">{"\u25B6"} How-To</a>
+            <a className="tackle-link shop" href={walmartSearch(l.name)} target="_blank" rel="noopener">{"\uD83D\uDED2"} Shop</a>
+          </div>
         </div>
       </div>)}
     </div>
@@ -1034,13 +1410,27 @@ function AccessTab({ water }) {
 
 // ─── MAIN APP ───────────────────────────────────────────────
 function App() {
-  const [water, setWater] = useState("maumelle");
+  const [water, setWater] = useState(() => {
+    try { return localStorage.getItem('selectedWater') || 'maumelle'; }
+    catch { return 'maumelle'; }
+  });
   const [tab, setTab] = useState("dashboard");
-  const [species, setSpecies] = useState("wb");
+  const [species, setSpecies] = useState(() => {
+    try { return localStorage.getItem('selectedSpecies') || 'wb'; }
+    catch { return 'wb'; }
+  });
   const [usgs, setUsgs] = useState(null);
   const [forecast, setForecast] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    try { localStorage.setItem('selectedWater', water); } catch {}
+  }, [water]);
+
+  useEffect(() => {
+    try { localStorage.setItem('selectedSpecies', species); } catch {}
+  }, [species]);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -1092,12 +1482,12 @@ function App() {
     <div className="header">
       <div className="brand">Tale Waters & Tides</div>
       <h1>{speciesIcon} {speciesLabel} <span>Intelligence</span></h1>
-      <div className="header-sub">{w.name}, AR {"\u00B7"} USGS Live Data</div>
+      <div className="header-sub">{w.name}, AR {"\u00B7"} {w.usgs ? 'USGS Live Data' : 'Live Data'}</div>
       <div className="species-toggle">
         <button className={`species-btn ${species === "wb" ? "active-wb" : ""}`} onClick={() => setSpecies("wb")}>White Bass</button>
         <button className={`species-btn ${species === "cr" ? "active-cr" : ""}`} onClick={() => setSpecies("cr")}>Crappie</button>
       </div>
-      {timestamp && <div className="header-meta">Data: {timestamp}<br/>USGS #{w.usgs} {"\u00B7"} NWS {w.nwsOffice}</div>}
+      {timestamp && <div className="header-meta">Data: {timestamp}<br/>{w.usgs ? `USGS #${w.usgs}` : 'No USGS gauge'} {"\u00B7"} NWS {w.nwsOffice}</div>}
       <div className="water-sel">
         {Object.entries(WATERS).map(([key, wd]) =>
           <button key={key} className={`water-btn ${water === key ? 'active' : ''}`} onClick={() => setWater(key)}>{wd.short}</button>
@@ -1120,10 +1510,15 @@ function App() {
       {tab === "access" && <AccessTab water={water} />}
 
       <div className="footer">
-        Tale Waters & Tides, LLC {"\u00B7"} Data: USGS #{w.usgs} + NWS {w.nwsOffice}<br/>
+        Tale Waters & Tides, LLC {"\u00B7"} Data: {w.usgs ? `USGS #${w.usgs}` : 'No USGS gauge'} + NWS {w.nwsOffice}<br/>
         <em>Not a substitute for checking conditions. Fish responsibly.</em> {"\uD83C\uDFA3"}
+        <div className="support-links">
+          <a className="support-link kofi" href="https://ko-fi.com/coreytheideaguy" target="_blank" rel="noopener">{"\u2615"} Support on Ko-fi</a>
+          <a className="support-link gh" href="https://github.com/sirgaladad/pocket-fishing-guide" target="_blank" rel="noopener">{"\u2B50"} Star on GitHub</a>
+        </div>
       </div>
     </div>
+    <FeedbackWidget />
   </>;
 }
 
