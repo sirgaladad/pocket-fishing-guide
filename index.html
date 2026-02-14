@@ -1055,7 +1055,7 @@ function ShareSnapshot({ usgs, forecast, water, species }) {
     else if (temp >= spawnTrigger) lines.push(`\uD83D\uDD25 ${species === "cr" ? "Bed spawn" : "Spawn"} temps reached!`);
     if (bestDay) lines.push(`\u2B50 Best window: ${bestDay.day} (${bestDay.temp}\u00B0F, ${bestDay.fc})`);
     if (usgs?.flow) lines.push(`\uD83D\uDCA7 Flow: ${usgs.flow.toLocaleString()} cfs`);
-    if (usgs?.gage) lines.push(`\uD83D\uDCCF Lake level: ${usgs.gage.toFixed(2)} ft`);
+    if (Number.isFinite(usgs?.gage)) lines.push(`\uD83D\uDCCF Lake level: ${usgs.gage.toFixed(2)} ft`);
     lines.push(`\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500`);
     lines.push(`sirgaladad.github.io/pocket-fishing-guide`);
     return lines.join('\n');
@@ -1222,8 +1222,8 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
       </div>
       <div className="hero-pills">
         <div className="hero-pill">{"\uD83C\uDF21\uFE0F"} <span className="pill-val">{temp.toFixed(1)}{"\u00B0"}F</span></div>
-        {usgs?.flow && <div className="hero-pill">{"\uD83D\uDCA7"} <span className="pill-val">{usgs.flow.toLocaleString()}</span> cfs</div>}
-        {usgs?.gage && <div className="hero-pill">{"\uD83D\uDCCF"} <span className="pill-val">{usgs.gage.toFixed(2)}</span> ft</div>}
+        {Number.isFinite(usgs?.flow) && <div className="hero-pill">{"\uD83D\uDCA7"} <span className="pill-val">{usgs.flow.toLocaleString()}</span> cfs</div>}
+        {Number.isFinite(usgs?.gage) && <div className="hero-pill">{"\uD83D\uDCCF"} <span className="pill-val">{usgs.gage.toFixed(2)}</span> ft</div>}
         <div className="hero-pill" style={{borderColor:phase.color+'44',color:phase.color}}>{phase.icon} <span className="pill-val">{phase.name}</span></div>
       </div>
     </div>}
@@ -1344,7 +1344,7 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
               const pct = range < 0.05 ? 50 : 15 + ((g.avg - minG) / range) * 80;
               const isLast = i === usgs.gages7.length - 1;
               return <div className="temp-bar-wrap" key={i}>
-                <div className="temp-bar-val" style={isLast ? {color:'var(--accent)',fontWeight:700} : {}}>{g.avg.toFixed(2)} ft</div>
+                <div className="temp-bar-val" style={isLast ? {color:'var(--accent)',fontWeight:700} : {}}>{Number.isFinite(g.avg) ? `${g.avg.toFixed(2)} ft` : 'n/a'}</div>
                 <div className="temp-bar-area">
                   <div className="temp-bar" style={{height:`${pct}%`, background:isLast ? 'var(--accent)' : '#5c9ed6'}}></div>
                 </div>
@@ -1384,7 +1384,7 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
               const pct = range < 50 ? 50 : 15 + ((f.avg - minF) / range) * 80;
               const isLast = i === usgs.flows7.length - 1;
               return <div className="temp-bar-wrap" key={i}>
-                <div className="temp-bar-val" style={isLast ? {color:'var(--green)',fontWeight:700} : {}}>{f.avg.toLocaleString()}</div>
+                <div className="temp-bar-val" style={isLast ? {color:'var(--green)',fontWeight:700} : {}}>{Number.isFinite(f.avg) ? f.avg.toLocaleString() : 'n/a'}</div>
                 <div className="temp-bar-area">
                   <div className="temp-bar" style={{height:`${pct}%`, background:isLast ? 'var(--green)' : '#72b58a'}}></div>
                 </div>
