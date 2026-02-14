@@ -1377,7 +1377,7 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
         })()}
       </div>
       {Number.isFinite(usgs?.tempTrend7) && <div className={`trend-analysis ${usgs.tempTrend7 < 0 ? 'cooling' : ''}`}>
-        {usgs.tempTrend7 > 0 ? '\u25B2' : '\u25BC'} {usgs.tempTrend7 > 0 ? 'Warming' : 'Cooling'} trend: {fmtTrend(usgs.tempTrend7)} over 7 days. {usgs.tempTrend7 > 0 ? 'Water is moving toward spawn trigger temperature.' : 'Water cooling \u2014 spawn activity may slow.'}
+        {usgs.tempTrend7 > 0 ? '\u25B2' : usgs.tempTrend7 < 0 ? '\u25BC' : '\u2192'} {usgs.tempTrend7 > 0 ? 'Warming' : usgs.tempTrend7 < 0 ? 'Cooling' : 'Stable'} trend: {fmtTrend(usgs.tempTrend7)} over 7 days. {usgs.tempTrend7 > 0 ? 'Water is moving toward spawn trigger temperature.' : usgs.tempTrend7 < 0 ? 'Water cooling \u2014 spawn activity may slow.' : 'Water temperature has been steady over the past week.'}
       </div>}
     </div>}
 
