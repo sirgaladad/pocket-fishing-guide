@@ -1411,13 +1411,28 @@ function AccessTab({ water }) {
 // ─── MAIN APP ───────────────────────────────────────────────
 function App() {
   const [water, setWater] = useState(() => {
-    try { return localStorage.getItem('selectedWater') || 'maumelle'; }
-    catch { return 'maumelle'; }
+    try {
+      const stored = localStorage.getItem('selectedWater');
+      if (stored && WATERS[stored]) {
+        return stored;
+      }
+      // Fallback to default and repair invalid or missing value
+      try {
+        localStorage.setItem('selectedWater', 'maumelle');
+      } catch {}
+      return 'maumelle';
+    } catch {
+      return 'maumelle';
+    }
   });
   const [tab, setTab] = useState("dashboard");
   const [species, setSpecies] = useState(() => {
-    try { return localStorage.getItem('selectedSpecies') || 'wb'; }
-    catch { return 'wb'; }
+    try {
+      const stored = localStorage.getItem('selectedSpecies');
+      return stored === 'wb' || stored === 'cr' ? stored : 'wb';
+    } catch {
+      return 'wb';
+    }
   });
   const [usgs, setUsgs] = useState(null);
   const [forecast, setForecast] = useState(null);
