@@ -95,6 +95,15 @@ function roundMaybe(v, places = 2) {
 }
 
 function parseTabularHtml(html) {
+  const topFloodMatch = html.match(/Top Flood Pool:\s*([0-9.]+)/i);
+  const currentPowerMatch = html.match(/Current Power Pool:\s*([0-9.]+)/i);
+  const topFloodPool = topFloodMatch ? Number(topFloodMatch[1]) : null;
+  const currentPowerPool = currentPowerMatch ? Number(currentPowerMatch[1]) : null;
+  const feetBelowFloodPool =
+    topFloodPool !== null && currentPowerPool !== null
+      ? roundMaybe(topFloodPool - currentPowerPool, 2)
+      : null;
+
   const lineRe = /^\s*(\d{2}[A-Z]{3}\d{4})\s+(\d{4})\s+([-\d.]+|----)\s+([-\d.]+|----)\s+([-\d.]+|----)\s+([-\d.]+|----)\s+([-\d.]+|----)\s+([-\d.]+|----)\s*$/gm;
   const records = [];
   let m;
@@ -125,6 +134,9 @@ function parseTabularHtml(html) {
   const flows7 = dailyAverages(records, "totalRelease").map((r) => ({ day: r.day, avg: Math.round(r.avg) }));
 
   return {
+    topFloodPool: roundMaybe(topFloodPool, 2),
+    currentPowerPool: roundMaybe(currentPowerPool, 2),
+    feetBelowFloodPool,
     gage: roundMaybe(latestElevation, 2),
     flow: latestFlow !== null ? Math.round(latestFlow) : null,
     gageTrend24: latestElevation !== null && elev24 !== null ? roundMaybe(latestElevation - elev24, 2) : null,

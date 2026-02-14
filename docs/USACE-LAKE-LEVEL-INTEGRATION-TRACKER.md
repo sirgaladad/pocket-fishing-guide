@@ -7,6 +7,14 @@ Track integration of Army Corps dam/reservoir level + release data for all focus
 Direct browser scraping of USACE tabular pages is blocked by CORS.  
 Solution implemented in this repo: scrape during GitHub Actions and publish same-origin snapshot at `data/usace_levels.json`.
 
+## Key User Metric Implemented
+
+For Corps-covered reservoirs, snapshot now computes:
+
+- `topFloodPool` (ft)
+- `currentPowerPool` (ft) - treated as lake level
+- `feetBelowFloodPool = topFloodPool - currentPowerPool` (ft)
+
 ## Focused Waters Coverage
 
 | Water | Type | Primary Source | Status |
@@ -54,4 +62,3 @@ Complete Corps-backed level/release integration for all Corps-managed focused la
 - Dashboard shows non-placeholder level/flow status for both when data is available
 - Actions run succeeds on push and schedule
 ```
-

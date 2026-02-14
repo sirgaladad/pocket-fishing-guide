@@ -1356,7 +1356,10 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
         {gageStatus && <div className={`fw-card ${gageStatus.cls}`} style={{marginTop:10}}>
           <div className="fw-card-title">{"\uD83E\uDDED"} Lake Level Status: {gageStatus.label}</div>
           <div className="fw-card-body">
-            Current level: {usgs.gage.toFixed(2)} ft. 24hr {fmtSigned(usgs.gageTrend24, ' ft')}, 7day {fmtSigned(usgs.gageTrend7, ' ft')}. {gageStatus.note}
+            {usgs.currentPowerPool !== null
+              ? <>Current power pool: {usgs.currentPowerPool.toFixed(2)} ft. Top flood pool: {usgs.topFloodPool !== null ? `${usgs.topFloodPool.toFixed(2)} ft` : 'n/a'}. {usgs.feetBelowFloodPool !== null ? `${usgs.feetBelowFloodPool.toFixed(2)} ft below flood pool.` : ''} </>
+              : <>Current level: {usgs.gage.toFixed(2)} ft. </>}
+            24hr {fmtSigned(usgs.gageTrend24, ' ft')}, 7day {fmtSigned(usgs.gageTrend7, ' ft')}. {gageStatus.note}
           </div>
         </div>}
       </> : <div className="fw-card note">
@@ -1705,7 +1708,11 @@ function App() {
 
       if (usaceData.status === "fulfilled" && usaceData.value?.status === "ok") {
         const u = usaceData.value;
-        if (u.gage !== null) merged.gage = u.gage;
+        if (u.currentPowerPool !== null) merged.gage = u.currentPowerPool;
+        else if (u.gage !== null) merged.gage = u.gage;
+        merged.topFloodPool = u.topFloodPool ?? null;
+        merged.currentPowerPool = u.currentPowerPool ?? null;
+        merged.feetBelowFloodPool = u.feetBelowFloodPool ?? null;
         if (u.gageTrend24 !== null) merged.gageTrend24 = u.gageTrend24;
         if (u.gageTrend7 !== null) merged.gageTrend7 = u.gageTrend7;
         if (Array.isArray(u.gages7) && u.gages7.length > 0) merged.gages7 = u.gages7;
@@ -1721,6 +1728,9 @@ function App() {
         merged.levelProvider = usaceData.value.provider || null;
         merged.levelSourceUrl = usaceData.value.sourceUrl || null;
         merged.levelSourceStatus = "error";
+        merged.topFloodPool = null;
+        merged.currentPowerPool = null;
+        merged.feetBelowFloodPool = null;
       }
 
       if (usgsData.status === "rejected") console.warn("USGS error:", usgsData.reason);
