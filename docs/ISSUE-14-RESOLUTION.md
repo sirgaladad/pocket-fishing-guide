@@ -59,7 +59,7 @@ The requested visual dashboard feature has been **fully implemented** and is now
 - **Styling**: `.overview-*` CSS classes (lines 274-309 in index.html)
 
 ### Key Features
-1. **Parallel Data Loading**: Loads data for all 9 water bodies simultaneously using Promise.allSettled
+1. **Per-Water Parallel Data Loading**: Processes the 9 water bodies sequentially while using Promise.allSettled to load USGS, NWS, and USACE data in parallel for each water body
 2. **Multi-Source Integration**: Combines USGS, NWS, and USACE data sources
 3. **Graceful Degradation**: Handles missing data elegantly with "n/a" and fallback indicators
 4. **Performance Optimized**: Efficient rendering with React state management
