@@ -63,7 +63,7 @@ The requested visual dashboard feature has been **fully implemented** and is now
 2. **Multi-Source Integration**: Combines USGS, NWS, and USACE data sources
 3. **Graceful Degradation**: Handles missing data elegantly with "n/a" and fallback indicators
 4. **Performance Optimized**: Efficient rendering with React state management
-5. **Accessibility**: Proper semantic HTML with hover states and click handlers
+5. **Accessibility**: Hover states and click handlers for interactive cards, with further semantic/ARIA enhancements planned
 
 ### Data Sources
 - **USGS Water Services**: Real-time temperature, flow, and gage height
