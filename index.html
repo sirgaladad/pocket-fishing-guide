@@ -1138,20 +1138,24 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
   if (loading) return <Loading />;
   const w = WATERS[water];
   const temp = usgs?.temp ?? null;
+  const hasTemp = Number.isFinite(temp);
+  const hasFlow = Number.isFinite(usgs?.flow);
+  const hasGage = Number.isFinite(usgs?.gage);
   const phase = getPhase(temp, species);
   const phaseIdx = getPhaseIndex(temp, species);
   const phaseList = species === "cr" ? CR_PHASES : WB_PHASES;
   const spawnTrigger = species === "cr" ? 60 : 50;
   const scoutTemp = species === "cr" ? 55 : 45;
-  const tempC = temp !== null ? ((temp - 32) * 5/9).toFixed(1) : null;
-  const triggerDist = temp !== null ? Math.max(0, spawnTrigger - temp).toFixed(1) : null;
-  const daysEst = (usgs?.tempTrend7 && usgs.tempTrend7 > 0 && triggerDist > 0)
-    ? Math.ceil((triggerDist / usgs.tempTrend7) * 7) : null;
+  const tempC = hasTemp ? ((temp - 32) * 5/9).toFixed(1) : null;
+  const triggerDistValue = hasTemp ? Math.max(0, spawnTrigger - temp) : null;
+  const triggerDist = hasTemp ? triggerDistValue.toFixed(1) : null;
+  const daysEst = (Number.isFinite(usgs?.tempTrend7) && usgs.tempTrend7 > 0 && Number.isFinite(triggerDistValue) && triggerDistValue > 0)
+    ? Math.ceil((triggerDistValue / usgs.tempTrend7) * 7) : null;
 
   const trendCls = (v) => v > 0 ? 'up' : v < 0 ? 'down' : 'flat';
   const trendArr = (v) => v > 0 ? '\u25B2' : v < 0 ? '\u25BC' : '\u2192';
-  const fmtTrend = (v) => v !== null ? `${v > 0 ? '+' : ''}${v}\u00B0` : '';
-  const fmtSigned = (v, suffix = '') => v !== null ? `${v > 0 ? '+' : ''}${v}${suffix}` : 'n/a';
+  const fmtTrend = (v) => Number.isFinite(v) ? `${v > 0 ? '+' : ''}${v}\u00B0` : '';
+  const fmtSigned = (v, suffix = '') => Number.isFinite(v) ? `${v > 0 ? '+' : ''}${v}${suffix}` : 'n/a';
 
   // Quick Glance verdict
   const dayPeriods0 = (forecast || []).filter(p => p.isDaytime).slice(0, 7);
@@ -1159,14 +1163,14 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
     const r = rateFishing(p);
     return (!best || r.label === "Best") ? { name: p.name, rating: r } : best;
   }, null);
-  const verdict = temp === null ? { signal: 'wait', icon: '\u23F3', label: 'NO DATA', cls: 'wait' }
+  const verdict = !hasTemp ? { signal: 'wait', icon: '\u23F3', label: 'NO DATA', cls: 'wait' }
     : temp >= spawnTrigger ? { signal: 'go', icon: '\uD83D\uDD25', label: 'GO FISH!', cls: 'go' }
     : temp >= scoutTemp ? { signal: 'scout', icon: '\uD83D\uDC40', label: 'SCOUT', cls: 'scout' }
     : { signal: 'wait', icon: '\u2744\uFE0F', label: 'WAIT', cls: 'wait' };
 
   // Spawn bar
   const minT = 40, maxT = species === "cr" ? 75 : 70;
-  const pct = temp !== null ? Math.min(100, Math.max(0, ((temp - minT) / (maxT - minT)) * 100)) : 0;
+  const pct = hasTemp ? Math.min(100, Math.max(0, ((temp - minT) / (maxT - minT)) * 100)) : 0;
   const msPct = (t) => ((t - minT) / (maxT - minT)) * 100;
 
   const milestones = species === "cr" ? [
@@ -1187,12 +1191,12 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
   const sourceStatus = usgs?.levelSourceStatus || null;
   const gageTrend7 = usgs?.gageTrend7 ?? null;
   const flowTrend7 = usgs?.flowTrend7 ?? null;
-  const gageStatus = usgs?.gage === null ? null
+  const gageStatus = !hasGage ? null
     : gageTrend7 === null ? { label: "Monitoring", cls: "good", note: "Need more history for trend direction." }
     : gageTrend7 > 1 ? { label: "Rising", cls: "best", note: "Water level rose significantly over the last 7 days." }
     : gageTrend7 < -1 ? { label: "Falling", cls: "note", note: "Water level dropped significantly over the last 7 days." }
     : { label: "Stable", cls: "good", note: "Water level has remained relatively stable week-over-week." };
-  const flowStatus = usgs?.flow === null ? null
+  const flowStatus = !hasFlow ? null
     : w.type === "river"
       ? usgs.flow > 3000 ? { label: "High Flow", cls: "note", note: "Strong current. Favor protected seams and prioritize safety." }
       : usgs.flow < 300 ? { label: "Low Flow", cls: "note", note: "Low current can make fish wary. Downsize and fish deeper holes." }
@@ -1206,7 +1210,7 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
     <div style={{clear:'both',marginBottom:8}}></div>
 
     {/* QUICK GLANCE HERO */}
-    {temp !== null && <div className="hero-card">
+    {hasTemp && <div className="hero-card">
       <div className="hero-verdict">
         <div className={`hero-signal ${verdict.cls}`}>{verdict.icon}</div>
         <div className="hero-headline">
@@ -1216,14 +1220,14 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
         </div>
       </div>
       <div className="hero-summary">
-        {temp.toFixed(1)}{"\u00B0"}F water{usgs?.tempTrend24 !== null ? `, ${usgs.tempTrend24 > 0 ? 'warming' : 'cooling'} ${Math.abs(usgs.tempTrend24)}\u00B0 in 24hr` : ''}
+        {temp.toFixed(1)}{"\u00B0"}F water{Number.isFinite(usgs?.tempTrend24) ? `, ${usgs.tempTrend24 > 0 ? 'warming' : 'cooling'} ${Math.abs(usgs.tempTrend24)}\u00B0 in 24hr` : ''}
         {daysEst ? `. ~${daysEst} days to ${species === "cr" ? "bed spawn" : "spawn"} trigger at current rate.` : temp >= spawnTrigger ? '. Fish are moving!' : '.'}
         {bestWindowDay ? ` Best window: ${bestWindowDay.name}.` : ''}
       </div>
       <div className="hero-pills">
         <div className="hero-pill">{"\uD83C\uDF21\uFE0F"} <span className="pill-val">{temp.toFixed(1)}{"\u00B0"}F</span></div>
-        {Number.isFinite(usgs?.flow) && <div className="hero-pill">{"\uD83D\uDCA7"} <span className="pill-val">{usgs.flow.toLocaleString()}</span> cfs</div>}
-        {Number.isFinite(usgs?.gage) && <div className="hero-pill">{"\uD83D\uDCCF"} <span className="pill-val">{usgs.gage.toFixed(2)}</span> ft</div>}
+        {hasFlow && <div className="hero-pill">{"\uD83D\uDCA7"} <span className="pill-val">{usgs.flow.toLocaleString()}</span> cfs</div>}
+        {hasGage && <div className="hero-pill">{"\uD83D\uDCCF"} <span className="pill-val">{usgs.gage.toFixed(2)}</span> ft</div>}
         <div className="hero-pill" style={{borderColor:phase.color+'44',color:phase.color}}>{phase.icon} <span className="pill-val">{phase.name}</span></div>
       </div>
     </div>}
@@ -1246,16 +1250,16 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
     <div className="dash-grid">
       <div className="card">
         <div className="card-title">{"\uD83C\uDF0A"} Water Temperature</div>
-        {temp !== null ? <>
+        {hasTemp ? <>
           <div className="big-temp">{temp.toFixed(1)}<span className="unit">{"\u00B0"}F</span></div>
           <div className="temp-c">{tempC}{"\u00B0"}C</div>
           <div className="trend-row">
-            {usgs.tempTrend24 !== null && <div className={`trend ${trendCls(usgs.tempTrend24)}`}>{trendArr(usgs.tempTrend24)} {fmtTrend(usgs.tempTrend24)} <span style={{fontWeight:400,fontSize:10}}>/24hr</span></div>}
-            {usgs.tempTrend7 !== null && <div className={`trend ${trendCls(usgs.tempTrend7)}`}>{trendArr(usgs.tempTrend7)} {fmtTrend(usgs.tempTrend7)} <span style={{fontWeight:400,fontSize:10}}>/7day</span></div>}
+            {Number.isFinite(usgs?.tempTrend24) && <div className={`trend ${trendCls(usgs.tempTrend24)}`}>{trendArr(usgs.tempTrend24)} {fmtTrend(usgs.tempTrend24)} <span style={{fontWeight:400,fontSize:10}}>/24hr</span></div>}
+            {Number.isFinite(usgs?.tempTrend7) && <div className={`trend ${trendCls(usgs.tempTrend7)}`}>{trendArr(usgs.tempTrend7)} {fmtTrend(usgs.tempTrend7)} <span style={{fontWeight:400,fontSize:10}}>/7day</span></div>}
           </div>
           <div className="gauge-meta">{w.usgs ? `USGS #${w.usgs}` : 'No USGS gauge'}{usgs.lastReading && <> {"\u00B7"} {usgs.lastReading.toISOString().slice(0,16).replace('T',' ')} CST</>}</div>
         </> : <div style={{color:'var(--text2)',fontSize:12}}>Temp not available
-          {usgs?.flow !== null && <div className="flow-badge" style={{marginTop:6}}>{"\uD83D\uDCA7"} {usgs.flow.toLocaleString()} cfs</div>}
+          {hasFlow && <div className="flow-badge" style={{marginTop:6}}>{"\uD83D\uDCA7"} {usgs.flow.toLocaleString()} cfs</div>}
         </div>}
       </div>
 
@@ -1272,7 +1276,7 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
     </div>
 
     {/* SPAWN TEMPERATURE TRACKER */}
-    {temp !== null && <div className="card">
+    {hasTemp && <div className="card">
       <div className="card-title">{"\uD83D\uDCCA"} Spawn Temperature Tracker</div>
       <div className="spawn-labels">
         <span>{minT}{"\u00B0"}F</span>
@@ -1325,7 +1329,7 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
           });
         })()}
       </div>
-      {usgs.tempTrend7 !== null && <div className={`trend-analysis ${usgs.tempTrend7 < 0 ? 'cooling' : ''}`}>
+      {Number.isFinite(usgs?.tempTrend7) && <div className={`trend-analysis ${usgs.tempTrend7 < 0 ? 'cooling' : ''}`}>
         {usgs.tempTrend7 > 0 ? '\u25B2' : '\u25BC'} {usgs.tempTrend7 > 0 ? 'Warming' : 'Cooling'} trend: {fmtTrend(usgs.tempTrend7)} over 7 days. {usgs.tempTrend7 > 0 ? 'Water is moving toward spawn trigger temperature.' : 'Water cooling \u2014 spawn activity may slow.'}
       </div>}
     </div>}
