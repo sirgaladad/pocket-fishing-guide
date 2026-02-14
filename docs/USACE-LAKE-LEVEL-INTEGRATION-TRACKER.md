@@ -22,8 +22,8 @@ For Corps-covered reservoirs, snapshot now computes:
 | Greers Ferry Lake | Lake | USACE-SWL tabular + USGS | Implemented |
 | Bull Shoals Lake | Lake | USACE-SWL tabular + USGS | Implemented |
 | Beaver Lake | Lake | USACE-SWL tabular + USGS | Implemented |
-| Lake Ouachita | Lake | USGS (USACE district endpoint pending) | Pending |
-| DeGray Lake | Lake | USGS (USACE district endpoint pending) | Pending |
+| Lake Ouachita | Lake | USACE-MVK reservoir report + USGS | Implemented |
+| DeGray Lake | Lake | USACE-MVK reservoir report + USGS | Implemented |
 | Lake Maumelle | Lake | USGS / local operator updates | Not a Corps integration target |
 | Lake Conway | Lake | AGFC status updates | Not a Corps integration target |
 | White River | River | USGS river gauge | Not a reservoir-level target |

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-14T18:57:39.231Z",
+  "generatedAt": "2026-02-14T19:14:45.054Z",
   "waters": {
     "greers": {
       "status": "ok",
@@ -105,6 +105,54 @@
         }
       ],
       "lastReading": "2026-02-14T12:00:00.000Z"
+    },
+    "ouachita": {
+      "status": "ok",
+      "provider": "USACE-MVK",
+      "sourceUrl": "https://r.jina.ai/http://www.mvk-wc.usace.army.mil/resrep.htm",
+      "topFloodPool": null,
+      "currentPowerPool": 570.44,
+      "feetBelowFloodPool": null,
+      "gage": 570.44,
+      "flow": null,
+      "gageTrend24": 0.02,
+      "gageTrend7": null,
+      "flowTrend24": null,
+      "flowTrend7": null,
+      "gages7": [
+        {
+          "day": "Feb 14",
+          "avg": 570.44
+        }
+      ],
+      "flows7": [],
+      "powerPoolElevation": 578.1,
+      "aboveBelowPowerPool": -7.7,
+      "lastReading": "2026-02-14T13:00:00.000Z"
+    },
+    "degray": {
+      "status": "ok",
+      "provider": "USACE-MVK",
+      "sourceUrl": "https://r.jina.ai/http://www.mvk-wc.usace.army.mil/resrep.htm",
+      "topFloodPool": null,
+      "currentPowerPool": 401.06,
+      "feetBelowFloodPool": null,
+      "gage": 401.06,
+      "flow": null,
+      "gageTrend24": 0.03,
+      "gageTrend7": null,
+      "flowTrend24": null,
+      "flowTrend7": null,
+      "gages7": [
+        {
+          "day": "Feb 14",
+          "avg": 401.06
+        }
+      ],
+      "flows7": [],
+      "powerPoolElevation": 408,
+      "aboveBelowPowerPool": -6.9,
+      "lastReading": "2026-02-14T13:00:00.000Z"
     }
   }
 }

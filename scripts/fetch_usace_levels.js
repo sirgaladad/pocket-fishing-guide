@@ -15,17 +15,34 @@ const SOURCES = {
   greers: {
     name: "Greers Ferry Lake",
     provider: "USACE-SWL",
+    format: "swl-tabular",
     url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/greersf.htm",
   },
   bullshoals: {
     name: "Bull Shoals Lake",
     provider: "USACE-SWL",
+    format: "swl-tabular",
     url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bulsdam.htm",
   },
   beaver: {
     name: "Beaver Lake",
     provider: "USACE-SWL",
+    format: "swl-tabular",
     url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/beaver.htm",
+  },
+  ouachita: {
+    name: "Lake Ouachita (Blakely)",
+    provider: "USACE-MVK",
+    format: "mvk-resrep",
+    reservoirName: "Blakely",
+    url: "https://r.jina.ai/http://www.mvk-wc.usace.army.mil/resrep.htm",
+  },
+  degray: {
+    name: "DeGray Lake",
+    provider: "USACE-MVK",
+    format: "mvk-resrep",
+    reservoirName: "DeGray",
+    url: "https://r.jina.ai/http://www.mvk-wc.usace.army.mil/resrep.htm",
   },
 };
 
@@ -149,6 +166,52 @@ function parseTabularHtml(html) {
   };
 }
 
+function parseMvkResrepByReservoir(markdown, reservoirName) {
+  const yearMatch = markdown.match(/Last Updated\s*-\s*[A-Z]+\s+\d{1,2},\s*(\d{4})\s*@/i);
+  const year = yearMatch ? Number(yearMatch[1]) : (new Date()).getUTCFullYear();
+
+  const escaped = reservoirName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const rowRe = new RegExp(
+    `\\[${escaped}\\]\\([^)]*\\)\\s*(\\d{1,2})\\/(\\d{1,2})\\s*@\\s*(\\d{3,4})\\s*\\[([+-]?\\d+(?:\\.\\d+)?)\\]\\([^)]*\\)\\s*([+-]?(?:\\d+\\.\\d+|\\.\\d+))\\s+([+-]?\\d+(?:\\.\\d+)?)([+-]\\d+(?:\\.\\d+)?)`,
+    "i"
+  );
+  const match = markdown.match(rowRe);
+  if (!match) return null;
+
+  const month = Number(match[1]);
+  const day = Number(match[2]);
+  const hhmmRaw = match[3].padStart(4, "0");
+  const hour = Number(hhmmRaw.slice(0, 2));
+  const minute = Number(hhmmRaw.slice(2, 4));
+  const poolElevation = Number(match[4]);
+  const gageTrend24 = Number(match[5]);
+  const powerPoolElevation = Number(match[6]);
+  const aboveBelowPowerPool = Number(match[7]);
+
+  const reading = new Date(Date.UTC(year, month - 1, day, hour, minute));
+  const dayLabel = reading.toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+
+  return {
+    topFloodPool: null,
+    // MVK table does not publish top flood pool on this report.
+    // We use the reported pool elevation as the primary lake-level figure.
+    currentPowerPool: roundMaybe(poolElevation, 2),
+    feetBelowFloodPool: null,
+    gage: roundMaybe(poolElevation, 2),
+    flow: null,
+    gageTrend24: roundMaybe(gageTrend24, 2),
+    gageTrend7: null,
+    flowTrend24: null,
+    flowTrend7: null,
+    gages7: [{ day: dayLabel, avg: roundMaybe(poolElevation, 2) }],
+    flows7: [],
+    // Preserve additional MVK context for potential UI surfacing later.
+    powerPoolElevation: roundMaybe(powerPoolElevation, 2),
+    aboveBelowPowerPool: roundMaybe(aboveBelowPowerPool, 2),
+    lastReading: reading.toISOString(),
+  };
+}
+
 async function fetchText(url) {
   try {
     return execFileSync("curl", ["-sS", url], { encoding: "utf8" });
@@ -166,7 +229,9 @@ async function main() {
   for (const [key, src] of Object.entries(SOURCES)) {
     try {
       const html = await fetchText(src.url);
-      const parsed = parseTabularHtml(html);
+      const parsed = src.format === "mvk-resrep"
+        ? parseMvkResrepByReservoir(html, src.reservoirName)
+        : parseTabularHtml(html);
       if (!parsed) throw new Error("No tabular rows parsed");
       out.waters[key] = {
         status: "ok",

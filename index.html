@@ -720,14 +720,14 @@ const WATER_LEVEL_SOURCES = {
     notes: "Wild river monitoring via USGS flow/gage stations.",
   },
   ouachita: {
-    provider: "USGS gauge (USACE source pending)",
-    primaryUrl: "https://waterdata.usgs.gov/",
-    notes: "Corps district endpoint still being mapped for automated scrape coverage.",
+    provider: "USACE-MVK snapshot + USGS",
+    primaryUrl: "https://www.mvk-wc.usace.army.mil/resrep.htm",
+    notes: "MVK reservoir report is scraped during deploy/scheduled refresh for Blakely (Lake Ouachita).",
   },
   degray: {
-    provider: "USGS gauge (USACE source pending)",
-    primaryUrl: "https://waterdata.usgs.gov/",
-    notes: "Corps district endpoint still being mapped for automated scrape coverage.",
+    provider: "USACE-MVK snapshot + USGS",
+    primaryUrl: "https://www.mvk-wc.usace.army.mil/resrep.htm",
+    notes: "MVK reservoir report is scraped during deploy/scheduled refresh for DeGray.",
   },
   conway: {
     provider: "AGFC status + NWS",
