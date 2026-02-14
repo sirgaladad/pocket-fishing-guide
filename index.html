@@ -77,6 +77,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .big-temp{font-size:44px;font-weight:800;color:#fff;line-height:1}
 .big-temp .unit{font-size:18px;color:var(--text2);font-weight:600}
 .temp-c{font-size:12px;color:var(--text3);margin-top:2px}
+.temp-source-badge{display:inline-block;margin-left:8px;padding:2px 7px;border-radius:10px;font-size:9px;letter-spacing:.3px;background:rgba(255,255,255,.08);color:var(--text2);border:1px solid rgba(255,255,255,.1);vertical-align:middle}
+.temp-source-note{font-size:10px;color:var(--text3);margin-top:6px;line-height:1.4}
+.temp-empty{font-size:12px;color:var(--text2);line-height:1.5;margin-top:2px}
 .trend{display:inline-flex;align-items:center;gap:3px;font-size:12px;font-weight:600;margin-top:6px}
 .trend.up{color:var(--green)}
 .trend.down{color:var(--blue)}
@@ -886,6 +889,36 @@ function rateFishing(period) {
   return { label: "Fair", cls: "fair" };
 }
 
+function estimateTempFromForecast(forecast, waterType) {
+  const dayPeriods = (forecast || [])
+    .filter((p) => p?.isDaytime && Number.isFinite(p?.temperature))
+    .slice(0, 7);
+  if (dayPeriods.length === 0) return null;
+
+  const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+  const estimated = dayPeriods.map((p) => {
+    const air = p.temperature;
+    const offset = waterType === "river"
+      ? (air < 45 ? 10 : air < 60 ? 8 : 6)
+      : (air < 45 ? 12 : air < 60 ? 10 : 8);
+    const temp = clamp(air - offset, 34, 88);
+    return { day: p.name, avg: +temp.toFixed(1) };
+  });
+
+  const first = estimated[0]?.avg;
+  const second = estimated[1]?.avg;
+  const last = estimated[estimated.length - 1]?.avg;
+  return {
+    temp: first,
+    tempTrend24: Number.isFinite(second) ? +(second - first).toFixed(1) : null,
+    tempTrend7: Number.isFinite(last) ? +(last - first).toFixed(1) : null,
+    temps7: estimated,
+    tempSource: "estimated",
+    tempSourceLabel: "Estimated from NWS forecast",
+    tempSourceNote: "No live water-temperature sensor available for this location; estimate uses forecast air-temperature trend.",
+  };
+}
+
 // ─── API FUNCTIONS ──────────────────────────────────────────
 async function fetchUSGS(siteId) {
   if (!siteId) {
@@ -894,7 +927,10 @@ async function fetchUSGS(siteId) {
       temp: null, tempTrend24: null, tempTrend7: null, temps7: [],
       flow: null, flowTrend24: null, flowTrend7: null, flows7: [],
       gage: null, gageTrend24: null, gageTrend7: null, gages7: [],
-      lastReading: null
+      lastReading: null,
+      tempSource: null,
+      tempSourceLabel: null,
+      tempSourceNote: null,
     };
   }
   const url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${siteId}&parameterCd=00010,00060,00065&period=P7D`;
@@ -905,7 +941,10 @@ async function fetchUSGS(siteId) {
     temp: null, tempTrend24: null, tempTrend7: null, temps7: [],
     flow: null, flowTrend24: null, flowTrend7: null, flows7: [],
     gage: null, gageTrend24: null, gageTrend7: null, gages7: [],
-    lastReading: null
+    lastReading: null,
+    tempSource: null,
+    tempSourceLabel: null,
+    tempSourceNote: null,
   };
   const series = data?.value?.timeSeries || [];
   // USGS returns water temp (00010) in Celsius — convert to Fahrenheit
@@ -924,6 +963,9 @@ async function fetchUSGS(siteId) {
       const latestTime = new Date(latest.dateTime);
       result.temp = latestF;
       result.lastReading = latestTime;
+      result.tempSource = "sensor";
+      result.tempSourceLabel = "Live USGS sensor";
+      result.tempSourceNote = "USGS parameter 00010 (water temperature).";
       // 24-hour trend (in °F)
       const t24 = new Date(latestTime - 24*60*60*1000);
       const v24 = vals.find(v => Math.abs(new Date(v.dateTime) - t24) < 2*60*60*1000);
@@ -1033,6 +1075,7 @@ function ShareSnapshot({ usgs, forecast, water, species }) {
   const phase = getPhase(temp, species);
   const spawnTrigger = species === "cr" ? 60 : 50;
   const speciesName = species === "cr" ? "Crappie" : "White Bass";
+  const tempIsEstimated = usgs?.tempSource === "estimated";
   const triggerDist = temp !== null ? Math.max(0, spawnTrigger - temp).toFixed(1) : null;
   const dayPeriods = (forecast || []).filter(p => p.isDaytime).slice(0, 3);
   const bestDay = dayPeriods.reduce((best, p) => {
@@ -1044,7 +1087,7 @@ function ShareSnapshot({ usgs, forecast, water, species }) {
     const lines = [
       `\uD83D\uDC1F ${speciesName} Intel \u2022 ${w.name}`,
       `\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500`,
-      temp !== null ? `\uD83C\uDF21 Water: ${temp.toFixed(1)}\u00B0F \u2022 ${phase.name}` : `\uD83C\uDF21 Temp unavailable`,
+      temp !== null ? `\uD83C\uDF21 Water: ${temp.toFixed(1)}\u00B0F${tempIsEstimated ? " (estimated)" : ""} \u2022 ${phase.name}` : `\uD83C\uDF21 Temp unavailable`,
     ];
     if (usgs?.tempTrend24 !== null) {
       const t24 = `${usgs.tempTrend24 > 0 ? '+' : ''}${usgs.tempTrend24}\u00B0`;
@@ -1189,6 +1232,8 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
   const sourceProvider = usgs?.levelProvider || sourceMeta.provider;
   const sourceUrl = usgs?.levelSourceUrl || sourceMeta.primaryUrl || null;
   const sourceStatus = usgs?.levelSourceStatus || null;
+  const tempSourceLabel = usgs?.tempSourceLabel || "No temperature feed";
+  const tempIsEstimated = usgs?.tempSource === "estimated";
   const gageTrend7 = usgs?.gageTrend7 ?? null;
   const flowTrend7 = usgs?.flowTrend7 ?? null;
   const gageStatus = !hasGage ? null
@@ -1220,12 +1265,12 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
         </div>
       </div>
       <div className="hero-summary">
-        {temp.toFixed(1)}{"\u00B0"}F water{Number.isFinite(usgs?.tempTrend24) ? `, ${usgs.tempTrend24 > 0 ? 'warming' : 'cooling'} ${Math.abs(usgs.tempTrend24)}\u00B0 in 24hr` : ''}
+        {temp.toFixed(1)}{"\u00B0"}F water{tempIsEstimated ? " (estimated)" : ""}{Number.isFinite(usgs?.tempTrend24) ? `, ${usgs.tempTrend24 > 0 ? 'warming' : 'cooling'} ${Math.abs(usgs.tempTrend24)}\u00B0 in 24hr` : ''}
         {daysEst ? `. ~${daysEst} days to ${species === "cr" ? "bed spawn" : "spawn"} trigger at current rate.` : temp >= spawnTrigger ? '. Fish are moving!' : '.'}
         {bestWindowDay ? ` Best window: ${bestWindowDay.name}.` : ''}
       </div>
       <div className="hero-pills">
-        <div className="hero-pill">{"\uD83C\uDF21\uFE0F"} <span className="pill-val">{temp.toFixed(1)}{"\u00B0"}F</span></div>
+        <div className="hero-pill">{"\uD83C\uDF21\uFE0F"} <span className="pill-val">{temp.toFixed(1)}{"\u00B0"}F{tempIsEstimated ? "*" : ""}</span></div>
         {hasFlow && <div className="hero-pill">{"\uD83D\uDCA7"} <span className="pill-val">{usgs.flow.toLocaleString()}</span> cfs</div>}
         {hasGage && <div className="hero-pill">{"\uD83D\uDCCF"} <span className="pill-val">{usgs.gage.toFixed(2)}</span> ft</div>}
         <div className="hero-pill" style={{borderColor:phase.color+'44',color:phase.color}}>{phase.icon} <span className="pill-val">{phase.name}</span></div>
@@ -1249,16 +1294,18 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
     {/* 2-COLUMN: WATER TEMP + SPAWN PHASE */}
     <div className="dash-grid">
       <div className="card">
-        <div className="card-title">{"\uD83C\uDF0A"} Water Temperature</div>
+        <div className="card-title">{"\uD83C\uDF0A"} Water Temperature <span className="temp-source-badge">{tempSourceLabel}</span></div>
         {hasTemp ? <>
           <div className="big-temp">{temp.toFixed(1)}<span className="unit">{"\u00B0"}F</span></div>
           <div className="temp-c">{tempC}{"\u00B0"}C</div>
+          {usgs?.tempSourceNote && <div className="temp-source-note">{usgs.tempSourceNote}</div>}
           <div className="trend-row">
             {Number.isFinite(usgs?.tempTrend24) && <div className={`trend ${trendCls(usgs.tempTrend24)}`}>{trendArr(usgs.tempTrend24)} {fmtTrend(usgs.tempTrend24)} <span style={{fontWeight:400,fontSize:10}}>/24hr</span></div>}
             {Number.isFinite(usgs?.tempTrend7) && <div className={`trend ${trendCls(usgs.tempTrend7)}`}>{trendArr(usgs.tempTrend7)} {fmtTrend(usgs.tempTrend7)} <span style={{fontWeight:400,fontSize:10}}>/7day</span></div>}
           </div>
           <div className="gauge-meta">{w.usgs ? `USGS #${w.usgs}` : 'No USGS gauge'}{usgs.lastReading && <> {"\u00B7"} {usgs.lastReading.toISOString().slice(0,16).replace('T',' ')} CST</>}</div>
-        </> : <div style={{color:'var(--text2)',fontSize:12}}>Temp not available
+        </> : <div className="temp-empty">No water temperature is available yet for this location.
+          <div className="temp-source-note">Try Refresh or switch lakes; level and flow data may still be available.</div>
           {hasFlow && <div className="flow-badge" style={{marginTop:6}}>{"\uD83D\uDCA7"} {usgs.flow.toLocaleString()} cfs</div>}
         </div>}
       </div>
@@ -1707,7 +1754,10 @@ function App() {
             temp: null, tempTrend24: null, tempTrend7: null, temps7: [],
             flow: null, flowTrend24: null, flowTrend7: null, flows7: [],
             gage: null, gageTrend24: null, gageTrend7: null, gages7: [],
-            lastReading: null
+            lastReading: null,
+            tempSource: null,
+            tempSourceLabel: null,
+            tempSourceNote: null,
           };
 
       if (usaceData.status === "fulfilled" && usaceData.value?.status === "ok") {
@@ -1735,6 +1785,19 @@ function App() {
         merged.topFloodPool = null;
         merged.currentPowerPool = null;
         merged.feetBelowFloodPool = null;
+      }
+
+      if (!Number.isFinite(merged.temp) && nwsData.status === "fulfilled") {
+        const est = estimateTempFromForecast(nwsData.value, w.type);
+        if (est) {
+          merged.temp = est.temp;
+          merged.tempTrend24 = est.tempTrend24;
+          merged.tempTrend7 = est.tempTrend7;
+          merged.temps7 = est.temps7;
+          merged.tempSource = est.tempSource;
+          merged.tempSourceLabel = est.tempSourceLabel;
+          merged.tempSourceNote = est.tempSourceNote;
+        }
       }
 
       if (usgsData.status === "rejected") console.warn("USGS error:", usgsData.reason);
