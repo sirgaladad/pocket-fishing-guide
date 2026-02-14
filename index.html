@@ -1180,10 +1180,9 @@ function FeedbackWidget() {
   const submit = async () => {
     const body = buildBody();
     const issueUrl = "https://github.com/sirgaladad/pocket-fishing-guide/issues/new?"
-      + "template=feedback.md"
+      + "labels=" + encodeURIComponent("user-feedback")
       + "&title=" + encodeURIComponent(`[Feedback] ${cat || "General"}: ${text.slice(0, 50) || "User feedback"}`)
-      + "&body=" + encodeURIComponent(body)
-      + "&labels=" + encodeURIComponent("user-feedback");
+      + "&body=" + encodeURIComponent(body);
     window.open(issueUrl, "_blank");
     try { await navigator.clipboard.writeText(body); } catch {}
     setOpen(false); setRating(null); setCat(""); setText("");
