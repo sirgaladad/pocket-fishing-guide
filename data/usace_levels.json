@@ -1,0 +1,101 @@
+{
+  "generatedAt": "2026-02-14T18:50:58.285Z",
+  "waters": {
+    "greers": {
+      "status": "ok",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/greersf.htm",
+      "gage": 454.08,
+      "flow": 20,
+      "gageTrend24": -0.01,
+      "gageTrend7": -0.01,
+      "flowTrend24": 0,
+      "flowTrend7": 0,
+      "gages7": [
+        {
+          "day": "Feb 13",
+          "avg": 454.09
+        },
+        {
+          "day": "Feb 14",
+          "avg": 454.08
+        }
+      ],
+      "flows7": [
+        {
+          "day": "Feb 13",
+          "avg": 283
+        },
+        {
+          "day": "Feb 14",
+          "avg": 20
+        }
+      ],
+      "lastReading": "2026-02-14T12:00:00.000Z"
+    },
+    "bullshoals": {
+      "status": "ok",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bulsdam.htm",
+      "gage": 652.77,
+      "flow": 703,
+      "gageTrend24": 0.24,
+      "gageTrend7": 0.18,
+      "flowTrend24": 14,
+      "flowTrend7": -59,
+      "gages7": [
+        {
+          "day": "Feb 13",
+          "avg": 652.54
+        },
+        {
+          "day": "Feb 14",
+          "avg": 652.66
+        }
+      ],
+      "flows7": [
+        {
+          "day": "Feb 13",
+          "avg": 3029
+        },
+        {
+          "day": "Feb 14",
+          "avg": 709
+        }
+      ],
+      "lastReading": "2026-02-14T12:00:00.000Z"
+    },
+    "beaver": {
+      "status": "ok",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/beaver.htm",
+      "gage": 1112.53,
+      "flow": 20,
+      "gageTrend24": -0.03,
+      "gageTrend7": -0.07,
+      "flowTrend24": 0,
+      "flowTrend7": 0,
+      "gages7": [
+        {
+          "day": "Feb 13",
+          "avg": 1112.58
+        },
+        {
+          "day": "Feb 14",
+          "avg": 1112.55
+        }
+      ],
+      "flows7": [
+        {
+          "day": "Feb 13",
+          "avg": 509
+        },
+        {
+          "day": "Feb 14",
+          "avg": 20
+        }
+      ],
+      "lastReading": "2026-02-14T12:00:00.000Z"
+    }
+  }
+}

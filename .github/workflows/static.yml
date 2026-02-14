@@ -9,6 +9,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+  # Refresh deployed data snapshot periodically
+  schedule:
+    - cron: "23 */6 * * *"
+
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
@@ -31,6 +35,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Build USACE Snapshot
+        run: node scripts/fetch_usace_levels.js
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

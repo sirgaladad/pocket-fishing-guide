@@ -5,6 +5,7 @@ This directory contains product and technical documentation for the Pocket Fishi
 ## Contents
 
 - **[SCOPING-BODY-OF-WATER-SELECTOR.md](./SCOPING-BODY-OF-WATER-SELECTOR.md)** - Technical scoping document for Body of Water selector enhancement (Issue #8). Includes feasibility analysis, backlog tasks, risk assessment, and prioritization recommendations.
+- **[USACE-LAKE-LEVEL-INTEGRATION-TRACKER.md](./USACE-LAKE-LEVEL-INTEGRATION-TRACKER.md)** - Tracking document for Corps lake-level/release integration coverage, workflow implementation, and remaining endpoint discovery work.
 
 ## Document Types
 

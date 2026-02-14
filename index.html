@@ -688,6 +688,54 @@ const WATERS = {
   }
 };
 
+const WATER_LEVEL_SOURCES = {
+  greers: {
+    provider: "USACE-SWL snapshot + USGS",
+    primaryUrl: "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/greersf.htm",
+    notes: "Corps reservoir table is scraped during GitHub deploy/scheduled refresh.",
+  },
+  bullshoals: {
+    provider: "USACE-SWL snapshot + USGS",
+    primaryUrl: "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bulsdam.htm",
+    notes: "Corps release/elevation fills gaps when USGS series is unavailable.",
+  },
+  beaver: {
+    provider: "USACE-SWL snapshot + USGS",
+    primaryUrl: "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/beaver.htm",
+    notes: "Corps release/elevation complements USGS station data.",
+  },
+  maumelle: {
+    provider: "USGS gauge",
+    primaryUrl: "https://waterdata.usgs.gov/",
+    notes: "Municipal reservoir; Corps table integration not currently targeted.",
+  },
+  whiteriver: {
+    provider: "USGS river gauge",
+    primaryUrl: "https://waterdata.usgs.gov/",
+    notes: "River conditions come from USGS flow/gage stations.",
+  },
+  buffalo: {
+    provider: "USGS river gauge",
+    primaryUrl: "https://waterdata.usgs.gov/",
+    notes: "Wild river monitoring via USGS flow/gage stations.",
+  },
+  ouachita: {
+    provider: "USGS gauge (USACE source pending)",
+    primaryUrl: "https://waterdata.usgs.gov/",
+    notes: "Corps district endpoint still being mapped for automated scrape coverage.",
+  },
+  degray: {
+    provider: "USGS gauge (USACE source pending)",
+    primaryUrl: "https://waterdata.usgs.gov/",
+    notes: "Corps district endpoint still being mapped for automated scrape coverage.",
+  },
+  conway: {
+    provider: "AGFC status + NWS",
+    primaryUrl: "https://www.agfc.com/",
+    notes: "No USGS gauge configured during renovation period.",
+  },
+};
+
 const WB_PHASES = [
   { name: "Winter Hold", min: 0, max: 45, color: "#4fc3f7", icon: "\u2744\uFE0F", short: "Too cold. Fish are deep. Be patient." },
   { name: "Pre-Spawn Staging", min: 45, max: 50, color: "#29b6f6", icon: "\uD83C\uDF21\uFE0F", short: "Fish staging near creek mouths as water approaches 45-50\u00B0F. Males move first \u2014 smaller fish showing up at creek entries. Big females will follow when water consistently holds above 48\u00B0F. This is the \"watch and wait\" phase \u2014 but it's also your chance to scout." },
@@ -950,6 +998,16 @@ async function fetchUSGS(siteId) {
   return result;
 }
 
+let usaceSnapshotCache = null;
+async function fetchUSACESnapshot(waterKey) {
+  if (usaceSnapshotCache === null) {
+    const resp = await fetch("data/usace_levels.json");
+    if (!resp.ok) throw new Error("USACE snapshot unavailable");
+    usaceSnapshotCache = await resp.json();
+  }
+  return usaceSnapshotCache?.waters?.[waterKey] || null;
+}
+
 async function fetchNWS(lat, lon) {
   const pts = await fetch(`https://api.weather.gov/points/${lat},${lon}`);
   if (!pts.ok) throw new Error("NWS points error");
@@ -1123,6 +1181,10 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
 
   // Day forecasts for weather cards
   const dayPeriods = (forecast || []).filter(p => p.isDaytime).slice(0, 4);
+  const sourceMeta = WATER_LEVEL_SOURCES[water] || { provider: "USGS/NWS", notes: "" };
+  const sourceProvider = usgs?.levelProvider || sourceMeta.provider;
+  const sourceUrl = usgs?.levelSourceUrl || sourceMeta.primaryUrl || null;
+  const sourceStatus = usgs?.levelSourceStatus || null;
   const gageTrend7 = usgs?.gageTrend7 ?? null;
   const flowTrend7 = usgs?.flowTrend7 ?? null;
   const gageStatus = usgs?.gage === null ? null
@@ -1165,6 +1227,20 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
         <div className="hero-pill" style={{borderColor:phase.color+'44',color:phase.color}}>{phase.icon} <span className="pill-val">{phase.name}</span></div>
       </div>
     </div>}
+
+    {/* DATA SOURCE STATUS */}
+    <div className="card">
+      <div className="card-title">{"\uD83D\uDD17"} Level & Flow Source</div>
+      <div style={{fontSize:12,color:'var(--text2)',lineHeight:1.5}}>
+        Provider: <span style={{color:'var(--text)',fontWeight:700}}>{sourceProvider}</span>
+        {sourceStatus === "ok" && <span style={{color:'var(--green)',marginLeft:8,fontWeight:700}}>LIVE SNAPSHOT</span>}
+        {sourceStatus === "error" && <span style={{color:'var(--orange)',marginLeft:8,fontWeight:700}}>SNAPSHOT ERROR</span>}
+      </div>
+      {sourceMeta.notes && <div style={{fontSize:11,color:'var(--text3)',marginTop:6,lineHeight:1.5}}>{sourceMeta.notes}</div>}
+      {sourceUrl && <a href={sourceUrl} target="_blank" rel="noopener" style={{display:'inline-block',marginTop:8,fontSize:12,color:'var(--accent)',textDecoration:'underline'}}>
+        Open source feed
+      </a>}
+    </div>
 
     {/* 2-COLUMN: WATER TEMP + SPAWN PHASE */}
     <div className="dash-grid">
@@ -1613,15 +1689,47 @@ function App() {
     setForecast(null);
     const w = WATERS[water];
     try {
-      const [usgsData, nwsData] = await Promise.allSettled([
+      const [usgsData, nwsData, usaceData] = await Promise.allSettled([
         fetchUSGS(w.usgs),
-        fetchNWS(w.lat, w.lon)
+        fetchNWS(w.lat, w.lon),
+        fetchUSACESnapshot(water)
       ]);
-      if (usgsData.status === "fulfilled") setUsgs(usgsData.value);
-      else console.warn("USGS error:", usgsData.reason);
+      const merged = usgsData.status === "fulfilled"
+        ? { ...usgsData.value }
+        : {
+            temp: null, tempTrend24: null, tempTrend7: null, temps7: [],
+            flow: null, flowTrend24: null, flowTrend7: null, flows7: [],
+            gage: null, gageTrend24: null, gageTrend7: null, gages7: [],
+            lastReading: null
+          };
+
+      if (usaceData.status === "fulfilled" && usaceData.value?.status === "ok") {
+        const u = usaceData.value;
+        if (u.gage !== null) merged.gage = u.gage;
+        if (u.gageTrend24 !== null) merged.gageTrend24 = u.gageTrend24;
+        if (u.gageTrend7 !== null) merged.gageTrend7 = u.gageTrend7;
+        if (Array.isArray(u.gages7) && u.gages7.length > 0) merged.gages7 = u.gages7;
+        if (u.flow !== null) merged.flow = u.flow;
+        if (u.flowTrend24 !== null) merged.flowTrend24 = u.flowTrend24;
+        if (u.flowTrend7 !== null) merged.flowTrend7 = u.flowTrend7;
+        if (Array.isArray(u.flows7) && u.flows7.length > 0) merged.flows7 = u.flows7;
+        if (u.lastReading) merged.lastReading = new Date(u.lastReading);
+        merged.levelProvider = u.provider || "USACE";
+        merged.levelSourceUrl = u.sourceUrl || null;
+        merged.levelSourceStatus = "ok";
+      } else if (usaceData.status === "fulfilled" && usaceData.value?.status === "error") {
+        merged.levelProvider = usaceData.value.provider || null;
+        merged.levelSourceUrl = usaceData.value.sourceUrl || null;
+        merged.levelSourceStatus = "error";
+      }
+
+      if (usgsData.status === "rejected") console.warn("USGS error:", usgsData.reason);
+      if (usaceData.status === "rejected") console.warn("USACE snapshot error:", usaceData.reason);
+      setUsgs(merged);
+
       if (nwsData.status === "fulfilled") setForecast(nwsData.value);
       else console.warn("NWS error:", nwsData.reason);
-      if (usgsData.status === "rejected" && nwsData.status === "rejected") {
+      if (usgsData.status === "rejected" && nwsData.status === "rejected" && usaceData.status === "rejected") {
         setError("Unable to load live data. Check your connection and try again.");
       }
     } catch (e) {
