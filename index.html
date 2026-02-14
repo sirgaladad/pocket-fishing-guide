@@ -1001,7 +1001,7 @@ async function fetchUSGS(siteId) {
 let usaceSnapshotCache = null;
 async function fetchUSACESnapshot(waterKey) {
   if (usaceSnapshotCache === null) {
-    const resp = await fetch("data/usace_levels.json");
+    const resp = await fetch(`data/usace_levels.json?v=${Date.now()}`, { cache: "no-store" });
     if (!resp.ok) throw new Error("USACE snapshot unavailable");
     usaceSnapshotCache = await resp.json();
   }
