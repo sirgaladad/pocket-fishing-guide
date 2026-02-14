@@ -1255,64 +1255,78 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
     </div>}
 
     {/* 7-DAY GAGE HEIGHT TREND */}
-    {usgs?.gages7?.length > 0 && <div className="card">
+    <div className="card">
       <div className="card-title">{"\uD83D\uDCCF"} 7-Day Lake Level (Gage Height) Trend</div>
-      <div className="temp-chart">
-        {(() => {
-          const avgs = usgs.gages7.map(x => x.avg);
-          const maxG = Math.max(...avgs);
-          const minG = Math.min(...avgs);
-          const range = maxG - minG;
-          return usgs.gages7.map((g, i) => {
-            const pct = range < 0.05 ? 50 : 15 + ((g.avg - minG) / range) * 80;
-            const isLast = i === usgs.gages7.length - 1;
-            return <div className="temp-bar-wrap" key={i}>
-              <div className="temp-bar-val" style={isLast ? {color:'var(--accent)',fontWeight:700} : {}}>{g.avg.toFixed(2)} ft</div>
-              <div className="temp-bar-area">
-                <div className="temp-bar" style={{height:`${pct}%`, background:isLast ? 'var(--accent)' : '#5c9ed6'}}></div>
-              </div>
-              <div className="temp-bar-label">{g.day}</div>
-            </div>;
-          });
-        })()}
-      </div>
-      {gageStatus && <div className={`fw-card ${gageStatus.cls}`} style={{marginTop:10}}>
-        <div className="fw-card-title">{"\uD83E\uDDED"} Lake Level Status: {gageStatus.label}</div>
+      {usgs?.gages7?.length > 0 ? <>
+        <div className="temp-chart">
+          {(() => {
+            const avgs = usgs.gages7.map(x => x.avg);
+            const maxG = Math.max(...avgs);
+            const minG = Math.min(...avgs);
+            const range = maxG - minG;
+            return usgs.gages7.map((g, i) => {
+              const pct = range < 0.05 ? 50 : 15 + ((g.avg - minG) / range) * 80;
+              const isLast = i === usgs.gages7.length - 1;
+              return <div className="temp-bar-wrap" key={i}>
+                <div className="temp-bar-val" style={isLast ? {color:'var(--accent)',fontWeight:700} : {}}>{g.avg.toFixed(2)} ft</div>
+                <div className="temp-bar-area">
+                  <div className="temp-bar" style={{height:`${pct}%`, background:isLast ? 'var(--accent)' : '#5c9ed6'}}></div>
+                </div>
+                <div className="temp-bar-label">{g.day}</div>
+              </div>;
+            });
+          })()}
+        </div>
+        {gageStatus && <div className={`fw-card ${gageStatus.cls}`} style={{marginTop:10}}>
+          <div className="fw-card-title">{"\uD83E\uDDED"} Lake Level Status: {gageStatus.label}</div>
+          <div className="fw-card-body">
+            Current level: {usgs.gage.toFixed(2)} ft. 24hr {fmtSigned(usgs.gageTrend24, ' ft')}, 7day {fmtSigned(usgs.gageTrend7, ' ft')}. {gageStatus.note}
+          </div>
+        </div>}
+      </> : <div className="fw-card note">
+        <div className="fw-card-title">{"\u26A0"} Lake Level Status: Data Unavailable</div>
         <div className="fw-card-body">
-          Current level: {usgs.gage.toFixed(2)} ft. 24hr {fmtSigned(usgs.gageTrend24, ' ft')}, 7day {fmtSigned(usgs.gageTrend7, ' ft')}. {gageStatus.note}
+          This USGS gauge currently has no gage-height time series for the selected period. Try another water body or check the USGS station page.
         </div>
       </div>}
-    </div>}
+    </div>
 
     {/* 7-DAY FLOW TREND */}
-    {usgs?.flows7?.length > 0 && <div className="card">
+    <div className="card">
       <div className="card-title">{"\uD83D\uDCA7"} 7-Day Flow Trend</div>
-      <div className="temp-chart">
-        {(() => {
-          const avgs = usgs.flows7.map(x => x.avg);
-          const maxF = Math.max(...avgs);
-          const minF = Math.min(...avgs);
-          const range = maxF - minF;
-          return usgs.flows7.map((f, i) => {
-            const pct = range < 50 ? 50 : 15 + ((f.avg - minF) / range) * 80;
-            const isLast = i === usgs.flows7.length - 1;
-            return <div className="temp-bar-wrap" key={i}>
-              <div className="temp-bar-val" style={isLast ? {color:'var(--green)',fontWeight:700} : {}}>{f.avg.toLocaleString()}</div>
-              <div className="temp-bar-area">
-                <div className="temp-bar" style={{height:`${pct}%`, background:isLast ? 'var(--green)' : '#72b58a'}}></div>
-              </div>
-              <div className="temp-bar-label">{f.day}</div>
-            </div>;
-          });
-        })()}
-      </div>
-      {flowStatus && <div className={`fw-card ${flowStatus.cls}`} style={{marginTop:10}}>
-        <div className="fw-card-title">{"\uD83C\uDF0A"} Flow Meaning: {flowStatus.label}</div>
+      {usgs?.flows7?.length > 0 ? <>
+        <div className="temp-chart">
+          {(() => {
+            const avgs = usgs.flows7.map(x => x.avg);
+            const maxF = Math.max(...avgs);
+            const minF = Math.min(...avgs);
+            const range = maxF - minF;
+            return usgs.flows7.map((f, i) => {
+              const pct = range < 50 ? 50 : 15 + ((f.avg - minF) / range) * 80;
+              const isLast = i === usgs.flows7.length - 1;
+              return <div className="temp-bar-wrap" key={i}>
+                <div className="temp-bar-val" style={isLast ? {color:'var(--green)',fontWeight:700} : {}}>{f.avg.toLocaleString()}</div>
+                <div className="temp-bar-area">
+                  <div className="temp-bar" style={{height:`${pct}%`, background:isLast ? 'var(--green)' : '#72b58a'}}></div>
+                </div>
+                <div className="temp-bar-label">{f.day}</div>
+              </div>;
+            });
+          })()}
+        </div>
+        {flowStatus && <div className={`fw-card ${flowStatus.cls}`} style={{marginTop:10}}>
+          <div className="fw-card-title">{"\uD83C\uDF0A"} Flow Meaning: {flowStatus.label}</div>
+          <div className="fw-card-body">
+            Current flow: {usgs.flow.toLocaleString()} cfs. 24hr {fmtSigned(usgs.flowTrend24, ' cfs')}, 7day {fmtSigned(usgs.flowTrend7, ' cfs')}. {flowStatus.note}
+          </div>
+        </div>}
+      </> : <div className="fw-card note">
+        <div className="fw-card-title">{"\u26A0"} Flow Meaning: Data Unavailable</div>
         <div className="fw-card-body">
-          Current flow: {usgs.flow.toLocaleString()} cfs. 24hr {fmtSigned(usgs.flowTrend24, ' cfs')}, 7day {fmtSigned(usgs.flowTrend7, ' cfs')}. {flowStatus.note}
+          This USGS gauge currently has no flow time series for the selected period. Try another water body or check the USGS station page.
         </div>
       </div>}
-    </div>}
+    </div>
 
     {/* WEATHER OUTLOOK */}
     {dayPeriods.length > 0 && <div className="wx-cards">
