@@ -270,6 +270,42 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .support-link{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:12px;font-size:10px;font-weight:600;text-decoration:none;transition:all .2s}
 .support-link.kofi{background:rgba(255,94,91,.1);color:#ff5e5b;border:1px solid rgba(255,94,91,.2)}
 .support-link.gh{background:rgba(255,255,255,.06);color:var(--text2);border:1px solid rgba(255,255,255,.1)}
+
+/* ─── OVERVIEW GRID ─── */
+.overview-intro{background:linear-gradient(135deg,#0d2137 0%,#0a3d5c 50%,#0d4a5e 100%);border-radius:var(--radius);padding:16px;margin-bottom:12px;border:1px solid rgba(0,188,212,.15)}
+.overview-intro h2{font-size:18px;font-weight:800;color:#fff;margin-bottom:6px}
+.overview-intro p{font-size:12px;color:var(--text2);line-height:1.5}
+.overview-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:12px}
+.water-card{background:var(--bg2);border-radius:var(--radius);padding:14px;border:1px solid rgba(255,255,255,.04);cursor:pointer;transition:all .2s;position:relative}
+.water-card:hover{border-color:var(--accent);background:var(--bg3)}
+.water-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.water-card-name{font-size:15px;font-weight:700;color:#fff}
+.water-card-type{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.water-card-verdict{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.water-card-verdict.go{background:rgba(76,175,80,.2);box-shadow:0 0 12px rgba(76,175,80,.3)}
+.water-card-verdict.scout{background:rgba(255,152,0,.2);box-shadow:0 0 12px rgba(255,152,0,.3)}
+.water-card-verdict.wait{background:rgba(33,150,243,.2);box-shadow:0 0 12px rgba(33,150,243,.3)}
+.water-card-verdict.no-data{background:rgba(100,100,100,.2)}
+.water-card-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.water-metric{background:var(--bg3);border-radius:var(--radius-sm);padding:6px 8px}
+.water-metric-label{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+.water-metric-value{font-size:14px;font-weight:700;color:#fff}
+.water-metric-sub{font-size:9px;color:var(--text2);margin-top:1px}
+.water-card-phase{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border-radius:var(--radius-sm);padding:6px 8px;font-size:11px}
+.water-card-phase-icon{font-size:16px}
+.water-card-phase-name{flex:1;font-weight:600}
+.water-card-trend{font-size:10px;font-weight:600}
+.water-card-trend.up{color:var(--green)}
+.water-card-trend.down{color:var(--blue)}
+.water-card-trend.flat{color:var(--text3)}
+.water-card-sparkline{display:flex;gap:2px;height:20px;align-items:flex-end;margin-top:6px}
+.water-card-spark-bar{flex:1;background:var(--accent);border-radius:1px;min-height:3px;opacity:.7;transition:opacity .2s}
+.water-card-spark-bar.last{opacity:1;background:var(--spawn)}
+.overview-legend{background:var(--bg2);border-radius:var(--radius);padding:12px;margin-top:12px;border:1px solid rgba(255,255,255,.04)}
+.overview-legend-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:8px}
+.overview-legend-items{display:flex;gap:12px;flex-wrap:wrap}
+.overview-legend-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text2)}
+.overview-legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -1687,6 +1723,169 @@ function AccessTab({ water }) {
   </>;
 }
 
+function OverviewTab({ species, onSelectWater }) {
+  const [allData, setAllData] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadAllWaters = async () => {
+      setLoading(true);
+      const waterKeys = Object.keys(WATERS);
+      const results = {};
+
+      for (const key of waterKeys) {
+        const w = WATERS[key];
+        try {
+          const [usgsData, nwsData, usaceData] = await Promise.allSettled([
+            fetchUSGS(w.usgs),
+            fetchNWS(w.lat, w.lon),
+            fetchUSACESnapshot(key)
+          ]);
+
+          const merged = usgsData.status === "fulfilled"
+            ? { ...usgsData.value }
+            : { temp: null, tempTrend24: null, tempTrend7: null, temps7: [], flow: null, gage: null };
+
+          if (usaceData.status === "fulfilled" && usaceData.value?.status === "ok") {
+            const u = usaceData.value;
+            if (u.currentPowerPool !== null) merged.gage = u.currentPowerPool;
+            else if (u.gage !== null) merged.gage = u.gage;
+            if (u.flow !== null) merged.flow = u.flow;
+            if (u.gageTrend7 !== null) merged.gageTrend7 = u.gageTrend7;
+            if (u.flowTrend7 !== null) merged.flowTrend7 = u.flowTrend7;
+            if (Array.isArray(u.temps7) && u.temps7.length > 0) merged.temps7 = u.temps7;
+          }
+
+          if (!Number.isFinite(merged.temp) && nwsData.status === "fulfilled") {
+            const est = estimateTempFromForecast(nwsData.value, w.type);
+            if (est) {
+              merged.temp = est.temp;
+              merged.tempTrend7 = est.tempTrend7;
+              merged.temps7 = est.temps7;
+            }
+          }
+
+          results[key] = merged;
+        } catch (e) {
+          results[key] = { temp: null, tempTrend7: null, temps7: [], flow: null, gage: null };
+        }
+      }
+
+      setAllData(results);
+      setLoading(false);
+    };
+
+    loadAllWaters();
+  }, []);
+
+  const spawnTrigger = species === "cr" ? 60 : 50;
+  const scoutTemp = species === "cr" ? 55 : 45;
+
+  const getVerdict = (temp) => {
+    if (!Number.isFinite(temp)) return { icon: '⏳', cls: 'no-data' };
+    if (temp >= spawnTrigger) return { icon: '🔥', cls: 'go' };
+    if (temp >= scoutTemp) return { icon: '👀', cls: 'scout' };
+    return { icon: '❄️', cls: 'wait' };
+  };
+
+  const trendArr = (v) => v > 0 ? '▲' : v < 0 ? '▼' : '→';
+  const trendCls = (v) => v > 0 ? 'up' : v < 0 ? 'down' : 'flat';
+
+  if (loading) return <Loading />;
+
+  return <>
+    <div className="overview-intro">
+      <h2>🗺️ Arkansas Waters Overview</h2>
+      <p>Compare current conditions across all 9 major water bodies. Tap any water to view full dashboard with detailed intel, forecast, and access information.</p>
+    </div>
+
+    <div className="overview-grid">
+      {Object.entries(WATERS).map(([key, w]) => {
+        const data = allData[key] || {};
+        const temp = data.temp ?? null;
+        const hasTemp = Number.isFinite(temp);
+        const phase = getPhase(temp, species);
+        const verdict = getVerdict(temp);
+        const tempTrend = data.tempTrend7 ?? null;
+
+        return <div className="water-card" key={key} onClick={() => onSelectWater(key)}>
+          <div className="water-card-header">
+            <div>
+              <div className="water-card-name">{w.short}</div>
+              <div className="water-card-type">{w.type} · {w.nwsOffice}</div>
+            </div>
+            <div className={`water-card-verdict ${verdict.cls}`}>{verdict.icon}</div>
+          </div>
+
+          <div className="water-card-metrics">
+            <div className="water-metric">
+              <div className="water-metric-label">🌡️ Water Temp</div>
+              <div className="water-metric-value">{hasTemp ? `${temp.toFixed(1)}°F` : 'n/a'}</div>
+              {Number.isFinite(tempTrend) && <div className={`water-metric-sub water-card-trend ${trendCls(tempTrend)}`}>
+                {trendArr(tempTrend)} {tempTrend > 0 ? '+' : ''}{tempTrend.toFixed(1)}° /7d
+              </div>}
+            </div>
+
+            <div className="water-metric">
+              <div className="water-metric-label">🎣 {species === "cr" ? "Crappie" : "W.Bass"} Phase</div>
+              <div className="water-metric-value" style={{fontSize:12,color:phase.color}}>{phase.icon} {phase.name}</div>
+              {hasTemp && <div className="water-metric-sub">
+                {Math.max(0, spawnTrigger - temp).toFixed(1)}°F to spawn
+              </div>}
+            </div>
+          </div>
+
+          {data.temps7?.length > 0 && <div className="water-card-sparkline">
+            {(() => {
+              const avgs = data.temps7.map(x => x.avg);
+              const maxT = Math.max(...avgs);
+              const minT = Math.min(...avgs);
+              const range = maxT - minT;
+              return data.temps7.map((t, i) => {
+                const pct = range < 0.1 ? 50 : ((t.avg - minT) / range) * 100;
+                const isLast = i === data.temps7.length - 1;
+                return <div
+                  key={i}
+                  className={`water-card-spark-bar ${isLast ? 'last' : ''}`}
+                  style={{height:`${pct}%`}}
+                  title={`${t.day}: ${t.avg}°F`}
+                ></div>;
+              });
+            })()}
+          </div>}
+
+          <div className="water-card-phase" style={{borderLeft:`3px solid ${phase.color}`}}>
+            <span className="water-card-phase-icon">{phase.icon}</span>
+            <span className="water-card-phase-name" style={{color:phase.color}}>{phase.name}</span>
+          </div>
+        </div>;
+      })}
+    </div>
+
+    <div className="overview-legend">
+      <div className="overview-legend-title">📊 Legend</div>
+      <div className="overview-legend-items">
+        <div className="overview-legend-item">
+          <div className="overview-legend-dot" style={{background:'rgba(76,175,80,.5)'}}></div>
+          <span>🔥 GO: Spawn temps reached</span>
+        </div>
+        <div className="overview-legend-item">
+          <div className="overview-legend-dot" style={{background:'rgba(255,152,0,.5)'}}></div>
+          <span>👀 SCOUT: Approaching spawn</span>
+        </div>
+        <div className="overview-legend-item">
+          <div className="overview-legend-dot" style={{background:'rgba(33,150,243,.5)'}}></div>
+          <span>❄️ WAIT: Too cold</span>
+        </div>
+        <div className="overview-legend-item">
+          <div className="overview-legend-dot" style={{background:'rgba(100,100,100,.3)'}}></div>
+          <span>⏳ NO DATA</span>
+        </div>
+      </div>
+    </div>
+  </>;
+}
+
 // ─── MAIN APP ───────────────────────────────────────────────
 function App() {
   const [water, setWater] = useState(() => {
@@ -1825,6 +2024,7 @@ function App() {
   const triggerDist = temp !== null ? Math.max(0, spawnTrigger - temp).toFixed(1) : null;
 
   const tabs = [
+    { id: "overview", icon: "\uD83D\uDDFA\uFE0F", label: "Overview" },
     { id: "dashboard", icon: "\uD83D\uDCCA", label: "Dashboard" },
     { id: "forecast", icon: "\u2600\uFE0F", label: "Forecast" },
     { id: "intel", icon: "\uD83E\uDDE0", label: "Intel" },
@@ -1864,6 +2064,7 @@ function App() {
 
     <div className="content">
       {error && <ErrorMsg msg={error} onRetry={loadData} />}
+      {tab === "overview" && <OverviewTab species={species} onSelectWater={(key) => { setWater(key); setTab("dashboard"); }} />}
       {tab === "dashboard" && <DashboardTab usgs={usgs} forecast={forecast} water={water} species={species} onRefresh={loadData} loading={loading} />}
       {tab === "forecast" && <ForecastTab forecast={forecast} water={water} />}
       {tab === "intel" && <IntelTab temp={temp} water={water} species={species} />}
