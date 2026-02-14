@@ -842,13 +842,23 @@ function rateFishing(period) {
 async function fetchUSGS(siteId) {
   if (!siteId) {
     // No USGS gauge for this location
-    return { temp: null, tempTrend24: null, tempTrend7: null, temps7: [], flow: null, gage: null, lastReading: null };
+    return {
+      temp: null, tempTrend24: null, tempTrend7: null, temps7: [],
+      flow: null, flowTrend24: null, flowTrend7: null, flows7: [],
+      gage: null, gageTrend24: null, gageTrend7: null, gages7: [],
+      lastReading: null
+    };
   }
   const url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${siteId}&parameterCd=00010,00060,00065&period=P7D`;
   const resp = await fetch(url);
   if (!resp.ok) throw new Error("USGS API error");
   const data = await resp.json();
-  const result = { temp: null, tempTrend24: null, tempTrend7: null, temps7: [], flow: null, gage: null, lastReading: null };
+  const result = {
+    temp: null, tempTrend24: null, tempTrend7: null, temps7: [],
+    flow: null, flowTrend24: null, flowTrend7: null, flows7: [],
+    gage: null, gageTrend24: null, gageTrend7: null, gages7: [],
+    lastReading: null
+  };
   const series = data?.value?.timeSeries || [];
   // USGS returns water temp (00010) in Celsius — convert to Fahrenheit
   const cToF = (c) => +(c * 9 / 5 + 32).toFixed(1);
@@ -886,13 +896,55 @@ async function fetchUSGS(siteId) {
         day: d.label, avg: +(d.vals.reduce((a,b)=>a+b,0)/d.vals.length).toFixed(1)
       }));
     }
-    if (code === "00060" || code === "00065") {
-      const latest = rawVals[rawVals.length - 1];
+    if (code === "00060") {
+      const vals = rawVals.filter(v => parseFloat(v.value) > -99999);
+      if (vals.length === 0) continue;
+      const latest = vals[vals.length - 1];
       const latestVal = parseFloat(latest.value);
-      if (latestVal > -99999) {
-        if (code === "00060") result.flow = latestVal;
-        if (code === "00065") result.gage = latestVal;
+      const latestTime = new Date(latest.dateTime);
+      result.flow = Math.round(latestVal);
+      if (!result.lastReading || latestTime > result.lastReading) result.lastReading = latestTime;
+      const t24 = new Date(latestTime - 24*60*60*1000);
+      const v24 = vals.find(v => Math.abs(new Date(v.dateTime) - t24) < 3*60*60*1000);
+      if (v24) result.flowTrend24 = Math.round(latestVal - parseFloat(v24.value));
+      const t7 = new Date(latestTime - 7*24*60*60*1000);
+      const v7 = vals.find(v => Math.abs(new Date(v.dateTime) - t7) < 8*60*60*1000);
+      if (v7) result.flowTrend7 = Math.round(latestVal - parseFloat(v7.value));
+      const days = {};
+      for (const v of vals) {
+        const d = new Date(v.dateTime);
+        const key = `${d.getMonth()+1}/${d.getDate()}`;
+        if (!days[key]) days[key] = { label: d.toLocaleDateString('en-US',{month:'short',day:'numeric'}), vals: [] };
+        days[key].vals.push(parseFloat(v.value));
       }
+      result.flows7 = Object.values(days).slice(-7).map(d => ({
+        day: d.label, avg: Math.round(d.vals.reduce((a,b)=>a+b,0)/d.vals.length)
+      }));
+    }
+    if (code === "00065") {
+      const vals = rawVals.filter(v => parseFloat(v.value) > -99999);
+      if (vals.length === 0) continue;
+      const latest = vals[vals.length - 1];
+      const latestVal = parseFloat(latest.value);
+      const latestTime = new Date(latest.dateTime);
+      result.gage = +latestVal.toFixed(2);
+      if (!result.lastReading || latestTime > result.lastReading) result.lastReading = latestTime;
+      const t24 = new Date(latestTime - 24*60*60*1000);
+      const v24 = vals.find(v => Math.abs(new Date(v.dateTime) - t24) < 3*60*60*1000);
+      if (v24) result.gageTrend24 = +(latestVal - parseFloat(v24.value)).toFixed(2);
+      const t7 = new Date(latestTime - 7*24*60*60*1000);
+      const v7 = vals.find(v => Math.abs(new Date(v.dateTime) - t7) < 8*60*60*1000);
+      if (v7) result.gageTrend7 = +(latestVal - parseFloat(v7.value)).toFixed(2);
+      const days = {};
+      for (const v of vals) {
+        const d = new Date(v.dateTime);
+        const key = `${d.getMonth()+1}/${d.getDate()}`;
+        if (!days[key]) days[key] = { label: d.toLocaleDateString('en-US',{month:'short',day:'numeric'}), vals: [] };
+        days[key].vals.push(parseFloat(v.value));
+      }
+      result.gages7 = Object.values(days).slice(-7).map(d => ({
+        day: d.label, avg: +(d.vals.reduce((a,b)=>a+b,0)/d.vals.length).toFixed(2)
+      }));
     }
   }
   return result;
@@ -936,11 +988,16 @@ function ShareSnapshot({ usgs, forecast, water, species }) {
       `\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500`,
       temp !== null ? `\uD83C\uDF21 Water: ${temp.toFixed(1)}\u00B0F \u2022 ${phase.name}` : `\uD83C\uDF21 Temp unavailable`,
     ];
-    if (usgs?.tempTrend24 !== null) lines.push(`\uD83D\uDCC8 24hr: ${usgs.tempTrend24 > 0 ? '+' : ''}${usgs.tempTrend24}\u00B0 \u2022 7day: ${usgs.tempTrend7 > 0 ? '+' : ''}${usgs.tempTrend7}\u00B0`);
+    if (usgs?.tempTrend24 !== null) {
+      const t24 = `${usgs.tempTrend24 > 0 ? '+' : ''}${usgs.tempTrend24}\u00B0`;
+      const t7 = usgs?.tempTrend7 !== null ? `${usgs.tempTrend7 > 0 ? '+' : ''}${usgs.tempTrend7}\u00B0` : 'n/a';
+      lines.push(`\uD83D\uDCC8 24hr: ${t24} \u2022 7day: ${t7}`);
+    }
     if (triggerDist > 0) lines.push(`\uD83C\uDFAF ${triggerDist}\u00B0F to ${species === "cr" ? "bed spawn" : "spawn trigger"}`);
     else if (temp >= spawnTrigger) lines.push(`\uD83D\uDD25 ${species === "cr" ? "Bed spawn" : "Spawn"} temps reached!`);
     if (bestDay) lines.push(`\u2B50 Best window: ${bestDay.day} (${bestDay.temp}\u00B0F, ${bestDay.fc})`);
     if (usgs?.flow) lines.push(`\uD83D\uDCA7 Flow: ${usgs.flow.toLocaleString()} cfs`);
+    if (usgs?.gage) lines.push(`\uD83D\uDCCF Lake level: ${usgs.gage.toFixed(2)} ft`);
     lines.push(`\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500`);
     lines.push(`sirgaladad.github.io/pocket-fishing-guide`);
     return lines.join('\n');
@@ -1036,6 +1093,7 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
   const trendCls = (v) => v > 0 ? 'up' : v < 0 ? 'down' : 'flat';
   const trendArr = (v) => v > 0 ? '\u25B2' : v < 0 ? '\u25BC' : '\u2192';
   const fmtTrend = (v) => v !== null ? `${v > 0 ? '+' : ''}${v}\u00B0` : '';
+  const fmtSigned = (v, suffix = '') => v !== null ? `${v > 0 ? '+' : ''}${v}${suffix}` : 'n/a';
 
   // Quick Glance verdict
   const dayPeriods0 = (forecast || []).filter(p => p.isDaytime).slice(0, 7);
@@ -1065,6 +1123,21 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
 
   // Day forecasts for weather cards
   const dayPeriods = (forecast || []).filter(p => p.isDaytime).slice(0, 4);
+  const gageTrend7 = usgs?.gageTrend7 ?? null;
+  const flowTrend7 = usgs?.flowTrend7 ?? null;
+  const gageStatus = usgs?.gage === null ? null
+    : gageTrend7 === null ? { label: "Monitoring", cls: "good", note: "Need more history for trend direction." }
+    : gageTrend7 > 1 ? { label: "Rising", cls: "best", note: "Water level rose significantly over the last 7 days." }
+    : gageTrend7 < -1 ? { label: "Falling", cls: "note", note: "Water level dropped significantly over the last 7 days." }
+    : { label: "Stable", cls: "good", note: "Water level has remained relatively stable week-over-week." };
+  const flowStatus = usgs?.flow === null ? null
+    : w.type === "river"
+      ? usgs.flow > 3000 ? { label: "High Flow", cls: "note", note: "Strong current. Favor protected seams and prioritize safety." }
+      : usgs.flow < 300 ? { label: "Low Flow", cls: "note", note: "Low current can make fish wary. Downsize and fish deeper holes." }
+      : { label: "Fishable Flow", cls: "best", note: "Current is generally fishable for active feeding windows." }
+      : usgs.flow > 2000 ? { label: "Heavy Generation", cls: "note", note: "High release can reposition fish and increase current exposure." }
+      : usgs.flow < 200 ? { label: "Minimal Generation", cls: "good", note: "Slack conditions. Focus on structure and bait concentrations." }
+      : { label: "Moderate Generation", cls: "best", note: "Moderate flow often improves oxygen and feeding activity." };
 
   return <>
     <button className="refresh-btn" onClick={onRefresh}>{"\u21BB"} Refresh</button>
@@ -1178,6 +1251,66 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
       </div>
       {usgs.tempTrend7 !== null && <div className={`trend-analysis ${usgs.tempTrend7 < 0 ? 'cooling' : ''}`}>
         {usgs.tempTrend7 > 0 ? '\u25B2' : '\u25BC'} {usgs.tempTrend7 > 0 ? 'Warming' : 'Cooling'} trend: {fmtTrend(usgs.tempTrend7)} over 7 days. {usgs.tempTrend7 > 0 ? 'Water is moving toward spawn trigger temperature.' : 'Water cooling \u2014 spawn activity may slow.'}
+      </div>}
+    </div>}
+
+    {/* 7-DAY GAGE HEIGHT TREND */}
+    {usgs?.gages7?.length > 0 && <div className="card">
+      <div className="card-title">{"\uD83D\uDCCF"} 7-Day Lake Level (Gage Height) Trend</div>
+      <div className="temp-chart">
+        {(() => {
+          const avgs = usgs.gages7.map(x => x.avg);
+          const maxG = Math.max(...avgs);
+          const minG = Math.min(...avgs);
+          const range = maxG - minG;
+          return usgs.gages7.map((g, i) => {
+            const pct = range < 0.05 ? 50 : 15 + ((g.avg - minG) / range) * 80;
+            const isLast = i === usgs.gages7.length - 1;
+            return <div className="temp-bar-wrap" key={i}>
+              <div className="temp-bar-val" style={isLast ? {color:'var(--accent)',fontWeight:700} : {}}>{g.avg.toFixed(2)} ft</div>
+              <div className="temp-bar-area">
+                <div className="temp-bar" style={{height:`${pct}%`, background:isLast ? 'var(--accent)' : '#5c9ed6'}}></div>
+              </div>
+              <div className="temp-bar-label">{g.day}</div>
+            </div>;
+          });
+        })()}
+      </div>
+      {gageStatus && <div className={`fw-card ${gageStatus.cls}`} style={{marginTop:10}}>
+        <div className="fw-card-title">{"\uD83E\uDDED"} Lake Level Status: {gageStatus.label}</div>
+        <div className="fw-card-body">
+          Current level: {usgs.gage.toFixed(2)} ft. 24hr {fmtSigned(usgs.gageTrend24, ' ft')}, 7day {fmtSigned(usgs.gageTrend7, ' ft')}. {gageStatus.note}
+        </div>
+      </div>}
+    </div>}
+
+    {/* 7-DAY FLOW TREND */}
+    {usgs?.flows7?.length > 0 && <div className="card">
+      <div className="card-title">{"\uD83D\uDCA7"} 7-Day Flow Trend</div>
+      <div className="temp-chart">
+        {(() => {
+          const avgs = usgs.flows7.map(x => x.avg);
+          const maxF = Math.max(...avgs);
+          const minF = Math.min(...avgs);
+          const range = maxF - minF;
+          return usgs.flows7.map((f, i) => {
+            const pct = range < 50 ? 50 : 15 + ((f.avg - minF) / range) * 80;
+            const isLast = i === usgs.flows7.length - 1;
+            return <div className="temp-bar-wrap" key={i}>
+              <div className="temp-bar-val" style={isLast ? {color:'var(--green)',fontWeight:700} : {}}>{f.avg.toLocaleString()}</div>
+              <div className="temp-bar-area">
+                <div className="temp-bar" style={{height:`${pct}%`, background:isLast ? 'var(--green)' : '#72b58a'}}></div>
+              </div>
+              <div className="temp-bar-label">{f.day}</div>
+            </div>;
+          });
+        })()}
+      </div>
+      {flowStatus && <div className={`fw-card ${flowStatus.cls}`} style={{marginTop:10}}>
+        <div className="fw-card-title">{"\uD83C\uDF0A"} Flow Meaning: {flowStatus.label}</div>
+        <div className="fw-card-body">
+          Current flow: {usgs.flow.toLocaleString()} cfs. 24hr {fmtSigned(usgs.flowTrend24, ' cfs')}, 7day {fmtSigned(usgs.flowTrend7, ' cfs')}. {flowStatus.note}
+        </div>
       </div>}
     </div>}
 
