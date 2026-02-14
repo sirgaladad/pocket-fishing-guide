@@ -137,7 +137,7 @@ This is a passion project built for fellow Arkansas anglers. If Pocket Fishing G
 
 - Sharing it with other anglers
 - Reporting issues or suggesting features on [GitHub](https://github.com/sirgaladad/pocket-fishing-guide/issues)
-- Supporting development via [Ko-fi](https://ko-fi.com/sirgaladad) (coming soon)
+- Supporting development via [Ko-fi](https://ko-fi.com/coreytheideaguy) (coming soon)
 
 ---
 
