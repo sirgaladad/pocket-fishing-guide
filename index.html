@@ -1353,15 +1353,15 @@ function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
             });
           })()}
         </div>
-        {gageStatus && <div className={`fw-card ${gageStatus.cls}`} style={{marginTop:10}}>
-          <div className="fw-card-title">{"\uD83E\uDDED"} Lake Level Status: {gageStatus.label}</div>
-          <div className="fw-card-body">
-            {usgs.currentPowerPool !== null
-              ? <>Current power pool: {usgs.currentPowerPool.toFixed(2)} ft. Top flood pool: {usgs.topFloodPool !== null ? `${usgs.topFloodPool.toFixed(2)} ft` : 'n/a'}. {usgs.feetBelowFloodPool !== null ? `${usgs.feetBelowFloodPool.toFixed(2)} ft below flood pool.` : ''} </>
-              : <>Current level: {usgs.gage.toFixed(2)} ft. </>}
+      {gageStatus && <div className={`fw-card ${gageStatus.cls}`} style={{marginTop:10}}>
+        <div className="fw-card-title">{"\uD83E\uDDED"} Lake Level Status: {gageStatus.label}</div>
+        <div className="fw-card-body">
+            {Number.isFinite(usgs?.currentPowerPool)
+              ? <>Current power pool: {usgs.currentPowerPool.toFixed(2)} ft. Top flood pool: {Number.isFinite(usgs?.topFloodPool) ? `${usgs.topFloodPool.toFixed(2)} ft` : 'n/a'}. {Number.isFinite(usgs?.feetBelowFloodPool) ? `${usgs.feetBelowFloodPool.toFixed(2)} ft below flood pool.` : ''} </>
+              : <>Current level: {Number.isFinite(usgs?.gage) ? `${usgs.gage.toFixed(2)} ft.` : 'n/a'} </>}
             24hr {fmtSigned(usgs.gageTrend24, ' ft')}, 7day {fmtSigned(usgs.gageTrend7, ' ft')}. {gageStatus.note}
-          </div>
-        </div>}
+        </div>
+      </div>}
       </> : <div className="fw-card note">
         <div className="fw-card-title">{"\u26A0"} Lake Level Status: Data Unavailable</div>
         <div className="fw-card-body">
