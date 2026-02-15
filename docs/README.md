@@ -11,6 +11,9 @@ This directory contains product and technical documentation for the Pocket Fishi
 - **[SCOPING-BODY-OF-WATER-SELECTOR.md](./SCOPING-BODY-OF-WATER-SELECTOR.md)** - Technical scoping document for Body of Water selector enhancement (Issue #8). Includes feasibility analysis, backlog tasks, risk assessment, and prioritization recommendations.
 - **[USACE-LAKE-LEVEL-INTEGRATION-TRACKER.md](./USACE-LAKE-LEVEL-INTEGRATION-TRACKER.md)** - Tracking document for Corps lake-level/release integration coverage, workflow implementation, and remaining endpoint discovery work.
 - **[FEEDBACK-WORKFLOW.md](./FEEDBACK-WORKFLOW.md)** - Evaluation of the current feedback process and a new agentic workflow for capturing, triaging, prioritizing, and learning from user feedback.
+- **[BUG-FIX-EVALUATION-FEEDBACK-TEMPLATE.md](./BUG-FIX-EVALUATION-FEEDBACK-TEMPLATE.md)** - Comprehensive evaluation of feedback template conflict bug fix (Issues #24, #30, #40).
+- **[BUG-FIX-EVALUATION-SUMMARY.md](./BUG-FIX-EVALUATION-SUMMARY.md)** - Quick reference for feedback template bug fix evaluation.
+- **[GIT-ALIGNMENT-FIX.md](./GIT-ALIGNMENT-FIX.md)** - Documentation for git repository configuration fix.
 
 ## Document Types
 
