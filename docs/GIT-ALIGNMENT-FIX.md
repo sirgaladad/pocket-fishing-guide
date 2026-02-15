@@ -45,7 +45,7 @@ git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 Executed `git fetch --unshallow` to retrieve the complete repository history.
 
 **Result:**
-- Repository now has full history (83 commits instead of 2)
+- Repository now has full history (84 commits instead of 2)
 - `.git/shallow` file removed
 - `git rev-parse --is-shallow-repository` now returns `false`
 - Full commit graph is now visible
@@ -75,7 +75,7 @@ $ git rev-parse --is-shallow-repository
 false
 
 $ git log --oneline --all | wc -l
-83
+84
 ```
 
 ## Benefits
