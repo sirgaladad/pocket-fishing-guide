@@ -10,6 +10,7 @@ This directory contains product and technical documentation for the Pocket Fishi
 - **[ISSUE-8-RESPONSE-TEMPLATE.md](./ISSUE-8-RESPONSE-TEMPLATE.md)** - Response template for Issue #8 user feedback.
 - **[SCOPING-BODY-OF-WATER-SELECTOR.md](./SCOPING-BODY-OF-WATER-SELECTOR.md)** - Technical scoping document for Body of Water selector enhancement (Issue #8). Includes feasibility analysis, backlog tasks, risk assessment, and prioritization recommendations.
 - **[USACE-LAKE-LEVEL-INTEGRATION-TRACKER.md](./USACE-LAKE-LEVEL-INTEGRATION-TRACKER.md)** - Tracking document for Corps lake-level/release integration coverage, workflow implementation, and remaining endpoint discovery work.
+- **[FEEDBACK-WORKFLOW.md](./FEEDBACK-WORKFLOW.md)** - Evaluation of the current feedback process and a new agentic workflow for capturing, triaging, prioritizing, and learning from user feedback.
 
 ## Document Types
 
