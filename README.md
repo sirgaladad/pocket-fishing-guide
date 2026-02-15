@@ -59,6 +59,16 @@ The app fetches live USGS and NWS data automatically. Your browser does the rest
 
 ## How It Works
 
+### Repo Local Structure
+This project is part of a **monorepo structure**:
+- Local directory: `aiprojects/dev/projects`.
+- GitHub repository: [sirgaladad/pocket-fishing-guide](https://github.com/sirgaladad/pocket-fishing-guide).
+
+If contributing or utilizing the code:
+- **Avoid duplicating files or creating redundant structures.**
+- Follow the established project structure and guidelines specified in documentation.
+- Ensure to commit changes with clear and meaningful messages.
+
 ### Water Data
 Live water metrics (temperature, flow, gage height) come from **USGS Water Services**:
 - **Greers Ferry Lake**: Gauge 07075900 (primary)
@@ -74,90 +84,9 @@ Live water metrics (temperature, flow, gage height) come from **USGS Water Servi
 No API key required. Data refreshes on app load and updates every 5–15 minutes.
 
 **Note**: Not all gauges provide real-time water temperature. Where USGS temp data is unavailable, the app provides comprehensive fishing intelligence, access information, and seasonal guidance. Future updates will integrate additional data sources (USACE, AGFC) for complete coverage.
-
-### Weather Forecasts
-7-day outlooks powered by **NWS API** (weather.gov). No API key needed.
-
-### Fishing Phases
-Each species has 6 fishing phases, each triggered by water temperature ranges:
-- Water temps drive fish behavior
-- Each phase gets tailored lure picks and tactics
-- Pro tips provide local context
-
-### Preference Persistence
-Your selected water body and species are saved in your browser via localStorage. Come back tomorrow and the app remembers your last selection — no more defaulting to Lake Maumelle every visit.
-
 ---
 
-## Tech Stack
-
-- **React 18** via unpkg CDN
-- **Babel Standalone** for JSX transpilation (browser-based)
-- **Google Fonts** (Inter typeface)
-- **USGS Water Services API** (free, real-time)
-- **NWS Weather API** (free, 7-day)
-- **GitHub Pages** for hosting
-- **No build tools, npm, or backend required**
-
-Everything runs in the browser. One HTML file. Zero dependencies to install.
-
----
-
-## API Credits
-
-This app relies on two fantastic free, public APIs:
-
-### USGS Water Services
-[waterservices.usgs.gov](https://waterservices.usgs.gov/)  
-Provides real-time water temperature, discharge (flow), and gage height data. No API key required. Data is public domain.
-
-### National Weather Service (NWS)
-[api.weather.gov](https://api.weather.gov/)  
-7-day forecasts for any location in the US. No API key required. Public service.
-
-Thank you to these agencies for maintaining public data infrastructure that makes apps like this possible.
-
----
-
-## Roadmap
-
-See [ROADMAP.md](ROADMAP.md) for planned features, current focus, and future water bodies.
-
----
-
-## Contributing
-
-Found a bug? Have a lure recommendation? Want to help cover another river?  
-See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute.
-
----
-
-## Support
-
-This is a passion project built for fellow Arkansas anglers. If Pocket Fishing Guide helps you catch more fish, consider:
-
-- Sharing it with other anglers
-- Reporting issues or suggesting features on [GitHub](https://github.com/sirgaladad/pocket-fishing-guide/issues)
-- Supporting development via [Ko-fi](https://ko-fi.com/coreytheideaguy) (coming soon)
-
----
-
-## License
-
-MIT License. See [LICENSE](LICENSE) for details.
-
----
-
-## Built With
-
-- Real-world fishing knowledge from Arkansas water bodies
-- Free public APIs from USGS and NWS
-- React and modern web standards
-- A passion for fishing and good software
-
----
-
-**Tight lines and tight code.**  
-Built by an Arkansas angler who believes fishing intel should be simple, fast, and free.
-
-For questions or just fishing talk, open an issue or reach out on GitHub.
+## Contributing Tips
+When working on updates:
+- Review GitHub action logs if the workflow triggers duplicate files unexpectantly.
+- AI Agents today, possibly future updates to be in place.
