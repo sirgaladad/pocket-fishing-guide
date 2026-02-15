@@ -33,8 +33,10 @@ Capture compact but actionable fields:
 
 ### Stage 1 — Capture
 1. User submits structured feedback in-app.
-2. App opens prefilled GitHub issue with standardized template.
-3. Payload is copied to clipboard as backup.
+2. If the user has GitHub, the app opens a prefilled issue pinned to `feedback.md` so GitHub does not inject unrelated bug/feature template text that can overwrite user narrative.
+3. If the user does not have GitHub, they can copy the same structured payload and share it through a non-GitHub channel; fields remain machine-parseable for agentic scoping.
+4. Payload is copied to clipboard as backup in both flows.
+5. If the popup is blocked, fallback to same-window navigation with the same prefilled URL.
 
 ### Stage 2 — Triage (daily or on new issue)
 Use a lightweight triage agent/human checklist:

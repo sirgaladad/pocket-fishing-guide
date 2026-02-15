@@ -1185,10 +1185,15 @@ function FeedbackWidget({ water, species, tab }) {
   const [problem, setProblem] = React.useState("");
   const [outcome, setOutcome] = React.useState("");
   const [contact, setContact] = React.useState("");
-  const [toast, setToast] = React.useState(false);
+  const [toastMsg, setToastMsg] = React.useState("");
 
   const categories = ["Bug", "Feature Idea", "Fishing Tip", "General"];
   const journeyStages = ["Planning a trip", "Checking live conditions", "Selecting a water body", "Looking for tactics", "Sharing a report", "Other"];
+
+  const flashToast = (msg) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(""), 3200);
+  };
 
   const applySentimentDefaults = (nextSentiment, nextScore = score) => {
     setSentiment(nextSentiment);
@@ -1229,20 +1234,18 @@ function FeedbackWidget({ water, species, tab }) {
     return parts.join("\n\n");
   };
 
-  const submit = async () => {
-    const body = buildBody();
-    const summary = problem || "User feedback";
-    const sentimentTag = sentiment ? `${sentiment[0].toUpperCase() + sentiment.slice(1)} ` : "";
-    const ratingTag = score ? `${score}/5 • ` : "";
-    const issueUrl = "https://github.com/sirgaladad/pocket-fishing-guide/issues/new?"
-      + "labels=" + encodeURIComponent("user-feedback")
-      + "&title=" + encodeURIComponent(`[Feedback] ${cat || "General"}: ${sentimentTag}${ratingTag}${summary.slice(0, 55)}`)
-      + "&body=" + encodeURIComponent(body);
+  const buildPortablePayload = () => {
+    const summary = (problem || "User feedback").slice(0, 70);
+    return [
+      `Title: [Feedback] ${cat || "General"}: ${summary}`,
+      "",
+      buildBody(),
+      "",
+      "Share this text with the maintainer if you do not use GitHub. Structured fields are preserved for agentic scoping.",
+    ].join("\n");
+  };
 
-    const popup = window.open(issueUrl, "_blank", "noopener,noreferrer");
-    if (!popup) window.location.href = issueUrl;
-
-    try { await navigator.clipboard.writeText(body); } catch {}
+  const clearForm = () => {
     setOpen(false);
     setCat("");
     setPriority("Medium");
@@ -1253,7 +1256,35 @@ function FeedbackWidget({ water, species, tab }) {
     setProblem("");
     setOutcome("");
     setContact("");
-    setToast(true); setTimeout(() => setToast(false), 3000);
+  };
+
+  const submit = async () => {
+    const body = buildBody();
+    const summary = problem || "User feedback";
+    const sentimentTag = sentiment ? `${sentiment[0].toUpperCase() + sentiment.slice(1)} ` : "";
+    const ratingTag = score ? `${score}/5 • ` : "";
+    const issueUrl = "https://github.com/sirgaladad/pocket-fishing-guide/issues/new?"
+      + "template=" + encodeURIComponent("feedback.md")
+      + "&labels=" + encodeURIComponent("user-feedback")
+      + "&title=" + encodeURIComponent(`[Feedback] ${cat || "General"}: ${sentimentTag}${ratingTag}${summary.slice(0, 55)}`)
+      + "&body=" + encodeURIComponent(body);
+
+    const popup = window.open(issueUrl, "_blank", "noopener,noreferrer");
+    if (!popup) window.location.href = issueUrl;
+
+    try { await navigator.clipboard.writeText(body); } catch {}
+    clearForm();
+    flashToast("✅ GitHub draft opened. Thanks for your feedback!");
+  };
+
+  const copyWithoutGithub = async () => {
+    try {
+      await navigator.clipboard.writeText(buildPortablePayload());
+      clearForm();
+      flashToast("✅ Feedback copied. Share it with the maintainer (no GitHub account needed).");
+    } catch {
+      flashToast("⚠️ Couldn\'t access clipboard. Please try again and copy manually.");
+    }
   };
 
   return <>
@@ -1311,16 +1342,17 @@ function FeedbackWidget({ water, species, tab }) {
         </details>
 
         <p className="fb-hint">Best practice: include one specific example (screen + action + result). That helps us ship fixes faster.</p>
+        <p className="fb-hint" style={{marginTop:'-6px'}}>No GitHub account? Use <strong>Copy for non-GitHub intake</strong> to keep the same structured fields used in agentic scoping.</p>
         <div className="fb-actions">
           <button className="fb-submit" onClick={() => setOpen(false)} style={{background:'var(--bg3)',color:'var(--text2)'}}>Cancel</button>
+          <button className="fb-submit" onClick={copyWithoutGithub} disabled={!cat || !problem.trim()} style={{background:'rgba(33,150,243,.18)',color:'var(--blue)',border:'1px solid rgba(33,150,243,.35)'}}>Copy for non-GitHub intake</button>
           <button className="fb-submit primary" onClick={submit} disabled={!cat || !problem.trim()}>Send Feedback</button>
         </div>
       </div>
     </div>}
-    {toast && <div className="fb-toast">✅ Thanks for your feedback!</div>}
+    {toastMsg && <div className="fb-toast">{toastMsg}</div>}
   </>;
 }
-
 function DashboardTab({ usgs, forecast, water, species, onRefresh, loading }) {
   if (loading) return <Loading />;
   const w = WATERS[water];
