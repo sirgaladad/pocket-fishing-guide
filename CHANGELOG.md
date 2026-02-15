@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Feedback form template conflict that prevented custom feedback submission (Issues #24, #30, #40)
+
 ## [0.3.0] - 2026-02-14
 
 ### Added
