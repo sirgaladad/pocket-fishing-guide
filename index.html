@@ -253,6 +253,14 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .fb-cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .fb-cat{padding:6px 12px;border-radius:16px;font-size:11px;font-weight:600;border:1.5px solid var(--bg3);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all .2s;font-family:inherit}
 .fb-cat.active{border-color:var(--accent);color:var(--accent);background:rgba(0,188,212,.08)}
+.fb-sentiment{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.fb-sentiment-btn{padding:9px 8px;border-radius:12px;font-size:11px;font-weight:700;border:1.5px solid var(--bg3);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all .2s;font-family:inherit}
+.fb-sentiment-btn.active.good{border-color:var(--green);color:var(--green);background:rgba(76,175,80,.12)}
+.fb-sentiment-btn.active.bad{border-color:var(--red);color:var(--red);background:rgba(244,67,54,.12)}
+.fb-sentiment-btn.active.other{border-color:var(--blue);color:var(--blue);background:rgba(33,150,243,.12)}
+.fb-scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px}
+.fb-scale-btn{padding:8px 0;border-radius:10px;border:1.5px solid var(--bg3);background:var(--bg3);color:var(--text2);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+.fb-scale-btn.active{border-color:var(--accent);background:rgba(0,188,212,.12);color:var(--accent)}
 .fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .fb-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.7px;font-weight:700;margin-bottom:5px}
 .fb-select{width:100%;background:var(--bg);border:1px solid var(--bg3);border-radius:var(--radius-sm);padding:9px;color:var(--text2);font-family:inherit;font-size:12px}
@@ -1165,6 +1173,8 @@ function FeedbackWidget({ water, species, tab }) {
   const [cat, setCat] = React.useState("");
   const [priority, setPriority] = React.useState("Medium");
   const [journey, setJourney] = React.useState("Planning a trip");
+  const [sentiment, setSentiment] = React.useState("");
+  const [score, setScore] = React.useState(0);
   const [goal, setGoal] = React.useState("");
   const [problem, setProblem] = React.useState("");
   const [outcome, setOutcome] = React.useState("");
@@ -1174,8 +1184,37 @@ function FeedbackWidget({ water, species, tab }) {
   const categories = ["Bug", "Feature Idea", "Fishing Tip", "General"];
   const journeyStages = ["Planning a trip", "Checking live conditions", "Selecting a water body", "Looking for tactics", "Sharing a report", "Other"];
 
+  const applySentimentDefaults = (nextSentiment, nextScore = score) => {
+    setSentiment(nextSentiment);
+    if (nextSentiment === "good") {
+      if (!cat) setCat("General");
+      setPriority(nextScore >= 4 ? "Low" : "Medium");
+      return;
+    }
+    if (nextSentiment === "bad") {
+      if (!cat) setCat("Bug");
+      setPriority(nextScore <= 2 ? "High" : "Medium");
+      return;
+    }
+    if (nextSentiment === "other") {
+      if (!cat) setCat("General");
+      setPriority("Medium");
+    }
+  };
+
+  const applyScoreDefaults = (nextScore) => {
+    setScore(nextScore);
+    if (sentiment === "good") {
+      setPriority(nextScore >= 4 ? "Low" : "Medium");
+    } else if (sentiment === "bad") {
+      setPriority(nextScore <= 2 ? "High" : "Medium");
+    }
+  };
+
   const buildBody = () => {
     const parts = [];
+    parts.push(`**Review Type:** ${sentiment ? sentiment[0].toUpperCase() + sentiment.slice(1) : "Not selected"}`);
+    parts.push(`**Rating:** ${score ? `${score}/5` : "Not provided"}`);
     parts.push(`**Category:** ${cat || "General"}`);
     parts.push(`**Priority:** ${priority}`);
     parts.push(`**Journey Stage:** ${journey}`);
@@ -1184,23 +1223,29 @@ function FeedbackWidget({ water, species, tab }) {
     if (problem) parts.push(`**What happened?**\n${problem}`);
     if (outcome) parts.push(`**What should have happened?**\n${outcome}`);
     if (contact) parts.push(`**Follow-up (optional):** ${contact}`);
-    parts.push(`\n---\n_Sent from Pocket Fishing Guide v1.0_`);
+    parts.push(`\n---\n_Sent from Pocket Fishing Guide v1.1 feedback flow_`);
     return parts.join("\n\n");
   };
 
   const submit = async () => {
     const body = buildBody();
     const summary = problem || goal || outcome || "User feedback";
+    const sentimentTag = sentiment ? sentiment[0].toUpperCase() + sentiment.slice(1) : "General";
     const issueUrl = "https://github.com/sirgaladad/pocket-fishing-guide/issues/new?"
       + "labels=" + encodeURIComponent("user-feedback")
-      + "&title=" + encodeURIComponent(`[Feedback] ${cat || "General"} (${priority}): ${summary.slice(0, 60)}`)
+      + "&title=" + encodeURIComponent(`[Feedback] ${sentimentTag} ${score ? `${score}/5` : ""} • ${cat || "General"}: ${summary.slice(0, 50)}`)
       + "&body=" + encodeURIComponent(body);
-    window.open(issueUrl, "_blank");
+
+    const popup = window.open(issueUrl, "_blank", "noopener,noreferrer");
+    if (!popup) window.location.href = issueUrl;
+
     try { await navigator.clipboard.writeText(body); } catch {}
     setOpen(false);
     setCat("");
     setPriority("Medium");
     setJourney("Planning a trip");
+    setSentiment("");
+    setScore(0);
     setGoal("");
     setProblem("");
     setOutcome("");
@@ -1208,12 +1253,33 @@ function FeedbackWidget({ water, species, tab }) {
     setToast(true); setTimeout(() => setToast(false), 3000);
   };
 
+  const problemPlaceholder = sentiment === "good"
+    ? "What did you like most? (required)"
+    : sentiment === "bad"
+      ? "What went wrong? (required)"
+      : "What happened? (required)";
+
   return <>
     <button className="fb-fab" onClick={() => setOpen(!open)} title="Send Feedback">{"\uD83D\uDCEC"}</button>
     {open && <div className="fb-overlay" onClick={() => setOpen(false)}>
       <div className="fb-modal" onClick={e => e.stopPropagation()}>
         <h3 style={{margin:'0 0 4px',fontSize:16}}>Help Us Improve {"\uD83C\uDFA3"}</h3>
-        <p style={{margin:'0 0 12px',fontSize:12,color:'var(--text3)'}}>No thumbs needed — give quick, actionable feedback in under a minute.</p>
+        <p style={{margin:'0 0 12px',fontSize:12,color:'var(--text3)'}}>Quick thumbs + 1-5 rating keeps this fast and helps us prioritize fixes and improvements.</p>
+
+        <div className="fb-label">Review Type</div>
+        <div className="fb-sentiment">
+          <button className={`fb-sentiment-btn ${sentiment === 'good' ? 'active good' : ''}`} onClick={() => applySentimentDefaults('good')}>{"\uD83D\uDC4D"} Good</button>
+          <button className={`fb-sentiment-btn ${sentiment === 'bad' ? 'active bad' : ''}`} onClick={() => applySentimentDefaults('bad')}>{"\uD83D\uDC4E"} Bad</button>
+          <button className={`fb-sentiment-btn ${sentiment === 'other' ? 'active other' : ''}`} onClick={() => applySentimentDefaults('other')}>{"\uD83D\uDE10"} Other</button>
+        </div>
+
+        <div className="fb-label">Rating (1-5)</div>
+        <div className="fb-scale">
+          {[1,2,3,4,5].map(n => (
+            <button key={n} className={`fb-scale-btn ${score === n ? 'active' : ''}`} onClick={() => applyScoreDefaults(n)}>{n}</button>
+          ))}
+        </div>
+
         <div className="fb-cats">
           {categories.map(c => <button key={c} className={`fb-cat ${cat === c ? 'active' : ''}`} onClick={() => setCat(c)}>{c}</button>)}
         </div>
@@ -1235,13 +1301,13 @@ function FeedbackWidget({ water, species, tab }) {
           </div>
         </div>
         <textarea className="fb-text" placeholder="What were you trying to do?" value={goal} onChange={e => setGoal(e.target.value)} rows={2} />
-        <textarea className="fb-text" placeholder="What happened? (required)" value={problem} onChange={e => setProblem(e.target.value)} rows={3} />
+        <textarea className="fb-text" placeholder={problemPlaceholder} value={problem} onChange={e => setProblem(e.target.value)} rows={3} />
         <textarea className="fb-text" placeholder="What should have happened?" value={outcome} onChange={e => setOutcome(e.target.value)} rows={2} />
         <input className="fb-text" placeholder="Optional follow-up email or handle" value={contact} onChange={e => setContact(e.target.value)} style={{minHeight:'auto',resize:'none'}} />
-        <p className="fb-hint">Tip: Include device + browser details if you're reporting a bug.</p>
+        <p className="fb-hint">Best practice: choose a review type + score, then add one concrete example so we can act on it quickly.</p>
         <div className="fb-actions">
           <button className="fb-submit" onClick={() => setOpen(false)} style={{background:'var(--bg3)',color:'var(--text2)'}}>Cancel</button>
-          <button className="fb-submit primary" onClick={submit} disabled={!problem.trim()}>Send Feedback</button>
+          <button className="fb-submit primary" onClick={submit} disabled={!problem.trim() || !sentiment || score === 0}>Send Feedback</button>
         </div>
       </div>
     </div>}
