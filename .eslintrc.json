@@ -1,1 +1,23 @@
-{\n  "env": {\n    "browser": true,\n    "es2021": true,\n  },\n  "extends": [\n    "eslint:recommended",\n    "plugin:react/recommended"\n  ],\n  "parserOptions": {\n    "ecmaFeatures": {\n      "jsx": true\n    },\n    "ecmaVersion": 12,\n    "sourceType": "module"\n  },\n  "plugins": ["react"],\n  "rules": {\n    "semi": ["error", "always"],\n    "quotes": ["error", "double"],\n    "indent": ["error", 2]\n  }\n}
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react"],
+  "rules": {
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"],
+    "indent": ["error", 2]
+  }
+}
