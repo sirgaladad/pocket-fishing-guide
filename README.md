@@ -42,7 +42,7 @@ A lightweight, mobile-first **fishing intelligence app** for Arkansas waters. Bu
 ### Option 1: Visit the Live Site
 Head to [sirgaladad.github.io/pocket-fishing-guide/](https://sirgaladad.github.io/pocket-fishing-guide/) and start fishing smarter right now.
 
-**Publishing updates to the live site:** The live site is served from the **pocket-fishing-guide** repo, not AiProjects. See [docs/DEPLOY-LIVE-SITE.md](docs/DEPLOY-LIVE-SITE.md) for how to sync and deploy.
+**Publishing updates to the live site:** The live site is served from this repo. See [docs/DEPLOY-LIVE-SITE.md](docs/DEPLOY-LIVE-SITE.md) for deployment steps.
 
 ### Option 2: Run Locally
 1. Clone or download this repo
@@ -61,10 +61,10 @@ The app fetches live USGS and NWS data automatically. Your browser does the rest
 
 ## How It Works
 
-### Repo Local Structure
-This project is part of a **monorepo structure**:
-- Local directory: `aiprojects/dev/projects`.
-- GitHub repository: [sirgaladad/pocket-fishing-guide](https://github.com/sirgaladad/pocket-fishing-guide).
+### Repository
+This project is a standalone repository:
+- Local directory: `~/dev/pocket-fishing-guide`
+- GitHub repository: [sirgaladad/pocket-fishing-guide](https://github.com/sirgaladad/pocket-fishing-guide)
 
 If contributing or utilizing the code:
 - **Avoid duplicating files or creating redundant structures.**
@@ -90,5 +90,5 @@ No API key required. Data refreshes on app load and updates every 5–15 minutes
 
 ## Contributing Tips
 When working on updates:
-- Review GitHub action logs if the workflow triggers duplicate files unexpectantly.
-- AI Agents today, possibly future updates to be in place.
+- Review GitHub Actions logs if a deployment behaves unexpectedly.
+- Keep docs and feature behavior aligned with the latest merged state.

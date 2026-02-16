@@ -4,9 +4,9 @@ The **live site** is at **[sirgaladad.github.io/pocket-fishing-guide/](https://s
 
 ## ✅ **Your Current Setup: Direct Deployment**
 
-**Good news:** Your AiProjects setup is **already configured for direct deployment!**
+**Good news:** this repository is configured for direct deployment.
 
-- **This folder** (`dev/projects/pocket-fishing-guide/`) is connected to `https://github.com/sirgaladad/pocket-fishing-guide.git`
+- **This folder** (`~/dev/pocket-fishing-guide/`) is connected to `https://github.com/sirgaladad/pocket-fishing-guide.git`
 - **Pushing to this repo automatically deploys to the live site** via GitHub Actions
 - **No separate sync step needed** - you're working directly in the deployment source
 
@@ -17,7 +17,7 @@ The **live site** is at **[sirgaladad.github.io/pocket-fishing-guide/](https://s
 ### 1. Make your changes and commit
 
 ```bash
-cd /Users/talewatersandtides/AiProjects/dev/projects/pocket-fishing-guide
+cd /Users/talewatersandtides/dev/pocket-fishing-guide
 # Make your edits to index.html or other files
 git add -A
 git status   # review changes
@@ -81,7 +81,7 @@ gh run list --repo sirgaladad/pocket-fishing-guide --limit 1
 
 | Action | Result |
 |--------|--------|
-| Push to **this folder** (AiProjects) | ✅ Automatically deploys to live site via GitHub Actions |
+| Push to this repo (`pocket-fishing-guide`) | ✅ Automatically deploys to live site via GitHub Actions |
 | Wait 5-20 minutes | ⏱️ GitHub Pages CDN propagates new content |
 | Hard refresh browser | 🔄 Bypass browser cache to see latest content |
 
