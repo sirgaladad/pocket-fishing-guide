@@ -41,6 +41,8 @@ A lightweight, mobile-first **fishing intelligence app** for Arkansas waters. Bu
 ### Option 1: Visit the Live Site
 Head to [sirgaladad.github.io/pocket-fishing-guide/](https://sirgaladad.github.io/pocket-fishing-guide/) and start fishing smarter right now.
 
+**Publishing updates to the live site:** The live site is served from the **pocket-fishing-guide** repo, not AiProjects. See [docs/DEPLOY-LIVE-SITE.md](docs/DEPLOY-LIVE-SITE.md) for how to sync and deploy.
+
 ### Option 2: Run Locally
 1. Clone or download this repo
 2. Open `index.html` in your browser
