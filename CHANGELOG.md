@@ -5,6 +5,19 @@ All notable changes to the Pocket Fishing Guide will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [0.3.0] - 2026-02-14
+
+### Added
+- **Visual Dashboard Overview** tab: Compare all 9 Arkansas water bodies at a glance with live conditions (Issue #14)
+- Temperature heat map indicators showing GO/SCOUT/WAIT status for each water body
+- Spawn phase progress badges displaying current fishing phase per species
+- 7-day temperature trend sparklines for quick visual comparison
+- One-tap navigation from overview cards to detailed water body dashboards
+- Visual legend explaining temperature status indicators
+- Comprehensive documentation of Issue #14 resolution
+
 ## [0.2.0] - 2026-02-14
 
 ### Added
