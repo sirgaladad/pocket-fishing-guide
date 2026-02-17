@@ -71,6 +71,36 @@ If contributing or utilizing the code:
 - Follow the established project structure and guidelines specified in documentation.
 - Ensure to commit changes with clear and meaningful messages.
 
+#### Checking Branch Alignment
+To check if your local branch is in sync with the remote repository, use the alignment check script:
+
+```bash
+# Check current branch
+./scripts/check-branch-alignment.sh
+
+# Check a specific branch (e.g., main)
+./scripts/check-branch-alignment.sh main
+```
+
+The script will:
+- Fetch the latest remote refs
+- Compare local and remote commits
+- Report if your branch is up-to-date, ahead, behind, or diverged
+- Show the number of commits ahead or behind
+- Provide suggested actions (pull, push, or merge)
+
+**Quick command sequence for manual checks:**
+```bash
+# Fetch remote refs
+git fetch origin main
+
+# Check alignment status
+git rev-list --left-right --count origin/main...main
+
+# Output format: <behind> <ahead>
+# Example: "0 3" means you are 3 commits ahead, 0 behind
+```
+
 ### Water Data
 Live water metrics (temperature, flow, gage height) come from **USGS Water Services**:
 - **Greers Ferry Lake**: Gauge 07075900 (primary)
