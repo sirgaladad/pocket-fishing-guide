@@ -37,6 +37,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .header h1 span{color:var(--accent)}
 .header-sub{font-size:11px;color:var(--text2);margin-top:2px}
 .header-meta{font-size:10px;color:var(--text3);margin-top:2px;line-height:1.4}
+.header-stale{color:#f59e0b;font-size:10px;margin-top:2px}
 .water-sel{display:flex;gap:6px;margin-top:10px;justify-content:center;flex-wrap:wrap}
 .water-btn{background:var(--bg3);border:1.5px solid transparent;color:var(--text2);font-size:11px;font-weight:600;padding:6px 12px;border-radius:20px;cursor:pointer;transition:all .2s;font-family:inherit}
 .water-btn.active{background:rgba(0,188,212,.15);border-color:var(--accent);color:var(--accent)}
@@ -1235,7 +1236,8 @@ function FeedbackWidget({ water, species, tab }) {
     const sentimentTag = sentiment ? `${sentiment[0].toUpperCase() + sentiment.slice(1)} ` : "";
     const ratingTag = score ? `${score}/5 • ` : "";
     const issueUrl = "https://github.com/sirgaladad/pocket-fishing-guide/issues/new?"
-      + "labels=" + encodeURIComponent("user-feedback")
+      + "template=" + encodeURIComponent("feedback.md")
+      + "&labels=" + encodeURIComponent("user-feedback")
       + "&title=" + encodeURIComponent(`[Feedback] ${cat || "General"}: ${sentimentTag}${ratingTag}${summary.slice(0, 55)}`)
       + "&body=" + encodeURIComponent(body);
 
@@ -2141,6 +2143,8 @@ function App() {
   const timestamp = usgs?.lastReading
     ? usgs.lastReading.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}) + ' \u00B7 ' + usgs.lastReading.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit',timeZoneName:'short'})
     : null;
+  const isStale = usgs?.lastReading && (Date.now() - usgs.lastReading.getTime()) > 24 * 60 * 60 * 1000;
+  const hoursStale = usgs?.lastReading ? Math.round((Date.now() - usgs.lastReading.getTime()) / (60 * 60 * 1000)) : null;
 
   const speciesLabel = species === "cr" ? "Crappie" : "White Bass";
   const speciesIcon = species === "cr" ? "\uD83D\uDC1F" : "\uD83D\uDC1F";
@@ -2149,12 +2153,13 @@ function App() {
     <div className="header">
       <div className="brand">Tale Waters & Tides</div>
       <h1>{speciesIcon} {speciesLabel} <span>Intelligence</span></h1>
-      <div className="header-sub">{w.name}, AR {"\u00B7"} {w.usgs ? 'USGS Live Data' : 'Live Data'}</div>
+      <div className="header-sub">{w.name}, AR {"\u00B7"} {w.usgs ? (isStale ? 'USGS Data' : 'USGS Live Data') : 'Live Data'}</div>
       <div className="species-toggle">
         <button className={`species-btn ${species === "wb" ? "active-wb" : ""}`} onClick={() => setSpecies("wb")}>White Bass</button>
         <button className={`species-btn ${species === "cr" ? "active-cr" : ""}`} onClick={() => setSpecies("cr")}>Crappie</button>
       </div>
       {timestamp && <div className="header-meta">Data: {timestamp}<br/>{w.usgs ? `USGS #${w.usgs}` : 'No USGS gauge'} {"\u00B7"} NWS {w.nwsOffice}</div>}
+      {isStale && hoursStale && <div className="header-stale">{"\u26A0\uFE0F"} Gauge offline ~{hoursStale}h {"\u00B7"} showing last known reading</div>}
       <div className="water-sel">
         {Object.entries(WATERS).map(([key, wd]) =>
           <button key={key} className={`water-btn ${water === key ? 'active' : ''}`} onClick={() => setWater(key)}>{wd.short}</button>
