@@ -1729,6 +1729,9 @@
         border-color: var(--spawn);
         box-shadow: inset 0 0 0 1px rgba(255, 107, 53, 0.2);
       }
+      .station-item.primary.warmest {
+        border-color: var(--accent);
+      }
       .station-item-head {
         display: flex;
         justify-content: space-between;
@@ -3747,8 +3750,8 @@
 
         const primary =
           stationReadings.find((s) => s.primaryConfigured && hasTempReading(s)) ||
-          stationReadings.find((s) => hasTempReading(s)) ||
           stationReadings.find((s) => s.primaryConfigured && hasAnyReading(s)) ||
+          stationReadings.find((s) => hasTempReading(s)) ||
           stationReadings.find((s) => hasAnyReading(s)) ||
           stationReadings.find((s) => s.primaryConfigured) ||
           stationReadings[0];
@@ -4244,19 +4247,23 @@
         const stationReadings = usgs?.stationReadings || [];
         const hasMultiStations = stationReadings.length > 1;
         const stationTemps = stationReadings.filter((s) => Number.isFinite(s.temp));
-        const warmestStation =
+        const warmestCandidate =
           stationTemps.length > 0
             ? [...stationTemps].sort((a, b) => b.temp - a.temp)[0]
-            : null;
-        const warmestDelta =
-          warmestStation && Number.isFinite(temp)
-            ? +(warmestStation.temp - temp).toFixed(1)
             : null;
         const primaryStationId =
           usgs?.id ||
           stationReadings.find((s) => s.primary)?.id ||
           stationReadings[0]?.id ||
           null;
+        const warmestStation =
+          warmestCandidate && warmestCandidate.id !== primaryStationId
+            ? warmestCandidate
+            : null;
+        const warmestDelta =
+          warmestStation && Number.isFinite(temp)
+            ? +(warmestStation.temp - temp).toFixed(1)
+            : null;
 
         // Quick Glance verdict
         const dayPeriods0 = (forecast || [])
@@ -4610,17 +4617,17 @@
                         (cool-to-warm).
                       </div>
                     )}
-                    {warmestStation && (
+                    {warmestStation && warmestDelta > 0 && (
                       <div className="warmest-callout">
                         <div className="warmest-callout-title">
                           🔥 Warmest spot now: {warmestStation.label}
                         </div>
                         <div className="warmest-callout-detail">
-                          {warmestStation.temp.toFixed(1)}°F
-                          {Number.isFinite(warmestDelta) && warmestDelta > 0
-                            ? ` (${warmestDelta > 0 ? '+' : ''}${warmestDelta.toFixed(1)}°F vs current station)`
-                            : ''}
-                          . New users can treat this as the spring spawn lead indicator and scout this area first.
+                          {`${warmestStation.temp.toFixed(1)}°F${
+                            Number.isFinite(warmestDelta) && warmestDelta > 0
+                              ? ` (+${warmestDelta.toFixed(1)}°F vs current station)`
+                              : ''
+                          }. New users can treat this as the spring spawn lead indicator and scout this area first.`}
                         </div>
                       </div>
                     )}
@@ -5046,7 +5053,7 @@
                       if (bHas) return 1;
                       return 0;
                     })
-                    .map((s, idx) => {
+                    .map((s) => {
                     const delta =
                       Number.isFinite(s.temp) && Number.isFinite(temp)
                         ? +(s.temp - temp).toFixed(1)
