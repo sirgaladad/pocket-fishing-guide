@@ -4210,6 +4210,7 @@
         const stationReadings = usgs?.stationReadings || [];
         const hasMultiStations = stationReadings.length > 1;
         const primaryStationId =
+          usgs?.id ||
           stationReadings.find((s) => s.primary)?.id ||
           stationReadings[0]?.id ||
           null;
