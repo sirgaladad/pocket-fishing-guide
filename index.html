@@ -1763,6 +1763,24 @@
           short: 'Greers Ferry',
           type: 'lake',
           usgs: '07075900',
+          usgsStations: [
+            {
+              id: '07076000',
+              label: 'Little Red River near Heber Springs',
+              note: 'Primary downstream signal for Greers Ferry releases.',
+              primary: true,
+            },
+            {
+              id: '07075000',
+              label: 'Middle Fork Little Red at Shirley',
+              note: 'Upstream tributary trend to compare inflow conditions.',
+            },
+            {
+              id: '07075900',
+              label: 'Greers Ferry legacy station',
+              note: 'Legacy station retained for continuity when data is available.',
+            },
+          ],
           lat: 35.5597,
           lon: -92.1526,
           nwsOffice: 'LZK',
@@ -1885,6 +1903,11 @@
               id: '072632966',
               label: 'Lake Maumelle at Hwy 10',
               note: 'Often slightly warmer in upper-lake transition water.',
+            },
+            {
+              id: '072632995',
+              label: 'Lake Maumelle at Natural Steps',
+              note: 'Additional lake-point check near the west side of the reservoir.',
             },
           ],
           nwsOffice: 'LZK',
@@ -2016,6 +2039,24 @@
           short: 'White R.',
           type: 'river',
           usgs: '07074500',
+          usgsStations: [
+            {
+              id: '07074500',
+              label: 'White River at Newport',
+              note: 'Primary reference station for White River conditions.',
+              primary: true,
+            },
+            {
+              id: '07061000',
+              label: 'White River at Batesville',
+              note: 'Upstream comparison point for staged flow shifts.',
+            },
+            {
+              id: '07074850',
+              label: 'White River near Augusta',
+              note: 'Downstream check for trend confirmation.',
+            },
+          ],
           lat: 35.6056,
           lon: -91.2131,
           nwsOffice: 'LZK',
@@ -2111,6 +2152,24 @@
           short: 'Buffalo R.',
           type: 'river',
           usgs: '07056000',
+          usgsStations: [
+            {
+              id: '07055660',
+              label: 'Buffalo River at Ponca',
+              note: 'Primary upper-river station with live temperature support.',
+              primary: true,
+            },
+            {
+              id: '07056000',
+              label: 'Buffalo River near St. Joe',
+              note: 'Legacy mid-river gauge retained for historical continuity.',
+            },
+            {
+              id: '07056700',
+              label: 'Buffalo River near Harriet',
+              note: 'Lower-river comparison for flow progression.',
+            },
+          ],
           lat: 35.9828,
           lon: -92.7464,
           nwsOffice: 'LZK',
@@ -2207,6 +2266,24 @@
           short: 'Bull Shoals',
           type: 'lake',
           usgs: '07054500',
+          usgsStations: [
+            {
+              id: '07054501',
+              label: 'White River at Bull Shoals Dam',
+              note: 'Primary temperature signal near dam tailwater.',
+              primary: true,
+            },
+            {
+              id: '07054527',
+              label: 'White River below Bull Shoals Dam',
+              note: 'Downstream validation for changing release patterns.',
+            },
+            {
+              id: '07054500',
+              label: 'Bull Shoals legacy station',
+              note: 'Legacy station retained for continuity when active.',
+            },
+          ],
           lat: 36.37,
           lon: -92.5825,
           nwsOffice: 'SGF',
@@ -2312,6 +2389,24 @@
           short: 'Beaver',
           type: 'lake',
           usgs: '07049000',
+          usgsStations: [
+            {
+              id: '07049000',
+              label: 'War Eagle Creek near Hindsville',
+              note: 'Primary station with full temperature/flow/gage coverage.',
+              primary: true,
+            },
+            {
+              id: '07049691',
+              label: 'White River at Beaver Dam',
+              note: 'Tailwater temperature comparison near the dam.',
+            },
+            {
+              id: '07049698',
+              label: 'White River near Busch',
+              note: 'Additional downstream stage reference.',
+            },
+          ],
           lat: 36.3722,
           lon: -93.9731,
           nwsOffice: 'TSA',
@@ -2419,6 +2514,24 @@
           short: 'Ouachita',
           type: 'lake',
           usgs: '07357000',
+          usgsStations: [
+            {
+              id: '07356000',
+              label: 'Ouachita River near Mount Ida',
+              note: 'Primary upstream flow/gage signal for Lake Ouachita basin.',
+              primary: true,
+            },
+            {
+              id: '07358501',
+              label: 'Ouachita River at Carpenter Dam',
+              note: 'Downstream stage comparison point.',
+            },
+            {
+              id: '07357000',
+              label: 'Lake Ouachita legacy station',
+              note: 'Legacy station retained for continuity when active.',
+            },
+          ],
           lat: 34.5553,
           lon: -93.19,
           nwsOffice: 'LZK',
@@ -2602,6 +2715,24 @@
           short: 'DeGray',
           type: 'lake',
           usgs: '07360200',
+          usgsStations: [
+            {
+              id: '07359610',
+              label: 'Caddo River near Caddo Gap',
+              note: 'Primary inflow indicator for DeGray tributary conditions.',
+              primary: true,
+            },
+            {
+              id: '07359700',
+              label: 'Caddo River at Glenwood',
+              note: 'Downstream comparison for Caddo arm trend.',
+            },
+            {
+              id: '07360200',
+              label: 'DeGray legacy station',
+              note: 'Legacy station retained for continuity when active.',
+            },
+          ],
           lat: 34.1958,
           lon: -93.0694,
           nwsOffice: 'LZK',
@@ -3581,9 +3712,16 @@
           };
         });
 
+        const hasAnyReading = (station) =>
+          Number.isFinite(station?.temp) ||
+          Number.isFinite(station?.flow) ||
+          Number.isFinite(station?.gage) ||
+          station?.lastReading;
+
         const primary =
+          stationReadings.find((s) => s.primary && hasAnyReading(s)) ||
+          stationReadings.find((s) => hasAnyReading(s)) ||
           stationReadings.find((s) => s.primary) ||
-          stationReadings.find((s) => Number.isFinite(s.temp)) ||
           stationReadings[0];
 
         const numericTemps = stationReadings
