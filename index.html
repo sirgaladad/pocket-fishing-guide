@@ -3748,8 +3748,16 @@
           station?.lastReading;
         const hasTempReading = (station) => Number.isFinite(station?.temp);
 
-        const primary =
+        const configuredPrimary =
+          stationReadings.find((s) => s.primaryConfigured) || stationReadings[0];
+
+        const tempPrimary =
           stationReadings.find((s) => s.primaryConfigured && hasTempReading(s)) ||
+          stationReadings.find((s) => hasTempReading(s)) ||
+          null;
+
+        const summaryStation =
+          tempPrimary ||
           stationReadings.find((s) => s.primaryConfigured && hasAnyReading(s)) ||
           stationReadings.find((s) => hasTempReading(s)) ||
           stationReadings.find((s) => hasAnyReading(s)) ||
@@ -3758,7 +3766,8 @@
 
         const normalizedReadings = stationReadings.map((station) => ({
           ...station,
-          primary: station.id === primary?.id,
+          primary: station.id === configuredPrimary?.id,
+          summary: station.id === summaryStation?.id,
         }));
 
         const numericTemps = normalizedReadings
@@ -3771,8 +3780,23 @@
               )
             : null;
 
+        let tempSourceNote = summaryStation?.tempSourceNote || null;
+        if (
+          tempPrimary &&
+          configuredPrimary &&
+          tempPrimary.id !== configuredPrimary.id &&
+          !hasTempReading(configuredPrimary)
+        ) {
+          tempSourceNote = `Using ${tempPrimary.label} live temperature because the configured primary station (${configuredPrimary.label}) does not report parameter 00010.`;
+        }
+
         return {
-          ...primary,
+          ...summaryStation,
+          primaryStationId: configuredPrimary?.id || null,
+          primaryStationLabel: configuredPrimary?.label || null,
+          summaryStationId: summaryStation?.id || null,
+          summaryStationLabel: summaryStation?.label || null,
+          tempSourceNote,
           stationReadings: normalizedReadings,
           tempSpread,
         };
@@ -4252,6 +4276,7 @@
             ? [...stationTemps].sort((a, b) => b.temp - a.temp)[0]
             : null;
         const primaryStationId =
+          usgs?.summaryStationId ||
           usgs?.id ||
           stationReadings.find((s) => s.primary)?.id ||
           stationReadings[0]?.id ||
@@ -5071,6 +5096,9 @@
                           {isWarmest && (
                             <span className="station-badge warmest">WARMEST</span>
                           )}
+                          {s.summary && (
+                            <span className="station-badge">DASHBOARD</span>
+                          )}
                           {s.primary && (
                             <span className="station-badge">PRIMARY</span>
                           )}
@@ -5099,7 +5127,7 @@
                           s.id !== primaryStationId && (
                             <div className="station-delta">
                               {delta > 0 ? '+' : ''}
-                              {delta.toFixed(1)}°F vs primary station
+                              {delta.toFixed(1)}°F vs dashboard temp
                             </div>
                           )}
                         {s.note && (
