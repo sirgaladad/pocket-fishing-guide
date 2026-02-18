@@ -345,6 +345,24 @@
       .gauge-actions {
         margin-top: 8px;
       }
+      .warmest-callout {
+        margin-top: 8px;
+        padding: 8px;
+        border-radius: 8px;
+        background: rgba(255, 107, 53, 0.12);
+        border: 1px solid rgba(255, 107, 53, 0.35);
+      }
+      .warmest-callout-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--spawn);
+      }
+      .warmest-callout-detail {
+        margin-top: 2px;
+        font-size: 10px;
+        color: var(--text2);
+        line-height: 1.45;
+      }
       .gauge-compare-btn {
         background: var(--bg3);
         border: 1px solid var(--bg4);
@@ -1707,6 +1725,10 @@
       .station-item.primary {
         border-color: var(--accent);
       }
+      .station-item.warmest {
+        border-color: var(--spawn);
+        box-shadow: inset 0 0 0 1px rgba(255, 107, 53, 0.2);
+      }
       .station-item-head {
         display: flex;
         justify-content: space-between;
@@ -1727,6 +1749,10 @@
         background: rgba(0, 188, 212, 0.12);
         color: var(--accent);
         letter-spacing: 0.3px;
+      }
+      .station-badge.warmest {
+        background: rgba(255, 107, 53, 0.15);
+        color: var(--spawn);
       }
       .station-values {
         display: flex;
@@ -3707,7 +3733,7 @@
             id: station.id,
             label: station.label || `USGS #${station.id}`,
             note: station.note || null,
-            primary: !!station.primary,
+            primaryConfigured: !!station.primary,
             ...payload,
           };
         });
@@ -3717,14 +3743,22 @@
           Number.isFinite(station?.flow) ||
           Number.isFinite(station?.gage) ||
           station?.lastReading;
+        const hasTempReading = (station) => Number.isFinite(station?.temp);
 
         const primary =
-          stationReadings.find((s) => s.primary && hasAnyReading(s)) ||
+          stationReadings.find((s) => s.primaryConfigured && hasTempReading(s)) ||
+          stationReadings.find((s) => hasTempReading(s)) ||
+          stationReadings.find((s) => s.primaryConfigured && hasAnyReading(s)) ||
           stationReadings.find((s) => hasAnyReading(s)) ||
-          stationReadings.find((s) => s.primary) ||
+          stationReadings.find((s) => s.primaryConfigured) ||
           stationReadings[0];
 
-        const numericTemps = stationReadings
+        const normalizedReadings = stationReadings.map((station) => ({
+          ...station,
+          primary: station.id === primary?.id,
+        }));
+
+        const numericTemps = normalizedReadings
           .map((s) => s.temp)
           .filter((t) => Number.isFinite(t));
         const tempSpread =
@@ -3736,7 +3770,7 @@
 
         return {
           ...primary,
-          stationReadings,
+          stationReadings: normalizedReadings,
           tempSpread,
         };
       }
@@ -4209,6 +4243,15 @@
           Number.isFinite(v) ? `${v > 0 ? '+' : ''}${v}${suffix}` : 'n/a';
         const stationReadings = usgs?.stationReadings || [];
         const hasMultiStations = stationReadings.length > 1;
+        const stationTemps = stationReadings.filter((s) => Number.isFinite(s.temp));
+        const warmestStation =
+          stationTemps.length > 0
+            ? [...stationTemps].sort((a, b) => b.temp - a.temp)[0]
+            : null;
+        const warmestDelta =
+          warmestStation && Number.isFinite(temp)
+            ? +(warmestStation.temp - temp).toFixed(1)
+            : null;
         const primaryStationId =
           usgs?.id ||
           stationReadings.find((s) => s.primary)?.id ||
@@ -4565,6 +4608,20 @@
                       <div className="temp-source-note">
                         Cross-station spread: {usgs.tempSpread.toFixed(1)}°F
                         (cool-to-warm).
+                      </div>
+                    )}
+                    {warmestStation && (
+                      <div className="warmest-callout">
+                        <div className="warmest-callout-title">
+                          🔥 Warmest spot now: {warmestStation.label}
+                        </div>
+                        <div className="warmest-callout-detail">
+                          {warmestStation.temp.toFixed(1)}°F
+                          {Number.isFinite(warmestDelta) && warmestDelta > 0
+                            ? ` (${warmestDelta > 0 ? '+' : ''}${warmestDelta.toFixed(1)}°F vs current station)`
+                            : ''}
+                          . New users can treat this as the spring spawn lead indicator and scout this area first.
+                        </div>
                       </div>
                     )}
                     {hasMultiStations && (
@@ -4980,20 +5037,33 @@
                     explain location differences like cooler dam water versus
                     warmer upstream sections.
                   </div>
-                  {stationReadings.map((s, idx) => {
+                  {[...stationReadings]
+                    .sort((a, b) => {
+                      const aHas = Number.isFinite(a.temp);
+                      const bHas = Number.isFinite(b.temp);
+                      if (aHas && bHas) return b.temp - a.temp;
+                      if (aHas) return -1;
+                      if (bHas) return 1;
+                      return 0;
+                    })
+                    .map((s, idx) => {
                     const delta =
                       Number.isFinite(s.temp) && Number.isFinite(temp)
                         ? +(s.temp - temp).toFixed(1)
                         : null;
+                    const isWarmest = warmestStation && s.id === warmestStation.id;
                     return (
                       <div
-                        className={`station-item ${s.primary ? 'primary' : ''}`}
+                        className={`station-item ${s.primary ? 'primary' : ''} ${isWarmest ? 'warmest' : ''}`}
                         key={s.id}
                       >
                         <div className="station-item-head">
                           <div className="station-item-name">
                             {s.label} · #{s.id}
                           </div>
+                          {isWarmest && (
+                            <span className="station-badge warmest">WARMEST</span>
+                          )}
                           {s.primary && (
                             <span className="station-badge">PRIMARY</span>
                           )}
