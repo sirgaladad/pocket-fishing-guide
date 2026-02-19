@@ -62,31 +62,32 @@ jobs:
               issue_number: issue.number,
               title: newTitle
             });
+            console.log('Title updated to: ' + newTitle);
 
             const lines = [
               '## 🟢 Green Team AI Triage Report',
               '',
               '| Field | Value |',
               '|-------|-------|',
-              '| Classification | ' + classification + ' |',
-              '| Impact | ' + impact + ' |',
-              '| Effort | ' + effort + ' |',
-              '| Parent Epic | None |',
-              '| Recommendation | ' + recommendation + ' |',
+              '| 🏷️ Classification | ' + classification + ' |',
+              '| 📊 Impact | ' + impact + ' |',
+              '| 📏 Effort | ' + effort + ' |',
+              '| 🔗 Parent Epic | None |',
+              '| ✅ Recommendation | ' + recommendation + ' |',
               '',
               '---',
-              'Triaged by Green Team AI. Handing off to Red Team.',
+              '*Triaged automatically by 🟢 Green Team AI. Handing off to Red Team for human review.*',
               '',
-              '@sirgaladad - ready for human review.'
+              '@sirgaladad — this issue is classified and ready for your review.'
             ];
-            const comment = lines.join('\n');
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue.number,
-              body: comment
+              body: lines.join('\n')
             });
+            console.log('Green Team comment posted.');
 
             try {
               await github.rest.issues.removeLabel({
@@ -95,7 +96,7 @@ jobs:
                 issue_number: issue.number,
                 name: 'user-feedback'
               });
-            } catch(e) {}
+            } catch(e) { console.log('Remove label: ' + e.message); }
 
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
@@ -103,5 +104,46 @@ jobs:
               issue_number: issue.number,
               labels: ['red-team']
             });
+            console.log('Labels swapped: user-feedback -> red-team');
+
+            const PROJECT_ID = 'PVT_kwHOCLdsC84BPLJ1';
+            const STATUS_FIELD_ID = 'PVTSSF_lAHOCLdsC84BPLJ1zg9qSU4';
+            const HUMAN_REVIEW_OPTION_ID = '118dfdf1';
+
+            const itemQuery = await github.graphql(`
+              query {
+                repository(owner: "${context.repo.owner}", name: "${context.repo.repo}") {
+                  issue(number: ${issue.number}) {
+                    projectItems(first: 10) {
+                      nodes {
+                        id
+                        project { id title }
+                      }
+                    }
+                  }
+                }
+              }
+            `);
+
+            const projectItems = itemQuery.repository.issue.projectItems.nodes;
+            const targetItem = projectItems.find(n => n.project.id === PROJECT_ID);
+
+            if (targetItem) {
+              await github.graphql(`
+                mutation {
+                  updateProjectV2ItemFieldValue(input: {
+                    projectId: "${PROJECT_ID}"
+                    itemId: "${targetItem.id}"
+                    fieldId: "${STATUS_FIELD_ID}"
+                    value: { singleSelectOptionId: "${HUMAN_REVIEW_OPTION_ID}" }
+                  }) {
+                    projectV2Item { id }
+                  }
+                }
+              `);
+              console.log('Project board status updated to Human Review');
+            } else {
+              console.log('Issue not yet on project board, skipping status update');
+            }
 
             console.log('Triage complete for issue #' + issue.number);
