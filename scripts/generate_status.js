@@ -47,7 +47,10 @@ function main() {
     }
   } catch (err) {
     usaceStatus = "error";
-    console.warn("Could not read usace_levels.json:", err.message);
+    console.warn(
+      "Could not read usace_levels.json:",
+      String(err && err.message ? err.message : err)
+    );
   }
 
   // ── Overall status ───────────────────────────────────────────────────────
