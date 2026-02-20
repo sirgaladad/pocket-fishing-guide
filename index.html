@@ -1061,6 +1061,82 @@
         border-bottom: none;
       }
 
+      /* ─── REGULATORY INFO / SOURCES (collapsible) ─── */
+      .reg-info-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: none;
+        border: none;
+        width: 100%;
+        padding: 0;
+        cursor: pointer;
+        color: var(--text2);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .reg-info-toggle:hover {
+        color: var(--text);
+      }
+      .reg-info-chevron {
+        font-size: 10px;
+        transition: transform 0.2s;
+      }
+      .reg-info-chevron.open {
+        transform: rotate(180deg);
+      }
+      .reg-info-body {
+        margin-top: 10px;
+      }
+      .reg-zone-badge {
+        display: inline-block;
+        background: var(--bg3);
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        letter-spacing: 0.3px;
+      }
+      .reg-info-note {
+        font-size: 12px;
+        color: var(--text2);
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+      .reg-sources-title {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: var(--text3);
+        margin-bottom: 6px;
+      }
+      .reg-source-link {
+        display: block;
+        color: var(--accent);
+        font-size: 12px;
+        padding: 4px 0;
+        text-decoration: none;
+        border-bottom: 1px solid var(--bg3);
+      }
+      .reg-source-link:last-child {
+        border-bottom: none;
+      }
+      .reg-source-link:hover {
+        color: var(--accent-lt);
+        text-decoration: underline;
+      }
+      .reg-last-updated {
+        margin-top: 8px;
+        font-size: 10px;
+        color: var(--text3);
+        text-align: right;
+      }
+
       /* ─── PRO TIPS ─── */
       .tip-cat {
         margin-bottom: 14px;
@@ -1861,6 +1937,24 @@
               restrictions: 'Corps fees apply. Popular summer destination.',
             },
           ],
+          regulationZone: 'AGFC Zone 5 — North-Central AR (USACE-SWL)',
+          regulatoryNotes:
+            'US Army Corps permit required for commercial activities. No-wake zones within 200 yards of all boat ramps. Greers Ferry is jointly managed by USACE Little Rock District and AGFC.',
+          sources: [
+            {
+              label: 'AGFC Fishing Regulations',
+              url: 'https://www.agfc.com/en/fishing/getting-started/fishing-regulations/',
+            },
+            {
+              label: 'USACE Greers Ferry Lake',
+              url: 'https://www.swl.usace.army.mil/Missions/Recreation/Lakes/Greers-Ferry-Lake/',
+            },
+            {
+              label: 'USGS Gauge — Little Red River near Heber Springs',
+              url: 'https://waterdata.usgs.gov/monitoring-location/07076000/',
+            },
+          ],
+          lastUpdated: '2025-02-01',
           regs: [
             'Arkansas state fishing license required',
             'White bass: 25 daily limit, no minimum length',
@@ -1988,6 +2082,24 @@
               restrictions: 'Roadside parking. Respect CAW watershed rules.',
             },
           ],
+          regulationZone: 'AGFC Zone 6 — Central AR (CAW Watershed)',
+          regulatoryNotes:
+            'Central Arkansas Water (CAW) watershed rules apply on top of AGFC regulations. No swimming, wading, water skiing, or personal watercraft anywhere on the lake. Boats ≥14ft required east of Hwy 10 bridge. Restricted no-fishing zone near dam.',
+          sources: [
+            {
+              label: 'AGFC Fishing Regulations',
+              url: 'https://www.agfc.com/en/fishing/getting-started/fishing-regulations/',
+            },
+            {
+              label: 'Central Arkansas Water — Lake Maumelle',
+              url: 'https://carkw.com/recreation/lake-maumelle/',
+            },
+            {
+              label: 'USGS Gauge — Lake Maumelle at Dam',
+              url: 'https://waterdata.usgs.gov/monitoring-location/07263300/',
+            },
+          ],
+          lastUpdated: '2025-02-01',
           regs: [
             'Municipal water supply \u2014 Central Arkansas Water (CAW) rules apply ON TOP of AGFC regs',
             'NO swimming, wading, water skiing, jet skis, or personal watercraft \u2014 anywhere on lake',
@@ -2131,6 +2243,24 @@
               restrictions: 'Standard AGFC regulations.',
             },
           ],
+          regulationZone: 'AGFC Zone 5 — North-Central AR (USACE-SWL)',
+          regulatoryNotes:
+            'Dam generation schedules directly affect wading safety. Trout regulations apply in cold-water sections below Bull Shoals and Norfork dams — a separate trout license is required. No trotlines within 100 yards of any dam.',
+          sources: [
+            {
+              label: 'AGFC Fishing Regulations',
+              url: 'https://www.agfc.com/en/fishing/getting-started/fishing-regulations/',
+            },
+            {
+              label: 'USACE Bull Shoals Lake & White River',
+              url: 'https://www.swl.usace.army.mil/Missions/Recreation/Lakes/Bull-Shoals-Lake/',
+            },
+            {
+              label: 'USGS Gauge — White River below Bull Shoals Dam',
+              url: 'https://waterdata.usgs.gov/monitoring-location/07054501/',
+            },
+          ],
+          lastUpdated: '2025-02-01',
           regs: [
             'Arkansas state fishing license required',
             'White bass: 25 daily limit, no minimum length',
@@ -2245,6 +2375,24 @@
               restrictions: 'Check water levels. No facilities.',
             },
           ],
+          regulationZone: 'NPS + AGFC — Northern AR (National Park)',
+          regulatoryNotes:
+            'National Park Service regulations apply within park boundaries and supersede some state rules. Arkansas fishing license is still required. No motorized boats in NPS-designated sections. Pack in/pack out — Leave No Trace rules enforced.',
+          sources: [
+            {
+              label: 'NPS Buffalo National River — Fishing',
+              url: 'https://www.nps.gov/buff/planyourvisit/fishing.htm',
+            },
+            {
+              label: 'AGFC Fishing Regulations',
+              url: 'https://www.agfc.com/en/fishing/getting-started/fishing-regulations/',
+            },
+            {
+              label: 'USGS Gauge — Buffalo River at Ponca',
+              url: 'https://waterdata.usgs.gov/monitoring-location/07055660/',
+            },
+          ],
+          lastUpdated: '2025-02-01',
           regs: [
             'National Park Service regulations apply \u2014 NPS fishing permit may be required',
             'Arkansas state fishing license required in addition to NPS rules',
@@ -2360,6 +2508,24 @@
               restrictions: 'Corps day-use fees. Busy in summer.',
             },
           ],
+          regulationZone: 'AGFC Zone 1 — North AR (USACE-SWL, AR/MO border lake)',
+          regulatoryNotes:
+            'Trout fishery below the dam is jointly managed by AGFC and Missouri Department of Conservation — a separate trout license is required. Bull Shoals State Park has additional Arkansas State Parks rules. Missouri license may be required for fishing in Missouri waters.',
+          sources: [
+            {
+              label: 'AGFC Fishing Regulations',
+              url: 'https://www.agfc.com/en/fishing/getting-started/fishing-regulations/',
+            },
+            {
+              label: 'USACE Bull Shoals Lake',
+              url: 'https://www.swl.usace.army.mil/Missions/Recreation/Lakes/Bull-Shoals-Lake/',
+            },
+            {
+              label: 'USGS Gauge — White River at Bull Shoals Dam',
+              url: 'https://waterdata.usgs.gov/monitoring-location/07054501/',
+            },
+          ],
+          lastUpdated: '2025-02-01',
           regs: [
             'Arkansas state fishing license required',
             'White bass: 25 daily limit, no minimum length',
@@ -2485,6 +2651,24 @@
                 'Gravel ramp. Check water levels before launching larger boats.',
             },
           ],
+          regulationZone: 'AGFC Zone 1 — Northwest AR (USACE-SWL)',
+          regulatoryNotes:
+            'Striped bass special regulations apply — 2 daily bag limit, 20″ minimum length. USACE Prairie Creek Recreation Area is heavily used and may require early arrival on weekends. War Eagle Creek above Hindsville may have special designation — verify with AGFC.',
+          sources: [
+            {
+              label: 'AGFC Fishing Regulations',
+              url: 'https://www.agfc.com/en/fishing/getting-started/fishing-regulations/',
+            },
+            {
+              label: 'USACE Beaver Lake',
+              url: 'https://www.swl.usace.army.mil/Missions/Recreation/Lakes/Beaver-Lake/',
+            },
+            {
+              label: 'USGS Gauge — War Eagle Creek near Hindsville',
+              url: 'https://waterdata.usgs.gov/monitoring-location/07049000/',
+            },
+          ],
+          lastUpdated: '2025-02-01',
           regs: [
             'Arkansas state fishing license required',
             'White bass: 25 daily limit, no minimum length',
@@ -2608,6 +2792,24 @@
               restrictions: 'Private facility. Launch fees apply.',
             },
           ],
+          regulationZone: 'AGFC Zone 7 — West-Central AR (USACE-SWL)',
+          regulatoryNotes:
+            'Walleye special regulations may apply — verify current limits with AGFC before fishing. Lake Ouachita State Park has additional Arkansas State Parks access rules. Striped bass regulations are subject to change — always confirm with AGFC.',
+          sources: [
+            {
+              label: 'AGFC Fishing Regulations',
+              url: 'https://www.agfc.com/en/fishing/getting-started/fishing-regulations/',
+            },
+            {
+              label: 'USACE Lake Ouachita',
+              url: 'https://www.swl.usace.army.mil/Missions/Recreation/Lakes/Lake-Ouachita/',
+            },
+            {
+              label: 'USGS Gauge — Ouachita River near Mount Ida',
+              url: 'https://waterdata.usgs.gov/monitoring-location/07356000/',
+            },
+          ],
+          lastUpdated: '2025-02-01',
           regs: [
             'Arkansas state fishing license required',
             'White bass: 25 daily limit, no minimum length (verify current AGFC regs)',
@@ -2694,6 +2896,20 @@
                 'Limited facilities. AGFC regs apply. Renovation may affect access.',
             },
           ],
+          regulationZone: 'AGFC — Central AR (AGFC-managed lake)',
+          regulatoryNotes:
+            'Lake Conway is an AGFC-owned and managed lake with special regulations, including no bow fishing. Ongoing renovation may restrict access — always verify current status and ramp availability with AGFC before visiting.',
+          sources: [
+            {
+              label: 'AGFC Lake Conway Page',
+              url: 'https://www.agfc.com/en/fishing/lake-and-stream-reports/lake-conway/',
+            },
+            {
+              label: 'AGFC Fishing Regulations',
+              url: 'https://www.agfc.com/en/fishing/getting-started/fishing-regulations/',
+            },
+          ],
+          lastUpdated: '2025-02-01',
           regs: [
             'Arkansas state fishing license required',
             'Crappie: 15 daily limit, 10" minimum length (verify current AGFC regs)',
@@ -2810,6 +3026,24 @@
                 'Gravel roads to access. Check Corps website for seasonal closures.',
             },
           ],
+          regulationZone: 'AGFC Zone 7 — Southwest AR (USACE-SWL)',
+          regulatoryNotes:
+            'DeGray Lake Resort State Park has additional Arkansas State Parks access and camping rules. Trophy largemouth bass fishery — voluntary catch-and-release of large bass is encouraged by AGFC. Fish attractor GPS coordinates available from AGFC.',
+          sources: [
+            {
+              label: 'AGFC Fishing Regulations',
+              url: 'https://www.agfc.com/en/fishing/getting-started/fishing-regulations/',
+            },
+            {
+              label: 'USACE DeGray Lake',
+              url: 'https://www.swl.usace.army.mil/Missions/Recreation/Lakes/DeGray-Lake/',
+            },
+            {
+              label: 'USGS Gauge — Caddo River near Caddo Gap',
+              url: 'https://waterdata.usgs.gov/monitoring-location/07359610/',
+            },
+          ],
+          lastUpdated: '2025-02-01',
           regs: [
             'Arkansas state fishing license required',
             'White bass: 25 daily limit, no minimum length (verify AGFC regs)',
@@ -5548,6 +5782,57 @@
         );
       }
 
+      function RegulatoryInfoSection({ water }) {
+        const w = WATERS[water];
+        const [open, setOpen] = useState(false);
+        if (!w.regulationZone && !w.regulatoryNotes && !w.sources) return null;
+        return (
+          <div className="card">
+            <button
+              className="reg-info-toggle"
+              onClick={() => setOpen((o) => !o)}
+              aria-expanded={open}
+            >
+              <span>{'\uD83D\uDCCB'} Regulatory Info &amp; Sources</span>
+              <span className={`reg-info-chevron${open ? ' open' : ''}`}>
+                {'\u25BC'}
+              </span>
+            </button>
+            {open && (
+              <div className="reg-info-body">
+                {w.regulationZone && (
+                  <div className="reg-zone-badge">{w.regulationZone}</div>
+                )}
+                {w.regulatoryNotes && (
+                  <div className="reg-info-note">{w.regulatoryNotes}</div>
+                )}
+                {w.sources && w.sources.length > 0 && (
+                  <>
+                    <div className="reg-sources-title">Official Sources</div>
+                    {w.sources.map((s, i) => (
+                      <a
+                        key={i}
+                        className="reg-source-link"
+                        href={s.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {'\uD83D\uDD17'} {s.label}
+                      </a>
+                    ))}
+                  </>
+                )}
+                {w.lastUpdated && (
+                  <div className="reg-last-updated">
+                    Data last reviewed: {w.lastUpdated}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      }
+
       function AccessTab({ water }) {
         const w = WATERS[water];
         return (
@@ -5619,6 +5904,9 @@
                 </div>
               ))}
             </div>
+
+            {/* REGULATORY INFO & SOURCES (collapsible) */}
+            <RegulatoryInfoSection water={water} />
           </>
         );
       }
