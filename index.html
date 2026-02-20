@@ -5740,15 +5740,20 @@
         const calendarData = species === 'cr' ? CR_CALENDAR : WB_CALENDAR;
         const w = WATERS[water];
         const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
-        const _waterType = w?.type || 'lake';
+        const LURE_DISPLAY_COUNT = 3;
         const _allPhaseLures = lureMap[phase.name] || Object.values(lureMap)[1];
-        const _matched = _allPhaseLures.filter(
-          (l) =>
-            !l.water_type ||
-            l.water_type === _waterType ||
-            l.water_type === 'both'
+        const _matched = w?.type
+          ? _allPhaseLures.filter(
+              (l) =>
+                !l.water_type ||
+                l.water_type === w.type ||
+                l.water_type === 'both'
+            )
+          : _allPhaseLures;
+        const lures = (_matched.length > 0 ? _matched : _allPhaseLures).slice(
+          0,
+          LURE_DISPLAY_COUNT
         );
-        const lures = _matched.length > 0 ? _matched.slice(0, 3) : _allPhaseLures.slice(0, 3);
 
         // WHERE/WHAT lookup by species
         const WB_WHERE = {
