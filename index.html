@@ -916,6 +916,19 @@
         color: var(--text2);
         line-height: 1.3;
       }
+      .lure-meta {
+        display: flex;
+        gap: 8px;
+        margin-top: 3px;
+        margin-bottom: 2px;
+        font-size: 10px;
+        color: var(--text3);
+      }
+      .lure-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+      }
 
       /* ─── CALENDAR ─── */
       .calendar {
@@ -3074,17 +3087,83 @@
             name: 'White 2" Bass Assassin Curly Shad Grub',
             sub: 'on 1/16oz jighead',
             detail: 'GO-TO. Cast upstream, slow roll with current.',
+            type: 'grub',
+            water_type: 'river',
+            depth_range: '2-8ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=curly+shad+grub+white+bass+river+winter',
+            purchase_link:
+              'https://www.walmart.com/search?q=bass+assassin+curly+shad+grub+white',
           },
           {
             name: '1/8oz White Spinner',
             sub: 'with silver blade',
             detail: 'Backup. Flash triggers reaction strikes in moving water.',
+            type: 'spinner',
+            water_type: 'river',
+            depth_range: '0-4ft',
+            forage_match: 'baitfish',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=white+inline+spinner+white+bass+river',
+            purchase_link:
+              'https://www.walmart.com/search?q=white+inline+spinner+fishing+1%2F8oz',
           },
           {
             name: 'Blue/Orange Belly Rapala',
             sub: 'suspending jerkbait (small)',
             detail:
               'Backup. Deadly in slack water or when fish are holding deep.',
+            type: 'jerkbait',
+            water_type: 'river',
+            depth_range: '3-8ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=rapala+jerkbait+white+bass+winter',
+            purchase_link:
+              'https://www.walmart.com/search?q=rapala+suspending+jerkbait+fishing',
+          },
+          {
+            name: '1/2oz White Slab Spoon',
+            sub: 'vertical jigging over structure',
+            detail:
+              'Lake GO-TO. Drop to 20-30ft on electronics-located schools. Steady lift-drop.',
+            type: 'spoon',
+            water_type: 'lake',
+            depth_range: '20-35ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=jigging+spoon+white+bass+lake+winter',
+            purchase_link:
+              'https://www.walmart.com/search?q=white+slab+spoon+jigging+fishing',
+          },
+          {
+            name: 'Silver Blade Bait 1/4oz',
+            sub: 'flutter on the fall',
+            detail:
+              'Lake backup. Flutter over deep humps and points at 15-30ft. Let it fall on slack line.',
+            type: 'blade_bait',
+            water_type: 'lake',
+            depth_range: '15-30ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=blade+bait+white+bass+lake+winter',
+            purchase_link:
+              'https://www.walmart.com/search?q=blade+bait+silver+fishing+lure+1%2F4oz',
+          },
+          {
+            name: 'White Paddle Tail Swimbait 3"',
+            sub: 'on 1/4oz jighead, slow roll',
+            detail:
+              'Lake option. Slow-roll near thermocline. Match depth to suspended bait on electronics.',
+            type: 'swimbait',
+            water_type: 'lake',
+            depth_range: '15-25ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=swimbait+white+bass+lake+slow+roll',
+            purchase_link:
+              'https://www.walmart.com/search?q=paddle+tail+swimbait+white+3+inch+fishing',
           },
         ],
         'Pre-Spawn Staging': [
@@ -3092,17 +3171,83 @@
             name: 'White 2" Bass Assassin Curly Shad Grub',
             sub: 'on 1/16oz jighead',
             detail: 'GO-TO. Cast upstream, slow roll with current.',
+            type: 'grub',
+            water_type: 'river',
+            depth_range: '2-8ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=curly+shad+grub+white+bass+pre-spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=bass+assassin+curly+shad+grub+white',
           },
           {
             name: '1/8oz White Spinner',
             sub: 'with silver blade',
             detail: 'Backup. Flash triggers reaction strikes in moving water.',
+            type: 'spinner',
+            water_type: 'river',
+            depth_range: '0-4ft',
+            forage_match: 'baitfish',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=white+spinner+white+bass+pre-spawn+river',
+            purchase_link:
+              'https://www.walmart.com/search?q=white+inline+spinner+fishing+1%2F8oz',
           },
           {
             name: 'Blue/Orange Belly Rapala',
             sub: 'suspending jerkbait (small)',
             detail:
               'Backup. Deadly in slack water or when fish are holding deep.',
+            type: 'jerkbait',
+            water_type: 'river',
+            depth_range: '3-8ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=rapala+jerkbait+white+bass+staging',
+            purchase_link:
+              'https://www.walmart.com/search?q=rapala+suspending+jerkbait+fishing',
+          },
+          {
+            name: 'White Shad Crankbait (5-10ft diver)',
+            sub: 'cast to staging points',
+            detail:
+              'Lake GO-TO. Slow-troll or cast along channel edges and secondary points at 5-10ft.',
+            type: 'crankbait',
+            water_type: 'lake',
+            depth_range: '5-10ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=crankbait+white+bass+lake+pre-spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=shad+crankbait+white+bass+fishing',
+          },
+          {
+            name: 'Road Runner Jig 1/8oz',
+            sub: 'chartreuse/white, slow roll',
+            detail:
+              'Lake backup. Slow-roll along creek channel bends at 8-15ft. Steady retrieve.',
+            type: 'jig',
+            water_type: 'lake',
+            depth_range: '8-15ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=road+runner+jig+white+bass+lake',
+            purchase_link:
+              'https://www.walmart.com/search?q=road+runner+jig+white+bass+fishing',
+          },
+          {
+            name: 'White Inline Spinner 1/8oz',
+            sub: 'cast to staging points',
+            detail:
+              'Lake option. Fan cast to windward points as fish stage pre-spawn. Steady retrieve.',
+            type: 'spinner',
+            water_type: 'lake',
+            depth_range: '2-8ft',
+            forage_match: 'baitfish',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=inline+spinner+white+bass+lake+staging',
+            purchase_link:
+              'https://www.walmart.com/search?q=white+inline+spinner+1%2F8oz+fishing',
           },
         ],
         'Spawn Trigger': [
@@ -3110,16 +3255,82 @@
             name: 'White 2" Curly Shad Grub \u2014 1/16oz',
             sub: 'cast upstream in tributaries',
             detail: 'Retrieve with current. Let it tumble naturally.',
+            type: 'grub',
+            water_type: 'river',
+            depth_range: '2-6ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=curly+shad+grub+white+bass+spawn+river',
+            purchase_link:
+              'https://www.walmart.com/search?q=curly+shad+grub+white+fishing+1%2F16oz',
           },
           {
             name: 'Small White Rooster Tail',
             sub: '1/16oz inline spinner',
             detail: 'Fan cast creek mouths. Steady retrieve.',
+            type: 'spinner',
+            water_type: 'river',
+            depth_range: '0-4ft',
+            forage_match: 'baitfish',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=rooster+tail+spinner+white+bass+spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=rooster+tail+spinner+white+1%2F16oz',
           },
           {
             name: '1/8oz White Spinner',
             sub: 'silver blade',
             detail: 'Run parallel to current seams at tributary entrances.',
+            type: 'spinner',
+            water_type: 'river',
+            depth_range: '0-4ft',
+            forage_match: 'baitfish',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=white+spinner+white+bass+spawn+trigger',
+            purchase_link:
+              'https://www.walmart.com/search?q=white+spinner+fishing+lure+1%2F8oz',
+          },
+          {
+            name: 'White Curly Tail Grub 1/8oz',
+            sub: 'cast to backs of coves',
+            detail:
+              'Lake GO-TO. Fish move into creek arms as temps hit 50\u00B0F. Cast to backs of protected coves.',
+            type: 'grub',
+            water_type: 'lake',
+            depth_range: '3-10ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=white+grub+white+bass+lake+spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=white+curly+tail+grub+jig+fishing',
+          },
+          {
+            name: 'Small Inline Spinner White/Silver',
+            sub: 'fan cast cove pockets',
+            detail:
+              'Lake backup. Fan cast creek arm pockets and cove backs. Retrieve past any visible structure.',
+            type: 'spinner',
+            water_type: 'lake',
+            depth_range: '0-6ft',
+            forage_match: 'baitfish',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=inline+spinner+white+bass+cove+lake',
+            purchase_link:
+              'https://www.walmart.com/search?q=white+inline+spinner+fishing+lure',
+          },
+          {
+            name: 'Chrome Kastmaster 1/4oz',
+            sub: 'long cast into cove openings',
+            detail:
+              'Lake option. Long cast to open cove water as fish move through transitions.',
+            type: 'spoon',
+            water_type: 'lake',
+            depth_range: '0-8ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=kastmaster+white+bass+lake+spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=acme+kastmaster+1%2F4oz+chrome',
           },
         ],
         'Peak Spawn': [
@@ -3128,16 +3339,82 @@
             sub: 'inline spinner',
             detail:
               'Cast into current and retrieve steadily. Cover water fast.',
+            type: 'spinner',
+            water_type: 'river',
+            depth_range: '0-3ft',
+            forage_match: 'baitfish',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=rooster+tail+white+bass+peak+spawn+river',
+            purchase_link:
+              'https://www.walmart.com/search?q=rooster+tail+spinner+white+1%2F16oz',
           },
           {
             name: 'White Curly Tail Grub \u2014 1/16oz',
             sub: 'jighead',
             detail: 'Dead drift through runs, then swim out. Deadly technique.',
+            type: 'grub',
+            water_type: 'river',
+            depth_range: '2-6ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=curly+tail+grub+white+bass+spawn+river',
+            purchase_link:
+              'https://www.walmart.com/search?q=white+curly+tail+grub+jighead+fishing',
           },
           {
             name: 'Small Chrome Kastmaster',
             sub: '1/8oz casting spoon',
             detail: 'Long casts into rapids. Let it swing in current.',
+            type: 'spoon',
+            water_type: 'river',
+            depth_range: '0-5ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=kastmaster+spoon+white+bass+spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=acme+kastmaster+chrome+1%2F8oz',
+          },
+          {
+            name: 'White Swimbait 2.5"',
+            sub: 'swim through spawning coves',
+            detail:
+              'Lake GO-TO. Swim through open cove water where fish are active. Match shad size.',
+            type: 'swimbait',
+            water_type: 'lake',
+            depth_range: '0-5ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=swimbait+white+bass+lake+spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=white+swimbait+2.5+inch+fishing',
+          },
+          {
+            name: 'Topwater Walk-The-Dog \u2014 White',
+            sub: 'walk-the-dog surface action',
+            detail:
+              'Lake backup. Surface bites at cove entrances and points during peak spawn chaos.',
+            type: 'topwater',
+            water_type: 'lake',
+            depth_range: '0-2ft',
+            forage_match: 'baitfish',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=topwater+walk+dog+white+bass+lake',
+            purchase_link:
+              'https://www.walmart.com/search?q=topwater+walk+the+dog+white+bass+lure',
+          },
+          {
+            name: 'White Rooster Tail 1/8oz',
+            sub: 'cast to spawning cove structure',
+            detail:
+              'Lake option. Cast along shoreline wood and rock in cove backs. Steady retrieve.',
+            type: 'spinner',
+            water_type: 'lake',
+            depth_range: '0-4ft',
+            forage_match: 'baitfish',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=rooster+tail+white+bass+lake+spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=rooster+tail+spinner+white+bass+fishing',
           },
         ],
         'Post-Spawn': [
@@ -3145,16 +3422,40 @@
             name: 'Small White Crankbait',
             sub: 'shallow diving',
             detail: 'Burn it past creek mouth transitions. Reaction strikes.',
+            type: 'crankbait',
+            water_type: 'both',
+            depth_range: '3-8ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=white+crankbait+white+bass+post+spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=white+shallow+crankbait+fishing+lure',
           },
           {
             name: '1/4oz White Spinner',
             sub: 'silver willow blade',
             detail: 'Cover water along main body shorelines.',
+            type: 'spinner',
+            water_type: 'both',
+            depth_range: '0-5ft',
+            forage_match: 'baitfish',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=white+spinner+white+bass+post+spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=white+spinner+silver+willow+blade+fishing',
           },
           {
             name: 'Topwater \u2014 White Tiny Torpedo',
             sub: 'surface bait',
             detail: 'Early morning surface bites can be explosive post-spawn.',
+            type: 'topwater',
+            water_type: 'both',
+            depth_range: '0-2ft',
+            forage_match: 'baitfish',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=tiny+torpedo+topwater+white+bass',
+            purchase_link:
+              'https://www.walmart.com/search?q=tiny+torpedo+topwater+fishing+lure+white',
           },
         ],
         'Summer Pattern': [
@@ -3163,16 +3464,40 @@
             sub: 'vertical jigging',
             detail:
               'Vertical jig over schools. Match their depth on electronics.',
+            type: 'spoon',
+            water_type: 'both',
+            depth_range: '10-25ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=slab+spoon+white+bass+summer+vertical+jig',
+            purchase_link:
+              'https://www.walmart.com/search?q=white+slab+spoon+fishing+1%2F2oz',
           },
           {
             name: 'Topwater Pencil Popper',
             sub: 'walk-the-dog action',
             detail: 'When you see surface busting, throw into the fray.',
+            type: 'topwater',
+            water_type: 'both',
+            depth_range: '0-2ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=pencil+popper+topwater+white+bass+summer',
+            purchase_link:
+              'https://www.walmart.com/search?q=pencil+popper+topwater+fishing+lure+white',
           },
           {
             name: 'Paddle Tail Swimbait \u2014 White',
             sub: 'steady retrieve',
             detail: 'Steady retrieve through schooling fish at dawn/dusk.',
+            type: 'swimbait',
+            water_type: 'both',
+            depth_range: '5-15ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=paddle+tail+swimbait+white+bass+summer',
+            purchase_link:
+              'https://www.walmart.com/search?q=paddle+tail+swimbait+white+bass+fishing',
           },
         ],
       };
@@ -3184,17 +3509,41 @@
             sub: 'vertical presentation',
             detail:
               'GO-TO. Drop to brush piles, hold 6" off bottom. Slow lift-drop.',
+            type: 'jig',
+            water_type: 'lake',
+            depth_range: '15-30ft',
+            forage_match: 'minnow',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=crappie+jig+minnow+winter+deep+brush',
+            purchase_link:
+              'https://www.walmart.com/search?q=crappie+jig+1%2F16oz+fishing',
           },
           {
             name: 'Bobby Garland Baby Shad',
             sub: '1.5" on 1/32oz jighead',
             detail:
               'Backup. Slow fall through timber. Chartreuse/white or monkey milk.',
+            type: 'swimbait',
+            water_type: 'lake',
+            depth_range: '15-25ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=bobby+garland+baby+shad+crappie+winter',
+            purchase_link:
+              'https://www.walmart.com/search?q=bobby+garland+baby+shad+crappie+bait',
           },
           {
             name: 'Jigging Spoon \u2014 1/8oz',
             sub: 'flutter spoon',
             detail: 'Deep timber. Let it flutter on the fall.',
+            type: 'spoon',
+            water_type: 'lake',
+            depth_range: '20-30ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=jigging+spoon+crappie+winter+deep',
+            purchase_link:
+              'https://www.walmart.com/search?q=jigging+spoon+crappie+fishing+1%2F8oz',
           },
         ],
         'Pre-Spawn Move': [
@@ -3203,17 +3552,41 @@
             sub: 'chartreuse/white',
             detail:
               'GO-TO. Slow-roll along creek channels and brush lines at 8-12ft.',
+            type: 'jig',
+            water_type: 'lake',
+            depth_range: '8-12ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=road+runner+jig+crappie+pre-spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=road+runner+jig+crappie+1%2F16oz',
           },
           {
             name: 'Live Minnow Under Cork',
             sub: 'set 6-8ft deep',
             detail: 'Fan cast around submerged brush. Let minnow do the work.',
+            type: 'live_bait',
+            water_type: 'lake',
+            depth_range: '6-8ft',
+            forage_match: 'minnow',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=live+minnow+cork+crappie+pre-spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=crappie+cork+float+live+bait+rig',
           },
           {
             name: 'Strike King Mr. Crappie',
             sub: 'slabalicious 1/8oz',
             detail:
               'Slow troll along channel edges. Chartreuse or ghost pattern.',
+            type: 'jig',
+            water_type: 'lake',
+            depth_range: '8-14ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=strike+king+mr+crappie+slabalicious',
+            purchase_link:
+              'https://www.walmart.com/search?q=strike+king+mr+crappie+slabalicious',
           },
         ],
         'Spawn Staging': [
@@ -3222,17 +3595,41 @@
             sub: 'chartreuse/black flake',
             detail:
               'GO-TO. Pitch to stumps, laydowns, and visible brush at 3-8ft.',
+            type: 'jig',
+            water_type: 'lake',
+            depth_range: '3-8ft',
+            forage_match: 'crawfish',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=tube+jig+crappie+spawn+staging',
+            purchase_link:
+              'https://www.walmart.com/search?q=crappie+tube+jig+1%2F32oz+fishing',
           },
           {
             name: "Bobby Garland Stroll'R",
             sub: 'on 1/16oz jig',
             detail: 'Swim past wood cover. Twitching retrieve.',
+            type: 'swimbait',
+            water_type: 'lake',
+            depth_range: '3-8ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=bobby+garland+strollr+crappie+spawn',
+            purchase_link:
+              "https://www.walmart.com/search?q=bobby+garland+stroll%27r+crappie+bait",
           },
           {
             name: 'Live Minnow \u2014 Tight Line',
             sub: 'no bobber, 4lb fluoro',
             detail:
               'Pitch to stumps. Feel for the tick. Light line = more bites.',
+            type: 'live_bait',
+            water_type: 'lake',
+            depth_range: '3-8ft',
+            forage_match: 'minnow',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=tight+line+minnow+crappie+spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=fluorocarbon+fishing+line+4lb+crappie',
           },
         ],
         'Bed Spawn': [
@@ -3241,16 +3638,40 @@
             sub: 'white/chartreuse',
             detail:
               'GO-TO. Sight-fish beds near stumps and bank cover. Drop directly on bed.',
+            type: 'jig',
+            water_type: 'lake',
+            depth_range: '1-5ft',
+            forage_match: 'crawfish',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=tube+jig+crappie+bed+spawn+sight+fishing',
+            purchase_link:
+              'https://www.walmart.com/search?q=crappie+tube+jig+white+chartreuse+fishing',
           },
           {
             name: 'Small Jig Under Slip Cork',
             sub: 'set 2-4ft',
             detail: 'Cast past bed, drift over it. Deadly for pressured fish.',
+            type: 'jig',
+            water_type: 'lake',
+            depth_range: '2-4ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=slip+cork+jig+crappie+bed+spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=slip+cork+crappie+jig+fishing',
           },
           {
             name: 'Bobby Garland Baby Shad',
             sub: 'monkey milk or electric chicken',
             detail: 'Swim slowly through spawning flats. Cover more water.',
+            type: 'swimbait',
+            water_type: 'lake',
+            depth_range: '1-4ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=bobby+garland+baby+shad+crappie+spawn+flat',
+            purchase_link:
+              'https://www.walmart.com/search?q=bobby+garland+baby+shad+monkey+milk',
           },
         ],
         'Post-Spawn': [
@@ -3259,16 +3680,40 @@
             sub: 'white/chartreuse',
             detail:
               'GO-TO. Spider rig or cast to mid-depth brush. Steady retrieve.',
+            type: 'jig',
+            water_type: 'lake',
+            depth_range: '8-15ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=road+runner+jig+crappie+post+spawn+spider+rig',
+            purchase_link:
+              'https://www.walmart.com/search?q=road+runner+jig+1%2F8oz+white+crappie',
           },
           {
             name: 'Small Crankbait',
             sub: 'shad pattern, 4-8ft diver',
             detail: 'Troll or cast along channel edges and brush lines.',
+            type: 'crankbait',
+            water_type: 'lake',
+            depth_range: '4-8ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=small+crankbait+crappie+post+spawn+lake',
+            purchase_link:
+              'https://www.walmart.com/search?q=small+crankbait+shad+pattern+crappie+fishing',
           },
           {
             name: 'Live Minnow + Split Shot',
             sub: 'tight-line near brush',
             detail: 'Set at thermocline depth. Let them come to you.',
+            type: 'live_bait',
+            water_type: 'lake',
+            depth_range: '8-15ft',
+            forage_match: 'minnow',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=live+minnow+split+shot+crappie+post+spawn',
+            purchase_link:
+              'https://www.walmart.com/search?q=split+shot+rig+crappie+minnow+fishing',
           },
         ],
         'Summer Suspend': [
@@ -3277,18 +3722,42 @@
             sub: 'over deep brush',
             detail:
               'GO-TO. Vertical jig at thermocline (18-25ft). Steady lift-drop.',
+            type: 'spoon',
+            water_type: 'lake',
+            depth_range: '18-25ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=jigging+spoon+crappie+summer+deep+thermocline',
+            purchase_link:
+              'https://www.walmart.com/search?q=jigging+spoon+crappie+fishing+1%2F8oz',
           },
           {
             name: 'Small Swimbait',
             sub: 'on 1/16oz jighead',
             detail:
               'Slow-roll through suspended fish. Watch electronics closely.',
+            type: 'swimbait',
+            water_type: 'lake',
+            depth_range: '15-25ft',
+            forage_match: 'shad',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=swimbait+crappie+summer+suspended+lake',
+            purchase_link:
+              'https://www.walmart.com/search?q=small+swimbait+crappie+jighead+fishing',
           },
           {
             name: 'Live Minnow Under Light',
             sub: 'night fishing',
             detail:
               'Green submersible light draws baitfish. Crappie follow. Summer secret weapon.',
+            type: 'live_bait',
+            water_type: 'lake',
+            depth_range: '5-15ft',
+            forage_match: 'minnow',
+            youtube_link:
+              'https://www.youtube.com/results?search_query=green+light+minnow+crappie+night+fishing+summer',
+            purchase_link:
+              'https://www.walmart.com/search?q=submersible+green+fishing+light+night+crappie',
           },
         ],
       };
@@ -5268,10 +5737,18 @@
       function IntelTab({ temp, water, species }) {
         const phase = getPhase(temp, species);
         const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
-        const lures = lureMap[phase.name] || Object.values(lureMap)[1];
         const calendarData = species === 'cr' ? CR_CALENDAR : WB_CALENDAR;
         const w = WATERS[water];
         const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
+        const _waterType = w?.type || 'lake';
+        const _allPhaseLures = lureMap[phase.name] || Object.values(lureMap)[1];
+        const _matched = _allPhaseLures.filter(
+          (l) =>
+            !l.water_type ||
+            l.water_type === _waterType ||
+            l.water_type === 'both'
+        );
+        const lures = _matched.length > 0 ? _matched.slice(0, 3) : _allPhaseLures.slice(0, 3);
 
         // WHERE/WHAT lookup by species
         const WB_WHERE = {
@@ -5440,10 +5917,20 @@
                     <h4>{l.name}</h4>
                     {l.sub && <div className="lure-sub">{l.sub}</div>}
                     <p>{l.detail}</p>
+                    {(l.depth_range || l.forage_match) && (
+                      <div className="lure-meta">
+                        {l.depth_range && (
+                          <span>{'\uD83D\uDCCF'} {l.depth_range}</span>
+                        )}
+                        {l.forage_match && (
+                          <span>{'\uD83D\uDC1F'} {l.forage_match}</span>
+                        )}
+                      </div>
+                    )}
                     <div className="tackle-links">
                       <a
                         className="tackle-link yt"
-                        href={ytSearch(l.name)}
+                        href={l.youtube_link || ytSearch(l.name)}
                         target="_blank"
                         rel="noopener"
                       >
@@ -5451,7 +5938,7 @@
                       </a>
                       <a
                         className="tackle-link shop"
-                        href={walmartSearch(l.name)}
+                        href={l.purchase_link || walmartSearch(l.name)}
                         target="_blank"
                         rel="noopener"
                       >
