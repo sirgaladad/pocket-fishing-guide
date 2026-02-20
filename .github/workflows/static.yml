@@ -41,6 +41,10 @@ jobs:
           node-version: "20"
       - name: Build USACE Snapshot
         run: node scripts/fetch_usace_levels.js
+      - name: Fetch River Station Readings
+        run: node scripts/fetch_river_stations.js
+      - name: Validate Station Registry
+        run: node scripts/validate_stations.js
       - name: Generate Status Endpoint
         run: node scripts/generate_status.js
       - name: Setup Pages

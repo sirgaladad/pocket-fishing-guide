@@ -1,0 +1,198 @@
+{
+  "version": "1.0",
+  "description": "Registry of USGS monitoring stations used for Arkansas river and lake measurements. Not all stations are exposed in the UI.",
+  "stations": [
+    {
+      "station_id": "07076000",
+      "label": "Little Red River near Heber Springs",
+      "river": "Little Red River",
+      "proximity": "0.5 mi downstream of Greers Ferry Dam",
+      "type": "gage",
+      "tailwater": true
+    },
+    {
+      "station_id": "07075000",
+      "label": "Middle Fork Little Red at Shirley",
+      "river": "Little Red River",
+      "proximity": "upper tributary, upstream of Greers Ferry",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07075900",
+      "label": "Greers Ferry legacy station",
+      "river": "Little Red River",
+      "proximity": "near Greers Ferry Lake",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07263300",
+      "label": "Lake Maumelle at Dam",
+      "river": "Maumelle River",
+      "proximity": "at dam structure, west end of Lake Maumelle",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "072632966",
+      "label": "Lake Maumelle at Hwy 10",
+      "river": "Maumelle River",
+      "proximity": "mid-lake near Hwy 10 bridge",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "072632995",
+      "label": "Lake Maumelle at Natural Steps",
+      "river": "Maumelle River",
+      "proximity": "west side reservoir near Natural Steps",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07074500",
+      "label": "White River at Newport",
+      "river": "White River",
+      "proximity": "at Newport, lower White River",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07061000",
+      "label": "White River at Batesville",
+      "river": "White River",
+      "proximity": "at Batesville, upper-middle White River",
+      "type": "gage",
+      "tailwater": true
+    },
+    {
+      "station_id": "07074850",
+      "label": "White River near Augusta",
+      "river": "White River",
+      "proximity": "near Augusta, between Newport and Clarendon",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07055660",
+      "label": "Buffalo River at Ponca",
+      "river": "Buffalo National River",
+      "proximity": "upper Buffalo near Ponca wilderness access",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07056000",
+      "label": "Buffalo River near St. Joe",
+      "river": "Buffalo National River",
+      "proximity": "mid-Buffalo near St. Joe / Boxley Valley",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07056700",
+      "label": "Buffalo River near Harriet",
+      "river": "Buffalo National River",
+      "proximity": "lower Buffalo near Harriet, above White River confluence",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07054501",
+      "label": "White River at Bull Shoals Dam",
+      "river": "White River",
+      "proximity": "immediately below Bull Shoals Dam",
+      "type": "gage",
+      "tailwater": true
+    },
+    {
+      "station_id": "07054527",
+      "label": "White River below Bull Shoals Dam",
+      "river": "White River",
+      "proximity": "1-2 mi below Bull Shoals Dam",
+      "type": "gage",
+      "tailwater": true
+    },
+    {
+      "station_id": "07054500",
+      "label": "Bull Shoals legacy station",
+      "river": "White River",
+      "proximity": "Bull Shoals Dam vicinity (legacy)",
+      "type": "gage",
+      "tailwater": true
+    },
+    {
+      "station_id": "07049000",
+      "label": "War Eagle Creek near Hindsville",
+      "river": "War Eagle Creek",
+      "proximity": "upper tributary of Beaver Lake",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07049691",
+      "label": "White River at Beaver Dam",
+      "river": "White River",
+      "proximity": "immediately below Beaver Dam tailwater",
+      "type": "gage",
+      "tailwater": true
+    },
+    {
+      "station_id": "07049698",
+      "label": "White River near Busch",
+      "river": "White River",
+      "proximity": "downstream of Beaver Dam near Busch",
+      "type": "gage",
+      "tailwater": true
+    },
+    {
+      "station_id": "07356000",
+      "label": "Ouachita River near Mount Ida",
+      "river": "Ouachita River",
+      "proximity": "upper Ouachita, upstream of Lake Ouachita",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07358501",
+      "label": "Ouachita River at Carpenter Dam",
+      "river": "Ouachita River",
+      "proximity": "at Carpenter Dam, below Lake Ouachita",
+      "type": "gage",
+      "tailwater": true
+    },
+    {
+      "station_id": "07357000",
+      "label": "Lake Ouachita legacy station",
+      "river": "Ouachita River",
+      "proximity": "Lake Ouachita vicinity (legacy)",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07359610",
+      "label": "Caddo River near Caddo Gap",
+      "river": "Caddo River",
+      "proximity": "upper Caddo, upstream of DeGray Lake",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07359700",
+      "label": "Caddo River at Glenwood",
+      "river": "Caddo River",
+      "proximity": "mid-Caddo near Glenwood, above DeGray Lake",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07360200",
+      "label": "DeGray legacy station",
+      "river": "Caddo River",
+      "proximity": "DeGray Lake vicinity (legacy)",
+      "type": "gage",
+      "tailwater": false
+    }
+  ]
+}
