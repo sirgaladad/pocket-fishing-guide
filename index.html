@@ -1791,6 +1791,7 @@
           name: 'Greers Ferry Lake',
           short: 'Greers Ferry',
           type: 'lake',
+          subtype: 'reservoir',
           usgs: '07075900',
           usgsStations: [
             {
@@ -1918,6 +1919,7 @@
           name: 'Lake Maumelle',
           short: 'Maumelle',
           type: 'lake',
+          subtype: 'reservoir',
           usgs: '07263300',
           lat: 34.8306,
           lon: -92.5806,
@@ -2067,6 +2069,7 @@
           name: 'White River',
           short: 'White R.',
           type: 'river',
+          subtype: 'tailwater',
           usgs: '07074500',
           usgsStations: [
             {
@@ -2180,6 +2183,7 @@
           name: 'Buffalo National River',
           short: 'Buffalo R.',
           type: 'river',
+          subtype: 'natural_river',
           usgs: '07056000',
           usgsStations: [
             {
@@ -2294,6 +2298,7 @@
           name: 'Bull Shoals Lake',
           short: 'Bull Shoals',
           type: 'lake',
+          subtype: 'reservoir',
           usgs: '07054500',
           usgsStations: [
             {
@@ -2417,6 +2422,7 @@
           name: 'Beaver Lake',
           short: 'Beaver',
           type: 'lake',
+          subtype: 'reservoir',
           usgs: '07049000',
           usgsStations: [
             {
@@ -2542,6 +2548,7 @@
           name: 'Lake Ouachita',
           short: 'Ouachita',
           type: 'lake',
+          subtype: 'reservoir',
           usgs: '07357000',
           usgsStations: [
             {
@@ -2665,6 +2672,7 @@
           name: 'Lake Conway',
           short: 'Conway',
           type: 'lake',
+          subtype: 'lake',
           usgs: null,
           lat: 34.9667,
           lon: -92.3833,
@@ -2743,6 +2751,7 @@
           name: 'DeGray Lake',
           short: 'DeGray',
           type: 'lake',
+          subtype: 'reservoir',
           usgs: '07360200',
           usgsStations: [
             {
@@ -3453,6 +3462,168 @@
         if (score >= 7) return { label: 'Best', cls: 'best' };
         if (score >= 5) return { label: 'Good', cls: 'good' };
         return { label: 'Fair', cls: 'fair' };
+      }
+
+      // Signal Engine — branches by water subtype to produce a richer signal object.
+      // Returns: signal (go/scout/wait), icon, label, cls (unchanged for display),
+      // plus signal_score (0-100), condition_label, and wading_safety (rivers only).
+      //
+      // @param {string} waterSubtype - 'reservoir' | 'tailwater' | 'natural_river' | 'lake'
+      // @param {object|null} usgs    - live USGS data ({ flow, gageTrend7, ... }) or null
+      // @param {string} species      - 'wb' (white bass) | 'cr' (crappie)
+      // @param {number|null} temp    - current water temperature in °F or null when unavailable
+      // @returns {{ signal, icon, label, cls, signal_score, condition_label, wading_safety }}
+      function computeSignal(waterSubtype, usgs, species, temp) {
+        const hasTemp = Number.isFinite(temp);
+        const spawnTrigger = species === "cr" ? 60 : 50;
+        const scoutTemp = species === "cr" ? 55 : 45;
+
+        if (!hasTemp) {
+          return {
+            signal: "wait",
+            icon: "\u23F3",
+            label: "NO DATA",
+            cls: "wait",
+            signal_score: 0,
+            condition_label: "No Data",
+            wading_safety: null,
+          };
+        }
+
+        // Temperature-based signal base
+        let signal, icon, label, cls, signal_score, condition_label;
+        if (temp >= spawnTrigger) {
+          signal = "go";
+          icon = "\uD83D\uDD25";
+          label = "GO FISH!";
+          cls = "go";
+          signal_score = 80;
+          condition_label = "Prime Spawn";
+        } else if (temp >= scoutTemp) {
+          signal = "scout";
+          icon = "\uD83D\uDC40";
+          label = "SCOUT";
+          cls = "scout";
+          signal_score = 55;
+          condition_label = "Pre-Spawn Active";
+        } else {
+          signal = "wait";
+          icon = "\u2744\uFE0F";
+          label = "WAIT";
+          cls = "wait";
+          signal_score = 25;
+          condition_label = "Cold Hold";
+        }
+
+        let wading_safety = null;
+
+        if (waterSubtype === "reservoir") {
+          // Reservoir: 7-day pool trend shifts score ±5 pts
+          // Thresholds: >+1ft rising, <-1ft falling (matches existing gageStatus logic)
+          if (Number.isFinite(usgs?.gageTrend7)) {
+            if (usgs.gageTrend7 > 1) {
+              signal_score = Math.min(100, signal_score + 5);
+              condition_label += " / Rising Pool";
+            } else if (usgs.gageTrend7 < -1) {
+              signal_score = Math.max(0, signal_score - 5);
+              condition_label += " / Falling Pool";
+            } else {
+              condition_label += " / Stable Pool";
+            }
+          }
+        } else if (waterSubtype === "tailwater") {
+          // Tailwater: dam generation flow affects fishing quality and wading safety.
+          // High: >3000 cfs (turbulent, unsafe); Low: <300 cfs; Moderate: 300-3000 cfs
+          // Thresholds mirror existing flowStatus logic for river type.
+          if (Number.isFinite(usgs?.flow)) {
+            if (usgs.flow > 3000) {
+              signal_score = Math.max(0, signal_score - 15);
+              condition_label += " / High Generation";
+              wading_safety = {
+                safe: false,
+                label: "Not Safe",
+                note: "High generation releases. Do not wade.",
+              };
+            } else if (usgs.flow < 300) {
+              signal_score = Math.max(0, signal_score - 5);
+              condition_label += " / Low Generation";
+              wading_safety = {
+                safe: true,
+                label: "Good Wading",
+                note: "Low generation. Wading conditions generally safe.",
+              };
+            } else {
+              signal_score = Math.min(100, signal_score + 5);
+              condition_label += " / Active Generation";
+              wading_safety = {
+                safe: false,
+                label: "Caution",
+                note: "Active generation. Check dam schedule before wading.",
+              };
+            }
+          } else {
+            wading_safety = {
+              safe: null,
+              label: "Unknown",
+              note: "No flow data. Check dam release schedule.",
+            };
+          }
+        } else if (waterSubtype === "natural_river") {
+          // Natural river: flow drives fishing quality and wading safety.
+          // Flood: >5000 cfs; High: 2001-5000 cfs; Moderate-High: 1001-2000 cfs;
+          // Good wading: 400-1000 cfs; Very low: <400 cfs
+          if (Number.isFinite(usgs?.flow)) {
+            if (usgs.flow > 5000) {
+              signal_score = Math.max(0, signal_score - 20);
+              condition_label += " / Flood Stage";
+              wading_safety = {
+                safe: false,
+                label: "Dangerous",
+                note: "Do not wade. Flood conditions.",
+              };
+            } else if (usgs.flow > 2000) {
+              signal_score = Math.max(0, signal_score - 10);
+              condition_label += " / High Flow";
+              wading_safety = {
+                safe: false,
+                label: "Not Recommended",
+                note: "High current. Wade with extreme caution.",
+              };
+            } else if (usgs.flow > 1000) {
+              condition_label += " / Moderate-High Flow";
+              wading_safety = {
+                safe: true,
+                label: "Caution",
+                note: "Elevated flow. Experienced waders only.",
+              };
+            } else if (usgs.flow >= 400) {
+              signal_score = Math.min(100, signal_score + 5);
+              condition_label += " / Good Flow";
+              wading_safety = {
+                safe: true,
+                label: "Good Wading",
+                note: "Ideal wading conditions.",
+              };
+            } else {
+              signal_score = Math.max(0, signal_score - 5);
+              condition_label += " / Very Low Flow";
+              wading_safety = {
+                safe: true,
+                label: "Easy Wading",
+                note: "Low water. Fish may be skittish in clear, shallow conditions.",
+              };
+            }
+          } else {
+            wading_safety = {
+              safe: null,
+              label: "Unknown",
+              note: "No flow data for wading safety assessment.",
+            };
+          }
+        }
+        // 'lake': no adjustment — preserves baseline temperature-only behavior
+
+        return { signal, icon, label, cls, signal_score, condition_label, wading_safety };
       }
 
       function estimateTempFromForecast(forecast, waterType) {
@@ -4290,7 +4461,7 @@
             ? +(warmestStation.temp - temp).toFixed(1)
             : null;
 
-        // Quick Glance verdict
+        // Quick Glance verdict — computed by the signal engine
         const dayPeriods0 = (forecast || [])
           .filter((p) => p.isDaytime)
           .slice(0, 7);
@@ -4300,28 +4471,7 @@
             ? { name: p.name, rating: r }
             : best;
         }, null);
-        const verdict = !hasTemp
-          ? { signal: 'wait', icon: '\u23F3', label: 'NO DATA', cls: 'wait' }
-          : temp >= spawnTrigger
-            ? {
-                signal: 'go',
-                icon: '\uD83D\uDD25',
-                label: 'GO FISH!',
-                cls: 'go',
-              }
-            : temp >= scoutTemp
-              ? {
-                  signal: 'scout',
-                  icon: '\uD83D\uDC40',
-                  label: 'SCOUT',
-                  cls: 'scout',
-                }
-              : {
-                  signal: 'wait',
-                  icon: '\u2744\uFE0F',
-                  label: 'WAIT',
-                  cls: 'wait',
-                };
+        const verdict = computeSignal(w.subtype || w.type, usgs, species, temp);
 
         // Spawn bar
         const minT = 40,
