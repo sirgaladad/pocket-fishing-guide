@@ -41,6 +41,8 @@ jobs:
           node-version: "20"
       - name: Build USACE Snapshot
         run: node scripts/fetch_usace_levels.js
+      - name: Generate Status Endpoint
+        run: node scripts/generate_status.js
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

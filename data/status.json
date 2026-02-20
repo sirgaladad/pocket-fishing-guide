@@ -1,0 +1,45 @@
+{
+  "status": "ok",
+  "generatedAt": "2026-02-20T04:58:13.698Z",
+  "dataSources": {
+    "usace": {
+      "status": "ok",
+      "note": "Reservoir elevation and release data fetched at build time from USACE district pages.",
+      "waters": {
+        "greers": {
+          "status": "ok",
+          "provider": "USACE-SWL",
+          "lastReading": "2026-02-14T12:00:00.000Z"
+        },
+        "bullshoals": {
+          "status": "ok",
+          "provider": "USACE-SWL",
+          "lastReading": "2026-02-14T12:00:00.000Z"
+        },
+        "beaver": {
+          "status": "ok",
+          "provider": "USACE-SWL",
+          "lastReading": "2026-02-14T12:00:00.000Z"
+        },
+        "ouachita": {
+          "status": "ok",
+          "provider": "USACE-MVK",
+          "lastReading": "2026-02-14T13:00:00.000Z"
+        },
+        "degray": {
+          "status": "ok",
+          "provider": "USACE-MVK",
+          "lastReading": "2026-02-14T13:00:00.000Z"
+        }
+      }
+    },
+    "usgs": {
+      "status": "live",
+      "note": "Water temperature, flow, and gage height fetched live in the browser from USGS Water Services (waterservices.usgs.gov)."
+    },
+    "nws": {
+      "status": "live",
+      "note": "7-day weather forecasts fetched live in the browser from NWS (api.weather.gov)."
+    }
+  }
+}
