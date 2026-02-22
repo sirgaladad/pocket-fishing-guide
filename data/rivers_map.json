@@ -1,0 +1,246 @@
+{
+  "version": "1.0",
+  "description": "Hierarchical map of Arkansas rivers used in the Pocket Fishing Guide. Each river is divided into sections and segments. Each segment references a primary USGS station for measurements. Lakes are not included here.",
+  "rivers": [
+    {
+      "river_id": "white-river",
+      "name": "White River",
+      "sections": [
+        {
+          "section_id": "white-river-tailwater-beaver",
+          "name": "Beaver Tailwater",
+          "description": "White River below Beaver Dam",
+          "segments": [
+            {
+              "segment_id": "white-river-beaver-dam",
+              "name": "Below Beaver Dam",
+              "description": "Immediately below Beaver Dam to Busch access",
+              "primary_station_id": "07049691"
+            },
+            {
+              "segment_id": "white-river-busch",
+              "name": "Busch to Eureka Springs area",
+              "description": "Downstream of Beaver tailwater near Busch",
+              "primary_station_id": "07049698"
+            }
+          ]
+        },
+        {
+          "section_id": "white-river-tailwater-bullshoals",
+          "name": "Bull Shoals Tailwater",
+          "description": "White River below Bull Shoals Dam to Cotter",
+          "segments": [
+            {
+              "segment_id": "white-river-bull-shoals-dam",
+              "name": "Below Bull Shoals Dam",
+              "description": "Immediately below Bull Shoals Dam",
+              "primary_station_id": "07054501"
+            },
+            {
+              "segment_id": "white-river-below-bull-shoals",
+              "name": "Bull Shoals Dam to Cotter",
+              "description": "Tailwater reach from dam to Cotter",
+              "primary_station_id": "07054527"
+            }
+          ]
+        },
+        {
+          "section_id": "white-river-upper",
+          "name": "Upper White River",
+          "description": "White River from Calico Rock to Batesville",
+          "segments": [
+            {
+              "segment_id": "white-river-calico-rock",
+              "name": "Calico Rock to Guion",
+              "description": "Upper White River below tailwaters",
+              "primary_station_id": "07061000"
+            },
+            {
+              "segment_id": "white-river-batesville",
+              "name": "Guion to Batesville",
+              "description": "White River through Batesville reach",
+              "primary_station_id": "07061000"
+            }
+          ]
+        },
+        {
+          "section_id": "white-river-middle",
+          "name": "Middle White River",
+          "description": "White River from Batesville to Newport",
+          "segments": [
+            {
+              "segment_id": "white-river-batesville-to-newport",
+              "name": "Batesville to Newport",
+              "description": "Middle White River through prime white bass staging",
+              "primary_station_id": "07074500"
+            }
+          ]
+        },
+        {
+          "section_id": "white-river-lower",
+          "name": "Lower White River",
+          "description": "White River from Newport to Augusta and below",
+          "segments": [
+            {
+              "segment_id": "white-river-newport-to-augusta",
+              "name": "Newport to Augusta",
+              "description": "Lower White River downstream of Newport",
+              "primary_station_id": "07074850"
+            },
+            {
+              "segment_id": "white-river-augusta-to-clarendon",
+              "name": "Augusta to Clarendon",
+              "description": "Lower White River approaching Clarendon",
+              "primary_station_id": "07074850"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "river_id": "buffalo-national-river",
+      "name": "Buffalo National River",
+      "sections": [
+        {
+          "section_id": "buffalo-upper",
+          "name": "Upper Buffalo",
+          "description": "Buffalo River from Ponca to Pruitt",
+          "segments": [
+            {
+              "segment_id": "buffalo-ponca-to-steele-creek",
+              "name": "Ponca to Steele Creek",
+              "description": "Upper wilderness float reach",
+              "primary_station_id": "07055660"
+            },
+            {
+              "segment_id": "buffalo-steele-creek-to-pruitt",
+              "name": "Steele Creek to Pruitt",
+              "description": "Upper Buffalo below Ponca with increasing flow",
+              "primary_station_id": "07055660"
+            }
+          ]
+        },
+        {
+          "section_id": "buffalo-middle",
+          "name": "Middle Buffalo",
+          "description": "Buffalo River from Pruitt to Gilbert",
+          "segments": [
+            {
+              "segment_id": "buffalo-pruitt-to-hasty",
+              "name": "Pruitt to Hasty",
+              "description": "Mid-Buffalo float through national park interior",
+              "primary_station_id": "07056000"
+            },
+            {
+              "segment_id": "buffalo-hasty-to-gilbert",
+              "name": "Hasty to Gilbert",
+              "description": "Middle Buffalo approaching Gilbert",
+              "primary_station_id": "07056000"
+            }
+          ]
+        },
+        {
+          "section_id": "buffalo-lower",
+          "name": "Lower Buffalo",
+          "description": "Buffalo River from Gilbert to White River confluence",
+          "segments": [
+            {
+              "segment_id": "buffalo-gilbert-to-rush",
+              "name": "Gilbert to Rush",
+              "description": "Lower Buffalo through Rush historic mining area",
+              "primary_station_id": "07056700"
+            },
+            {
+              "segment_id": "buffalo-rush-to-white-river",
+              "name": "Rush to White River Confluence",
+              "description": "Lowest Buffalo reach where white bass enter from White River",
+              "primary_station_id": "07056700"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "river_id": "little-red-river",
+      "name": "Little Red River",
+      "sections": [
+        {
+          "section_id": "little-red-tailwater",
+          "name": "Greers Ferry Tailwater",
+          "description": "Little Red River below Greers Ferry Dam",
+          "segments": [
+            {
+              "segment_id": "little-red-dam-to-heber-springs",
+              "name": "Dam to Heber Springs",
+              "description": "Prime tailwater trout and white bass reach immediately below dam",
+              "primary_station_id": "07076000"
+            },
+            {
+              "segment_id": "little-red-heber-springs-to-searcy",
+              "name": "Heber Springs to Searcy",
+              "description": "Lower tailwater reach toward Searcy",
+              "primary_station_id": "07076000"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "river_id": "ouachita-river",
+      "name": "Ouachita River",
+      "sections": [
+        {
+          "section_id": "ouachita-upper",
+          "name": "Upper Ouachita",
+          "description": "Ouachita River above Lake Ouachita",
+          "segments": [
+            {
+              "segment_id": "ouachita-mount-ida-to-lake",
+              "name": "Mount Ida to Lake Ouachita",
+              "description": "Upper Ouachita inflow reach",
+              "primary_station_id": "07356000"
+            }
+          ]
+        },
+        {
+          "section_id": "ouachita-tailwater",
+          "name": "Ouachita Tailwater",
+          "description": "Ouachita River below Carpenter Dam",
+          "segments": [
+            {
+              "segment_id": "ouachita-carpenter-dam-to-hot-springs",
+              "name": "Carpenter Dam to Hot Springs",
+              "description": "Tailwater reach below Carpenter Dam",
+              "primary_station_id": "07358501"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "river_id": "caddo-river",
+      "name": "Caddo River",
+      "sections": [
+        {
+          "section_id": "caddo-upper",
+          "name": "Upper Caddo",
+          "description": "Caddo River above DeGray Lake",
+          "segments": [
+            {
+              "segment_id": "caddo-caddo-gap-to-glenwood",
+              "name": "Caddo Gap to Glenwood",
+              "description": "Upper Caddo River reach",
+              "primary_station_id": "07359610"
+            },
+            {
+              "segment_id": "caddo-glenwood-to-degray",
+              "name": "Glenwood to DeGray Lake",
+              "description": "Lower Caddo River inflow to DeGray",
+              "primary_station_id": "07359700"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

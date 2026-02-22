@@ -1,6 +1,6 @@
 {
   "status": "ok",
-  "generatedAt": "2026-02-20T04:58:13.698Z",
+  "generatedAt": "2026-02-20T19:21:17.836Z",
   "dataSources": {
     "usace": {
       "status": "ok",
@@ -40,6 +40,11 @@
     "nws": {
       "status": "live",
       "note": "7-day weather forecasts fetched live in the browser from NWS (api.weather.gov)."
+    },
+    "rivers": {
+      "status": "error",
+      "note": "River segment station readings fetched at build time from USGS Water Services via fetch_river_stations.js.",
+      "stationCount": 15
     }
   }
 }

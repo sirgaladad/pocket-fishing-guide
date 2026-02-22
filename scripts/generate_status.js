@@ -13,6 +13,7 @@ const fs = require("fs");
 const path = require("path");
 
 const USACE_PATH = path.resolve(__dirname, "..", "data", "usace_levels.json");
+const RIVER_STATIONS_PATH = path.resolve(__dirname, "..", "data", "river_stations_snapshot.json");
 const OUT_PATH = path.resolve(__dirname, "..", "data", "status.json");
 
 function main() {
@@ -53,6 +54,19 @@ function main() {
     );
   }
 
+  // ── River stations snapshot (build-time) ────────────────────────────────
+  let riverStationsStatus = "unknown";
+  let riverStationCount = 0;
+
+  try {
+    const riverSnap = JSON.parse(fs.readFileSync(RIVER_STATIONS_PATH, "utf8"));
+    riverStationsStatus = riverSnap.status || "unknown";
+    riverStationCount = riverSnap.stationCount || 0;
+  } catch (_) {
+    // Snapshot not yet generated; treat as not available
+    riverStationsStatus = "not_available";
+  }
+
   // ── Overall status ───────────────────────────────────────────────────────
   // USGS and NWS are live browser fetches; their health is not known at
   // build time, so overall status reflects only the USACE snapshot.
@@ -74,6 +88,11 @@ function main() {
       nws: {
         status: "live",
         note: "7-day weather forecasts fetched live in the browser from NWS (api.weather.gov).",
+      },
+      rivers: {
+        status: riverStationsStatus,
+        note: "River segment station readings fetched at build time from USGS Water Services via fetch_river_stations.js.",
+        stationCount: riverStationCount,
       },
     },
   };

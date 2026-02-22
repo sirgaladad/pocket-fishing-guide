@@ -1,0 +1,382 @@
+{
+  "status": "error",
+  "generatedAt": "2026-02-20T19:21:08.013Z",
+  "stationCount": 15,
+  "stations": [
+    {
+      "station_id": "07049691",
+      "label": "White River at Beaver Dam",
+      "tailwater": true,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07049691. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07049698",
+      "label": "White River near Busch",
+      "tailwater": true,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07049698. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07054501",
+      "label": "White River at Bull Shoals Dam",
+      "tailwater": true,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07054501. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07054527",
+      "label": "White River below Bull Shoals Dam",
+      "tailwater": true,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07054527. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07061000",
+      "label": "White River at Batesville",
+      "tailwater": true,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07061000. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07074500",
+      "label": "White River at Newport",
+      "tailwater": false,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07074500. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07074850",
+      "label": "White River near Augusta",
+      "tailwater": false,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07074850. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07055660",
+      "label": "Buffalo River at Ponca",
+      "tailwater": false,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07055660. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07056000",
+      "label": "Buffalo River near St. Joe",
+      "tailwater": false,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07056000. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07056700",
+      "label": "Buffalo River near Harriet",
+      "tailwater": false,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07056700. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07076000",
+      "label": "Little Red River near Heber Springs",
+      "tailwater": true,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07076000. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07356000",
+      "label": "Ouachita River near Mount Ida",
+      "tailwater": false,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07356000. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07358501",
+      "label": "Ouachita River at Carpenter Dam",
+      "tailwater": true,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07358501. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07359610",
+      "label": "Caddo River near Caddo Gap",
+      "tailwater": false,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07359610. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    },
+    {
+      "station_id": "07359700",
+      "label": "Caddo River at Glenwood",
+      "tailwater": false,
+      "status": "missing",
+      "note": "No current readings returned by USGS for station 07359700. Station may be offline or ID may be inactive.",
+      "gageHeight": {
+        "value": null,
+        "unit": "ft",
+        "dateTime": null,
+        "delta": null
+      },
+      "streamflow": {
+        "value": null,
+        "unit": "cfs",
+        "dateTime": null,
+        "delta": null
+      },
+      "temperature": {
+        "value": null,
+        "unit": "°C",
+        "dateTime": null,
+        "delta": null
+      }
+    }
+  ]
+}
