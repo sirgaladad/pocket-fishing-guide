@@ -7623,7 +7623,10 @@
                   {!loading && temp !== null && (() => {
                     const p = getPhase(temp, species);
                     const t24 = usgs?.tempTrend24;
-                    const chipClass = temp >= 55 ? 'hot' : temp >= 47 ? 'warm' : 'cool';
+                    const isCrappie = species === 'cr';
+                    const hotThreshold = isCrappie ? 60 : 55;
+                    const warmThreshold = isCrappie ? 55 : 47;
+                    const chipClass = temp >= hotThreshold ? 'hot' : temp >= warmThreshold ? 'warm' : 'cool';
                     const trendStr = Number.isFinite(t24)
                       ? ` ${t24 > 0 ? '\u25B2' : t24 < 0 ? '\u25BC' : '\u2192'}${Math.abs(t24)}\u00B0/24hr`
                       : '';
