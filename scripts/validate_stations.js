@@ -78,6 +78,10 @@ function main() {
       typeof station.tailwater === "boolean",
       `Station ${station.station_id} has a boolean tailwater flag`
     );
+    assert(
+      registryById[station.station_id] === undefined,
+      `Duplicate station_id found: ${station.station_id}`
+    );
     registryById[station.station_id] = station;
   }
 
