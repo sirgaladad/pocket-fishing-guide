@@ -7633,21 +7633,21 @@
                     return (
                       <div className="conditions-strip">
                         <div className={`conditions-chip ${chipClass}`}>
-                          {'\uD83C\uDF21\uFE0F'} {temp.toFixed(1)}{'\u00B0'}F
+                          <span role="img" aria-label="thermometer">{'\uD83C\uDF21\uFE0F'}</span> {temp.toFixed(1)}{'\u00B0'}F
                           {trendStr && <span className="conditions-chip-label">{trendStr}</span>}
                         </div>
                         <div className="conditions-chip">
-                          {p.icon} {p.name}
+                          <span role="img" aria-label={p.name}>{p.icon}</span> {p.name}
                         </div>
                         {Number.isFinite(usgs?.gage) && (
                           <div className="conditions-chip">
-                            {'\uD83D\uDCCF'} {usgs.gage.toFixed(2)} ft
+                            <span role="img" aria-label="ruler">{'\uD83D\uDCCF'}</span> {usgs.gage.toFixed(2)} ft
                             <span className="conditions-chip-label">gage ht</span>
                           </div>
                         )}
                         {Number.isFinite(usgs?.tempTrend7) && (
                           <div className="conditions-chip">
-                            {usgs.tempTrend7 > 0 ? '\uD83D\uDD25' : usgs.tempTrend7 < 0 ? '\u2744\uFE0F' : '\u2192'} {usgs.tempTrend7 > 0 ? '+' : ''}{usgs.tempTrend7}{'\u00B0'}/7d
+                            <span role="img" aria-label={usgs.tempTrend7 > 0 ? 'fire' : usgs.tempTrend7 < 0 ? 'snowflake' : 'right arrow'}>{usgs.tempTrend7 > 0 ? '\uD83D\uDD25' : usgs.tempTrend7 < 0 ? '\u2744\uFE0F' : '\u2192'}</span> {usgs.tempTrend7 > 0 ? '+' : ''}{usgs.tempTrend7}{'\u00B0'}/7d
                             <span className="conditions-chip-label">trend</span>
                           </div>
                         )}
