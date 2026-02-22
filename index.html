@@ -372,6 +372,108 @@
         margin-bottom: 0;
       }
 
+      /* ─── LANDING GRID (Signals tab two-column layout) ─── */
+      .landing-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .landing-primary,
+      .landing-media {
+        min-width: 0;
+      }
+      @media (min-width: 1024px) {
+        .landing-grid {
+          flex-direction: row;
+          align-items: flex-start;
+          gap: 12px;
+          padding: 0 4px;
+        }
+        .landing-primary {
+          flex: 2;
+        }
+        .landing-media {
+          flex: 1;
+          position: sticky;
+          top: 48px;
+        }
+      }
+
+      /* ─── TODAY'S PATTERN HEADING ─── */
+      .todays-pattern-heading {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        padding: 12px 16px 4px;
+      }
+      .todays-pattern-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+      }
+      .todays-pattern-updated {
+        font-size: 11px;
+        color: var(--text3);
+      }
+
+      /* ─── CONDITIONS STRIP ─── */
+      .conditions-strip {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 12px;
+        background: var(--bg2);
+        border-bottom: 1px solid var(--bg3);
+        overflow-x: auto;
+        scrollbar-width: none;
+        flex-wrap: nowrap;
+      }
+      .conditions-strip::-webkit-scrollbar { display: none; }
+      .conditions-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: var(--bg3);
+        border-radius: 10px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text);
+        white-space: nowrap;
+        flex-shrink: 0;
+        border: 1px solid transparent;
+      }
+      .conditions-chip.hot {
+        background: rgba(255, 107, 53, 0.12);
+        color: var(--spawn);
+        border-color: rgba(255, 107, 53, 0.25);
+      }
+      .conditions-chip.warm {
+        background: rgba(255, 193, 7, 0.12);
+        color: #ffc107;
+        border-color: rgba(255, 193, 7, 0.25);
+      }
+      .conditions-chip.cool {
+        background: rgba(0, 188, 212, 0.12);
+        color: var(--accent);
+        border-color: rgba(0, 188, 212, 0.25);
+      }
+      .conditions-chip-label {
+        font-size: 10px;
+        font-weight: 400;
+        opacity: 0.7;
+        margin-left: 2px;
+      }
+
+      /* ─── LURE CARD ACTION PAIR (inline right) ─── */
+      .lure-card-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex-shrink: 0;
+        margin-left: auto;
+      }
+
       /* ─── WATER TEMP CARD ─── */
       .big-temp {
         font-size: 44px;
@@ -975,7 +1077,7 @@
         background: var(--bg3);
         border-radius: var(--radius-sm);
         margin-bottom: 8px;
-        align-items: center;
+        align-items: flex-start;
       }
       .lure-num {
         width: 28px;
@@ -6317,26 +6419,26 @@
                     <h4>{l.name}</h4>
                     {l.sub && <div className="lure-sub">{l.sub}</div>}
                     <p>{l.detail}</p>
-                    <div className="tackle-links">
-                      <a
-                        className="tackle-link yt"
-                        href={ytSearch(l.name)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => { trackEvent('click_video', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'lures' }); trackEvent('lure_howto_click', { lure_name: l.name, water, species }); }}
-                      >
-                        {'\u25B6'} How-To
-                      </a>
-                      <a
-                        className="tackle-link shop"
-                        href={walmartSearch(l.name)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => { trackEvent('click_buylink', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'lures' }); trackEvent('lure_shop_click', { lure_name: l.name, water, species }); }}
-                      >
-                        {'\uD83D\uDED2'} Shop
-                      </a>
-                    </div>
+                  </div>
+                  <div className="lure-card-actions">
+                    <a
+                      className="tackle-link yt"
+                      href={ytSearch(l.name)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => { trackEvent('click_video', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'lures' }); trackEvent('lure_howto_click', { lure_name: l.name, water, species }); }}
+                    >
+                      {'\u25B6'} How-To
+                    </a>
+                    <a
+                      className="tackle-link shop"
+                      href={walmartSearch(l.name)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => { trackEvent('click_buylink', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'lures' }); trackEvent('lure_shop_click', { lure_name: l.name, water, species }); }}
+                    >
+                      {'\uD83D\uDED2'} Shop
+                    </a>
                   </div>
                 </div>
               ))}
@@ -7517,6 +7619,151 @@
               )}
               {tab === 'signals' && (
                 <>
+                  {/* ── CONDITIONS STRIP: temp + spawn phase + trend ── */}
+                  {!loading && temp !== null && (() => {
+                    const p = getPhase(temp, species);
+                    const t24 = usgs?.tempTrend24;
+                    const isCrappie = species === 'cr';
+                    const hotThreshold = isCrappie ? 60 : 55;
+                    const warmThreshold = isCrappie ? 55 : 47;
+                    const chipClass = temp >= hotThreshold ? 'hot' : temp >= warmThreshold ? 'warm' : 'cool';
+                    const trendStr = Number.isFinite(t24)
+                      ? ` ${t24 > 0 ? '\u25B2' : t24 < 0 ? '\u25BC' : '\u2192'}${Math.abs(t24)}\u00B0/24hr`
+                      : '';
+                    return (
+                      <div className="conditions-strip">
+                        <div className={`conditions-chip ${chipClass}`}>
+                          <span role="img" aria-label="thermometer">{'\uD83C\uDF21\uFE0F'}</span> {temp.toFixed(1)}{'\u00B0'}F
+                          {trendStr && <span className="conditions-chip-label">{trendStr}</span>}
+                        </div>
+                        <div className="conditions-chip">
+                          <span role="img" aria-label={p.name}>{p.icon}</span> {p.name}
+                        </div>
+                        {Number.isFinite(usgs?.gage) && (
+                          <div className="conditions-chip">
+                            <span role="img" aria-label="ruler">{'\uD83D\uDCCF'}</span> {usgs.gage.toFixed(2)} ft
+                            <span className="conditions-chip-label">gage ht</span>
+                          </div>
+                        )}
+                        {Number.isFinite(usgs?.tempTrend7) && (
+                          <div className="conditions-chip">
+                            <span role="img" aria-label={usgs.tempTrend7 > 0 ? 'fire' : usgs.tempTrend7 < 0 ? 'snowflake' : 'right arrow'}>{usgs.tempTrend7 > 0 ? '\uD83D\uDD25' : usgs.tempTrend7 < 0 ? '\u2744\uFE0F' : '\u2192'}</span> {usgs.tempTrend7 > 0 ? '+' : ''}{usgs.tempTrend7}{'\u00B0'}/7d
+                            <span className="conditions-chip-label">trend</span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
+
+                  {/* ── TWO-COLUMN LANDING GRID ── */}
+                  <div className="landing-grid">
+                    <div className="landing-primary">
+                      {/* Today's Pattern heading with data timestamp */}
+                      <div className="todays-pattern-heading">
+                        <span className="todays-pattern-title">
+                          {'\uD83C\uDFA3'} Today&apos;s Pattern
+                        </span>
+                        {usgs?.lastReading && (
+                          <span className="todays-pattern-updated">
+                            Updated{' '}
+                            {usgs.lastReading.toLocaleTimeString('en-US', {
+                              hour: 'numeric',
+                              minute: '2-digit',
+                            })}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* 3-Lure Arsenal + Current Pattern (from IntelTab) */}
+                      {!loading && (
+                        <IntelTab
+                          temp={temp}
+                          water={water}
+                          species={species}
+                          segment={segment}
+                        />
+                      )}
+
+                      {/* Pro Intel + Local Tips accordion */}
+                      {(() => {
+                        const ProTipsList = ({ tips }) => {
+                          if (!tips || tips.length === 0) return null;
+                          return (
+                            <AccordionSection
+                              title={'\uD83D\uDCA1 Pro Intel + Local Tips'}
+                              defaultOpen={false}
+                            >
+                              {tips.map((t, i) => (
+                                <div
+                                  key={i}
+                                  style={{
+                                    display: 'flex',
+                                    gap: 10,
+                                    alignItems: 'flex-start',
+                                    padding: '8px 0',
+                                    borderBottom:
+                                      i < tips.length - 1
+                                        ? '1px solid var(--bg3)'
+                                        : 'none',
+                                  }}
+                                >
+                                  <span
+                                    className="tip-cat-badge"
+                                    style={{
+                                      background: `${CAT_COLORS[t.cat] || 'var(--accent)'}22`,
+                                      color: CAT_COLORS[t.cat] || 'var(--accent)',
+                                      flexShrink: 0,
+                                      marginTop: 2,
+                                    }}
+                                  >
+                                    {t.cat}
+                                  </span>
+                                  <span
+                                    style={{
+                                      fontSize: 12,
+                                      color: 'var(--text2)',
+                                      lineHeight: 1.5,
+                                    }}
+                                  >
+                                    {t.text}
+                                  </span>
+                                </div>
+                              ))}
+                            </AccordionSection>
+                          );
+                        };
+
+                        if (loading) return null;
+                        const w2 = WATERS[water];
+                        const tips =
+                          species === 'cr' && w2.crTips ? w2.crTips : w2.tips;
+                        return <ProTipsList tips={tips} />;
+                      })()}
+                    </div>
+
+                    {/* Media + Gear column */}
+                    <div className="landing-media">
+                      {!loading && (
+                        <MediaGearShelf
+                          temp={temp}
+                          water={water}
+                          species={species}
+                          segment={segment}
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* ── DIVIDER before water signals data ── */}
+                  <div
+                    style={{
+                      height: 1,
+                      background: 'var(--bg3)',
+                      margin: '4px 0 8px',
+                    }}
+                  />
+
+                  {/* ── FULL WATER SIGNALS (below fold) ── */}
                   <DashboardTab
                     usgs={usgs}
                     forecast={forecast}
@@ -7525,7 +7772,6 @@
                     onRefresh={loadData}
                     loading={loading}
                   />
-                  {!loading && <MediaGearShelf temp={temp} water={water} species={species} segment={segment} />}
                 </>
               )}
               {tab === 'forecast' && (
