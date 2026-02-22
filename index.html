@@ -337,11 +337,6 @@
       .header.compact .water-sel {
         margin-top: 6px;
       }
-      .header.compact .segment-sel,
-      .header.compact .section-sel,
-      .header.compact .section-label {
-        display: none;
-      }
 
       /* ─── CONTENT ─── */
       .content {
@@ -3867,6 +3862,7 @@
       const TABS = [
         { id: 'overview', icon: '\uD83D\uDDFA\uFE0F', label: 'Waters' },
         { id: 'signals', icon: '\uD83D\uDCCA', label: 'Signals' },
+        { id: 'forecast', icon: '\u2600\uFE0F', label: 'Forecast' },
         { id: 'lures', icon: '\uD83C\uDFA3', label: 'Lures' },
         { id: 'techniques', icon: '\uD83C\uDFAF', label: 'Techniques' },
         { id: 'guides', icon: '\uD83D\uDCCD', label: 'Guides' },
@@ -6981,6 +6977,9 @@
                   onRefresh={loadData}
                   loading={loading}
                 />
+              )}
+              {tab === 'forecast' && (
+                <ForecastTab forecast={forecast} water={water} />
               )}
               {tab === 'lures' && (
                 <IntelTab temp={temp} water={water} species={species} segment={segment} />
