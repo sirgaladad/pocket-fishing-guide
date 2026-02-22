@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Today's Pattern heading**: Labeled section with live data timestamp above the 3-Lure Arsenal on the Signals tab
 - **Pro Intel + Local Tips accordion** on Signals tab: Water-specific expert tips surfaced directly on the main landing view (collapsed by default, expandable)
 - **Desktop two-column landing grid**: On screens ≥1024px the Signals tab shows the 3-Lure Arsenal + Pro Tips in a primary column and Media + Gear in a sticky secondary column
-- New CSS classes: `.landing-grid`, `.landing-primary`, `.landing-media`, `.conditions-strip`, `.conditions-chip`, `.todays-pattern-heading`, `.lure-card-actions`
+- New CSS classes: `.landing-grid`, `.landing-primary`, `.landing-media`, `.conditions-strip`, `.conditions-chip`, `.conditions-chip-label`, `.todays-pattern-heading`, `.lure-card-actions`
 
 ### Changed
 - **3-Lure Arsenal card layout**: How-To and Shop action buttons moved from below the lure description to inline on the right side of each lure row (`.lure-card-actions`), matching the "Action Pair" spec from the wireframe
