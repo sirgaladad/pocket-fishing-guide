@@ -143,6 +143,41 @@
         color: var(--accent);
       }
 
+      /* ─── RIVER SECTION SELECTOR ─── */
+      .section-sel {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .section-btn {
+        background: var(--bg3);
+        border: 1.5px solid transparent;
+        color: var(--text2);
+        font-size: 10px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
+        letter-spacing: 0.3px;
+      }
+      .section-btn.active {
+        background: rgba(0, 188, 212, 0.1);
+        border-color: rgba(0, 188, 212, 0.6);
+        color: var(--accent);
+      }
+      .section-label {
+        font-size: 10px;
+        color: var(--text3);
+        text-align: center;
+        margin-top: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
       /* ─── SPECIES TOGGLE ─── */
       .species-toggle {
         display: flex;
@@ -1474,6 +1509,30 @@
       }
 
       /* ─── OVERVIEW GRID ─── */
+      .water-type-filter {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 10px;
+        justify-content: center;
+      }
+      .water-type-btn {
+        background: var(--bg3);
+        border: 1.5px solid transparent;
+        color: var(--text2);
+        font-size: 11px;
+        font-weight: 600;
+        padding: 5px 14px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
+        letter-spacing: 0.3px;
+      }
+      .water-type-btn.active {
+        background: rgba(0, 188, 212, 0.15);
+        border-color: var(--accent);
+        color: var(--accent);
+      }
       .overview-intro {
         background: linear-gradient(
           135deg,
@@ -2951,6 +3010,11 @@
         const stations = getWaterStations(waterDef);
         if (stations.length === 0) return 'No USGS gauge';
         return stations.map((s) => s.id).join(', ');
+      }
+
+      function stationLocation(label) {
+        const parts = (label || '').split(/\s+(?:at|near)\s+/i);
+        return parts.length > 1 ? parts.slice(1).join(' ') : label;
       }
 
       const WB_PHASES = [
@@ -5626,6 +5690,7 @@
       function OverviewTab({ species, onSelectWater }) {
         const [allData, setAllData] = useState({});
         const [loading, setLoading] = useState(true);
+        const [typeFilter, setTypeFilter] = useState('all');
 
         useEffect(() => {
           const loadAllWaters = async () => {
@@ -5720,7 +5785,7 @@
         return (
           <>
             <div className="overview-intro">
-              <h2>🗺️ Arkansas Waters Overview</h2>
+              <h2>🗺️ Arkansas Waters</h2>
               <p>
                 Compare current conditions across all 9 major water bodies. Tap
                 any water to view full dashboard with detailed intel, forecast,
@@ -5728,8 +5793,26 @@
               </p>
             </div>
 
+            <div className="water-type-filter">
+              {[
+                { id: 'all', label: 'All Waters' },
+                { id: 'lake', label: '🏞️ Lakes' },
+                { id: 'river', label: '🌊 Rivers' },
+              ].map((f) => (
+                <button
+                  key={f.id}
+                  className={`water-type-btn ${typeFilter === f.id ? 'active' : ''}`}
+                  onClick={() => setTypeFilter(f.id)}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+
             <div className="overview-grid">
-              {Object.entries(WATERS).map(([key, w]) => {
+              {Object.entries(WATERS)
+                .filter(([, w]) => typeFilter === 'all' || (w.type ?? '') === typeFilter)
+                .map(([key, w]) => {
                 const data = allData[key] || {};
                 const temp = data.temp ?? null;
                 const hasTemp = Number.isFinite(temp);
@@ -5911,6 +5994,7 @@
         const [forecast, setForecast] = useState(null);
         const [error, setError] = useState(null);
         const [loading, setLoading] = useState(true);
+        const [riverSection, setRiverSection] = useState(null);
 
         useEffect(() => {
           try {
@@ -5932,7 +6016,14 @@
           const w = WATERS[water];
           try {
             const [usgsData, nwsData, usaceData] = await Promise.allSettled([
-              fetchUSGSStations(getWaterStations(w)),
+              fetchUSGSStations(
+                riverSection
+                  ? getWaterStations(w).map((s) => ({
+                      ...s,
+                      primary: s.id === riverSection,
+                    }))
+                  : getWaterStations(w)
+              ),
               fetchNWS(w.lat, w.lon),
               fetchUSACESnapshot(water),
             ]);
@@ -6030,7 +6121,7 @@
             setError('Failed to load data. Please try again.');
           }
           setLoading(false);
-        }, [water]);
+        }, [water, riverSection]);
 
         useEffect(() => {
           loadData();
@@ -6044,7 +6135,7 @@
           temp !== null ? Math.max(0, spawnTrigger - temp).toFixed(1) : null;
 
         const tabs = [
-          { id: 'overview', icon: '\uD83D\uDDFA\uFE0F', label: 'Overview' },
+          { id: 'overview', icon: '\uD83D\uDDFA\uFE0F', label: 'Waters' },
           { id: 'dashboard', icon: '\uD83D\uDCCA', label: 'Dashboard' },
           { id: 'forecast', icon: '\u2600\uFE0F', label: 'Forecast' },
           { id: 'intel', icon: '\uD83E\uDDE0', label: 'Intel' },
@@ -6123,12 +6214,34 @@
                   <button
                     key={key}
                     className={`water-btn ${water === key ? 'active' : ''}`}
-                    onClick={() => setWater(key)}
+                    onClick={() => { setWater(key); setRiverSection(null); }}
                   >
                     {wd.short}
                   </button>
                 ))}
               </div>
+              {w.type === 'river' && w.usgsStations && w.usgsStations.length > 1 && (
+                <div>
+                  <div className="section-sel">
+                    <button
+                      className={`section-btn ${riverSection === null ? 'active' : ''}`}
+                      onClick={() => setRiverSection(null)}
+                    >
+                      All Sections
+                    </button>
+                    {w.usgsStations.map((s) => (
+                      <button
+                        key={s.id}
+                        className={`section-btn ${riverSection === s.id ? 'active' : ''}`}
+                        onClick={() => setRiverSection(s.id)}
+                      >
+                        {stationLocation(s.label)}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="section-label">River Section</div>
+                </div>
+              )}
             </div>
 
             <div className="tabs">
@@ -6151,6 +6264,7 @@
                   species={species}
                   onSelectWater={(key) => {
                     setWater(key);
+                    setRiverSection(null);
                     setTab('dashboard');
                   }}
                 />
