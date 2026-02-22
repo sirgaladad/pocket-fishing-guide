@@ -1987,11 +1987,11 @@
     ></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
-      const { useState, useEffect, useCallback, useMemo, useRef } = React;
+      const { useState, useEffect, useCallback, useMemo } = React;
 
       // ─── GA4 EVENT HELPER ─────────────────────────────────────
       const trackEvent = (name, params) => {
-        try { window.gtag('event', name, params || {}); } catch (_) {}
+        try { window.gtag('event', name, params || {}); } catch (e) { console.warn('GA4 tracking failed:', e); }
       };
 
       // ─── WATER BODY DATA ───────────────────────────────────────
@@ -3854,6 +3854,25 @@
         if (months.includes('Oct') && months.includes('Nov') && m >= 9 && m <= 10) return true;
         return false;
       };
+
+      const DEFAULT_WATER = 'maumelle';
+
+      const SEGMENTS = [
+        { id: 'all', label: 'All Waters' },
+        { id: 'below-dam', label: 'Below Dam' },
+        { id: 'tailwater', label: 'Tailwater' },
+        { id: 'access', label: 'Access Area' },
+      ];
+
+      const TABS = [
+        { id: 'overview', icon: '\uD83D\uDDFA\uFE0F', label: 'Waters' },
+        { id: 'signals', icon: '\uD83D\uDCCA', label: 'Signals' },
+        { id: 'lures', icon: '\uD83C\uDFA3', label: 'Lures' },
+        { id: 'techniques', icon: '\uD83C\uDFAF', label: 'Techniques' },
+        { id: 'guides', icon: '\uD83D\uDCCD', label: 'Guides' },
+        { id: 'videos', icon: '\u25B6\uFE0F', label: 'Videos' },
+        { id: 'buy', icon: '\uD83D\uDED2', label: 'Buy' },
+      ];
 
       function getPhase(temp, species) {
         const list = species === 'cr' ? CR_PHASES : WB_PHASES;
@@ -5929,7 +5948,7 @@
                         className="tackle-link yt"
                         href={ytSearch(l.name)}
                         target="_blank"
-                        rel="noopener"
+                        rel="noopener noreferrer"
                         onClick={() => trackEvent('click_video', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'lures' })}
                       >
                         {'\u25B6'} How-To
@@ -5938,7 +5957,7 @@
                         className="tackle-link shop"
                         href={walmartSearch(l.name)}
                         target="_blank"
-                        rel="noopener"
+                        rel="noopener noreferrer"
                         onClick={() => trackEvent('click_buylink', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'lures' })}
                       >
                         {'\uD83D\uDED2'} Shop
@@ -6596,21 +6615,20 @@
             }
             // Fallback to default and repair invalid or missing value
             try {
-              localStorage.setItem('pfg_water', 'maumelle');
-              localStorage.setItem('selectedWater', 'maumelle');
+              localStorage.setItem('pfg_water', DEFAULT_WATER);
+              localStorage.setItem('selectedWater', DEFAULT_WATER);
             } catch {
               // Ignore localStorage write errors (e.g., private browsing, quota exceeded)
             }
-            return 'maumelle';
+            return DEFAULT_WATER;
           } catch {
-            return 'maumelle';
+            return DEFAULT_WATER;
           }
         });
         const [tab, setTab] = useState(() => {
           try {
             const stored = localStorage.getItem('pfg_active_tab');
-            const validTabs = ['overview', 'signals', 'lures', 'techniques', 'guides', 'videos', 'buy'];
-            if (stored && validTabs.includes(stored)) return stored;
+            if (stored && TABS.some((t) => t.id === stored)) return stored;
             return 'signals';
           } catch {
             return 'signals';
@@ -6637,7 +6655,7 @@
         const [segment, setSegment] = useState(() => {
           try {
             const stored = localStorage.getItem('pfg_segment');
-            if (stored === 'below-dam' || stored === 'tailwater' || stored === 'access') return stored;
+            if (stored && SEGMENTS.some((s) => s.id !== 'all' && s.id === stored)) return stored;
             return 'all';
           } catch {
             return 'all';
@@ -6665,11 +6683,19 @@
         }, [species]);
 
         useEffect(() => {
-          try { localStorage.setItem('pfg_segment', segment); } catch {}
+          try {
+            localStorage.setItem('pfg_segment', segment);
+          } catch {
+            // Ignore localStorage write errors (e.g., private browsing, quota exceeded)
+          }
         }, [segment]);
 
         useEffect(() => {
-          try { localStorage.setItem('pfg_active_tab', tab); } catch {}
+          try {
+            localStorage.setItem('pfg_active_tab', tab);
+          } catch {
+            // Ignore localStorage write errors (e.g., private browsing, quota exceeded)
+          }
         }, [tab]);
 
         useEffect(() => {
@@ -6804,15 +6830,7 @@
         const triggerDist =
           temp !== null ? Math.max(0, spawnTrigger - temp).toFixed(1) : null;
 
-        const tabs = [
-          { id: 'overview', icon: '\uD83D\uDDFA\uFE0F', label: 'Waters' },
-          { id: 'signals', icon: '\uD83D\uDCCA', label: 'Signals' },
-          { id: 'lures', icon: '\uD83C\uDFA3', label: 'Lures' },
-          { id: 'techniques', icon: '\uD83C\uDFAF', label: 'Techniques' },
-          { id: 'guides', icon: '\uD83D\uDCCD', label: 'Guides' },
-          { id: 'videos', icon: '\u25B6\uFE0F', label: 'Videos' },
-          { id: 'buy', icon: '\uD83D\uDED2', label: 'Buy' },
-        ];
+        const tabs = TABS;
 
         const timestamp = usgs?.lastReading
           ? usgs.lastReading.toLocaleDateString('en-US', {
@@ -6893,12 +6911,7 @@
                 ))}
               </div>
               <div className="segment-sel">
-                {[
-                  { id: 'all', label: 'All Waters' },
-                  { id: 'below-dam', label: 'Below Dam' },
-                  { id: 'tailwater', label: 'Tailwater' },
-                  { id: 'access', label: 'Access Area' },
-                ].map((seg) => (
+                {SEGMENTS.map((seg) => (
                   <button
                     key={seg.id}
                     className={`segment-btn${segment === seg.id ? ' active' : ''}`}
