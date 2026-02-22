@@ -1968,6 +1968,384 @@
         color: var(--orange);
         margin-top: 5px;
       }
+      /* ─── HAMBURGER NAV ─── */
+      .nav-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-logo .brand {
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--accent);
+        opacity: 0.8;
+        margin-bottom: 1px;
+      }
+      .nav-logo h1 {
+        font-size: 17px;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -0.5px;
+      }
+      .nav-logo h1 span {
+        color: var(--accent);
+      }
+      .hamburger-btn {
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 8px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .hamburger-line {
+        width: 20px;
+        height: 2px;
+        background: var(--text);
+        border-radius: 1px;
+        display: block;
+      }
+
+      /* ─── NAV DRAWER ─── */
+      .nav-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        z-index: 200;
+      }
+      .nav-overlay.open {
+        display: block;
+      }
+      .nav-drawer {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: min(320px, 90vw);
+        height: 100%;
+        background: var(--bg2);
+        z-index: 201;
+        padding: 20px 16px;
+        transition: right 0.25s ease;
+        overflow-y: auto;
+      }
+      .nav-drawer.open {
+        right: 0;
+      }
+      .nav-drawer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+      .nav-drawer-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+      }
+      .nav-drawer-close {
+        background: none;
+        border: none;
+        color: var(--text2);
+        font-size: 22px;
+        cursor: pointer;
+        padding: 4px;
+        font-family: inherit;
+        line-height: 1;
+      }
+      .nav-drawer-section {
+        margin-bottom: 20px;
+      }
+      .nav-drawer-section-title {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text3);
+        margin-bottom: 8px;
+      }
+      .nav-drawer-water-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+      }
+      .nav-drawer-water-btn {
+        background: var(--bg3);
+        border: 1.5px solid transparent;
+        color: var(--text2);
+        font-size: 11px;
+        font-weight: 600;
+        padding: 8px 10px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
+        text-align: center;
+      }
+      .nav-drawer-water-btn.active {
+        background: rgba(0,188,212,0.15);
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .nav-drawer-species-row {
+        display: flex;
+        gap: 6px;
+      }
+      .nav-drawer-species-btn {
+        flex: 1;
+        background: var(--bg3);
+        border: 1.5px solid transparent;
+        color: var(--text2);
+        font-size: 11px;
+        font-weight: 700;
+        padding: 8px 10px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .nav-drawer-species-btn.active-wb {
+        background: rgba(255,107,53,0.12);
+        border-color: var(--spawn);
+        color: var(--spawn);
+      }
+      .nav-drawer-species-btn.active-cr {
+        background: rgba(156,39,176,0.12);
+        border-color: #ab47bc;
+        color: #ab47bc;
+      }
+
+      /* ─── LAKE HERO ─── */
+      .lake-hero {
+        padding: 16px;
+        border-bottom: 1px solid var(--bg3);
+        background: linear-gradient(135deg, #0d2137 0%, #0a3d5c 50%, #0d4a5e 100%);
+      }
+      .lake-hero-name {
+        font-size: 22px;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -0.5px;
+        margin-bottom: 2px;
+      }
+      .lake-hero-tagline {
+        font-size: 12px;
+        color: var(--text2);
+        margin-bottom: 12px;
+      }
+      .hero-selects {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .hero-select {
+        flex: 1;
+        background: var(--bg3);
+        border: 1.5px solid var(--bg4);
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 8px 10px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        font-family: inherit;
+        -webkit-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238899aa' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 28px;
+      }
+      .hero-select:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+      .hero-cta-btn {
+        display: block;
+        width: 100%;
+        background: var(--accent);
+        border: none;
+        color: #000;
+        font-size: 14px;
+        font-weight: 800;
+        padding: 13px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        font-family: inherit;
+        letter-spacing: 0.3px;
+        transition: background 0.2s;
+      }
+      .hero-cta-btn:active {
+        background: var(--accent-dk);
+      }
+
+      /* ─── MEDIA + GEAR SHELF ─── */
+      .shelf-section {
+        padding: 0 0 4px;
+        margin-bottom: 12px;
+      }
+      .shelf-label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text2);
+        margin-bottom: 8px;
+        padding: 0 2px;
+      }
+      .shelf-scroll {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+      }
+      .shelf-scroll::-webkit-scrollbar {
+        display: none;
+      }
+      .shelf-card {
+        background: var(--bg3);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: var(--radius-sm);
+        padding: 12px;
+        min-width: 150px;
+        max-width: 170px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .shelf-rank {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--bg4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--accent);
+        flex-shrink: 0;
+      }
+      .shelf-card-name {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1.3;
+      }
+      .shelf-card-sub {
+        font-size: 10px;
+        color: var(--text3);
+      }
+      .shelf-card-btn {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 700;
+        text-decoration: none;
+        text-align: center;
+        cursor: pointer;
+        margin-top: auto;
+      }
+      .shelf-card-btn.yt {
+        background: rgba(255,0,0,0.12);
+        color: #ff6b6b;
+        border: 1px solid rgba(255,0,0,0.2);
+      }
+      .shelf-card-btn.shop {
+        background: rgba(0,188,212,0.1);
+        color: var(--accent);
+        border: 1px solid rgba(0,188,212,0.2);
+      }
+
+      /* ─── ACCORDION ─── */
+      .accordion-section {
+        background: var(--bg2);
+        border-radius: var(--radius);
+        border: 1px solid rgba(255,255,255,0.04);
+        margin-bottom: 12px;
+        overflow: hidden;
+      }
+      .accordion-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        background: none;
+        border: none;
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .accordion-toggle-title {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text2);
+      }
+      .accordion-arrow {
+        font-size: 12px;
+        color: var(--text3);
+        transition: transform 0.2s;
+        display: inline-block;
+      }
+      .accordion-arrow.open {
+        transform: rotate(180deg);
+      }
+      .accordion-body {
+        padding: 0 16px 14px;
+        display: none;
+      }
+      .accordion-body.open {
+        display: block;
+      }
+
+      /* ─── DESKTOP RESPONSIVE ─── */
+      @media (min-width: 640px) {
+        #root {
+          max-width: 640px;
+        }
+        .hero-selects {
+          max-width: 420px;
+        }
+        .hero-cta-btn {
+          max-width: 420px;
+        }
+        .accordion-body {
+          /* On desktop, always expand accordions regardless of toggle state */
+          display: block !important;
+        }
+      }
+      @media (min-width: 1024px) {
+        #root {
+          max-width: 960px;
+        }
+        .lake-hero {
+          padding: 24px;
+        }
+        .lake-hero-name {
+          font-size: 28px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -5945,7 +6323,7 @@
                         href={ytSearch(l.name)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={() => trackEvent('click_video', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'lures' })}
+                        onClick={() => { trackEvent('click_video', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'lures' }); trackEvent('lure_howto_click', { lure_name: l.name, water, species }); }}
                       >
                         {'\u25B6'} How-To
                       </a>
@@ -5954,7 +6332,7 @@
                         href={walmartSearch(l.name)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={() => trackEvent('click_buylink', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'lures' })}
+                        onClick={() => { trackEvent('click_buylink', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'lures' }); trackEvent('lure_shop_click', { lure_name: l.name, water, species }); }}
                       >
                         {'\uD83D\uDED2'} Shop
                       </a>
@@ -6038,10 +6416,7 @@
             </div>
 
             {/* PRO TIPS */}
-            <div className="card">
-              <div className="card-title">
-                {'\uD83D\uDCA1'} {w.name} {speciesName} Pro Tips
-              </div>
+            <AccordionSection title={`\uD83D\uDCA1 ${w.name} ${speciesName} Pro Tips`}>
               {(species === 'cr' && w.crTips ? w.crTips : w.tips).map(
                 (t, i) => (
                   <div
@@ -6074,7 +6449,7 @@
                   </div>
                 )
               )}
-            </div>
+            </AccordionSection>
           </>
         );
       }
@@ -6332,6 +6707,195 @@
             {/* REGULATORY INFO & SOURCES (collapsible) */}
             <RegulatoryInfoSection water={water} />
           </>
+        );
+      }
+
+      // ─── NAV DRAWER ─────────────────────────────────────────────
+      function NavDrawer({ open, onClose, water, species, setSpecies, onSelectWater }) {
+        return (
+          <>
+            <div className={`nav-overlay${open ? ' open' : ''}`} onClick={onClose} />
+            <div className={`nav-drawer${open ? ' open' : ''}`}>
+              <div className="nav-drawer-header">
+                <div className="nav-drawer-title">Menu</div>
+                <button className="nav-drawer-close" onClick={onClose}>{'\u00D7'}</button>
+              </div>
+              <div className="nav-drawer-section">
+                <div className="nav-drawer-section-title">{'\uD83C\uDFDE\uFE0F'} Lakes &amp; Rivers</div>
+                <div className="nav-drawer-water-grid">
+                  {Object.entries(WATERS).map(([key, wd]) => (
+                    <button
+                      key={key}
+                      className={`nav-drawer-water-btn${water === key ? ' active' : ''}`}
+                      onClick={() => { onSelectWater(key); onClose(); }}
+                    >
+                      {wd.short}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="nav-drawer-section">
+                <div className="nav-drawer-section-title">{'\uD83D\uDC1F'} Species</div>
+                <div className="nav-drawer-species-row">
+                  <button
+                    className={`nav-drawer-species-btn${species === 'wb' ? ' active-wb' : ''}`}
+                    onClick={() => { setSpecies('wb'); trackEvent('select_species', { species: 'wb', water, tab: 'nav' }); }}
+                  >
+                    White Bass
+                  </button>
+                  <button
+                    className={`nav-drawer-species-btn${species === 'cr' ? ' active-cr' : ''}`}
+                    onClick={() => { setSpecies('cr'); trackEvent('select_species', { species: 'cr', water, tab: 'nav' }); }}
+                  >
+                    Crappie
+                  </button>
+                </div>
+              </div>
+              <div className="nav-drawer-section">
+                <div className="nav-drawer-section-title">About</div>
+                <div style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.5 }}>
+                  Pocket Fishing Guide &mdash; Real-time fishing intelligence for Arkansas waters. Data from USGS, NWS, and USACE.
+                </div>
+              </div>
+              <div className="nav-drawer-section">
+                <div className="nav-drawer-section-title">Feedback</div>
+                <div style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.5 }}>
+                  Tap the feedback button at the bottom of the page to send us your thoughts.
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      }
+
+      // ─── LAKE HERO ───────────────────────────────────────────────
+      const HERO_TAGLINES = {
+        greers: 'Clear Ozark waters \u00B7 white bass & crappie',
+        maumelle: 'Premier central Arkansas reservoir',
+        bullshoals: 'Deep Ozark lake \u00B7 trophy fishery',
+        beaver: 'High-clarity Ozark reservoir',
+        ouachita: 'Crystal-clear mountain water',
+        degray: 'South Arkansas gem \u00B7 scenic & productive',
+        conway: 'Urban reservoir \u00B7 year-round action',
+        whiteRiver: 'World-class tailwater fishery',
+        buffalo: 'First national river \u00B7 wild & scenic',
+      };
+
+      function LakeHero({ water, species, setSpecies, segment, setSegment, onPatternCta }) {
+        const w = WATERS[water];
+        const tagline = HERO_TAGLINES[water] || (w.type === 'lake' ? 'Arkansas reservoir fishing' : 'Arkansas river fishing');
+        return (
+          <div className="lake-hero">
+            <div className="lake-hero-name">{w.name}</div>
+            <div className="lake-hero-tagline">{tagline}</div>
+            <div className="hero-selects">
+              <select
+                className="hero-select"
+                value={species}
+                onChange={(e) => {
+                  setSpecies(e.target.value);
+                  trackEvent('hero_species_select', { species: e.target.value, water });
+                  trackEvent('select_species', { species: e.target.value, water });
+                }}
+              >
+                <option value="wb">{'\uD83D\uDC1F'} White Bass</option>
+                <option value="cr">{'\uD83D\uDC1F'} Crappie</option>
+              </select>
+              <select
+                className="hero-select"
+                value={segment}
+                onChange={(e) => {
+                  setSegment(e.target.value);
+                  trackEvent('hero_activity_select', { segment: e.target.value, water });
+                  trackEvent('select_segment', { segment: e.target.value, water });
+                }}
+              >
+                {SEGMENTS.map((s) => (
+                  <option key={s.id} value={s.id}>{s.label}</option>
+                ))}
+              </select>
+            </div>
+            <button
+              className="hero-cta-btn"
+              onClick={() => {
+                trackEvent('pattern_cta_click', { water, species, segment });
+                onPatternCta();
+              }}
+            >
+              {'\uD83C\uDFA3'} View Today&apos;s Pattern {'\u2192'}
+            </button>
+          </div>
+        );
+      }
+
+      // ─── ACCORDION SECTION ───────────────────────────────────────
+      function AccordionSection({ title, children, defaultOpen }) {
+        const [open, setOpen] = useState(defaultOpen !== false);
+        return (
+          <div className="accordion-section">
+            <button className="accordion-toggle" onClick={() => setOpen(!open)}>
+              <span className="accordion-toggle-title">{title}</span>
+              <span className={`accordion-arrow${open ? ' open' : ''}`}>{'\u25BC'}</span>
+            </button>
+            <div className={`accordion-body${open ? ' open' : ''}`}>
+              {children}
+            </div>
+          </div>
+        );
+      }
+
+      // ─── MEDIA + GEAR SHELF ──────────────────────────────────────
+      function MediaGearShelf({ temp, water, species, segment }) {
+        const phase = getPhase(temp, species);
+        const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lures = lureMap[phase.name] || Object.values(lureMap)[1]; // fallback: pre-spawn phase (index 1)
+        const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
+        return (
+          <div className="card">
+            <div className="card-title">{'\uD83D\uDCFA'} Media + Gear &mdash; {speciesName}</div>
+            <div className="shelf-section">
+              <div className="shelf-label">{'\u25B6\uFE0F'} How-To Videos</div>
+              <div className="shelf-scroll">
+                {lures.map((l, i) => (
+                  <div className="shelf-card" key={i}>
+                    <div className="shelf-rank">{i + 1}</div>
+                    <div className="shelf-card-name">{l.name}</div>
+                    {l.sub && <div className="shelf-card-sub">{l.sub}</div>}
+                    <a
+                      className="shelf-card-btn yt"
+                      href={ytSearch(l.name)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => trackEvent('media_video_click', { lure_name: l.name, water, species, segment: segment || 'all' })}
+                    >
+                      {'\u25B6'} Watch
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="shelf-section">
+              <div className="shelf-label">{'\uD83D\uDED2'} Shopping Picks</div>
+              <div className="shelf-scroll">
+                {lures.map((l, i) => (
+                  <div className="shelf-card" key={i}>
+                    <div className="shelf-rank">{i + 1}</div>
+                    <div className="shelf-card-name">{l.name}</div>
+                    {l.sub && <div className="shelf-card-sub">{l.sub}</div>}
+                    <a
+                      className="shelf-card-btn shop"
+                      href={walmartSearch(l.name)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => trackEvent('media_shop_click', { lure_name: l.name, water, species, segment: segment || 'all' })}
+                    >
+                      {'\uD83D\uDED2'} Shop
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         );
       }
 
@@ -6658,6 +7222,7 @@
           }
         });
         const [headerCompact, setHeaderCompact] = useState(false);
+        const [navOpen, setNavOpen] = useState(false);
         const [usgs, setUsgs] = useState(null);
         const [forecast, setForecast] = useState(null);
         const [error, setError] = useState(null);
@@ -6856,30 +7421,17 @@
         return (
           <>
             <div className={`header${headerCompact ? ' compact' : ''}`}>
-              <div className="brand">Tale Waters & Tides</div>
-              <h1>
-                {speciesIcon} {speciesLabel} <span>Intelligence</span>
-              </h1>
-              <div className="header-sub">
-                {w.name}, AR {'\u00B7'}{' '}
-                {getWaterStations(w).length
-                  ? isStale
-                    ? 'USGS Data'
-                    : 'USGS Live Data'
-                  : 'Live Data'}
-              </div>
-              <div className="species-toggle">
-                <button
-                  className={`species-btn ${species === 'wb' ? 'active-wb' : ''}`}
-                  onClick={() => { setSpecies('wb'); trackEvent('select_species', { species: 'wb', water, segment, tab }); }}
-                >
-                  White Bass
-                </button>
-                <button
-                  className={`species-btn ${species === 'cr' ? 'active-cr' : ''}`}
-                  onClick={() => { setSpecies('cr'); trackEvent('select_species', { species: 'cr', water, segment, tab }); }}
-                >
-                  Crappie
+              <div className="nav-header">
+                <div className="nav-logo">
+                  <div className="brand">Tale Waters & Tides</div>
+                  <h1>
+                    {speciesIcon} {speciesLabel} <span>Intelligence</span>
+                  </h1>
+                </div>
+                <button className="hamburger-btn" onClick={() => setNavOpen(true)}>
+                  <span className="hamburger-line"></span>
+                  <span className="hamburger-line"></span>
+                  <span className="hamburger-line"></span>
                 </button>
               </div>
               {timestamp && (
@@ -6895,29 +7447,6 @@
                   showing last known reading
                 </div>
               )}
-              <div className="water-sel">
-                {Object.entries(WATERS).map(([key, wd]) => (
-                  <button
-                    key={key}
-                    className={`water-btn ${water === key ? 'active' : ''}`}
-                    onClick={() => { setWater(key); setRiverSection(null); trackEvent('select_water', { water: key, species, segment, tab }); }}
-                  >
-                    {wd.short}
-                  </button>
-                ))}
-              </div>
-              <div className="segment-sel">
-                {SEGMENTS.map((seg) => (
-                  <button
-                    key={seg.id}
-                    className={`segment-btn${segment === seg.id ? ' active' : ''}`}
-                    onClick={() => { setSegment(seg.id); trackEvent('select_segment', { segment: seg.id, water, species, tab }); }}
-                  >
-                    {seg.label}
-                  </button>
-                ))}
-              </div>
-              <div className="segment-label">Zone</div>
               {w.type === 'river' && w.usgsStations && w.usgsStations.length > 1 && (
                 <div>
                   <div className="section-sel">
@@ -6941,6 +7470,24 @@
                 </div>
               )}
             </div>
+            <NavDrawer
+              open={navOpen}
+              onClose={() => setNavOpen(false)}
+              water={water}
+              species={species}
+              setSpecies={(s) => { setSpecies(s); trackEvent('select_species', { species: s, water, segment, tab }); }}
+              onSelectWater={(key) => { setWater(key); setRiverSection(null); trackEvent('select_water', { water: key, species, segment, tab }); }}
+            />
+            {tab !== 'overview' && (
+              <LakeHero
+                water={water}
+                species={species}
+                setSpecies={(s) => { setSpecies(s); trackEvent('select_species', { species: s, water, segment, tab }); }}
+                segment={segment}
+                setSegment={(s) => { setSegment(s); trackEvent('select_segment', { segment: s, water, species, tab }); }}
+                onPatternCta={() => setTab('lures')}
+              />
+            )}
 
             <div className="tabs">
               {tabs.map((t) => (
@@ -6969,14 +7516,17 @@
                 />
               )}
               {tab === 'signals' && (
-                <DashboardTab
-                  usgs={usgs}
-                  forecast={forecast}
-                  water={water}
-                  species={species}
-                  onRefresh={loadData}
-                  loading={loading}
-                />
+                <>
+                  <DashboardTab
+                    usgs={usgs}
+                    forecast={forecast}
+                    water={water}
+                    species={species}
+                    onRefresh={loadData}
+                    loading={loading}
+                  />
+                  {!loading && <MediaGearShelf temp={temp} water={water} species={species} segment={segment} />}
+                </>
               )}
               {tab === 'forecast' && (
                 <ForecastTab forecast={forecast} water={water} />
