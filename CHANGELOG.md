@@ -10,10 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.4.0] - 2026-02-20 — Version 1.5: Lure Inventory Expansion + Schema Normalization
 
 ### Added
-- **Normalized lure schema**: all lure entries now include `type`, `water_type`, `depth_range`, `forage_match`, `youtube_link`, and `purchase_link` fields
+- **Normalized lure schema**: all lure entries now include `type`, `waterType`, `depthRange`, `forageMatch`, `youtubeLink`, and `purchaseLink` fields
 - **Expanded white bass lure inventory**: lake-specific white bass lures added for all pre-summer phases (Winter Hold, Pre-Spawn Staging, Spawn Trigger, Peak Spawn), doubling the WB arsenal from 18 to 30 entries
 - **Water-type filtering**: `IntelTab` now filters the 3-lure arsenal by the current water body type (lake vs. river), surfacing the most relevant setup for each location
-- **Targeted tackle links**: `youtube_link` and `purchase_link` on each lure entry replace generic search fallbacks; `ytSearch`/`walmartSearch` remain as fallback for any unlisted lure
+- **Targeted tackle links**: `youtubeLink` and `purchaseLink` on each lure entry replace generic search fallbacks; `ytSearch`/`walmartSearch` remain as fallback for any unlisted lure
 - **Lure metadata display**: depth range and forage match shown on each lure card for quick at-a-glance context
 
 ## [0.3.0] - 2026-02-14
