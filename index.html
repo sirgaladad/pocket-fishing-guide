@@ -7647,7 +7647,7 @@
                         )}
                         {Number.isFinite(usgs?.tempTrend7) && (
                           <div className="conditions-chip">
-                            {usgs.tempTrend7 > 0 ? '\uD83D\uDD25' : '\u2744\uFE0F'} {usgs.tempTrend7 > 0 ? '+' : ''}{usgs.tempTrend7}{'\u00B0'}/7d
+                            {usgs.tempTrend7 > 0 ? '\uD83D\uDD25' : usgs.tempTrend7 < 0 ? '\u2744\uFE0F' : '\u2192'} {usgs.tempTrend7 > 0 ? '+' : ''}{usgs.tempTrend7}{'\u00B0'}/7d
                             <span className="conditions-chip-label">trend</span>
                           </div>
                         )}
