@@ -2331,7 +2331,7 @@
           max-width: 420px;
         }
         .accordion-body {
-          /* On desktop, always expand accordions regardless of toggle state */
+          /* On desktop (640px+), always expand accordions regardless of toggle state */
           display: block !important;
         }
       }
@@ -6830,7 +6830,7 @@
 
       // ─── ACCORDION SECTION ───────────────────────────────────────
       function AccordionSection({ title, children, defaultOpen }) {
-        const [open, setOpen] = useState(defaultOpen !== false);
+        const [open, setOpen] = useState(defaultOpen ?? true);
         return (
           <div className="accordion-section">
             <button className="accordion-toggle" onClick={() => setOpen(!open)}>
