@@ -246,14 +246,22 @@
         position: sticky;
         top: 0;
         z-index: 99;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .tabs::-webkit-scrollbar {
+        display: none;
       }
       .tab {
         flex: 1;
+        min-width: 64px;
         padding: 10px 4px 8px;
         text-align: center;
         cursor: pointer;
         transition: all 0.2s;
         border-bottom: 2px solid transparent;
+        flex-shrink: 0;
       }
       .tab.active {
         border-bottom-color: var(--accent);
@@ -272,6 +280,62 @@
       }
       .tab.active .tab-label {
         color: var(--accent);
+      }
+
+      /* ─── SEGMENT SELECTOR ─── */
+      .segment-sel {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .segment-btn {
+        background: var(--bg3);
+        border: 1.5px solid transparent;
+        color: var(--text2);
+        font-size: 10px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
+        letter-spacing: 0.3px;
+      }
+      .segment-btn.active {
+        background: rgba(0, 188, 212, 0.1);
+        border-color: rgba(0, 188, 212, 0.6);
+        color: var(--accent);
+      }
+      .segment-label {
+        font-size: 10px;
+        color: var(--text3);
+        text-align: center;
+        margin-top: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* ─── HEADER COMPACT STATE ─── */
+      .header.compact {
+        padding: 8px 16px 0;
+      }
+      .header.compact .brand,
+      .header.compact .header-sub,
+      .header.compact .header-meta,
+      .header.compact .header-stale {
+        display: none;
+      }
+      .header.compact h1 {
+        font-size: 14px;
+        margin-bottom: 2px;
+      }
+      .header.compact .species-toggle {
+        margin-top: 4px;
+      }
+      .header.compact .water-sel {
+        margin-top: 6px;
       }
 
       /* ─── CONTENT ─── */
@@ -1919,6 +1983,11 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
       const { useState, useEffect, useCallback, useMemo } = React;
+
+      // ─── GA4 EVENT HELPER ─────────────────────────────────────
+      const trackEvent = (name, params) => {
+        try { window.gtag('event', name, params || {}); } catch (e) { console.warn('GA4 tracking failed:', e); }
+      };
 
       // ─── WATER BODY DATA ───────────────────────────────────────
       const WATERS = {
@@ -3704,6 +3773,102 @@
       ];
 
       const CALENDAR_PHASES = WB_CALENDAR;
+
+      // ─── SHARED TECHNIQUE LOOKUP DATA ─────────────────────────
+      const WB_WHERE = {
+        'Winter Hold':
+          'Deep channel bends, main lake points, 20-30ft depths. Fish the transitions between deep and shallow.',
+        'Pre-Spawn Staging':
+          'Creek mouths, river channel intersections, Hwy 10 bridge area. Fish the transitions between deep and shallow.',
+        'Spawn Trigger':
+          'Tributary entrances, creek arms, river channels moving upstream.',
+        'Peak Spawn':
+          'Tributaries, creek arms, and river channels. Follow the fish upstream.',
+        'Post-Spawn':
+          'Creek mouths, bridge pilings, mid-depth points and shoreline transitions.',
+        'Summer Pattern':
+          'Main lake humps, points, open water schools. Follow your electronics.',
+      };
+      const CR_WHERE = {
+        'Winter Deep':
+          'Deep brush piles (15-25ft), standing timber, creek channel bends. Vertical presentations.',
+        'Pre-Spawn Move':
+          'Creek channel edges, mid-depth brush lines (8-12ft). Slow-roll presentations along structure.',
+        'Spawn Staging':
+          'Shallow stumps, laydowns, and visible brush at 3-8ft. Pitch to individual cover.',
+        'Bed Spawn':
+          'Bank cover, stumps, shallow brush (1-5ft). Sight-fish beds near visible structure.',
+        'Post-Spawn':
+          'Mid-depth brush and channel edges (8-15ft). Spider rigs and slow trolling.',
+        'Summer Suspend':
+          'Thermocline depth (18-25ft), deep brush, open water. Electronics are critical.',
+      };
+      const WB_WHAT = {
+        'Winter Hold':
+          'Jigging spoons, blade baits, small jigs. Slow presentations near bottom.',
+        'Pre-Spawn Staging':
+          '1/16oz jighead + 2" white curly tail grub. Small crankbaits (shad pattern). Slow retrieve.',
+        'Spawn Trigger':
+          'Cast upstream, retrieve with current. Inline spinners. Cover water at creek mouths.',
+        'Peak Spawn':
+          'Fast-moving baits. Rooster tails, inline spinners. Cover water quickly.',
+        'Post-Spawn':
+          'Reaction baits. Small crankbaits, topwater early. Faster retrieves.',
+        'Summer Pattern':
+          'Slab spoons (vertical), topwater at dawn/dusk, swimbaits through schools.',
+      };
+      const CR_WHAT = {
+        'Winter Deep':
+          '1/16oz jig tipped with live minnow. Bobby Garland Baby Shad. Slow lift-drop near bottom.',
+        'Pre-Spawn Move':
+          'Road runner jigs (1/16oz). Live minnow under cork at 6-8ft. Slow troll channel edges.',
+        'Spawn Staging':
+          '1/32oz jig + tube (chartreuse/black flake). Pitch to stumps and laydowns. Light line.',
+        'Bed Spawn':
+          '1/32oz tube jig (white/chartreuse). Sight-fish beds. Slip cork + small jig for pressured fish.',
+        'Post-Spawn':
+          'Road runner 1/8oz. Small crankbaits (shad pattern). Spider rig brush lines.',
+        'Summer Suspend':
+          'Jigging spoon (1/8oz) at thermocline. Small swimbaits. Night fish with lights.',
+      };
+      const CAT_COLORS = {
+        Behavior: '#29b6f6',
+        Timing: '#ff6b35',
+        Access: '#4caf50',
+        Safety: '#f44336',
+        Structure: '#ffd54f',
+        'Post-Spawn': '#66bb6a',
+      };
+      const isNow = (months) => {
+        const m = new Date().getMonth();
+        if (months.includes('Dec') && (m === 11 || m <= 1)) return true;
+        if (months.includes('Feb') && months.includes('Mar') && m >= 1 && m <= 2) return true;
+        if (months.includes('Mar') && months.includes('May') && m >= 2 && m <= 4) return true;
+        if (months.includes('May') && months.includes('Jun') && m >= 4 && m <= 5) return true;
+        if (months.includes('Jun') && months.includes('Sep') && m >= 5 && m <= 8) return true;
+        if (months.includes('Oct') && months.includes('Nov') && m >= 9 && m <= 10) return true;
+        return false;
+      };
+
+      const DEFAULT_WATER = 'maumelle';
+
+      const SEGMENTS = [
+        { id: 'all', label: 'All Waters' },
+        { id: 'below-dam', label: 'Below Dam' },
+        { id: 'tailwater', label: 'Tailwater' },
+        { id: 'access', label: 'Access Area' },
+      ];
+
+      const TABS = [
+        { id: 'overview', icon: '\uD83D\uDDFA\uFE0F', label: 'Waters' },
+        { id: 'signals', icon: '\uD83D\uDCCA', label: 'Signals' },
+        { id: 'forecast', icon: '\u2600\uFE0F', label: 'Forecast' },
+        { id: 'lures', icon: '\uD83C\uDFA3', label: 'Lures' },
+        { id: 'techniques', icon: '\uD83C\uDFAF', label: 'Techniques' },
+        { id: 'guides', icon: '\uD83D\uDCCD', label: 'Guides' },
+        { id: 'videos', icon: '\u25B6\uFE0F', label: 'Videos' },
+        { id: 'buy', icon: '\uD83D\uDED2', label: 'Buy' },
+      ];
 
       function getPhase(temp, species) {
         const list = species === 'cr' ? CR_PHASES : WB_PHASES;
@@ -5713,131 +5878,17 @@
         );
       }
 
-      function IntelTab({ temp, water, species }) {
+      function IntelTab({ temp, water, species, segment }) {
         const phase = getPhase(temp, species);
         const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
         const lures = lureMap[phase.name] || Object.values(lureMap)[1];
-        const calendarData = species === 'cr' ? CR_CALENDAR : WB_CALENDAR;
-        const w = WATERS[water];
-        const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
 
-        // WHERE/WHAT lookup by species
-        const WB_WHERE = {
-          'Winter Hold':
-            'Deep channel bends, main lake points, 20-30ft depths. Fish the transitions between deep and shallow.',
-          'Pre-Spawn Staging':
-            'Creek mouths, river channel intersections, Hwy 10 bridge area. Fish the transitions between deep and shallow.',
-          'Spawn Trigger':
-            'Tributary entrances, creek arms, river channels moving upstream.',
-          'Peak Spawn':
-            'Tributaries, creek arms, and river channels. Follow the fish upstream.',
-          'Post-Spawn':
-            'Creek mouths, bridge pilings, mid-depth points and shoreline transitions.',
-          'Summer Pattern':
-            'Main lake humps, points, open water schools. Follow your electronics.',
-        };
-        const CR_WHERE = {
-          'Winter Deep':
-            'Deep brush piles (15-25ft), standing timber, creek channel bends. Vertical presentations.',
-          'Pre-Spawn Move':
-            'Creek channel edges, mid-depth brush lines (8-12ft). Slow-roll presentations along structure.',
-          'Spawn Staging':
-            'Shallow stumps, laydowns, and visible brush at 3-8ft. Pitch to individual cover.',
-          'Bed Spawn':
-            'Bank cover, stumps, shallow brush (1-5ft). Sight-fish beds near visible structure.',
-          'Post-Spawn':
-            'Mid-depth brush and channel edges (8-15ft). Spider rigs and slow trolling.',
-          'Summer Suspend':
-            'Thermocline depth (18-25ft), deep brush, open water. Electronics are critical.',
-        };
-        const WB_WHAT = {
-          'Winter Hold':
-            'Jigging spoons, blade baits, small jigs. Slow presentations near bottom.',
-          'Pre-Spawn Staging':
-            '1/16oz jighead + 2" white curly tail grub. Small crankbaits (shad pattern). Slow retrieve.',
-          'Spawn Trigger':
-            'Cast upstream, retrieve with current. Inline spinners. Cover water at creek mouths.',
-          'Peak Spawn':
-            'Fast-moving baits. Rooster tails, inline spinners. Cover water quickly.',
-          'Post-Spawn':
-            'Reaction baits. Small crankbaits, topwater early. Faster retrieves.',
-          'Summer Pattern':
-            'Slab spoons (vertical), topwater at dawn/dusk, swimbaits through schools.',
-        };
-        const CR_WHAT = {
-          'Winter Deep':
-            '1/16oz jig tipped with live minnow. Bobby Garland Baby Shad. Slow lift-drop near bottom.',
-          'Pre-Spawn Move':
-            'Road runner jigs (1/16oz). Live minnow under cork at 6-8ft. Slow troll channel edges.',
-          'Spawn Staging':
-            '1/32oz jig + tube (chartreuse/black flake). Pitch to stumps and laydowns. Light line.',
-          'Bed Spawn':
-            '1/32oz tube jig (white/chartreuse). Sight-fish beds. Slip cork + small jig for pressured fish.',
-          'Post-Spawn':
-            'Road runner 1/8oz. Small crankbaits (shad pattern). Spider rig brush lines.',
-          'Summer Suspend':
-            'Jigging spoon (1/8oz) at thermocline. Small swimbaits. Night fish with lights.',
-        };
         const whereNow =
           (species === 'cr' ? CR_WHERE : WB_WHERE)[phase.name] ||
           'Check electronics and target structure.';
         const whatThrow =
           (species === 'cr' ? CR_WHAT : WB_WHAT)[phase.name] ||
           'Match the hatch and adjust retrieve speed.';
-
-        const currentMonth = new Date().getMonth();
-        const isNow = (months) => {
-          if (
-            months.includes('Dec') &&
-            (currentMonth === 11 || currentMonth <= 1)
-          )
-            return true;
-          if (
-            months.includes('Feb') &&
-            months.includes('Mar') &&
-            currentMonth >= 1 &&
-            currentMonth <= 2
-          )
-            return true;
-          if (
-            months.includes('Mar') &&
-            months.includes('May') &&
-            currentMonth >= 2 &&
-            currentMonth <= 4
-          )
-            return true;
-          if (
-            months.includes('May') &&
-            months.includes('Jun') &&
-            currentMonth >= 4 &&
-            currentMonth <= 5
-          )
-            return true;
-          if (
-            months.includes('Jun') &&
-            months.includes('Sep') &&
-            currentMonth >= 5 &&
-            currentMonth <= 8
-          )
-            return true;
-          if (
-            months.includes('Oct') &&
-            months.includes('Nov') &&
-            currentMonth >= 9 &&
-            currentMonth <= 10
-          )
-            return true;
-          return false;
-        };
-
-        const catColors = {
-          Behavior: '#29b6f6',
-          Timing: '#ff6b35',
-          Access: '#4caf50',
-          Safety: '#f44336',
-          Structure: '#ffd54f',
-          'Post-Spawn': '#66bb6a',
-        };
 
         return (
           <>
@@ -5893,7 +5944,8 @@
                         className="tackle-link yt"
                         href={ytSearch(l.name)}
                         target="_blank"
-                        rel="noopener"
+                        rel="noopener noreferrer"
+                        onClick={() => trackEvent('click_video', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'lures' })}
                       >
                         {'\u25B6'} How-To
                       </a>
@@ -5901,7 +5953,8 @@
                         className="tackle-link shop"
                         href={walmartSearch(l.name)}
                         target="_blank"
-                        rel="noopener"
+                        rel="noopener noreferrer"
+                        onClick={() => trackEvent('click_buylink', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'lures' })}
                       >
                         {'\uD83D\uDED2'} Shop
                       </a>
@@ -5909,6 +5962,47 @@
                   </div>
                 </div>
               ))}
+            </div>
+          </>
+        );
+      }
+
+      function TechniquesTab({ temp, water, species }) {
+        const phase = getPhase(temp, species);
+        const calendarData = species === 'cr' ? CR_CALENDAR : WB_CALENDAR;
+        const w = WATERS[water];
+        const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
+
+        const whereNow =
+          (species === 'cr' ? CR_WHERE : WB_WHERE)[phase.name] ||
+          'Check electronics and target structure.';
+        const whatThrow =
+          (species === 'cr' ? CR_WHAT : WB_WHAT)[phase.name] ||
+          'Match the hatch and adjust retrieve speed.';
+
+        return (
+          <>
+            {/* CURRENT PATTERN */}
+            <div className="pattern-card">
+              <div className="here-badge">YOU ARE HERE</div>
+              <div className="pattern-name">
+                {'\uD83C\uDF21\uFE0F'} Current Pattern: {phase.name}
+              </div>
+              <div className="pattern-desc">{phase.short}</div>
+              <div className="pattern-cols">
+                <div className="pattern-col">
+                  <div className="pattern-col-title">
+                    {'\uD83D\uDCCD'} Where to Fish Now
+                  </div>
+                  <p>{whereNow}</p>
+                </div>
+                <div className="pattern-col">
+                  <div className="pattern-col-title">
+                    {'\uD83C\uDFA3'} What to Throw
+                  </div>
+                  <p>{whatThrow}</p>
+                </div>
+              </div>
             </div>
 
             {/* ANNUAL CALENDAR */}
@@ -5921,11 +6015,9 @@
                   const now = isNow(cp.months);
                   return (
                     <div
-                      className={`cal-phase`}
+                      className="cal-phase"
                       key={i}
-                      style={{
-                        borderLeftColor: now ? 'var(--accent)' : 'var(--bg4)',
-                      }}
+                      style={{ borderLeftColor: now ? 'var(--accent)' : 'var(--bg4)' }}
                     >
                       <div className="cal-phase-head">
                         <div className="cal-phase-name">
@@ -5959,10 +6051,7 @@
                       alignItems: 'flex-start',
                       padding: '8px 0',
                       borderBottom:
-                        i <
-                        (species === 'cr' && w.crTips ? w.crTips : w.tips)
-                          .length -
-                          1
+                        i < (species === 'cr' && w.crTips ? w.crTips : w.tips).length - 1
                           ? '1px solid var(--bg3)'
                           : 'none',
                     }}
@@ -5971,21 +6060,15 @@
                     <span
                       className="tip-cat-badge"
                       style={{
-                        background: `${catColors[t.cat] || 'var(--accent)'}22`,
-                        color: catColors[t.cat] || 'var(--accent)',
+                        background: `${CAT_COLORS[t.cat] || 'var(--accent)'}22`,
+                        color: CAT_COLORS[t.cat] || 'var(--accent)',
                         flexShrink: 0,
                         marginTop: 2,
                       }}
                     >
                       {t.cat}
                     </span>
-                    <span
-                      style={{
-                        fontSize: 12,
-                        color: 'var(--text2)',
-                        lineHeight: 1.5,
-                      }}
-                    >
+                    <span style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.5 }}>
                       {t.text}
                     </span>
                   </div>
@@ -5993,6 +6076,133 @@
               )}
             </div>
           </>
+        );
+      }
+
+      function VideosTab({ temp, water, species, segment }) {
+        const phase = getPhase(temp, species);
+        const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lures = lureMap[phase.name] || Object.values(lureMap)[1];
+        const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
+
+        return (
+          <div className="card">
+            <div className="card-title">
+              {'\u25B6\uFE0F'} How-To Videos — {speciesName} ({phase.name})
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 10 }}>
+              YouTube how-to tutorials for top lures in your current pattern:
+            </div>
+            {lures.map((l, i) => (
+              <div
+                key={i}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  padding: '10px 0',
+                  borderBottom: i < lures.length - 1 ? '1px solid var(--bg3)' : 'none',
+                }}
+              >
+                <div
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: '50%',
+                    background: 'var(--bg4)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 12,
+                    fontWeight: 700,
+                    color: 'var(--accent)',
+                    flexShrink: 0,
+                  }}
+                >
+                  {i + 1}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>
+                    {l.name}
+                  </div>
+                  {l.sub && <div style={{ fontSize: 11, color: 'var(--text3)' }}>{l.sub}</div>}
+                </div>
+                <a
+                  className="tackle-link yt"
+                  href={ytSearch(l.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent('click_video', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'videos' })}
+                >
+                  {'\u25B6'} Watch
+                </a>
+              </div>
+            ))}
+          </div>
+        );
+      }
+
+      function BuyTab({ temp, water, species, segment }) {
+        const phase = getPhase(temp, species);
+        const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lures = lureMap[phase.name] || Object.values(lureMap)[1];
+        const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
+
+        return (
+          <div className="card">
+            <div className="card-title">
+              {'\uD83D\uDED2'} Buy Tackle — {speciesName} ({phase.name})
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 10 }}>
+              Top lures for your current pattern — shop now:
+            </div>
+            {lures.map((l, i) => (
+              <div
+                key={i}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  padding: '10px 0',
+                  borderBottom: i < lures.length - 1 ? '1px solid var(--bg3)' : 'none',
+                }}
+              >
+                <div
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: '50%',
+                    background: 'var(--bg4)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 12,
+                    fontWeight: 700,
+                    color: 'var(--accent)',
+                    flexShrink: 0,
+                  }}
+                >
+                  {i + 1}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>
+                    {l.name}
+                  </div>
+                  {l.sub && <div style={{ fontSize: 11, color: 'var(--text3)' }}>{l.sub}</div>}
+                  <div style={{ fontSize: 11, color: 'var(--text2)' }}>{l.detail}</div>
+                </div>
+                <a
+                  className="tackle-link shop"
+                  href={walmartSearch(l.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent('click_buylink', { lure_name: l.name, water, species, segment: segment || 'all', tab: 'buy' })}
+                >
+                  {'\uD83D\uDED2'} Shop
+                </a>
+              </div>
+            ))}
+          </div>
         );
       }
 
@@ -6395,30 +6605,40 @@
       function App() {
         const [water, setWater] = useState(() => {
           try {
-            const stored = localStorage.getItem('selectedWater');
+            const stored = localStorage.getItem('pfg_water') || localStorage.getItem('selectedWater');
             if (stored && WATERS[stored]) {
               return stored;
             }
             // Fallback to default and repair invalid or missing value
             try {
-              localStorage.setItem('selectedWater', 'maumelle');
+              localStorage.setItem('pfg_water', DEFAULT_WATER);
+              localStorage.setItem('selectedWater', DEFAULT_WATER);
             } catch {
               // Ignore localStorage write errors (e.g., private browsing, quota exceeded)
             }
-            return 'maumelle';
+            return DEFAULT_WATER;
           } catch {
-            return 'maumelle';
+            return DEFAULT_WATER;
           }
         });
-        const [tab, setTab] = useState('dashboard');
+        const [tab, setTab] = useState(() => {
+          try {
+            const stored = localStorage.getItem('pfg_active_tab');
+            if (stored && TABS.some((t) => t.id === stored)) return stored;
+            return 'signals';
+          } catch {
+            return 'signals';
+          }
+        });
         const [species, setSpecies] = useState(() => {
           try {
-            const stored = localStorage.getItem('selectedSpecies');
+            const stored = localStorage.getItem('pfg_species') || localStorage.getItem('selectedSpecies');
             if (stored === 'wb' || stored === 'cr') {
               return stored;
             }
             // Fallback to default and repair invalid or missing value
             try {
+              localStorage.setItem('pfg_species', 'wb');
               localStorage.setItem('selectedSpecies', 'wb');
             } catch {
               // Ignore localStorage write errors (e.g., private browsing, quota exceeded)
@@ -6428,6 +6648,16 @@
             return 'wb';
           }
         });
+        const [segment, setSegment] = useState(() => {
+          try {
+            const stored = localStorage.getItem('pfg_segment');
+            if (stored && SEGMENTS.some((s) => s.id !== 'all' && s.id === stored)) return stored;
+            return 'all';
+          } catch {
+            return 'all';
+          }
+        });
+        const [headerCompact, setHeaderCompact] = useState(false);
         const [usgs, setUsgs] = useState(null);
         const [forecast, setForecast] = useState(null);
         const [error, setError] = useState(null);
@@ -6436,15 +6666,39 @@
 
         useEffect(() => {
           try {
+            localStorage.setItem('pfg_water', water);
             localStorage.setItem('selectedWater', water);
           } catch {}
         }, [water]);
 
         useEffect(() => {
           try {
+            localStorage.setItem('pfg_species', species);
             localStorage.setItem('selectedSpecies', species);
           } catch {}
         }, [species]);
+
+        useEffect(() => {
+          try {
+            localStorage.setItem('pfg_segment', segment);
+          } catch {
+            // Ignore localStorage write errors (e.g., private browsing, quota exceeded)
+          }
+        }, [segment]);
+
+        useEffect(() => {
+          try {
+            localStorage.setItem('pfg_active_tab', tab);
+          } catch {
+            // Ignore localStorage write errors (e.g., private browsing, quota exceeded)
+          }
+        }, [tab]);
+
+        useEffect(() => {
+          const handleScroll = () => setHeaderCompact(window.scrollY > 60);
+          window.addEventListener('scroll', handleScroll, { passive: true });
+          return () => window.removeEventListener('scroll', handleScroll);
+        }, []);
 
         const loadData = useCallback(async () => {
           setLoading(true);
@@ -6572,13 +6826,7 @@
         const triggerDist =
           temp !== null ? Math.max(0, spawnTrigger - temp).toFixed(1) : null;
 
-        const tabs = [
-          { id: 'overview', icon: '\uD83D\uDDFA\uFE0F', label: 'Waters' },
-          { id: 'dashboard', icon: '\uD83D\uDCCA', label: 'Dashboard' },
-          { id: 'forecast', icon: '\u2600\uFE0F', label: 'Forecast' },
-          { id: 'intel', icon: '\uD83E\uDDE0', label: 'Intel' },
-          { id: 'access', icon: '\uD83D\uDCCD', label: 'Access' },
-        ];
+        const tabs = TABS;
 
         const timestamp = usgs?.lastReading
           ? usgs.lastReading.toLocaleDateString('en-US', {
@@ -6607,7 +6855,7 @@
 
         return (
           <>
-            <div className="header">
+            <div className={`header${headerCompact ? ' compact' : ''}`}>
               <div className="brand">Tale Waters & Tides</div>
               <h1>
                 {speciesIcon} {speciesLabel} <span>Intelligence</span>
@@ -6623,13 +6871,13 @@
               <div className="species-toggle">
                 <button
                   className={`species-btn ${species === 'wb' ? 'active-wb' : ''}`}
-                  onClick={() => setSpecies('wb')}
+                  onClick={() => { setSpecies('wb'); trackEvent('select_species', { species: 'wb', water, segment, tab }); }}
                 >
                   White Bass
                 </button>
                 <button
                   className={`species-btn ${species === 'cr' ? 'active-cr' : ''}`}
-                  onClick={() => setSpecies('cr')}
+                  onClick={() => { setSpecies('cr'); trackEvent('select_species', { species: 'cr', water, segment, tab }); }}
                 >
                   Crappie
                 </button>
@@ -6652,12 +6900,24 @@
                   <button
                     key={key}
                     className={`water-btn ${water === key ? 'active' : ''}`}
-                    onClick={() => { setWater(key); setRiverSection(null); }}
+                    onClick={() => { setWater(key); setRiverSection(null); trackEvent('select_water', { water: key, species, segment, tab }); }}
                   >
                     {wd.short}
                   </button>
                 ))}
               </div>
+              <div className="segment-sel">
+                {SEGMENTS.map((seg) => (
+                  <button
+                    key={seg.id}
+                    className={`segment-btn${segment === seg.id ? ' active' : ''}`}
+                    onClick={() => { setSegment(seg.id); trackEvent('select_segment', { segment: seg.id, water, species, tab }); }}
+                  >
+                    {seg.label}
+                  </button>
+                ))}
+              </div>
+              <div className="segment-label">Zone</div>
               {w.type === 'river' && w.usgsStations && w.usgsStations.length > 1 && (
                 <div>
                   <div className="section-sel">
@@ -6687,7 +6947,7 @@
                 <div
                   key={t.id}
                   className={`tab ${tab === t.id ? 'active' : ''}`}
-                  onClick={() => setTab(t.id)}
+                  onClick={() => { setTab(t.id); trackEvent('switch_tab', { tab: t.id, water, species, segment }); }}
                 >
                   <span className="tab-icon">{t.icon}</span>
                   <span className="tab-label">{t.label}</span>
@@ -6703,11 +6963,12 @@
                   onSelectWater={(key) => {
                     setWater(key);
                     setRiverSection(null);
-                    setTab('dashboard');
+                    setTab('signals');
+                    trackEvent('select_water', { water: key, species, segment, tab: 'signals' });
                   }}
                 />
               )}
-              {tab === 'dashboard' && (
+              {tab === 'signals' && (
                 <DashboardTab
                   usgs={usgs}
                   forecast={forecast}
@@ -6720,10 +6981,19 @@
               {tab === 'forecast' && (
                 <ForecastTab forecast={forecast} water={water} />
               )}
-              {tab === 'intel' && (
-                <IntelTab temp={temp} water={water} species={species} />
+              {tab === 'lures' && (
+                <IntelTab temp={temp} water={water} species={species} segment={segment} />
               )}
-              {tab === 'access' && <AccessTab water={water} />}
+              {tab === 'techniques' && (
+                <TechniquesTab temp={temp} water={water} species={species} />
+              )}
+              {tab === 'guides' && <AccessTab water={water} />}
+              {tab === 'videos' && (
+                <VideosTab temp={temp} water={water} species={species} segment={segment} />
+              )}
+              {tab === 'buy' && (
+                <BuyTab temp={temp} water={water} species={species} segment={segment} />
+              )}
 
               <div className="footer">
                 Tale Waters & Tides, LLC {'\u00B7'} Data: {getStationLabel(w)} +
