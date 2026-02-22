@@ -7685,53 +7685,59 @@
                       )}
 
                       {/* Pro Intel + Local Tips accordion */}
-                      {!loading && (() => {
+                      {(() => {
+                        const ProTipsList = ({ tips }) => {
+                          if (!tips || tips.length === 0) return null;
+                          return (
+                            <AccordionSection
+                              title={'\uD83D\uDCA1 Pro Intel + Local Tips'}
+                              defaultOpen={false}
+                            >
+                              {tips.map((t, i) => (
+                                <div
+                                  key={i}
+                                  style={{
+                                    display: 'flex',
+                                    gap: 10,
+                                    alignItems: 'flex-start',
+                                    padding: '8px 0',
+                                    borderBottom:
+                                      i < tips.length - 1
+                                        ? '1px solid var(--bg3)'
+                                        : 'none',
+                                  }}
+                                >
+                                  <span
+                                    className="tip-cat-badge"
+                                    style={{
+                                      background: `${CAT_COLORS[t.cat] || 'var(--accent)'}22`,
+                                      color: CAT_COLORS[t.cat] || 'var(--accent)',
+                                      flexShrink: 0,
+                                      marginTop: 2,
+                                    }}
+                                  >
+                                    {t.cat}
+                                  </span>
+                                  <span
+                                    style={{
+                                      fontSize: 12,
+                                      color: 'var(--text2)',
+                                      lineHeight: 1.5,
+                                    }}
+                                  >
+                                    {t.text}
+                                  </span>
+                                </div>
+                              ))}
+                            </AccordionSection>
+                          );
+                        };
+
+                        if (loading) return null;
                         const w2 = WATERS[water];
-                        const tips = species === 'cr' && w2.crTips ? w2.crTips : w2.tips;
-                        if (!tips || tips.length === 0) return null;
-                        return (
-                          <AccordionSection
-                            title={'\uD83D\uDCA1 Pro Intel + Local Tips'}
-                            defaultOpen={false}
-                          >
-                            {tips.map((t, i) => (
-                              <div
-                                key={i}
-                                style={{
-                                  display: 'flex',
-                                  gap: 10,
-                                  alignItems: 'flex-start',
-                                  padding: '8px 0',
-                                  borderBottom:
-                                    i < tips.length - 1
-                                      ? '1px solid var(--bg3)'
-                                      : 'none',
-                                }}
-                              >
-                                <span
-                                  className="tip-cat-badge"
-                                  style={{
-                                    background: `${CAT_COLORS[t.cat] || 'var(--accent)'}22`,
-                                    color: CAT_COLORS[t.cat] || 'var(--accent)',
-                                    flexShrink: 0,
-                                    marginTop: 2,
-                                  }}
-                                >
-                                  {t.cat}
-                                </span>
-                                <span
-                                  style={{
-                                    fontSize: 12,
-                                    color: 'var(--text2)',
-                                    lineHeight: 1.5,
-                                  }}
-                                >
-                                  {t.text}
-                                </span>
-                              </div>
-                            ))}
-                          </AccordionSection>
-                        );
+                        const tips =
+                          species === 'cr' && w2.crTips ? w2.crTips : w2.tips;
+                        return <ProTipsList tips={tips} />;
                       })()}
                     </div>
 
