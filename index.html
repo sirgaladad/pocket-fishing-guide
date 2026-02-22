@@ -5741,7 +5741,8 @@
         const w = WATERS[water];
         const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
         const LURE_DISPLAY_COUNT = 3;
-        const _allPhaseLures = lureMap[phase.name] || Object.values(lureMap)[1];
+        const lureValues = Object.values(lureMap);
+        const _allPhaseLures = lureMap[phase.name] ?? lureValues[0] ?? [];
         const _matched = w?.type
           ? _allPhaseLures.filter(
               (l) =>
