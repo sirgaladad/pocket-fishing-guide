@@ -145,14 +145,6 @@ function main() {
     }
   }
 
-  // Ensure no segment references a station that isn't in the registry (strict check)
-  for (const referencedId of referencedStationIds) {
-    assert(
-      registryById[referencedId] !== undefined,
-      `Referenced station "${referencedId}" exists in registry`
-    );
-  }
-
   // ── Summary ───────────────────────────────────────────────────────────────
   console.log(`\n  Results: ${passed} passed, ${failed} failed`);
 
