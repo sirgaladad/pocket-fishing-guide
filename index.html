@@ -378,26 +378,10 @@
         flex-direction: column;
         gap: 0;
       }
-      .landing-primary,
-      .landing-media {
-        min-width: 0;
+      .landing-primary {
+        flex: 1;
       }
-      @media (min-width: 1024px) {
-        .landing-grid {
-          flex-direction: row;
-          align-items: flex-start;
-          gap: 12px;
-          padding: 0 4px;
-        }
-        .landing-primary {
-          flex: 2;
-        }
-        .landing-media {
-          flex: 1;
-          position: sticky;
-          top: 48px;
-        }
-      }
+      /* landing-media removed - Media + Gear section consolidated into Lures/Techniques tabs */
 
       /* ─── TODAY'S PATTERN HEADING ─── */
       .todays-pattern-heading {
@@ -2071,32 +2055,60 @@
         margin-top: 5px;
       }
       /* ─── HAMBURGER NAV ─── */
+      /* ─── REDESIGNED HEADER (Pocket Fishing Guide) ─── */
       .nav-header {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
         align-items: center;
-        justify-content: space-between;
+        padding: 10px 16px;
+        min-height: 68px;
       }
       .nav-logo {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        white-space: nowrap;
       }
       .nav-logo .brand {
-        font-size: 10px;
+        font-size: 9px;
         letter-spacing: 2px;
         text-transform: uppercase;
         color: var(--accent);
         opacity: 0.8;
-        margin-bottom: 1px;
+        margin-bottom: 2px;
       }
       .nav-logo h1 {
-        font-size: 17px;
+        font-size: 18px;
         font-weight: 800;
         color: #fff;
         letter-spacing: -0.5px;
+        margin: 0;
+        line-height: 1.2;
       }
-      .nav-logo h1 span {
+      .pfg-guide {
         color: var(--accent);
+      }
+      .pfg-lake-header {
+        background: rgba(0,180,220,0.15);
+        border: 1px solid rgba(0,212,255,0.25);
+        border-radius: 8px;
+        padding: 7px 16px;
+        text-align: center;
+        min-width: 160px;
+      }
+      .pfg-lake-name {
+        font-size: 18px;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1.2;
+      }
+      .pfg-lake-tagline {
+        font-size: 10px;
+        color: var(--text2);
+        margin-top: 1px;
+      }
+      .nav-header .hamburger-btn {
+        margin-left: auto;
       }
       .hamburger-btn {
         background: rgba(255,255,255,0.07);
@@ -2251,8 +2263,9 @@
       }
       .hero-selects {
         display: flex;
+        flex-direction: column;
         gap: 8px;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
       }
       .hero-select {
         flex: 1;
@@ -2295,6 +2308,30 @@
         background: var(--accent-dk);
       }
 
+      /* ─── PDF-STYLE DROPDOWN NAV ─── */
+      .pfg-dropdown-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 0;
+        margin-bottom: 10px;
+      }
+      .pfg-row1, .pfg-row2 {
+        display: flex;
+        gap: 8px;
+      }
+      .pfg-row1 .hero-select,
+      .pfg-row2 .hero-select {
+        flex: 1;
+      }
+      .pfg-state-sel {
+        max-width: 130px;
+      }
+      .hero-selects.pfg-dropdown-nav {
+        flex-direction: column;
+        margin-bottom: 0;
+      }
+      
       /* ─── MEDIA + GEAR SHELF ─── */
       .shelf-section {
         padding: 0 0 4px;
@@ -4340,14 +4377,9 @@
       ];
 
       const TABS = [
-        { id: 'overview', icon: '\uD83D\uDDFA\uFE0F', label: 'Waters' },
         { id: 'signals', icon: '\uD83D\uDCCA', label: 'Signals' },
         { id: 'forecast', icon: '\u2600\uFE0F', label: 'Forecast' },
-        { id: 'lures', icon: '\uD83C\uDFA3', label: 'Lures' },
         { id: 'techniques', icon: '\uD83C\uDFAF', label: 'Techniques' },
-        { id: 'guides', icon: '\uD83D\uDCCD', label: 'Guides' },
-        { id: 'videos', icon: '\u25B6\uFE0F', label: 'Videos' },
-        { id: 'buy', icon: '\uD83D\uDED2', label: 'Buy' },
       ];
 
       function getPhase(temp, species) {
@@ -6883,39 +6915,63 @@
         buffalo: 'First national river \u00B7 wild & scenic',
       };
 
-      function LakeHero({ water, species, setSpecies, segment, setSegment, onPatternCta }) {
+function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, onPatternCta }) {
         const w = WATERS[water];
-        const tagline = HERO_TAGLINES[water] || (w.type === 'lake' ? 'Arkansas reservoir fishing' : 'Arkansas river fishing');
         return (
           <div className="lake-hero">
-            <div className="lake-hero-name">{w.name}</div>
-            <div className="lake-hero-tagline">{tagline}</div>
-            <div className="hero-selects">
-              <select
-                className="hero-select"
-                value={species}
-                onChange={(e) => {
-                  setSpecies(e.target.value);
-                  trackEvent('hero_species_select', { species: e.target.value, water });
-                  trackEvent('select_species', { species: e.target.value, water });
-                }}
-              >
-                <option value="wb">{'\uD83D\uDC1F'} White Bass</option>
-                <option value="cr">{'\uD83D\uDC1F'} Crappie</option>
-              </select>
-              <select
-                className="hero-select"
-                value={segment}
-                onChange={(e) => {
-                  setSegment(e.target.value);
-                  trackEvent('hero_activity_select', { segment: e.target.value, water });
-                  trackEvent('select_segment', { segment: e.target.value, water });
-                }}
-              >
-                {SEGMENTS.map((s) => (
-                  <option key={s.id} value={s.id}>{s.label}</option>
-                ))}
-              </select>
+            <div className="hero-selects pfg-dropdown-nav">
+              <div className="pfg-row1">
+                <select
+                  className="hero-select pfg-state-sel"
+                  value="ar"
+                  onChange={() => {}}
+                  aria-label="State"
+                >
+                  <option value="ar">Arkansas</option>
+                </select>
+                <select
+                  className="hero-select"
+                  value={species}
+                  onChange={(e) => {
+                    setSpecies(e.target.value);
+                    trackEvent('hero_species_select', { species: e.target.value, water });
+                    trackEvent('select_species', { species: e.target.value, water });
+                  }}
+                  aria-label="Species"
+                >
+                  <option value="wb">{'🐟'} White Bass</option>
+                  <option value="cr">{'🐟'} Crappie</option>
+                </select>
+              </div>
+              <div className="pfg-row2">
+                <select
+                  className="hero-select"
+                  value={water}
+                  onChange={(e) => {
+                    setWater(e.target.value);
+                    trackEvent('select_water', { water: e.target.value, species });
+                  }}
+                  aria-label="Lake"
+                >
+                  {Object.entries(WATERS).map(([key, wt]) => (
+                    <option key={key} value={key}>{wt.name}</option>
+                  ))}
+                </select>
+                <select
+                  className="hero-select"
+                  value={segment}
+                  onChange={(e) => {
+                    setSegment(e.target.value);
+                    trackEvent('hero_activity_select', { segment: e.target.value, water });
+                    trackEvent('select_segment', { species, water, segment: e.target.value });
+                  }}
+                  aria-label="Location"
+                >
+                  {SEGMENTS.map((s) => (
+                    <option key={s.id} value={s.id}>{s.label}</option>
+                  ))}
+                </select>
+              </div>
             </div>
             <button
               className="hero-cta-btn"
@@ -6924,7 +6980,7 @@
                 onPatternCta();
               }}
             >
-              {'\uD83C\uDFA3'} View Today&apos;s Pattern {'\u2192'}
+              {'🎣'} View Today&apos;s Pattern {'→'}
             </button>
           </div>
         );
@@ -7523,19 +7579,21 @@
         return (
           <>
             <div className={`header${headerCompact ? ' compact' : ''}`}>
-              <div className="nav-header">
-                <div className="nav-logo">
-                  <div className="brand">Tale Waters & Tides</div>
-                  <h1>
-                    {speciesIcon} {speciesLabel} <span>Intelligence</span>
-                  </h1>
-                </div>
-                <button className="hamburger-btn" onClick={() => setNavOpen(true)}>
-                  <span className="hamburger-line"></span>
-                  <span className="hamburger-line"></span>
-                  <span className="hamburger-line"></span>
-                </button>
+<div className="nav-header">
+              <div className="nav-logo">
+                <div className="brand">TALE WATERS &amp; TIDES</div>
+                <h1>Pocket <span className="pfg-guide">Fishing Guide</span></h1>
               </div>
+              <div className="pfg-lake-header">
+                <div className="pfg-lake-name">{w.name}</div>
+                <div className="pfg-lake-tagline">{w.tagline}</div>
+              </div>
+              <button className="hamburger-btn" onClick={() => setNavOpen(true)}>
+                <span className="hamburger-line"></span>
+                <span className="hamburger-line"></span>
+                <span className="hamburger-line"></span>
+              </button>
+            </div>
               {timestamp && (
                 <div className="header-meta">
                   Data: {timestamp}
@@ -7581,15 +7639,15 @@
               onSelectWater={(key) => { setWater(key); setRiverSection(null); trackEvent('select_water', { water: key, species, segment, tab }); }}
             />
             {tab !== 'overview' && (
-              <LakeHero
-                water={water}
-                species={species}
-                setSpecies={(s) => { setSpecies(s); trackEvent('select_species', { species: s, water, segment, tab }); }}
-                segment={segment}
-                setSegment={(s) => { setSegment(s); trackEvent('select_segment', { segment: s, water, species, tab }); }}
-                onPatternCta={() => setTab('lures')}
-              />
-            )}
+<LakeHero
+              water={water}
+              species={species}
+              setSpecies={(s) => { setSpecies(s); trackEvent('select_species', { species: s, water, tab }); }}
+              segment={segment}
+              setSegment={(s) => { setSegment(s); trackEvent('select_segment', { species, water, segment: s }); }}
+              setWater={(key) => { setWater(key); setRiverSection(null); trackEvent('select_water', { water: key, species, tab }); }}
+              onPatternCta={() => setTab('signals')}
+            />
 
             <div className="tabs">
               {tabs.map((t) => (
@@ -7674,84 +7732,8 @@
                         )}
                       </div>
 
-                      {/* 3-Lure Arsenal + Current Pattern (from IntelTab) */}
-                      {!loading && (
-                        <IntelTab
-                          temp={temp}
-                          water={water}
-                          species={species}
-                          segment={segment}
-                        />
-                      )}
-
-                      {/* Pro Intel + Local Tips accordion */}
-                      {(() => {
-                        const ProTipsList = ({ tips }) => {
-                          if (!tips || tips.length === 0) return null;
-                          return (
-                            <AccordionSection
-                              title={'\uD83D\uDCA1 Pro Intel + Local Tips'}
-                              defaultOpen={false}
-                            >
-                              {tips.map((t, i) => (
-                                <div
-                                  key={i}
-                                  style={{
-                                    display: 'flex',
-                                    gap: 10,
-                                    alignItems: 'flex-start',
-                                    padding: '8px 0',
-                                    borderBottom:
-                                      i < tips.length - 1
-                                        ? '1px solid var(--bg3)'
-                                        : 'none',
-                                  }}
-                                >
-                                  <span
-                                    className="tip-cat-badge"
-                                    style={{
-                                      background: `${CAT_COLORS[t.cat] || 'var(--accent)'}22`,
-                                      color: CAT_COLORS[t.cat] || 'var(--accent)',
-                                      flexShrink: 0,
-                                      marginTop: 2,
-                                    }}
-                                  >
-                                    {t.cat}
-                                  </span>
-                                  <span
-                                    style={{
-                                      fontSize: 12,
-                                      color: 'var(--text2)',
-                                      lineHeight: 1.5,
-                                    }}
-                                  >
-                                    {t.text}
-                                  </span>
-                                </div>
-                              ))}
-                            </AccordionSection>
-                          );
-                        };
-
-                        if (loading) return null;
-                        const w2 = WATERS[water];
-                        const tips =
-                          species === 'cr' && w2.crTips ? w2.crTips : w2.tips;
-                        return <ProTipsList tips={tips} />;
-                      })()}
                     </div>
 
-                    {/* Media + Gear column */}
-                    <div className="landing-media">
-                      {!loading && (
-                        <MediaGearShelf
-                          temp={temp}
-                          water={water}
-                          species={species}
-                          segment={segment}
-                        />
-                      )}
-                    </div>
                   </div>
 
                   {/* ── DIVIDER before water signals data ── */}
