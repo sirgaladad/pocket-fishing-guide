@@ -1,0 +1,30 @@
+name: Validate Data Files
+
+on:
+  push:
+    paths:
+      - 'data/**'
+      - 'scripts/validate-*.js'
+      - 'scripts/validate-*.js'
+      - 'scripts/validate_stations_canonical.js'
+  pull_request:
+    paths:
+      - 'data/**'
+      - 'scripts/validate-*.js'
+      - 'scripts/validate_stations_canonical.js'
+      - 'scripts/validate_stations_canonical.js'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate lure schema
+        run: node scripts/validate-tackle-box.js
+      - name: Validate stations schema
+        run: node scripts/validate_stations_canonical.js

@@ -1102,6 +1102,12 @@
       .lure-num.n3 {
         background: var(--blue);
       }
+      .lure-num.n4 {
+        background: #9c27b0;
+      }
+      .lure-num.n5 {
+        background: #607d8b;
+      }
       .lure-info h4 {
         font-size: 13px;
         font-weight: 700;
@@ -2570,6 +2576,55 @@
         .pfg-row2 {
           flex-direction: column;
         }
+      }
+      /* ─── TACKLE BOX MODAL ─── */
+      .tackle-box-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        z-index: 200;
+        display: flex;
+        align-items: flex-end;
+      }
+      .tackle-box-sheet {
+        background: var(--bg2);
+        border-radius: 16px 16px 0 0;
+        width: 100%;
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 20px 16px 32px;
+        animation: slideUp 0.28s ease;
+      }
+      .tackle-box-trigger {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--accent-dk);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 10px;
+        width: 100%;
+        justify-content: center;
+      }
+      .condition-chip-inline {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+        background: var(--bg4);
+        color: var(--text2);
+        border-radius: 10px;
+        padding: 2px 7px;
+        margin: 2px 2px 0;
+      }
+      @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to   { transform: translateY(0); }
       }
     </style>
   </head>
@@ -5599,228 +5654,260 @@
 
       const PHASES = WB_PHASES; // default
 
+      // Shared n4/n5 lures added to all white bass phases
+      const WB_N4 = { name: 'Topwater White Tiny Torpedo (surface bait)', sub: 'surface bait', detail: 'Dawn/dusk bite. Walk-the-dog through surface schools.' };
+      const WB_N5 = { name: 'Paddle Tail Swimbait White (3" on 1/8oz head)', sub: '3" swimbait on 1/8oz head', detail: 'Match schooling shad depth. Steady retrieve at thermocline.' };
+
       const LURES_BY_PHASE = {
         'Winter Hold': [
           {
-            name: 'White 2" Bass Assassin Curly Shad Grub',
+            name: 'White 2" Bass Assassin Curly Shad Grub (on 1/16oz jighead)',
             sub: 'on 1/16oz jighead',
             detail: 'GO-TO. Cast upstream, slow roll with current.',
           },
           {
-            name: '1/8oz White Spinner',
+            name: '1/8oz White Spinner (silver blade)',
             sub: 'with silver blade',
             detail: 'Backup. Flash triggers reaction strikes in moving water.',
           },
           {
-            name: 'Blue/Orange Belly Rapala',
+            name: 'Blue/Orange Belly Rapala (suspending jerkbait)',
             sub: 'suspending jerkbait (small)',
             detail:
               'Backup. Deadly in slack water or when fish are holding deep.',
           },
+          WB_N4,
+          WB_N5,
         ],
         'Pre-Spawn Staging': [
           {
-            name: 'White 2" Bass Assassin Curly Shad Grub',
+            name: 'White 2" Bass Assassin Curly Shad Grub (on 1/16oz jighead)',
             sub: 'on 1/16oz jighead',
             detail: 'GO-TO. Cast upstream, slow roll with current.',
           },
           {
-            name: '1/8oz White Spinner',
+            name: '1/8oz White Spinner (silver blade)',
             sub: 'with silver blade',
             detail: 'Backup. Flash triggers reaction strikes in moving water.',
           },
           {
-            name: 'Blue/Orange Belly Rapala',
+            name: 'Blue/Orange Belly Rapala (suspending jerkbait)',
             sub: 'suspending jerkbait (small)',
             detail:
               'Backup. Deadly in slack water or when fish are holding deep.',
           },
+          WB_N4,
+          WB_N5,
         ],
         'Spawn Trigger': [
           {
-            name: 'White 2" Curly Shad Grub \u2014 1/16oz',
-            sub: 'cast upstream in tributaries',
+            name: 'White 2" Bass Assassin Curly Shad Grub (on 1/16oz jighead)',
+            sub: 'on 1/16oz jighead',
             detail: 'Retrieve with current. Let it tumble naturally.',
           },
           {
-            name: 'Small White Rooster Tail',
-            sub: '1/16oz inline spinner',
+            name: 'White Rooster Tail 1/16oz (inline spinner)',
+            sub: 'inline spinner',
             detail: 'Fan cast creek mouths. Steady retrieve.',
           },
           {
-            name: '1/8oz White Spinner',
-            sub: 'silver blade',
+            name: '1/8oz White Spinner (silver blade)',
+            sub: 'with silver blade',
             detail: 'Run parallel to current seams at tributary entrances.',
           },
+          WB_N4,
+          WB_N5,
         ],
         'Peak Spawn': [
           {
-            name: 'White Rooster Tail \u2014 1/16oz',
+            name: 'White Rooster Tail 1/16oz (inline spinner)',
             sub: 'inline spinner',
             detail:
               'Cast into current and retrieve steadily. Cover water fast.',
           },
           {
-            name: 'White Curly Tail Grub \u2014 1/16oz',
+            name: 'White Curly Tail Grub 1/16oz (jighead)',
             sub: 'jighead',
             detail: 'Dead drift through runs, then swim out. Deadly technique.',
           },
           {
-            name: 'Small Chrome Kastmaster',
-            sub: '1/8oz casting spoon',
+            name: 'Small Chrome Kastmaster 1/8oz (casting spoon)',
+            sub: 'casting spoon',
             detail: 'Long casts into rapids. Let it swing in current.',
           },
+          WB_N4,
+          WB_N5,
         ],
         'Post-Spawn': [
           {
-            name: 'Small White Crankbait',
+            name: 'Small White Crankbait (shallow diving)',
             sub: 'shallow diving',
             detail: 'Burn it past creek mouth transitions. Reaction strikes.',
           },
           {
-            name: '1/4oz White Spinner',
+            name: '1/4oz White Spinner (silver willow blade)',
             sub: 'silver willow blade',
             detail: 'Cover water along main body shorelines.',
           },
           {
-            name: 'Topwater \u2014 White Tiny Torpedo',
+            name: 'Topwater White Tiny Torpedo (surface bait)',
             sub: 'surface bait',
             detail: 'Early morning surface bites can be explosive post-spawn.',
           },
+          WB_N4,
+          WB_N5,
         ],
         'Summer Pattern': [
           {
-            name: 'White Slab Spoon \u2014 1/2oz',
+            name: 'White Slab Spoon 1/2oz (vertical jigging)',
             sub: 'vertical jigging',
             detail:
               'Vertical jig over schools. Match their depth on electronics.',
           },
           {
-            name: 'Topwater Pencil Popper',
+            name: 'Topwater Pencil Popper (walk-the-dog)',
             sub: 'walk-the-dog action',
             detail: 'When you see surface busting, throw into the fray.',
           },
           {
-            name: 'Paddle Tail Swimbait \u2014 White',
+            name: 'Paddle Tail Swimbait White (steady retrieve)',
             sub: 'steady retrieve',
             detail: 'Steady retrieve through schooling fish at dawn/dusk.',
           },
+          WB_N4,
+          WB_N5,
         ],
       };
+
+      // Shared n4/n5 lures added to all crappie phases
+      const CR_N4 = { name: 'Small Tube Jig (white/smoke)', sub: 'white/smoke', detail: 'Cast to deep structure. Slow fall presentation.' };
+      const CR_N5 = { name: '1/32oz Crappie Jig (pink/chartreuse)', sub: 'pink/chartreuse', detail: 'Vertical jig under dock lights at night.' };
 
       const CR_LURES_BY_PHASE = {
         'Winter Deep': [
           {
-            name: '1/16oz Jig + Live Minnow',
+            name: '1/16oz Jig + Live Minnow (vertical presentation)',
             sub: 'vertical presentation',
             detail:
               'GO-TO. Drop to brush piles, hold 6" off bottom. Slow lift-drop.',
           },
           {
-            name: 'Bobby Garland Baby Shad',
+            name: 'Bobby Garland Baby Shad (1.5" on 1/32oz jighead)',
             sub: '1.5" on 1/32oz jighead',
             detail:
               'Backup. Slow fall through timber. Chartreuse/white or monkey milk.',
           },
           {
-            name: 'Jigging Spoon \u2014 1/8oz',
+            name: 'Jigging Spoon 1/8oz (flutter spoon)',
             sub: 'flutter spoon',
             detail: 'Deep timber. Let it flutter on the fall.',
           },
+          CR_N4,
+          CR_N5,
         ],
         'Pre-Spawn Move': [
           {
-            name: 'Road Runner Jig \u2014 1/16oz',
+            name: 'Road Runner Jig 1/16oz (chartreuse/white)',
             sub: 'chartreuse/white',
             detail:
               'GO-TO. Slow-roll along creek channels and brush lines at 8-12ft.',
           },
           {
-            name: 'Live Minnow Under Cork',
+            name: 'Live Minnow Under Cork (set 6-8ft deep)',
             sub: 'set 6-8ft deep',
             detail: 'Fan cast around submerged brush. Let minnow do the work.',
           },
           {
-            name: 'Strike King Mr. Crappie',
+            name: 'Strike King Mr. Crappie Slabalicious (1/8oz)',
             sub: 'slabalicious 1/8oz',
             detail:
               'Slow troll along channel edges. Chartreuse or ghost pattern.',
           },
+          CR_N4,
+          CR_N5,
         ],
         'Spawn Staging': [
           {
-            name: '1/32oz Jig + Tube',
+            name: '1/32oz Jig + Tube (chartreuse/black flake)',
             sub: 'chartreuse/black flake',
             detail:
               'GO-TO. Pitch to stumps, laydowns, and visible brush at 3-8ft.',
           },
           {
-            name: "Bobby Garland Stroll'R",
+            name: "Bobby Garland Stroll'R (1/16oz jig)",
             sub: 'on 1/16oz jig',
             detail: 'Swim past wood cover. Twitching retrieve.',
           },
           {
-            name: 'Live Minnow \u2014 Tight Line',
+            name: 'Live Minnow Tight Line (no bobber, 4lb fluoro)',
             sub: 'no bobber, 4lb fluoro',
             detail:
               'Pitch to stumps. Feel for the tick. Light line = more bites.',
           },
+          CR_N4,
+          CR_N5,
         ],
         'Bed Spawn': [
           {
-            name: '1/32oz Jig + Tube',
+            name: '1/32oz Jig + Tube (white/chartreuse)',
             sub: 'white/chartreuse',
             detail:
               'GO-TO. Sight-fish beds near stumps and bank cover. Drop directly on bed.',
           },
           {
-            name: 'Small Jig Under Slip Cork',
+            name: 'Small Jig Under Slip Cork (2-4ft)',
             sub: 'set 2-4ft',
             detail: 'Cast past bed, drift over it. Deadly for pressured fish.',
           },
           {
-            name: 'Bobby Garland Baby Shad',
+            name: 'Bobby Garland Baby Shad (monkey milk/electric chicken)',
             sub: 'monkey milk or electric chicken',
             detail: 'Swim slowly through spawning flats. Cover more water.',
           },
+          CR_N4,
+          CR_N5,
         ],
         'Post-Spawn': [
           {
-            name: 'Road Runner \u2014 1/8oz',
+            name: 'Road Runner 1/8oz (white/chartreuse)',
             sub: 'white/chartreuse',
             detail:
               'GO-TO. Spider rig or cast to mid-depth brush. Steady retrieve.',
           },
           {
-            name: 'Small Crankbait',
+            name: 'Small Crankbait (shad pattern, 4-8ft diver)',
             sub: 'shad pattern, 4-8ft diver',
             detail: 'Troll or cast along channel edges and brush lines.',
           },
           {
-            name: 'Live Minnow + Split Shot',
+            name: 'Live Minnow + Split Shot (tight-line near brush)',
             sub: 'tight-line near brush',
             detail: 'Set at thermocline depth. Let them come to you.',
           },
+          CR_N4,
+          CR_N5,
         ],
         'Summer Suspend': [
           {
-            name: 'Jigging Spoon \u2014 1/8oz',
+            name: 'Jigging Spoon 1/8oz (over deep brush)',
             sub: 'over deep brush',
             detail:
               'GO-TO. Vertical jig at thermocline (18-25ft). Steady lift-drop.',
           },
           {
-            name: 'Small Swimbait',
+            name: 'Small Swimbait (1/16oz jighead)',
             sub: 'on 1/16oz jighead',
             detail:
               'Slow-roll through suspended fish. Watch electronics closely.',
           },
           {
-            name: 'Live Minnow Under Light',
+            name: 'Live Minnow Under Light (night fishing)',
             sub: 'night fishing',
             detail:
               'Green submersible light draws baitfish. Crappie follow. Summer secret weapon.',
           },
+          CR_N4,
+          CR_N5,
         ],
       };
 
@@ -6376,6 +6463,97 @@
         // 'lake': no adjustment — preserves baseline temperature-only behavior
 
         return { signal, icon, label, cls, signal_score, condition_label, wading_safety };
+      }
+
+      // ─── LURE MASTER HYDRATION ───────────────────────────────────────────────
+      // Loads data/lure-master.json in the background so scoreLures() can enrich
+      // phase lures with condition_score, agfc_cited, etc. Falls back gracefully
+      // if the file hasn't loaded yet or fetch is unavailable.
+      const LURE_MASTER_STATE = {
+        index: null,   // { byId: {}, byNameSub: {} }
+        loading: false
+      };
+
+      function indexLureMaster(raw) {
+        const source = Array.isArray(raw) ? raw : (raw && Array.isArray(raw.lures) ? raw.lures : []);
+        const byId = {};
+        const byNameSub = {};
+        source.forEach(function(lure) {
+          if (!lure || typeof lure !== 'object') return;
+          if (lure.id != null) byId[lure.id] = lure;
+          if (lure.name && lure.sub) {
+            byNameSub[String(lure.name).trim() + '::' + String(lure.sub).trim()] = lure;
+          }
+        });
+        return { byId: byId, byNameSub: byNameSub };
+      }
+
+      function primeLureMaster() {
+        if (LURE_MASTER_STATE.index || LURE_MASTER_STATE.loading) return;
+        if (typeof fetch !== 'function') return;
+        LURE_MASTER_STATE.loading = true;
+        fetch('data/lure-master.json')
+          .then(function(res) { return res && res.ok ? res.json() : null; })
+          .then(function(data) {
+            if (data) LURE_MASTER_STATE.index = indexLureMaster(data);
+          })
+          .catch(function(err) {
+            console && console.error && console.error('Failed to load lure-master.json', err);
+          })
+          .finally(function() { LURE_MASTER_STATE.loading = false; });
+      }
+
+      function hydrateLuresWithMaster(lures) {
+        if (!Array.isArray(lures) || !lures.length) return lures;
+        const index = LURE_MASTER_STATE.index;
+        if (!index) { primeLureMaster(); return lures; }
+        return lures.map(function(lure) {
+          if (!lure || typeof lure !== 'object') return lure;
+          var master = null;
+          if (lure.id != null && index.byId[lure.id]) {
+            master = index.byId[lure.id];
+          } else if (lure.name && lure.sub) {
+            var key = String(lure.name).trim() + '::' + String(lure.sub).trim();
+            master = index.byNameSub[key] || null;
+          }
+          // Phase lure fields win on conflict — preserves display-specific detail/sub over master defaults
+          return master ? Object.assign({}, master, lure) : lure;
+        });
+      }
+
+      // Prime lure master loading on script execution
+      primeLureMaster();
+
+      function deriveClarity(waterKey, flow) {
+        const w = WATERS[waterKey] || {};
+        const wtype = w.subtype || w.type || '';
+        if (wtype === 'reservoir') return 'clear';
+        if (Number.isFinite(flow)) {
+          if (flow > 1500) return 'muddy';
+          if (flow > 500) return 'stained';
+          return 'clear';
+        }
+        return 'stained';
+      }
+
+      function scoreLures(phase, clarity, flow, lureMap) {
+        const baseLures = (lureMap && phase) ? (lureMap[phase] || []) : [];
+        if (!baseLures.length) return baseLures;
+        // Enrich phase lures with canonical data (condition_score, agfc_*, etc.)
+        const lures = hydrateLuresWithMaster(baseLures);
+        const hasScores = lures.some(l => l.condition_score);
+        if (!hasScores) return lures;
+        const isHighFlow = Number.isFinite(flow) && flow > 1500;
+        const isLowFlow  = Number.isFinite(flow) && flow < 300;
+        const DEFAULT_SCORE = 5; // neutral score when condition_score is absent
+        const getConditionScore = l => (l && l.condition_score) || {};
+        const calcScore = l => {
+          const cs = getConditionScore(l);
+          return (cs[clarity] || DEFAULT_SCORE) +
+            (isHighFlow ? (cs.high_flow || DEFAULT_SCORE) : 0) +
+            (isLowFlow  ? (cs.low_flow  || DEFAULT_SCORE) : 0);
+        };
+        return [...lures].sort((a, b) => calcScore(b) - calcScore(a));
       }
 
       function estimateTempFromForecast(forecast, waterType) {
@@ -8228,10 +8406,88 @@
         );
       }
 
-      function IntelTab({ temp, water, species, segment }) {
+      function TackleBox({ phase, clarity, flow, species, water, segment, onClose }) {
+        const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const ranked = scoreLures(phase, clarity, flow, lureMap);
+        const top5 = ranked.slice(0, 5);
+        const closeButtonRef = React.useRef(null);
+
+        React.useEffect(() => {
+          if (closeButtonRef.current && typeof closeButtonRef.current.focus === 'function') {
+            closeButtonRef.current.focus();
+          }
+          function handleKeyDown(e) {
+            if (e.key === 'Escape' || e.key === 'Esc') {
+              e.stopPropagation();
+              onClose();
+            }
+          }
+          document.addEventListener('keydown', handleKeyDown);
+          return () => document.removeEventListener('keydown', handleKeyDown);
+        }, [onClose]);
+
+        return (
+          <div className="tackle-box-backdrop" onClick={onClose}>
+            <div
+              className="tackle-box-sheet"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="tackle-box-title"
+              onClick={e => e.stopPropagation()}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <div id="tackle-box-title" style={{ fontWeight: 800, fontSize: 16 }}>{'\uD83C\uDF92'} Tackle Box</div>
+                <button
+                  ref={closeButtonRef}
+                  onClick={onClose}
+                  aria-label="Close tackle box"
+                  style={{ background: 'none', border: 'none', color: 'var(--text2)', fontSize: 20, cursor: 'pointer' }}
+                >{'\u2715'}</button>
+              </div>
+              <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 10 }}>
+                Condition-ranked for <strong style={{ color: 'var(--accent)' }}>{phase}</strong> phase
+                {' \u00B7 '}
+                <span className="condition-chip-inline">{'\uD83D\uDCA7'} {clarity}</span>
+                {Number.isFinite(flow) && <span className="condition-chip-inline">{'\u3030'} {flow} cfs</span>}
+              </div>
+              {top5.map((l, i) => (
+                <div className="lure-card" key={l.id || l.name}>
+                  <div className={`lure-num n${i + 1}`}>{i + 1}</div>
+                  <div className="lure-info">
+                    <h4>{l.name}</h4>
+                    {l.sub && <div className="lure-sub">{l.sub}</div>}
+                    <p>{l.detail}</p>
+                    {l.agfc_cited && <span className="condition-chip-inline">{'\u2713'} AGFC</span>}
+                  </div>
+                  <div className="lure-card-actions">
+                    <a className="tackle-link yt" href={ytSearch(l.name)} target="_blank" rel="noopener noreferrer"
+                      onClick={() => { trackEvent('lure_howto_click', { lure_name: l.name, water, species }); }}>
+                      {'\u25B6'} How-To
+                    </a>
+                    <a className="tackle-link shop" href={walmartSearch(l.name)} target="_blank" rel="noopener noreferrer"
+                      onClick={() => { trackEvent('lure_shop_click', { lure_name: l.name, water, species }); }}>
+                      {'\uD83D\uDED2'} Shop
+                    </a>
+                  </div>
+                </div>
+              ))}
+              <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 12 }}>
+                Lure recommendations sourced from AGFC weekly fishing reports and species management data.
+                Always verify current regulations at{' '}
+                <a href="https://www.agfc.com/fishing/" target="_blank" rel="noopener noreferrer"
+                   style={{ color: 'var(--accent)' }}>agfc.com/fishing</a>.
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      function IntelTab({ temp, water, species, segment, usgs }) {
         const phase = getPhase(temp, species);
         const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
         const lures = lureMap[phase.name] || Object.values(lureMap)[1];
+        const [showTackleBox, setShowTackleBox] = React.useState(false);
+        const clarity = deriveClarity(water, usgs && usgs.flow);
 
         const whereNow =
           (species === 'cr' ? CR_WHERE : WB_WHERE)[phase.name] ||
@@ -8265,10 +8521,10 @@
               </div>
             </div>
 
-            {/* 3-LURE ARSENAL */}
+            {/* TOP LURES */}
             <div className="card">
               <div className="card-title">
-                {'\uD83C\uDFC6'} The 3-Lure Arsenal{' '}
+                {'\uD83C\uDFC6'} Top Lures{' '}
                 {species === 'cr' ? '(Crappie)' : `(${getSpeciesDisplayName(species)})`}
               </div>
               <div
@@ -8281,6 +8537,8 @@
                 {species === 'cr'
                   ? `Top crappie setups for ${phase.name} pattern \u2014 ranked by effectiveness:`
                   : `Top ${getSpeciesDisplayName(species).toLowerCase()} setups for ${phase.name} pattern:`}
+                {' '}
+                <span className="condition-chip-inline">{'\uD83D\uDCA7'} {clarity}</span>
               </div>
               {lures.map((l, i) => (
                 <div className="lure-card" key={i}>
@@ -8312,20 +8570,34 @@
                   </div>
                 </div>
               ))}
+              <button className="tackle-box-trigger" onClick={() => setShowTackleBox(true)}>
+                {'\uD83C\uDF92'} Open Tackle Box \u2014 Top 5 Condition-Ranked
+              </button>
             </div>
+            {showTackleBox && (
+              <TackleBox
+                phase={phase.name}
+                clarity={clarity}
+                flow={usgs && usgs.flow}
+                species={species}
+                water={water}
+                segment={segment}
+                onClose={() => setShowTackleBox(false)}
+              />
+            )}
           </>
         );
       }
 
-      function TechniquesTab({ temp, water, species, segment }) {
+      function TechniquesTab({ temp, water, species, segment, usgs }) {
         const calendarData = species === 'cr' ? CR_CALENDAR : WB_CALENDAR;
         const w = WATERS[water];
         const speciesName = getSpeciesDisplayName(species);
 
         return (
           <>
-            {/* TODAY'S PATTERN + 3-LURE ARSENAL */}
-            <IntelTab temp={temp} water={water} species={species} segment={segment} />
+            {/* TODAY'S PATTERN + TOP LURES */}
+            <IntelTab temp={temp} water={water} species={species} segment={segment} usgs={usgs} />
 
             {/* ANNUAL CALENDAR */}
             <div className="card">
@@ -9613,7 +9885,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                 <ForecastTab forecast={forecast} water={water} />
               )}
               {tab === 'techniques' && (
-                <TechniquesTab temp={temp} water={water} species={species} segment={segment} />
+                <TechniquesTab temp={temp} water={water} species={species} segment={segment} usgs={usgs} />
               )}
               {tab === 'access' && <AccessTab water={water} />}
 

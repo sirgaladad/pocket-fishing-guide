@@ -1,0 +1,258 @@
+{
+  "version": "1.0",
+  "description": "Canonical lure library for Tackle Box condition-weighted ranking",
+  "lures": [
+    {
+      "id": "lure_001",
+      "name": "White 2\" Bass Assassin Curly Shad Grub (on 1/16oz jighead)",
+      "sub": "on 1/16oz jighead",
+      "detail": "GO-TO. Cast upstream, slow roll with current.",
+      "type": "jig",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/white-bass/",
+      "condition_score": {
+        "clear": 10,
+        "stained": 8,
+        "muddy": 5,
+        "high_flow": 6,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Winter Hold", "Pre-Spawn Staging", "Spawn Trigger"]
+    },
+    {
+      "id": "lure_002",
+      "name": "1/8oz White Spinner (silver blade)",
+      "sub": "with silver blade",
+      "detail": "Flash triggers reaction strikes in moving water.",
+      "type": "spinner",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/white-bass/",
+      "condition_score": {
+        "clear": 8,
+        "stained": 9,
+        "muddy": 7,
+        "high_flow": 8,
+        "low_flow": 7
+      },
+      "phase_affinity": ["Winter Hold", "Pre-Spawn Staging", "Spawn Trigger", "Peak Spawn"]
+    },
+    {
+      "id": "lure_003",
+      "name": "Blue/Orange Belly Rapala (suspending jerkbait)",
+      "sub": "suspending jerkbait (small)",
+      "detail": "Deadly in slack water or when fish are holding deep.",
+      "type": "crankbait",
+      "rank": 3,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/white-bass/",
+      "condition_score": {
+        "clear": 9,
+        "stained": 7,
+        "muddy": 4,
+        "high_flow": 5,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Winter Hold", "Pre-Spawn Staging"]
+    },
+    {
+      "id": "lure_004",
+      "name": "White Rooster Tail 1/16oz (inline spinner)",
+      "sub": "inline spinner",
+      "detail": "Fan cast creek mouths. Steady retrieve.",
+      "type": "spinner",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/white-bass/",
+      "condition_score": {
+        "clear": 9,
+        "stained": 8,
+        "muddy": 6,
+        "high_flow": 7,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Spawn Trigger", "Peak Spawn", "Post-Spawn"]
+    },
+    {
+      "id": "lure_005",
+      "name": "Small Chrome Kastmaster 1/8oz (casting spoon)",
+      "sub": "casting spoon",
+      "detail": "Long casts into rapids. Let it swing in current.",
+      "type": "spoon",
+      "rank": 3,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/white-bass/",
+      "condition_score": {
+        "clear": 10,
+        "stained": 7,
+        "muddy": 4,
+        "high_flow": 8,
+        "low_flow": 8
+      },
+      "phase_affinity": ["Peak Spawn", "Summer Pattern"]
+    },
+    {
+      "id": "lure_006",
+      "name": "Small White Crankbait (shallow diving)",
+      "sub": "shallow diving",
+      "detail": "Burn it past creek mouth transitions. Reaction strikes.",
+      "type": "crankbait",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/white-bass/",
+      "condition_score": {
+        "clear": 9,
+        "stained": 8,
+        "muddy": 5,
+        "high_flow": 6,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Post-Spawn", "Summer Pattern"]
+    },
+    {
+      "id": "lure_007",
+      "name": "Topwater White Tiny Torpedo (surface bait)",
+      "sub": "surface bait",
+      "detail": "Dawn/dusk bite. Walk-the-dog through surface schools.",
+      "type": "topwater",
+      "rank": 3,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/white-bass/",
+      "condition_score": {
+        "clear": 10,
+        "stained": 7,
+        "muddy": 3,
+        "high_flow": 3,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Post-Spawn", "Summer Pattern"]
+    },
+    {
+      "id": "lure_008",
+      "name": "White Slab Spoon 1/2oz (vertical jigging)",
+      "sub": "vertical jigging",
+      "detail": "Vertical jig over schools. Match their depth on electronics.",
+      "type": "spoon",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/white-bass/",
+      "condition_score": {
+        "clear": 8,
+        "stained": 9,
+        "muddy": 7,
+        "high_flow": 7,
+        "low_flow": 8
+      },
+      "phase_affinity": ["Summer Pattern", "Winter Hold"]
+    },
+    {
+      "id": "lure_009",
+      "name": "Paddle Tail Swimbait White (3\" on 1/8oz head)",
+      "sub": "3\" swimbait on 1/8oz head",
+      "detail": "Match schooling shad depth. Steady retrieve at thermocline.",
+      "type": "jig",
+      "rank": 3,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 9,
+        "stained": 8,
+        "muddy": 6,
+        "high_flow": 5,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Summer Pattern", "Post-Spawn"]
+    },
+    {
+      "id": "lure_010",
+      "name": "1/16oz Jig + Live Minnow (vertical presentation)",
+      "sub": "vertical presentation",
+      "detail": "GO-TO. Drop to brush piles, hold 6\" off bottom. Slow lift-drop.",
+      "type": "jig",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/crappie/",
+      "condition_score": {
+        "clear": 9,
+        "stained": 10,
+        "muddy": 8,
+        "high_flow": 7,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Winter Deep", "Pre-Spawn Move"]
+    },
+    {
+      "id": "lure_011",
+      "name": "Bobby Garland Baby Shad (1.5\" on 1/32oz jighead)",
+      "sub": "1.5\" on 1/32oz jighead",
+      "detail": "Slow fall through timber. Chartreuse/white or monkey milk.",
+      "type": "jig",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/crappie/",
+      "condition_score": {
+        "clear": 8,
+        "stained": 9,
+        "muddy": 7,
+        "high_flow": 6,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Winter Deep", "Spawn Staging", "Bed Spawn"]
+    },
+    {
+      "id": "lure_012",
+      "name": "Road Runner Jig 1/16oz (chartreuse/white)",
+      "sub": "chartreuse/white",
+      "detail": "Slow-roll along creek channels and brush lines at 8-12ft.",
+      "type": "spinner",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/crappie/",
+      "condition_score": {
+        "clear": 8,
+        "stained": 9,
+        "muddy": 7,
+        "high_flow": 8,
+        "low_flow": 8
+      },
+      "phase_affinity": ["Pre-Spawn Move", "Post-Spawn", "Summer Suspend"]
+    },
+    {
+      "id": "lure_013",
+      "name": "1/32oz Crappie Jig (pink/chartreuse)",
+      "sub": "pink/chartreuse",
+      "detail": "Vertical jig under dock lights at night.",
+      "type": "jig",
+      "rank": 4,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/crappie/",
+      "condition_score": {
+        "clear": 9,
+        "stained": 8,
+        "muddy": 6,
+        "high_flow": 5,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Spawn Staging", "Bed Spawn", "Summer Suspend"]
+    },
+    {
+      "id": "lure_014",
+      "name": "Small Tube Jig (white/smoke)",
+      "sub": "white/smoke",
+      "detail": "Cast to deep structure. Slow fall presentation.",
+      "type": "jig",
+      "rank": 5,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 9,
+        "stained": 8,
+        "muddy": 6,
+        "high_flow": 5,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Winter Deep", "Summer Suspend", "Post-Spawn"]
+    }
+  ]
+}
