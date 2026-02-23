@@ -479,6 +479,10 @@
         "sp_largemouth_bass"
       ],
       "has_segments": false,
+      "usace": {
+        "project_id": "ouachita",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/ouachita.htm"
+      },
       "generation_schedule_url": "https://www.swl.usace.army.mil/Missions/Recreation/Lakes/Lake-Ouachita/"
     }
   ]
