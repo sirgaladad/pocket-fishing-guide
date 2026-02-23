@@ -380,7 +380,7 @@
         "sp_brown_trout",
         "sp_cutthroat_trout"
       ],
-      "has_segments": false
+      "has_segments": true
     },
     {
       "id": "wb_little_missouri_narrows_tailwater",

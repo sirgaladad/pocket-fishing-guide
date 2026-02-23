@@ -93,19 +93,18 @@
       ]
     },
     {
-      "id": "seg_bull_shoals_tw_upper",
+      "id": "seg_bull_shoals_tailwater_upper",
       "waterbody_id": "wb_white_river_bull_shoals_tailwater",
       "name": "Upper (Below Bull Shoals Dam)",
       "start_mile_marker": 0,
       "end_mile_marker": 20,
       "nearest_access": "Bull Shoals Dam / Cotter Bridge",
       "primary_station_ids": [
-        "07054501",
-        "07054527"
+        "07054501"
       ]
     },
     {
-      "id": "seg_bull_shoals_tw_middle",
+      "id": "seg_bull_shoals_tailwater_middle",
       "waterbody_id": "wb_white_river_bull_shoals_tailwater",
       "name": "Middle (Cotter to Buffalo Point)",
       "start_mile_marker": 20,
@@ -116,7 +115,7 @@
       ]
     },
     {
-      "id": "seg_bull_shoals_tw_lower",
+      "id": "seg_bull_shoals_tailwater_lower",
       "waterbody_id": "wb_white_river_bull_shoals_tailwater",
       "name": "Lower (Buffalo Point to Norfork)",
       "start_mile_marker": 60,
@@ -127,7 +126,7 @@
       ]
     },
     {
-      "id": "seg_greers_ferry_tw_upper",
+      "id": "seg_greers_ferry_tailwater_upper",
       "waterbody_id": "wb_little_red_river_greers_ferry_tailwater",
       "name": "Upper (Dam to Heber Springs)",
       "start_mile_marker": 0,
@@ -138,7 +137,7 @@
       ]
     },
     {
-      "id": "seg_greers_ferry_tw_lower",
+      "id": "seg_greers_ferry_tailwater_lower",
       "waterbody_id": "wb_little_red_river_greers_ferry_tailwater",
       "name": "Lower (Heber Springs to Searcy)",
       "start_mile_marker": 15,
