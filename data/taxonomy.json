@@ -1,0 +1,101 @@
+{
+  "version": "1.0",
+  "description": "Hierarchical water taxonomy for AGFC Pocket Fishing Guide. Organizes Arkansas water bodies by type to support structured dependent-dropdown filter UI. water_body_ids reference records in water_bodies.json.",
+  "water_types": [
+    {
+      "type_id": "reservoir",
+      "label": "Reservoir",
+      "icon": "💧",
+      "description": "USACE-impounded reservoirs and managed lakes",
+      "has_segments": false,
+      "water_body_ids": [
+        "wb_beaver_lake",
+        "wb_bull_shoals_lake",
+        "wb_norfork_lake",
+        "wb_greers_ferry_lake",
+        "wb_lake_ouachita",
+        "wb_lake_hamilton",
+        "wb_lake_catherine",
+        "wb_millwood_lake",
+        "wb_blue_mountain_lake",
+        "wb_nimrod_lake",
+        "wb_dardanelle_lake",
+        "wb_lake_maumelle",
+        "wb_degray_lake"
+      ]
+    },
+    {
+      "type_id": "tailwater",
+      "label": "Tailwater",
+      "icon": "💦",
+      "description": "Dam-regulated river reaches below major reservoirs. Segment selector exposed in UI.",
+      "has_segments": true,
+      "water_body_ids": [
+        "wb_white_river_beaver_tailwater",
+        "wb_white_river_bull_shoals_tailwater",
+        "wb_north_fork_norfork_tailwater",
+        "wb_little_red_river_greers_ferry_tailwater",
+        "wb_little_missouri_narrows_tailwater",
+        "wb_ouachita_river_tailwater"
+      ]
+    },
+    {
+      "type_id": "river",
+      "label": "River",
+      "icon": "🌊",
+      "description": "Free-flowing rivers. Segment selector exposed in UI.",
+      "has_segments": true,
+      "water_body_ids": [
+        "wb_white_river",
+        "wb_buffalo_national_river"
+      ]
+    },
+    {
+      "type_id": "stream",
+      "label": "Stream / Creek",
+      "icon": "🌿",
+      "description": "Spring-fed streams and tributary creeks",
+      "has_segments": false,
+      "water_body_ids": [
+        "wb_spring_river"
+      ]
+    },
+    {
+      "type_id": "lake",
+      "label": "Lake",
+      "icon": "🏞️",
+      "description": "Natural lakes and urban impoundments (reserved for future AGFC expansion)",
+      "has_segments": false,
+      "water_body_ids": []
+    }
+  ],
+  "app_water_type_map": {
+    "notes": "Maps WATERS JS constant keys (index.html) to taxonomy type_ids. Used to drive dependent dropdown and conditional segment rendering.",
+    "greers":     "reservoir",
+    "maumelle":   "reservoir",
+    "bullshoals": "reservoir",
+    "beaver":     "reservoir",
+    "ouachita":   "reservoir",
+    "degray":     "reservoir",
+    "conway":     "lake",
+    "whiteRiver": "tailwater",
+    "buffalo":    "river"
+  },
+  "app_segments": {
+    "notes": "Named river sections for the segment selector dropdown, keyed by WATERS JS constant key. Segment IDs align with section_id values in rivers_map.json.",
+    "whiteRiver": [
+      { "id": "all",                              "label": "All Sections" },
+      { "id": "white-river-tailwater-beaver",     "label": "Beaver Tailwater" },
+      { "id": "white-river-tailwater-bullshoals", "label": "Bull Shoals Tailwater" },
+      { "id": "white-river-upper",                "label": "Upper White River" },
+      { "id": "white-river-middle",               "label": "Middle White River" },
+      { "id": "white-river-lower",                "label": "Lower White River" }
+    ],
+    "buffalo": [
+      { "id": "all",            "label": "All Sections" },
+      { "id": "buffalo-upper",  "label": "Upper Buffalo" },
+      { "id": "buffalo-middle", "label": "Middle Buffalo" },
+      { "id": "buffalo-lower",  "label": "Lower Buffalo" }
+    ]
+  }
+}
