@@ -64,9 +64,11 @@
       "type_id": "lake",
       "label": "Lake",
       "icon": "🏞️",
-      "description": "Natural lakes and urban impoundments (reserved for future AGFC expansion)",
+      "description": "Natural lakes and AGFC-managed impoundments. Includes Lake Conway and future AGFC expansion waters.",
       "has_segments": false,
-      "water_body_ids": []
+      "water_body_ids": [
+        "wb_lake_conway"
+      ]
     }
   ],
   "app_water_type_map": {

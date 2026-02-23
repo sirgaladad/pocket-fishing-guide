@@ -631,6 +631,33 @@
         "usace_project": "DeGray",
         "usace_district": "SWL"
       }
+    },
+    {
+      "water_body_id": "wb_lake_conway",
+      "name": "Lake Conway",
+      "display_name": "Lake Conway",
+      "short_name": "Lake Conway",
+      "water_body_type": "lake",
+      "parent_river": "Point Remove Creek",
+      "dam_controlled": true,
+      "dam_name": "Lake Conway Dam",
+      "dam_operator": "AGFC",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Faulkner"],
+      "region": "Central Arkansas",
+      "huc8_code": "08020203",
+      "coordinates": {
+        "centroid_lat": 34.9667,
+        "centroid_lng": -92.3833
+      },
+      "source_ids": {
+        "agfc_slug": "lake-conway",
+        "usgs_site_id": null,
+        "usace_project": null,
+        "usace_district": null
+      }
     }
   ]
 }
