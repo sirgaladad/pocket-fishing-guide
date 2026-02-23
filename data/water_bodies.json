@@ -492,7 +492,7 @@
       },
       "source_ids": {
         "agfc_slug": "millwood-lake",
-        "usgs_site_id": "07360200",
+        "usgs_site_id": null,
         "usace_project": "Millwood",
         "usace_district": "SWL"
       }
