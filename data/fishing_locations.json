@@ -1,0 +1,246 @@
+{
+  "version": "1.0",
+  "description": "Named fishing spots, access points, boat ramps, and wade areas within Arkansas water bodies. Granular 'where exactly' layer referenced by SpeciesAtLocation and FishingReport entities.",
+  "fishing_locations": [
+    {
+      "location_id": "loc_white_hole",
+      "name": "White Hole",
+      "water_body_id": "wb_white_river_bull_shoals_tailwater",
+      "location_type": "named_hole",
+      "river_mile": 93.2,
+      "coordinates": {
+        "lat": 36.3823,
+        "lng": -92.5871
+      },
+      "county": "Baxter",
+      "nearest_town": "Lakeview",
+      "address_or_landmark": "Below Bull Shoals Dam, Lakeview AR",
+      "access_types": ["wade_fishing", "boat_fishing", "bank_fishing"],
+      "amenities": ["parking", "restrooms", "boat_ramp"],
+      "mobility_accessible": true,
+      "agfc_property_type": "USACOE",
+      "notes": "Tailout below a riffle — prime dry fly water during generation gaps. Catch-and-release only area from dam to Rim Shoals.",
+      "regulations_zone_id": "reg_bull_shoals_catch_release",
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07057500"
+      }
+    },
+    {
+      "location_id": "loc_bull_shoals_dam_access",
+      "name": "Bull Shoals Dam Tailwater Access",
+      "water_body_id": "wb_white_river_bull_shoals_tailwater",
+      "location_type": "access_point",
+      "river_mile": 102.5,
+      "coordinates": {
+        "lat": 36.3705,
+        "lng": -92.5660
+      },
+      "county": "Marion",
+      "nearest_town": "Bull Shoals",
+      "address_or_landmark": "Bull Shoals Dam, Bull Shoals AR 72619",
+      "access_types": ["wade_fishing", "bank_fishing"],
+      "amenities": ["parking"],
+      "mobility_accessible": false,
+      "agfc_property_type": "USACOE",
+      "notes": "Immediately below the dam — generation warning required before wading. Check generator status.",
+      "regulations_zone_id": "reg_bull_shoals_catch_release",
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07054501"
+      }
+    },
+    {
+      "location_id": "loc_rim_shoals",
+      "name": "Rim Shoals",
+      "water_body_id": "wb_white_river_bull_shoals_tailwater",
+      "location_type": "named_hole",
+      "river_mile": 88.7,
+      "coordinates": {
+        "lat": 36.3957,
+        "lng": -92.5423
+      },
+      "county": "Baxter",
+      "nearest_town": "Lakeview",
+      "address_or_landmark": "Rim Shoals, Lakeview AR",
+      "access_types": ["wade_fishing", "boat_fishing", "bank_fishing"],
+      "amenities": ["parking", "boat_ramp"],
+      "mobility_accessible": false,
+      "agfc_property_type": "USACOE",
+      "notes": "Lower boundary of the Bull Shoals catch-and-release zone. Productive brown and rainbow trout water.",
+      "regulations_zone_id": "reg_bull_shoals_catch_release",
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07054527"
+      }
+    },
+    {
+      "location_id": "loc_cotter_bridge",
+      "name": "Cotter Bridge Access",
+      "water_body_id": "wb_white_river_bull_shoals_tailwater",
+      "location_type": "access_point",
+      "river_mile": 78.0,
+      "coordinates": {
+        "lat": 36.2767,
+        "lng": -92.5210
+      },
+      "county": "Baxter",
+      "nearest_town": "Cotter",
+      "address_or_landmark": "US Hwy 62B bridge, Cotter AR 72626",
+      "access_types": ["wade_fishing", "boat_fishing", "bank_fishing"],
+      "amenities": ["parking", "boat_ramp"],
+      "mobility_accessible": true,
+      "agfc_property_type": "AGFC",
+      "notes": "Popular access below the catch-and-release zone. Mix bag regulations apply here.",
+      "regulations_zone_id": "reg_bull_shoals_standard",
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07057500"
+      }
+    },
+    {
+      "location_id": "loc_norfork_dam_access",
+      "name": "Norfork Dam Tailwater Access",
+      "water_body_id": "wb_north_fork_norfork_tailwater",
+      "location_type": "access_point",
+      "river_mile": 4.0,
+      "coordinates": {
+        "lat": 36.2473,
+        "lng": -92.2527
+      },
+      "county": "Baxter",
+      "nearest_town": "Norfork",
+      "address_or_landmark": "Norfork Dam Road, Norfork AR 72658",
+      "access_types": ["wade_fishing", "bank_fishing", "boat_fishing"],
+      "amenities": ["parking", "boat_ramp"],
+      "mobility_accessible": false,
+      "agfc_property_type": "USACOE",
+      "notes": "Short tailwater with excellent rainbow and brown trout. Check generation before wading.",
+      "regulations_zone_id": "reg_norfork_tailwater_standard",
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07057380"
+      }
+    },
+    {
+      "location_id": "loc_greers_ferry_dam_site_park",
+      "name": "Greers Ferry Dam Site Park",
+      "water_body_id": "wb_greers_ferry_lake",
+      "location_type": "access_point",
+      "river_mile": null,
+      "coordinates": {
+        "lat": 35.5313,
+        "lng": -92.0154
+      },
+      "county": "Cleburne",
+      "nearest_town": "Heber Springs",
+      "address_or_landmark": "1528 Heber Springs Rd N, Heber Springs AR 72543",
+      "access_types": ["boat_fishing", "bank_fishing"],
+      "amenities": ["parking", "restrooms", "boat_ramp", "camping"],
+      "mobility_accessible": true,
+      "agfc_property_type": "USACOE",
+      "notes": "Main Corps park for Greers Ferry Lake. Full facilities. Day-use fees apply.",
+      "regulations_zone_id": null,
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07076000"
+      }
+    },
+    {
+      "location_id": "loc_heber_springs_city_park",
+      "name": "Heber Springs City Park",
+      "water_body_id": "wb_greers_ferry_lake",
+      "location_type": "boat_ramp",
+      "river_mile": null,
+      "coordinates": {
+        "lat": 35.5133,
+        "lng": -92.0296
+      },
+      "county": "Cleburne",
+      "nearest_town": "Heber Springs",
+      "address_or_landmark": "Heber Springs City Park, Heber Springs AR 72543",
+      "access_types": ["boat_fishing", "bank_fishing"],
+      "amenities": ["parking", "restrooms", "boat_ramp"],
+      "mobility_accessible": true,
+      "agfc_property_type": "City",
+      "notes": "City-operated facility near Heber Springs. Multiple ramps, courtesy dock, parking.",
+      "regulations_zone_id": null,
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07076000"
+      }
+    },
+    {
+      "location_id": "loc_little_red_river_tailwater_access",
+      "name": "Little Red River Tailwater — Dam to Heber Springs",
+      "water_body_id": "wb_little_red_river_greers_ferry_tailwater",
+      "location_type": "wade_area",
+      "river_mile": 32.0,
+      "coordinates": {
+        "lat": 35.5340,
+        "lng": -92.0090
+      },
+      "county": "Cleburne",
+      "nearest_town": "Heber Springs",
+      "address_or_landmark": "Below Greers Ferry Dam, Heber Springs AR",
+      "access_types": ["wade_fishing", "bank_fishing", "boat_fishing"],
+      "amenities": ["parking"],
+      "mobility_accessible": false,
+      "agfc_property_type": "USACOE",
+      "notes": "Prime tailwater trout and white bass reach immediately below Greers Ferry Dam.",
+      "regulations_zone_id": "reg_little_red_tailwater_special",
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07076000"
+      }
+    },
+    {
+      "location_id": "loc_ponca_buffalo_river",
+      "name": "Ponca Access — Buffalo River",
+      "water_body_id": "wb_buffalo_national_river",
+      "location_type": "access_point",
+      "river_mile": 135.0,
+      "coordinates": {
+        "lat": 36.0344,
+        "lng": -93.3780
+      },
+      "county": "Newton",
+      "nearest_town": "Ponca",
+      "address_or_landmark": "AR Hwy 43, Ponca AR 72670",
+      "access_types": ["wade_fishing", "bank_fishing", "boat_fishing"],
+      "amenities": ["parking", "restrooms", "camping"],
+      "mobility_accessible": false,
+      "agfc_property_type": "USFWS",
+      "notes": "Upper Buffalo wilderness access. Smallmouth bass, goggle-eye. Permit required for camping.",
+      "regulations_zone_id": null,
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07055660"
+      }
+    },
+    {
+      "location_id": "loc_calico_rock",
+      "name": "Calico Rock Public Access",
+      "water_body_id": "wb_white_river",
+      "location_type": "access_point",
+      "river_mile": 102.0,
+      "coordinates": {
+        "lat": 36.1256,
+        "lng": -92.1325
+      },
+      "county": "Izard",
+      "nearest_town": "Calico Rock",
+      "address_or_landmark": "Calico Rock, AR 72519",
+      "access_types": ["boat_fishing", "bank_fishing"],
+      "amenities": ["parking", "boat_ramp"],
+      "mobility_accessible": true,
+      "agfc_property_type": "AGFC",
+      "notes": "Good white bass, catfish, and walleye access on the main White River.",
+      "regulations_zone_id": null,
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07061000"
+      }
+    }
+  ]
+}

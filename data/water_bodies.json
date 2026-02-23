@@ -1,0 +1,636 @@
+{
+  "version": "1.0",
+  "description": "Master water body records for Arkansas. Covers lakes, rivers, tailwaters, streams, and reservoirs. Each record is the anchor entity that FishingLocation, SpeciesAtLocation, and other entities reference.",
+  "water_bodies": [
+    {
+      "water_body_id": "wb_white_river_beaver_tailwater",
+      "name": "White River — Beaver Tailwater",
+      "display_name": "White River below Beaver Dam",
+      "short_name": "Beaver Tailwater",
+      "water_body_type": "tailwater",
+      "parent_river": "White River",
+      "dam_controlled": true,
+      "dam_name": "Beaver Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": "Beaver Lake",
+      "managed_reach": {
+        "from_point": "Beaver Dam",
+        "to_point": "Eureka Springs area near Busch",
+        "length_miles": 15
+      },
+      "state": "AR",
+      "counties": ["Carroll", "Madison"],
+      "region": "Ozarks",
+      "huc8_code": "11010001",
+      "coordinates": {
+        "centroid_lat": 36.4428,
+        "centroid_lng": -93.9012
+      },
+      "source_ids": {
+        "agfc_slug": "beaver-tailwater",
+        "usgs_site_id": "07049691",
+        "usace_project": "Beaver",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_white_river_bull_shoals_tailwater",
+      "name": "White River — Bull Shoals Tailwater",
+      "display_name": "White River below Bull Shoals Dam",
+      "short_name": "Bull Shoals Tailwater",
+      "water_body_type": "tailwater",
+      "parent_river": "White River",
+      "dam_controlled": true,
+      "dam_name": "Bull Shoals Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": "Bull Shoals Lake",
+      "managed_reach": {
+        "from_point": "Bull Shoals Dam",
+        "to_point": "Arkansas Hwy 58 Bridge at Guion",
+        "length_miles": 102.5
+      },
+      "state": "AR",
+      "counties": ["Baxter", "Marion", "Izard"],
+      "region": "Ozarks",
+      "huc8_code": "11010004",
+      "coordinates": {
+        "centroid_lat": 36.3716,
+        "centroid_lng": -92.5743
+      },
+      "source_ids": {
+        "agfc_slug": "bull-shoals-tailwater",
+        "usgs_site_id": "07057500",
+        "usace_project": "Bull Shoals",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_north_fork_norfork_tailwater",
+      "name": "North Fork River — Norfork Tailwater",
+      "display_name": "North Fork River below Norfork Dam",
+      "short_name": "Norfork Tailwater",
+      "water_body_type": "tailwater",
+      "parent_river": "North Fork River",
+      "dam_controlled": true,
+      "dam_name": "Norfork Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": "Norfork Lake",
+      "managed_reach": {
+        "from_point": "Norfork Dam",
+        "to_point": "White River confluence near Norfork",
+        "length_miles": 4
+      },
+      "state": "AR",
+      "counties": ["Baxter"],
+      "region": "Ozarks",
+      "huc8_code": "11010003",
+      "coordinates": {
+        "centroid_lat": 36.2473,
+        "centroid_lng": -92.2527
+      },
+      "source_ids": {
+        "agfc_slug": "norfork-tailwater",
+        "usgs_site_id": "07057380",
+        "usace_project": "Norfork",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_little_red_river_greers_ferry_tailwater",
+      "name": "Little Red River — Greers Ferry Tailwater",
+      "display_name": "Little Red River below Greers Ferry Dam",
+      "short_name": "Greers Ferry Tailwater",
+      "water_body_type": "tailwater",
+      "parent_river": "Little Red River",
+      "dam_controlled": true,
+      "dam_name": "Greers Ferry Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": "Greers Ferry Lake",
+      "managed_reach": {
+        "from_point": "Greers Ferry Dam",
+        "to_point": "Searcy",
+        "length_miles": 32
+      },
+      "state": "AR",
+      "counties": ["Cleburne", "White"],
+      "region": "Ozarks",
+      "huc8_code": "08020402",
+      "coordinates": {
+        "centroid_lat": 35.5313,
+        "centroid_lng": -92.0154
+      },
+      "source_ids": {
+        "agfc_slug": "greers-ferry-tailwater",
+        "usgs_site_id": "07076000",
+        "usace_project": "Greers Ferry",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_little_missouri_narrows_tailwater",
+      "name": "Little Missouri River — Narrows Tailwater",
+      "display_name": "Little Missouri River below Narrows Dam",
+      "short_name": "Narrows Tailwater",
+      "water_body_type": "tailwater",
+      "parent_river": "Little Missouri River",
+      "dam_controlled": true,
+      "dam_name": "Narrows Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": "Millwood Lake",
+      "managed_reach": {
+        "from_point": "Narrows Dam",
+        "to_point": "Saratoga",
+        "length_miles": 12
+      },
+      "state": "AR",
+      "counties": ["Hempstead", "Howard"],
+      "region": "Ouachitas",
+      "huc8_code": "08040101",
+      "coordinates": {
+        "centroid_lat": 33.7168,
+        "centroid_lng": -93.9382
+      },
+      "source_ids": {
+        "agfc_slug": "narrows-tailwater",
+        "usgs_site_id": "07360050",
+        "usace_project": "Millwood",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_ouachita_river_tailwater",
+      "name": "Ouachita River — Tailwater",
+      "display_name": "Ouachita River below Carpenter Dam",
+      "short_name": "Ouachita Tailwater",
+      "water_body_type": "tailwater",
+      "parent_river": "Ouachita River",
+      "dam_controlled": true,
+      "dam_name": "Carpenter Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": "Lake Ouachita",
+      "managed_reach": {
+        "from_point": "Carpenter Dam",
+        "to_point": "Hot Springs",
+        "length_miles": 8
+      },
+      "state": "AR",
+      "counties": ["Garland"],
+      "region": "Ouachitas",
+      "huc8_code": "08040101",
+      "coordinates": {
+        "centroid_lat": 34.5365,
+        "centroid_lng": -93.1754
+      },
+      "source_ids": {
+        "agfc_slug": "ouachita-tailwater",
+        "usgs_site_id": "07358501",
+        "usace_project": "Lake Ouachita",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_spring_river",
+      "name": "Spring River",
+      "display_name": "Spring River (Mammoth Spring)",
+      "short_name": "Spring River",
+      "water_body_type": "stream",
+      "parent_river": "Spring River",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Mammoth Spring",
+        "to_point": "Hardy",
+        "length_miles": 45
+      },
+      "state": "AR",
+      "counties": ["Fulton", "Sharp"],
+      "region": "Ozarks",
+      "huc8_code": "11010005",
+      "coordinates": {
+        "centroid_lat": 36.4986,
+        "centroid_lng": -91.7321
+      },
+      "source_ids": {
+        "agfc_slug": "spring-river",
+        "usgs_site_id": "07068000",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_white_river",
+      "name": "White River",
+      "display_name": "White River (Calico Rock to Newport)",
+      "short_name": "White River",
+      "water_body_type": "river",
+      "parent_river": "White River",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Calico Rock",
+        "to_point": "Augusta",
+        "length_miles": 130
+      },
+      "state": "AR",
+      "counties": ["Izard", "Stone", "Independence", "Jackson", "White"],
+      "region": "Ozarks",
+      "huc8_code": "08020202",
+      "coordinates": {
+        "centroid_lat": 35.9200,
+        "centroid_lng": -91.9000
+      },
+      "source_ids": {
+        "agfc_slug": "white-river",
+        "usgs_site_id": "07061000",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_buffalo_national_river",
+      "name": "Buffalo National River",
+      "display_name": "Buffalo National River",
+      "short_name": "Buffalo River",
+      "water_body_type": "river",
+      "parent_river": "Buffalo River",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Ponca",
+        "to_point": "White River Confluence",
+        "length_miles": 135
+      },
+      "state": "AR",
+      "counties": ["Newton", "Searcy", "Marion", "Baxter", "Buffalo"],
+      "region": "Ozarks",
+      "huc8_code": "11010006",
+      "coordinates": {
+        "centroid_lat": 36.0786,
+        "centroid_lng": -92.7186
+      },
+      "source_ids": {
+        "agfc_slug": "buffalo-river",
+        "usgs_site_id": "07055660",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_beaver_lake",
+      "name": "Beaver Lake",
+      "display_name": "Beaver Lake",
+      "short_name": "Beaver Lake",
+      "water_body_type": "reservoir",
+      "parent_river": "White River",
+      "dam_controlled": true,
+      "dam_name": "Beaver Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Carroll", "Benton", "Madison"],
+      "region": "Ozarks",
+      "huc8_code": "11010001",
+      "coordinates": {
+        "centroid_lat": 36.4285,
+        "centroid_lng": -93.9500
+      },
+      "source_ids": {
+        "agfc_slug": "beaver-lake",
+        "usgs_site_id": "07049000",
+        "usace_project": "Beaver",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_bull_shoals_lake",
+      "name": "Bull Shoals Lake",
+      "display_name": "Bull Shoals Lake",
+      "short_name": "Bull Shoals Lake",
+      "water_body_type": "reservoir",
+      "parent_river": "White River",
+      "dam_controlled": true,
+      "dam_name": "Bull Shoals Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Baxter", "Marion", "Boone"],
+      "region": "Ozarks",
+      "huc8_code": "11010004",
+      "coordinates": {
+        "centroid_lat": 36.5256,
+        "centroid_lng": -92.8079
+      },
+      "source_ids": {
+        "agfc_slug": "bull-shoals-lake",
+        "usgs_site_id": "07054500",
+        "usace_project": "Bull Shoals",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_norfork_lake",
+      "name": "Norfork Lake",
+      "display_name": "Norfork Lake",
+      "short_name": "Norfork Lake",
+      "water_body_type": "reservoir",
+      "parent_river": "North Fork River",
+      "dam_controlled": true,
+      "dam_name": "Norfork Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Baxter", "Fulton", "Izard"],
+      "region": "Ozarks",
+      "huc8_code": "11010003",
+      "coordinates": {
+        "centroid_lat": 36.3553,
+        "centroid_lng": -92.1835
+      },
+      "source_ids": {
+        "agfc_slug": "norfork-lake",
+        "usgs_site_id": "07057380",
+        "usace_project": "Norfork",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_greers_ferry_lake",
+      "name": "Greers Ferry Lake",
+      "display_name": "Greers Ferry Lake",
+      "short_name": "Greers Ferry",
+      "water_body_type": "reservoir",
+      "parent_river": "Little Red River",
+      "dam_controlled": true,
+      "dam_name": "Greers Ferry Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Cleburne", "Van Buren"],
+      "region": "Ozarks",
+      "huc8_code": "08020402",
+      "coordinates": {
+        "centroid_lat": 35.5597,
+        "centroid_lng": -92.1526
+      },
+      "source_ids": {
+        "agfc_slug": "greers-ferry-lake",
+        "usgs_site_id": "07075900",
+        "usace_project": "Greers Ferry",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_lake_ouachita",
+      "name": "Lake Ouachita",
+      "display_name": "Lake Ouachita",
+      "short_name": "Lake Ouachita",
+      "water_body_type": "reservoir",
+      "parent_river": "Ouachita River",
+      "dam_controlled": true,
+      "dam_name": "Blakely Mountain Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Garland", "Montgomery", "Saline", "Yell"],
+      "region": "Ouachitas",
+      "huc8_code": "08040101",
+      "coordinates": {
+        "centroid_lat": 34.6081,
+        "centroid_lng": -93.2862
+      },
+      "source_ids": {
+        "agfc_slug": "lake-ouachita",
+        "usgs_site_id": "07357000",
+        "usace_project": "Lake Ouachita",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_lake_hamilton",
+      "name": "Lake Hamilton",
+      "display_name": "Lake Hamilton (Hot Springs)",
+      "short_name": "Lake Hamilton",
+      "water_body_type": "reservoir",
+      "parent_river": "Ouachita River",
+      "dam_controlled": true,
+      "dam_name": "Remmel Dam",
+      "dam_operator": "SWEPCO",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Garland"],
+      "region": "Ouachitas",
+      "huc8_code": "08040101",
+      "coordinates": {
+        "centroid_lat": 34.4499,
+        "centroid_lng": -93.0579
+      },
+      "source_ids": {
+        "agfc_slug": "lake-hamilton",
+        "usgs_site_id": null,
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_lake_catherine",
+      "name": "Lake Catherine",
+      "display_name": "Lake Catherine",
+      "short_name": "Lake Catherine",
+      "water_body_type": "reservoir",
+      "parent_river": "Ouachita River",
+      "dam_controlled": true,
+      "dam_name": "Carpenter Dam",
+      "dam_operator": "SWEPCO",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Garland", "Saline"],
+      "region": "Ouachitas",
+      "huc8_code": "08040101",
+      "coordinates": {
+        "centroid_lat": 34.4833,
+        "centroid_lng": -92.9000
+      },
+      "source_ids": {
+        "agfc_slug": "lake-catherine",
+        "usgs_site_id": null,
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_millwood_lake",
+      "name": "Millwood Lake",
+      "display_name": "Millwood Lake",
+      "short_name": "Millwood Lake",
+      "water_body_type": "reservoir",
+      "parent_river": "Little River",
+      "dam_controlled": true,
+      "dam_name": "Millwood Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Hempstead", "Little River", "Sevier"],
+      "region": "Coastal Plains",
+      "huc8_code": "08040101",
+      "coordinates": {
+        "centroid_lat": 33.7119,
+        "centroid_lng": -93.9250
+      },
+      "source_ids": {
+        "agfc_slug": "millwood-lake",
+        "usgs_site_id": "07360200",
+        "usace_project": "Millwood",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_blue_mountain_lake",
+      "name": "Blue Mountain Lake",
+      "display_name": "Blue Mountain Lake",
+      "short_name": "Blue Mountain Lake",
+      "water_body_type": "reservoir",
+      "parent_river": "Petit Jean River",
+      "dam_controlled": true,
+      "dam_name": "Blue Mountain Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Logan"],
+      "region": "Arkansas River Valley",
+      "huc8_code": "08040203",
+      "coordinates": {
+        "centroid_lat": 35.1348,
+        "centroid_lng": -93.6605
+      },
+      "source_ids": {
+        "agfc_slug": "blue-mountain-lake",
+        "usgs_site_id": null,
+        "usace_project": "Blue Mountain",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_nimrod_lake",
+      "name": "Nimrod Lake",
+      "display_name": "Nimrod Lake",
+      "short_name": "Nimrod Lake",
+      "water_body_type": "reservoir",
+      "parent_river": "Fourche LaFave River",
+      "dam_controlled": true,
+      "dam_name": "Nimrod Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Perry", "Yell"],
+      "region": "Ouachitas",
+      "huc8_code": "08040201",
+      "coordinates": {
+        "centroid_lat": 35.0981,
+        "centroid_lng": -93.1742
+      },
+      "source_ids": {
+        "agfc_slug": "nimrod-lake",
+        "usgs_site_id": null,
+        "usace_project": "Nimrod",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_dardanelle_lake",
+      "name": "Lake Dardanelle",
+      "display_name": "Lake Dardanelle",
+      "short_name": "Lake Dardanelle",
+      "water_body_type": "reservoir",
+      "parent_river": "Arkansas River",
+      "dam_controlled": true,
+      "dam_name": "Dardanelle Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Yell", "Johnson", "Franklin", "Pope", "Logan"],
+      "region": "Arkansas River Valley",
+      "huc8_code": "11110103",
+      "coordinates": {
+        "centroid_lat": 35.2280,
+        "centroid_lng": -93.1660
+      },
+      "source_ids": {
+        "agfc_slug": "lake-dardanelle",
+        "usgs_site_id": null,
+        "usace_project": "Dardanelle",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_lake_maumelle",
+      "name": "Lake Maumelle",
+      "display_name": "Lake Maumelle",
+      "short_name": "Lake Maumelle",
+      "water_body_type": "reservoir",
+      "parent_river": "Maumelle River",
+      "dam_controlled": true,
+      "dam_name": "Maumelle Dam",
+      "dam_operator": "private",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Pulaski", "Perry"],
+      "region": "Central Arkansas",
+      "huc8_code": "08020203",
+      "coordinates": {
+        "centroid_lat": 34.8600,
+        "centroid_lng": -92.5100
+      },
+      "source_ids": {
+        "agfc_slug": "lake-maumelle",
+        "usgs_site_id": "07263300",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_degray_lake",
+      "name": "DeGray Lake",
+      "display_name": "DeGray Lake",
+      "short_name": "DeGray Lake",
+      "water_body_type": "reservoir",
+      "parent_river": "Caddo River",
+      "dam_controlled": true,
+      "dam_name": "DeGray Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Clark", "Hot Spring"],
+      "region": "Ouachitas",
+      "huc8_code": "08040103",
+      "coordinates": {
+        "centroid_lat": 34.2475,
+        "centroid_lng": -93.0988
+      },
+      "source_ids": {
+        "agfc_slug": "degray-lake",
+        "usgs_site_id": "07360200",
+        "usace_project": "DeGray",
+        "usace_district": "SWL"
+      }
+    }
+  ]
+}
