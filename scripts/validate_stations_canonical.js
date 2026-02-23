@@ -120,6 +120,10 @@ function main() {
       `Station ${sid} has a waterbody_id`
     );
     assert(
+      typeof station.label === "string" && station.label.length > 0,
+      `Station ${sid} has a label`
+    );
+    assert(
       typeof station.is_primary === "boolean",
       `Station ${sid} has a boolean is_primary`
     );
