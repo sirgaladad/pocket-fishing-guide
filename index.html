@@ -7643,10 +7643,10 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
                 <LakeHero
                   water={water}
                   species={species}
-                  setSpecies={(s) => { setSpecies(s); trackEvent('select_species', { species: s, water, tab }); }}
+                  setSpecies={(s) => { setSpecies(s); }}
                   segment={segment}
-                  setSegment={(s) => { setSegment(s); trackEvent('select_segment', { species, water, segment: s }); }}
-                  setWater={(key) => { setWater(key); setRiverSection(null); trackEvent('select_water', { water: key, species, tab }); }}
+                  setSegment={(s) => { setSegment(s); }}
+                  setWater={(key) => { setWater(key); setRiverSection(null); }}
                   onPatternCta={() => setTab('signals')}
                 />
                 <div className="tabs">
