@@ -7046,7 +7046,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                     const key = e.target.value;
                     setWater(key);
                     setWaterType(getWaterTaxonomyType(key));
-                    if (!isRiverType(getWaterTaxonomyType(key))) setSegment('all');
+                    setSegment('all');
                     trackEvent('select_water', { water: key, species });
                   }}
                   aria-label="Water Body"
@@ -7831,7 +7831,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
               water={water}
               species={species}
               setSpecies={(s) => { setSpecies(s); trackEvent('select_species', { species: s, water, segment, tab }); }}
-              onSelectWater={(key) => { setWater(key); setWaterType(getWaterTaxonomyType(key)); if (!isRiverType(getWaterTaxonomyType(key))) setSegment('all'); setRiverSection(null); trackEvent('select_water', { water: key, species, segment, tab }); }}
+              onSelectWater={(key) => { setWater(key); setWaterType(getWaterTaxonomyType(key)); setSegment('all'); setRiverSection(null); trackEvent('select_water', { water: key, species, segment, tab }); }}
             />
             {tab !== 'overview' && (
               <>
@@ -7872,7 +7872,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                   onSelectWater={(key) => {
                     setWater(key);
                     setWaterType(getWaterTaxonomyType(key));
-                    if (!isRiverType(getWaterTaxonomyType(key))) setSegment('all');
+                    setSegment('all');
                     setRiverSection(null);
                     setTab('signals');
                     trackEvent('select_water', { water: key, species, segment, tab: 'signals' });
