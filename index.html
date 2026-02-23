@@ -6550,40 +6550,10 @@
             </div>
 
             {/* PRO TIPS */}
-            <AccordionSection title={`\uD83D\uDCA1 ${w.name} ${speciesName} Pro Tips`}>
-              {(species === 'cr' && w.crTips ? w.crTips : w.tips).map(
-                (t, i) => (
-                  <div
-                    style={{
-                      display: 'flex',
-                      gap: 10,
-                      alignItems: 'flex-start',
-                      padding: '8px 0',
-                      borderBottom:
-                        i < (species === 'cr' && w.crTips ? w.crTips : w.tips).length - 1
-                          ? '1px solid var(--bg3)'
-                          : 'none',
-                    }}
-                    key={i}
-                  >
-                    <span
-                      className="tip-cat-badge"
-                      style={{
-                        background: `${CAT_COLORS[t.cat] || 'var(--accent)'}22`,
-                        color: CAT_COLORS[t.cat] || 'var(--accent)',
-                        flexShrink: 0,
-                        marginTop: 2,
-                      }}
-                    >
-                      {t.cat}
-                    </span>
-                    <span style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.5 }}>
-                      {t.text}
-                    </span>
-                  </div>
-                )
-              )}
-            </AccordionSection>
+            <ProTipsList
+              tips={species === 'cr' && w.crTips ? w.crTips : w.tips}
+              title={`\uD83D\uDCA1 ${w.name} ${speciesName} Pro Tips`}
+            />
           </>
         );
       }
@@ -6999,6 +6969,43 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
               {children}
             </div>
           </div>
+        );
+      }
+
+      // ─── PRO TIPS LIST ───────────────────────────────────────────
+      function ProTipsList({ tips, title, defaultOpen }) {
+        if (!tips || tips.length === 0) return null;
+        return (
+          <AccordionSection title={title} defaultOpen={defaultOpen}>
+            {tips.map((t, i) => (
+              <div
+                key={i}
+                style={{
+                  display: 'flex',
+                  gap: 10,
+                  alignItems: 'flex-start',
+                  padding: '8px 0',
+                  borderBottom:
+                    i < tips.length - 1 ? '1px solid var(--bg3)' : 'none',
+                }}
+              >
+                <span
+                  className="tip-cat-badge"
+                  style={{
+                    background: `${CAT_COLORS[t.cat] || 'var(--accent)'}22`,
+                    color: CAT_COLORS[t.cat] || 'var(--accent)',
+                    flexShrink: 0,
+                    marginTop: 2,
+                  }}
+                >
+                  {t.cat}
+                </span>
+                <span style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.5 }}>
+                  {t.text}
+                </span>
+              </div>
+            ))}
+          </AccordionSection>
         );
       }
 
@@ -7745,60 +7752,17 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
                       )}
 
                       {/* Pro Intel + Local Tips accordion */}
-                      {(() => {
-                        const ProTipsList = ({ tips }) => {
-                          if (!tips || tips.length === 0) return null;
-                          return (
-                            <AccordionSection
-                              title={'\uD83D\uDCA1 Pro Intel + Local Tips'}
-                              defaultOpen={false}
-                            >
-                              {tips.map((t, i) => (
-                                <div
-                                  key={i}
-                                  style={{
-                                    display: 'flex',
-                                    gap: 10,
-                                    alignItems: 'flex-start',
-                                    padding: '8px 0',
-                                    borderBottom:
-                                      i < tips.length - 1
-                                        ? '1px solid var(--bg3)'
-                                        : 'none',
-                                  }}
-                                >
-                                  <span
-                                    className="tip-cat-badge"
-                                    style={{
-                                      background: `${CAT_COLORS[t.cat] || 'var(--accent)'}22`,
-                                      color: CAT_COLORS[t.cat] || 'var(--accent)',
-                                      flexShrink: 0,
-                                      marginTop: 2,
-                                    }}
-                                  >
-                                    {t.cat}
-                                  </span>
-                                  <span
-                                    style={{
-                                      fontSize: 12,
-                                      color: 'var(--text2)',
-                                      lineHeight: 1.5,
-                                    }}
-                                  >
-                                    {t.text}
-                                  </span>
-                                </div>
-                              ))}
-                            </AccordionSection>
-                          );
-                        };
-
-                        if (loading) return null;
-                        const w2 = WATERS[water];
-                        const tips =
-                          species === 'cr' && w2.crTips ? w2.crTips : w2.tips;
-                        return <ProTipsList tips={tips} />;
-                      })()}
+                      {!loading && (
+                        <ProTipsList
+                          tips={
+                            species === 'cr' && WATERS[water].crTips
+                              ? WATERS[water].crTips
+                              : WATERS[water].tips
+                          }
+                          title={'\uD83D\uDCA1 Pro Intel + Local Tips'}
+                          defaultOpen={false}
+                        />
+                      )}
                     </div>
 
                   </div>
