@@ -7579,8 +7579,8 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
         return (
           <>
             <div className={`header${headerCompact ? ' compact' : ''}`}>
-<div className="nav-header">
-              <div className="nav-logo">
+              <div className="nav-header">
+                <div className="nav-logo">
                 <div className="brand">TALE WATERS &amp; TIDES</div>
                 <h1>Pocket <span className="pfg-guide">Fishing Guide</span></h1>
               </div>
@@ -7639,28 +7639,30 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
               onSelectWater={(key) => { setWater(key); setRiverSection(null); trackEvent('select_water', { water: key, species, segment, tab }); }}
             />
             {tab !== 'overview' && (
-<LakeHero
-              water={water}
-              species={species}
-              setSpecies={(s) => { setSpecies(s); trackEvent('select_species', { species: s, water, tab }); }}
-              segment={segment}
-              setSegment={(s) => { setSegment(s); trackEvent('select_segment', { species, water, segment: s }); }}
-              setWater={(key) => { setWater(key); setRiverSection(null); trackEvent('select_water', { water: key, species, tab }); }}
-              onPatternCta={() => setTab('signals')}
-            />
-
-            <div className="tabs">
-              {tabs.map((t) => (
-                <div
-                  key={t.id}
-                  className={`tab ${tab === t.id ? 'active' : ''}`}
-                  onClick={() => { setTab(t.id); trackEvent('switch_tab', { tab: t.id, water, species, segment }); }}
-                >
-                  <span className="tab-icon">{t.icon}</span>
-                  <span className="tab-label">{t.label}</span>
+              <>
+                <LakeHero
+                  water={water}
+                  species={species}
+                  setSpecies={(s) => { setSpecies(s); }}
+                  segment={segment}
+                  setSegment={(s) => { setSegment(s); }}
+                  setWater={(key) => { setWater(key); setRiverSection(null); }}
+                  onPatternCta={() => setTab('signals')}
+                />
+                <div className="tabs">
+                  {tabs.map((t) => (
+                    <div
+                      key={t.id}
+                      className={`tab ${tab === t.id ? 'active' : ''}`}
+                      onClick={() => { setTab(t.id); trackEvent('switch_tab', { tab: t.id, water, species, segment }); }}
+                    >
+                      <span className="tab-icon">{t.icon}</span>
+                      <span className="tab-label">{t.label}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </>
+            )}
 
             <div className="content">
               {error && <ErrorMsg msg={error} onRetry={loadData} />}
