@@ -145,7 +145,7 @@
     {
       "gauge_id": "usgs_07057380",
       "usgs_site_number": "07057380",
-      "name": "North Fork River (Norfork Tailwater), AR",
+      "name": "Norfork River (Norfork Tailwater), AR",
       "water_body_id": "wb_north_fork_norfork_tailwater",
       "coordinates": { "lat": 36.2473, "lng": -92.2527 },
       "county": "Baxter",
