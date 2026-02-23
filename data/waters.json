@@ -19,7 +19,11 @@
         "sp_striped_bass",
         "sp_largemouth_bass"
       ],
-      "has_segments": false
+      "has_segments": false,
+      "usace": {
+        "project_id": "beaver",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/beaver.htm"
+      }
     },
     {
       "id": "wb_bull_shoals_lake",
@@ -38,7 +42,11 @@
         "sp_striped_bass",
         "sp_largemouth_bass"
       ],
-      "has_segments": false
+      "has_segments": false,
+      "usace": {
+        "project_id": "bullshoals",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bulsdam.htm"
+      }
     },
     {
       "id": "wb_norfork_lake",
@@ -57,7 +65,11 @@
         "sp_striped_bass",
         "sp_largemouth_bass"
       ],
-      "has_segments": false
+      "has_segments": false,
+      "usace": {
+        "project_id": "norfork",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/norfdam.htm"
+      }
     },
     {
       "id": "wb_greers_ferry_lake",
@@ -74,7 +86,11 @@
         "sp_crappie",
         "sp_largemouth_bass"
       ],
-      "has_segments": false
+      "has_segments": false,
+      "usace": {
+        "project_id": "greers",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/greersf.htm"
+      }
     },
     {
       "id": "wb_lake_ouachita",
@@ -95,7 +111,11 @@
         "sp_walleye",
         "sp_largemouth_bass"
       ],
-      "has_segments": false
+      "has_segments": false,
+      "usace": {
+        "project_id": "ouachita",
+        "tabular_url": "https://www.mvk-wc.usace.army.mil/resrep.htm"
+      }
     },
     {
       "id": "wb_lake_hamilton",
@@ -148,7 +168,11 @@
         "sp_channel_catfish",
         "sp_blue_catfish"
       ],
-      "has_segments": false
+      "has_segments": false,
+      "usace": {
+        "project_id": "millwood",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/millwood.htm"
+      }
     },
     {
       "id": "wb_blue_mountain_lake",
@@ -164,7 +188,11 @@
         "sp_crappie",
         "sp_channel_catfish"
       ],
-      "has_segments": false
+      "has_segments": false,
+      "usace": {
+        "project_id": "bluemountain",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bluemtn.htm"
+      }
     },
     {
       "id": "wb_nimrod_lake",
@@ -181,7 +209,11 @@
         "sp_crappie",
         "sp_channel_catfish"
       ],
-      "has_segments": false
+      "has_segments": false,
+      "usace": {
+        "project_id": "nimrod",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/nimrod.htm"
+      }
     },
     {
       "id": "wb_dardanelle_lake",
@@ -203,7 +235,11 @@
         "sp_sauger",
         "sp_largemouth_bass"
       ],
-      "has_segments": false
+      "has_segments": false,
+      "usace": {
+        "project_id": "dardanelle",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/dardam.htm"
+      }
     },
     {
       "id": "wb_lake_maumelle",
@@ -238,7 +274,11 @@
         "sp_largemouth_bass",
         "sp_striped_bass"
       ],
-      "has_segments": false
+      "has_segments": false,
+      "usace": {
+        "project_id": "degray",
+        "tabular_url": "https://www.mvk-wc.usace.army.mil/resrep.htm"
+      }
     },
     {
       "id": "wb_lake_conway",
@@ -329,7 +369,12 @@
         "sp_brown_trout",
         "sp_white_bass"
       ],
-      "has_segments": true
+      "has_segments": true,
+      "usace": {
+        "project_id": "beaver",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/beaver.htm"
+      },
+      "generation_schedule_url": "https://www.swpa.gov/genSchedule.aspx"
     },
     {
       "id": "wb_white_river_bull_shoals_tailwater",
@@ -348,7 +393,12 @@
         "sp_cutthroat_trout",
         "sp_white_bass"
       ],
-      "has_segments": true
+      "has_segments": true,
+      "usace": {
+        "project_id": "bullshoals",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bulsdam.htm"
+      },
+      "generation_schedule_url": "https://www.swpa.gov/genSchedule.aspx"
     },
     {
       "id": "wb_north_fork_norfork_tailwater",
@@ -363,7 +413,12 @@
         "sp_rainbow_trout",
         "sp_brown_trout"
       ],
-      "has_segments": false
+      "has_segments": false,
+      "usace": {
+        "project_id": "norfork",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/norfdam.htm"
+      },
+      "generation_schedule_url": "https://www.swpa.gov/genSchedule.aspx"
     },
     {
       "id": "wb_little_red_river_greers_ferry_tailwater",
@@ -380,7 +435,12 @@
         "sp_brown_trout",
         "sp_cutthroat_trout"
       ],
-      "has_segments": true
+      "has_segments": true,
+      "usace": {
+        "project_id": "greers",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/greersf.htm"
+      },
+      "generation_schedule_url": "https://www.swpa.gov/genSchedule.aspx"
     },
     {
       "id": "wb_little_missouri_narrows_tailwater",
@@ -397,7 +457,12 @@
         "sp_channel_catfish",
         "sp_largemouth_bass"
       ],
-      "has_segments": false
+      "has_segments": false,
+      "usace": {
+        "project_id": "narrows",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/narrows.htm"
+      },
+      "generation_schedule_url": "https://www.swl.usace.army.mil/Missions/Recreation/Lakes/Millwood-Lake/"
     },
     {
       "id": "wb_ouachita_river_tailwater",
@@ -413,7 +478,12 @@
         "sp_channel_catfish",
         "sp_largemouth_bass"
       ],
-      "has_segments": false
+      "has_segments": false,
+      "usace": {
+        "project_id": "ouachita",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/ouachita.htm"
+      },
+      "generation_schedule_url": "https://www.swl.usace.army.mil/Missions/Recreation/Lakes/Lake-Ouachita/"
     }
   ]
 }
