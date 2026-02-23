@@ -168,7 +168,7 @@
       "station_number": "07061000",
       "label": "White River at Batesville",
       "waterbody_id": "wb_white_river",
-      "segment_id": "white-river-calico-rock",
+      "segment_id": "white-river-batesville",
       "metrics_supported": ["flow", "elevation"],
       "is_primary": true
     },
