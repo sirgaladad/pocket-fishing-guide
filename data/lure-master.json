@@ -4,7 +4,7 @@
   "lures": [
     {
       "id": "lure_001",
-      "name": "White 2\" Bass Assassin Curly Shad Grub",
+      "name": "White 2\" Bass Assassin Curly Shad Grub (on 1/16oz jighead)",
       "sub": "on 1/16oz jighead",
       "detail": "GO-TO. Cast upstream, slow roll with current.",
       "type": "jig",
@@ -166,7 +166,7 @@
     },
     {
       "id": "lure_010",
-      "name": "1/16oz Jig + Live Minnow",
+      "name": "1/16oz Jig + Live Minnow (vertical presentation)",
       "sub": "vertical presentation",
       "detail": "GO-TO. Drop to brush piles, hold 6\" off bottom. Slow lift-drop.",
       "type": "jig",
