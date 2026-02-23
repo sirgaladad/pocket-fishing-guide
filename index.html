@@ -7017,19 +7017,19 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                   value={waterType}
                   onChange={(e) => {
                     const newType = e.target.value;
+                    setWaterType(newType);
+                    trackEvent('select_water_type', { water_type: newType, water, species });
                     if (newType !== 'all' && TAXONOMY.waterTypeMap[water] !== newType) {
                       const firstMatch = Object.keys(WATERS).find((k) => TAXONOMY.waterTypeMap[k] === newType);
                       if (firstMatch) {
-                        setWaterType(newType);
                         setWater(firstMatch);
                         setSegment('all');
                       } else {
+                        // No waters match this type; reset to 'all' to keep state consistent
                         setWaterType('all');
+                        trackEvent('select_water_type_no_match', { water_type: newType, water, species });
                       }
-                    } else {
-                      setWaterType(newType);
                     }
-                    trackEvent('select_water_type', { water_type: newType, water, species });
                   }}
                   aria-label="Water Type"
                 >
