@@ -1,0 +1,376 @@
+{
+  "version": "1.0",
+  "description": "Canonical monitoring station model for Arkansas water bodies. Formalizes relationships between USGS, USACE Corps, and NWS monitoring stations, their associated water bodies, and river segments.",
+  "stations": [
+    {
+      "id": "st_usgs_07263300",
+      "station_type": "USGS",
+      "station_number": "07263300",
+      "label": "Lake Maumelle at Dam",
+      "waterbody_id": "wb_lake_maumelle",
+      "segment_id": null,
+      "metrics_supported": ["temp", "flow", "elevation"],
+      "is_primary": true
+    },
+    {
+      "id": "st_usgs_072632966",
+      "station_type": "USGS",
+      "station_number": "072632966",
+      "label": "Lake Maumelle at Hwy 10",
+      "waterbody_id": "wb_lake_maumelle",
+      "segment_id": null,
+      "metrics_supported": ["temp", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_072632995",
+      "station_type": "USGS",
+      "station_number": "072632995",
+      "label": "Lake Maumelle at Natural Steps",
+      "waterbody_id": "wb_lake_maumelle",
+      "segment_id": null,
+      "metrics_supported": ["temp", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07049691",
+      "station_type": "USGS",
+      "station_number": "07049691",
+      "label": "White River at Beaver Dam",
+      "waterbody_id": "wb_white_river_beaver_tailwater",
+      "segment_id": "white-river-beaver-dam",
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": true
+    },
+    {
+      "id": "st_usgs_07049698",
+      "station_type": "USGS",
+      "station_number": "07049698",
+      "label": "White River near Busch",
+      "waterbody_id": "wb_white_river_beaver_tailwater",
+      "segment_id": "white-river-busch",
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07049000",
+      "station_type": "USGS",
+      "station_number": "07049000",
+      "label": "War Eagle Creek near Hindsville",
+      "waterbody_id": "wb_beaver_lake",
+      "segment_id": null,
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_corps_beaver",
+      "station_type": "Corps",
+      "station_number": "beaver",
+      "label": "Beaver Lake — Pool Elevation (USACE-SWL)",
+      "waterbody_id": "wb_beaver_lake",
+      "segment_id": null,
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": true
+    },
+    {
+      "id": "st_usgs_07054501",
+      "station_type": "USGS",
+      "station_number": "07054501",
+      "label": "White River at Bull Shoals Dam",
+      "waterbody_id": "wb_white_river_bull_shoals_tailwater",
+      "segment_id": "white-river-bull-shoals-dam",
+      "metrics_supported": ["temp", "flow", "elevation"],
+      "is_primary": true
+    },
+    {
+      "id": "st_usgs_07054527",
+      "station_type": "USGS",
+      "station_number": "07054527",
+      "label": "White River below Bull Shoals Dam",
+      "waterbody_id": "wb_white_river_bull_shoals_tailwater",
+      "segment_id": "white-river-below-bull-shoals",
+      "metrics_supported": ["temp", "flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07057370",
+      "station_type": "USGS",
+      "station_number": "07057370",
+      "label": "White River near Norfork",
+      "waterbody_id": "wb_white_river_bull_shoals_tailwater",
+      "segment_id": null,
+      "metrics_supported": ["temp", "flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07054500",
+      "station_type": "USGS",
+      "station_number": "07054500",
+      "label": "Bull Shoals Lake — Legacy Station",
+      "waterbody_id": "wb_bull_shoals_lake",
+      "segment_id": null,
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_corps_bullshoals",
+      "station_type": "Corps",
+      "station_number": "bullshoals",
+      "label": "Bull Shoals Lake — Pool Elevation (USACE-SWL)",
+      "waterbody_id": "wb_bull_shoals_lake",
+      "segment_id": null,
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": true
+    },
+    {
+      "id": "st_usgs_07057380",
+      "station_type": "USGS",
+      "station_number": "07057380",
+      "label": "North Fork River — Norfork Tailwater",
+      "waterbody_id": "wb_north_fork_norfork_tailwater",
+      "segment_id": null,
+      "metrics_supported": ["temp", "flow", "elevation"],
+      "is_primary": true
+    },
+    {
+      "id": "st_usgs_07047980",
+      "station_type": "USGS",
+      "station_number": "07047980",
+      "label": "White River at Elkins",
+      "waterbody_id": "wb_white_river",
+      "segment_id": null,
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07048600",
+      "station_type": "USGS",
+      "station_number": "07048600",
+      "label": "White River near Fayetteville",
+      "waterbody_id": "wb_white_river",
+      "segment_id": null,
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07060500",
+      "station_type": "USGS",
+      "station_number": "07060500",
+      "label": "White River at Calico Rock",
+      "waterbody_id": "wb_white_river",
+      "segment_id": null,
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07061000",
+      "station_type": "USGS",
+      "station_number": "07061000",
+      "label": "White River at Batesville",
+      "waterbody_id": "wb_white_river",
+      "segment_id": "white-river-calico-rock",
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": true
+    },
+    {
+      "id": "st_usgs_07074500",
+      "station_type": "USGS",
+      "station_number": "07074500",
+      "label": "White River at Newport",
+      "waterbody_id": "wb_white_river",
+      "segment_id": "white-river-batesville-to-newport",
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07074850",
+      "station_type": "USGS",
+      "station_number": "07074850",
+      "label": "White River near Augusta",
+      "waterbody_id": "wb_white_river",
+      "segment_id": "white-river-newport-to-augusta",
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07076750",
+      "station_type": "USGS",
+      "station_number": "07076750",
+      "label": "White River at Georgetown",
+      "waterbody_id": "wb_white_river",
+      "segment_id": null,
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07077000",
+      "station_type": "USGS",
+      "station_number": "07077000",
+      "label": "White River at DeValls Bluff",
+      "waterbody_id": "wb_white_river",
+      "segment_id": null,
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07055660",
+      "station_type": "USGS",
+      "station_number": "07055660",
+      "label": "Buffalo River at Ponca",
+      "waterbody_id": "wb_buffalo_national_river",
+      "segment_id": "buffalo-ponca-to-steele-creek",
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": true
+    },
+    {
+      "id": "st_usgs_07056000",
+      "station_type": "USGS",
+      "station_number": "07056000",
+      "label": "Buffalo River near St. Joe",
+      "waterbody_id": "wb_buffalo_national_river",
+      "segment_id": "buffalo-pruitt-to-hasty",
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07056700",
+      "station_type": "USGS",
+      "station_number": "07056700",
+      "label": "Buffalo River near Harriet",
+      "waterbody_id": "wb_buffalo_national_river",
+      "segment_id": "buffalo-gilbert-to-rush",
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07076000",
+      "station_type": "USGS",
+      "station_number": "07076000",
+      "label": "Little Red River near Heber Springs",
+      "waterbody_id": "wb_little_red_river_greers_ferry_tailwater",
+      "segment_id": "little-red-dam-to-heber-springs",
+      "metrics_supported": ["temp", "flow", "elevation"],
+      "is_primary": true
+    },
+    {
+      "id": "st_usgs_07075000",
+      "station_type": "USGS",
+      "station_number": "07075000",
+      "label": "Middle Fork Little Red River at Shirley",
+      "waterbody_id": "wb_greers_ferry_lake",
+      "segment_id": null,
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07075900",
+      "station_type": "USGS",
+      "station_number": "07075900",
+      "label": "Greers Ferry Lake — Legacy Station",
+      "waterbody_id": "wb_greers_ferry_lake",
+      "segment_id": null,
+      "metrics_supported": ["elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_corps_greers",
+      "station_type": "Corps",
+      "station_number": "greers",
+      "label": "Greers Ferry Lake — Pool Elevation (USACE-SWL)",
+      "waterbody_id": "wb_greers_ferry_lake",
+      "segment_id": null,
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": true
+    },
+    {
+      "id": "st_usgs_07358501",
+      "station_type": "USGS",
+      "station_number": "07358501",
+      "label": "Ouachita River at Carpenter Dam",
+      "waterbody_id": "wb_ouachita_river_tailwater",
+      "segment_id": "ouachita-carpenter-dam-to-hot-springs",
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": true
+    },
+    {
+      "id": "st_usgs_07356000",
+      "station_type": "USGS",
+      "station_number": "07356000",
+      "label": "Ouachita River near Mount Ida",
+      "waterbody_id": "wb_lake_ouachita",
+      "segment_id": "ouachita-mount-ida-to-lake",
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07357000",
+      "station_type": "USGS",
+      "station_number": "07357000",
+      "label": "Lake Ouachita — Legacy Station",
+      "waterbody_id": "wb_lake_ouachita",
+      "segment_id": null,
+      "metrics_supported": ["elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_corps_ouachita",
+      "station_type": "Corps",
+      "station_number": "ouachita",
+      "label": "Lake Ouachita — Pool Elevation (USACE-MVK)",
+      "waterbody_id": "wb_lake_ouachita",
+      "segment_id": null,
+      "metrics_supported": ["elevation"],
+      "is_primary": true
+    },
+    {
+      "id": "st_usgs_07068000",
+      "station_type": "USGS",
+      "station_number": "07068000",
+      "label": "Spring River at Mammoth Spring",
+      "waterbody_id": "wb_spring_river",
+      "segment_id": null,
+      "metrics_supported": ["temp", "flow", "elevation"],
+      "is_primary": true
+    },
+    {
+      "id": "st_usgs_07359610",
+      "station_type": "USGS",
+      "station_number": "07359610",
+      "label": "Caddo River near Caddo Gap",
+      "waterbody_id": "wb_degray_lake",
+      "segment_id": "caddo-caddo-gap-to-glenwood",
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07359700",
+      "station_type": "USGS",
+      "station_number": "07359700",
+      "label": "Caddo River at Glenwood",
+      "waterbody_id": "wb_degray_lake",
+      "segment_id": "caddo-glenwood-to-degray",
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_usgs_07360200",
+      "station_type": "USGS",
+      "station_number": "07360200",
+      "label": "DeGray Lake — Legacy Station",
+      "waterbody_id": "wb_degray_lake",
+      "segment_id": null,
+      "metrics_supported": ["elevation"],
+      "is_primary": false
+    },
+    {
+      "id": "st_corps_degray",
+      "station_type": "Corps",
+      "station_number": "degray",
+      "label": "DeGray Lake — Pool Elevation (USACE-MVK)",
+      "waterbody_id": "wb_degray_lake",
+      "segment_id": null,
+      "metrics_supported": ["elevation"],
+      "is_primary": true
+    }
+  ]
+}
