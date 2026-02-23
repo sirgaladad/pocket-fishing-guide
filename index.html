@@ -5280,13 +5280,58 @@
             'https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/beaver.htm',
           notes: 'Corps release/elevation complements USGS station data.',
         },
+        norfork: {
+          provider: 'USACE-SWL snapshot + USGS',
+          primaryUrl:
+            'https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/norfdam.htm',
+          notes:
+            'Corps reservoir table scraped during deploy/scheduled refresh.',
+        },
+        millwood: {
+          provider: 'USACE-SWL snapshot + USGS',
+          primaryUrl:
+            'https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/millwood.htm',
+          notes:
+            'Corps reservoir table scraped during deploy/scheduled refresh.',
+        },
+        blueMountain: {
+          provider: 'USACE-SWL snapshot + USGS',
+          primaryUrl:
+            'https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bluemtn.htm',
+          notes:
+            'Corps reservoir table scraped during deploy/scheduled refresh.',
+        },
+        nimrod: {
+          provider: 'USACE-SWL snapshot + USGS',
+          primaryUrl:
+            'https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/nimrod.htm',
+          notes:
+            'Corps reservoir table scraped during deploy/scheduled refresh.',
+        },
+        dardanelle: {
+          provider: 'USACE-SWL snapshot + USGS',
+          primaryUrl:
+            'https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/dardam.htm',
+          notes:
+            'Corps reservoir table scraped during deploy/scheduled refresh.',
+        },
         maumelle: {
           provider: 'USGS gauge',
           primaryUrl: 'https://waterdata.usgs.gov/',
           notes:
             'Municipal reservoir; Corps table integration not currently targeted.',
         },
-        whiteriver: {
+        hamilton: {
+          provider: 'USGS gauge',
+          primaryUrl: 'https://waterdata.usgs.gov/',
+          notes: 'SWEPCO-managed reservoir; no Corps tabular endpoint.',
+        },
+        catherine: {
+          provider: 'USGS gauge',
+          primaryUrl: 'https://waterdata.usgs.gov/',
+          notes: 'SWEPCO-managed reservoir; no Corps tabular endpoint.',
+        },
+        whiteRiver: {
           provider: 'USGS river gauge',
           primaryUrl: 'https://waterdata.usgs.gov/',
           notes: 'River conditions come from USGS flow/gage stations.',
@@ -5295,6 +5340,11 @@
           provider: 'USGS river gauge',
           primaryUrl: 'https://waterdata.usgs.gov/',
           notes: 'Wild river monitoring via USGS flow/gage stations.',
+        },
+        springRiver: {
+          provider: 'USGS river gauge',
+          primaryUrl: 'https://waterdata.usgs.gov/',
+          notes: 'Spring River monitored via USGS flow/gage station 07068000.',
         },
         ouachita: {
           provider: 'USACE-MVK snapshot + USGS',
@@ -5312,6 +5362,43 @@
           provider: 'AGFC status + NWS',
           primaryUrl: 'https://www.agfc.com/',
           notes: 'No USGS gauge configured during renovation period.',
+        },
+        beaverTailwater: {
+          provider: 'USACE-SWL snapshot + USGS',
+          primaryUrl:
+            'https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/beaver.htm',
+          notes: 'Dam release data shared from Beaver Lake USACE snapshot.',
+        },
+        bullShoalsTailwater: {
+          provider: 'USACE-SWL snapshot + USGS',
+          primaryUrl:
+            'https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bulsdam.htm',
+          notes: 'Dam release data shared from Bull Shoals USACE snapshot.',
+        },
+        norforkTailwater: {
+          provider: 'USACE-SWL snapshot + USGS',
+          primaryUrl:
+            'https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/norfdam.htm',
+          notes: 'Dam release data shared from Norfork Lake USACE snapshot.',
+        },
+        greersTailwater: {
+          provider: 'USACE-SWL snapshot + USGS',
+          primaryUrl:
+            'https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/greersf.htm',
+          notes: 'Dam release data shared from Greers Ferry USACE snapshot.',
+        },
+        narrowsTailwater: {
+          provider: 'USACE-SWL snapshot + USGS',
+          primaryUrl:
+            'https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/narrows.htm',
+          notes: 'Corps tabular data for Narrows (Little Missouri) Dam releases.',
+        },
+        ouachitaTailwater: {
+          provider: 'USACE-SWL snapshot + USGS',
+          primaryUrl:
+            'https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/ouachita.htm',
+          notes:
+            'Corps tabular data for Carpenter Dam (Ouachita River) releases.',
         },
       };
 
