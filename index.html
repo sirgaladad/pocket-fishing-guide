@@ -5317,7 +5317,7 @@
 
       // ─── SOURCE RESOLVER ────────────────────────────────────────────
       function resolveSource(waterKey, metric) {
-        const taxType = TAXONOMY.waterTypeMap[waterKey] || 'all';
+        const taxType = getWaterTaxonomyType(waterKey);
         // Tailwaters with dedicated USACE dam ops data
         if (taxType === 'tailwater') {
           const meta = WATER_LEVEL_SOURCES[waterKey];
@@ -5331,7 +5331,7 @@
       }
 
       function get7DayLevelLabel(waterKey) {
-        const taxType = TAXONOMY.waterTypeMap[waterKey] || 'all';
+        const taxType = getWaterTaxonomyType(waterKey);
         if (taxType === 'reservoir' || taxType === 'lake') return '7-Day Lake Level';
         if (taxType === 'river') return '7-Day River Level';
         if (taxType === 'stream') return '7-Day Stream Level';
@@ -5340,12 +5340,19 @@
       }
 
       function getWaterLevelStatusLabel(waterKey) {
-        const taxType = TAXONOMY.waterTypeMap[waterKey] || 'all';
+        const taxType = getWaterTaxonomyType(waterKey);
         if (taxType === 'reservoir' || taxType === 'lake') return 'Lake Level Status';
         if (taxType === 'river') return 'River Level Status';
         if (taxType === 'stream') return 'Stream Level Status';
         if (taxType === 'tailwater') return 'Tailwater Level Status';
         return 'Water Level Status';
+      }
+
+      function getLevelSourceBadge(levelProvider, waterKey) {
+        if (levelProvider) {
+          return levelProvider.startsWith('USACE') ? 'USACE' : 'USGS';
+        }
+        return resolveSource(waterKey, 'level');
       }
 
       function getWaterStations(waterDef) {
@@ -7160,9 +7167,7 @@
         const sourceStatus = usgs?.levelSourceStatus || null;
         const levelLabel = get7DayLevelLabel(water);
         const levelStatusLabel = getWaterLevelStatusLabel(water);
-        const sourceBadge = usgs?.levelProvider
-          ? (usgs.levelProvider.startsWith('USACE') ? 'USACE' : 'USGS')
-          : resolveSource(water, 'level');
+        const sourceBadge = getLevelSourceBadge(usgs?.levelProvider, water);
         const isTailwater = TAXONOMY.waterTypeMap[water] === 'tailwater';
         const genScheduleUrl = WATERS[water]?.generationScheduleUrl || null;
         const tempSourceLabel = usgs?.tempSourceLabel || 'No temperature feed';
@@ -9543,16 +9548,14 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                       {usgs?.levelProvider || resolveSource(water, 'level')}
                       {' '}
                       <span style={{ color: 'var(--text3)', fontSize: 11 }}>
-                        (Source: {usgs?.levelProvider
-                          ? (usgs.levelProvider.startsWith('USACE') ? 'USACE' : 'USGS')
-                          : resolveSource(water, 'level')})
+                        (Source: {getLevelSourceBadge(usgs?.levelProvider, water)})
                       </span>
                     </div>
                     <div>
                       <strong>USGS stations:</strong> {getStationIdsLabel(w)}
                     </div>
                     <div>NWS Office: {w.nwsOffice}</div>
-                    {TAXONOMY.waterTypeMap[water] === 'tailwater' && (
+                    {getWaterTaxonomyType(water) === 'tailwater' && (
                       <div style={{ color: 'var(--text3)', fontSize: 11, marginTop: 4 }}>
                         USGS stations listed above are validation context for tailwater flows.
                         Primary flow source is USACE dam operations data.
