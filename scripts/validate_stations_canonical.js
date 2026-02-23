@@ -223,6 +223,36 @@ function main() {
     "Lake Maumelle primary USGS station is 07263300 (at Dam)"
   );
 
+  // ── Coverage report: water bodies with no station (informational) ─────────
+  console.log("\n  Water body coverage report (informational):");
+  const coveredWaterBodyIds = new Set(
+    (stations.stations || []).map((s) => s.waterbody_id)
+  );
+  for (const wb of (waterBodies.water_bodies || [])) {
+    if (!coveredWaterBodyIds.has(wb.water_body_id)) {
+      console.log(
+        `    ℹ No station in stations.json for "${wb.water_body_id}" (${wb.name}) — no real-time monitoring data available`
+      );
+    }
+  }
+
+  // ── Coverage report: river segments whose governing station is shared ──────
+  console.log("\n  Segment coverage report (informational):");
+  const stationsBySegment = new Set(
+    (stations.stations || []).filter((s) => s.segment_id).map((s) => s.segment_id)
+  );
+  for (const river of (riversMap.rivers || [])) {
+    for (const section of (river.sections || [])) {
+      for (const segment of (section.segments || [])) {
+        if (!stationsBySegment.has(segment.segment_id)) {
+          console.log(
+            `    ℹ Segment "${segment.segment_id}" shares gauge ${segment.primary_station_id} with an adjacent segment — coverage via rivers_map.json`
+          );
+        }
+      }
+    }
+  }
+
   // ── Summary ───────────────────────────────────────────────────────────────
   console.log(`\n  Results: ${passed} passed, ${failed} failed`);
 

@@ -371,6 +371,16 @@
       "segment_id": null,
       "metrics_supported": ["elevation"],
       "is_primary": true
+    },
+    {
+      "id": "st_usgs_07360050",
+      "station_type": "USGS",
+      "station_number": "07360050",
+      "label": "Little Missouri River below Narrows Dam",
+      "waterbody_id": "wb_little_missouri_narrows_tailwater",
+      "segment_id": null,
+      "metrics_supported": ["flow", "elevation"],
+      "is_primary": true
     }
   ]
 }
