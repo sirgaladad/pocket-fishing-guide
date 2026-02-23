@@ -5654,6 +5654,10 @@
 
       const PHASES = WB_PHASES; // default
 
+      // Shared n4/n5 lures added to all white bass phases
+      const WB_N4 = { name: 'Topwater White Tiny Torpedo', sub: 'surface bait', detail: 'Dawn/dusk bite. Walk-the-dog through surface schools.' };
+      const WB_N5 = { name: 'Paddle Tail Swimbait White', sub: '3" swimbait on 1/8oz head', detail: 'Match schooling shad depth. Steady retrieve at thermocline.' };
+
       const LURES_BY_PHASE = {
         'Winter Hold': [
           {
@@ -5672,16 +5676,8 @@
             detail:
               'Backup. Deadly in slack water or when fish are holding deep.',
           },
-          {
-            name: 'Topwater White Tiny Torpedo',
-            sub: 'surface bait',
-            detail: 'Dawn/dusk bite. Walk-the-dog through surface schools.',
-          },
-          {
-            name: 'Paddle Tail Swimbait White',
-            sub: '3" swimbait on 1/8oz head',
-            detail: 'Match schooling shad depth. Steady retrieve at thermocline.',
-          },
+          WB_N4,
+          WB_N5,
         ],
         'Pre-Spawn Staging': [
           {
@@ -5700,16 +5696,8 @@
             detail:
               'Backup. Deadly in slack water or when fish are holding deep.',
           },
-          {
-            name: 'Topwater White Tiny Torpedo',
-            sub: 'surface bait',
-            detail: 'Dawn/dusk bite. Walk-the-dog through surface schools.',
-          },
-          {
-            name: 'Paddle Tail Swimbait White',
-            sub: '3" swimbait on 1/8oz head',
-            detail: 'Match schooling shad depth. Steady retrieve at thermocline.',
-          },
+          WB_N4,
+          WB_N5,
         ],
         'Spawn Trigger': [
           {
@@ -5727,16 +5715,8 @@
             sub: 'silver blade',
             detail: 'Run parallel to current seams at tributary entrances.',
           },
-          {
-            name: 'Topwater White Tiny Torpedo',
-            sub: 'surface bait',
-            detail: 'Dawn/dusk bite. Walk-the-dog through surface schools.',
-          },
-          {
-            name: 'Paddle Tail Swimbait White',
-            sub: '3" swimbait on 1/8oz head',
-            detail: 'Match schooling shad depth. Steady retrieve at thermocline.',
-          },
+          WB_N4,
+          WB_N5,
         ],
         'Peak Spawn': [
           {
@@ -5755,16 +5735,8 @@
             sub: '1/8oz casting spoon',
             detail: 'Long casts into rapids. Let it swing in current.',
           },
-          {
-            name: 'Topwater White Tiny Torpedo',
-            sub: 'surface bait',
-            detail: 'Dawn/dusk bite. Walk-the-dog through surface schools.',
-          },
-          {
-            name: 'Paddle Tail Swimbait White',
-            sub: '3" swimbait on 1/8oz head',
-            detail: 'Match schooling shad depth. Steady retrieve at thermocline.',
-          },
+          WB_N4,
+          WB_N5,
         ],
         'Post-Spawn': [
           {
@@ -5782,16 +5754,8 @@
             sub: 'surface bait',
             detail: 'Early morning surface bites can be explosive post-spawn.',
           },
-          {
-            name: 'Topwater White Tiny Torpedo',
-            sub: 'surface bait',
-            detail: 'Dawn/dusk bite. Walk-the-dog through surface schools.',
-          },
-          {
-            name: 'Paddle Tail Swimbait White',
-            sub: '3" swimbait on 1/8oz head',
-            detail: 'Match schooling shad depth. Steady retrieve at thermocline.',
-          },
+          WB_N4,
+          WB_N5,
         ],
         'Summer Pattern': [
           {
@@ -5810,18 +5774,14 @@
             sub: 'steady retrieve',
             detail: 'Steady retrieve through schooling fish at dawn/dusk.',
           },
-          {
-            name: 'Topwater White Tiny Torpedo',
-            sub: 'surface bait',
-            detail: 'Dawn/dusk bite. Walk-the-dog through surface schools.',
-          },
-          {
-            name: 'Paddle Tail Swimbait White',
-            sub: '3" swimbait on 1/8oz head',
-            detail: 'Match schooling shad depth. Steady retrieve at thermocline.',
-          },
+          WB_N4,
+          WB_N5,
         ],
       };
+
+      // Shared n4/n5 lures added to all crappie phases
+      const CR_N4 = { name: 'Small Tube Jig', sub: 'white/smoke', detail: 'Cast to deep structure. Slow fall presentation.' };
+      const CR_N5 = { name: '1/32oz Crappie Jig', sub: 'pink/chartreuse', detail: 'Vertical jig under dock lights at night.' };
 
       const CR_LURES_BY_PHASE = {
         'Winter Deep': [
@@ -5842,16 +5802,8 @@
             sub: 'flutter spoon',
             detail: 'Deep timber. Let it flutter on the fall.',
           },
-          {
-            name: 'Small Tube Jig',
-            sub: 'white/smoke',
-            detail: 'Cast to deep structure. Slow fall presentation.',
-          },
-          {
-            name: '1/32oz Crappie Jig',
-            sub: 'pink/chartreuse',
-            detail: 'Vertical jig under dock lights at night.',
-          },
+          CR_N4,
+          CR_N5,
         ],
         'Pre-Spawn Move': [
           {
@@ -5871,16 +5823,8 @@
             detail:
               'Slow troll along channel edges. Chartreuse or ghost pattern.',
           },
-          {
-            name: 'Small Tube Jig',
-            sub: 'white/smoke',
-            detail: 'Cast to deep structure. Slow fall presentation.',
-          },
-          {
-            name: '1/32oz Crappie Jig',
-            sub: 'pink/chartreuse',
-            detail: 'Vertical jig under dock lights at night.',
-          },
+          CR_N4,
+          CR_N5,
         ],
         'Spawn Staging': [
           {
@@ -5900,16 +5844,8 @@
             detail:
               'Pitch to stumps. Feel for the tick. Light line = more bites.',
           },
-          {
-            name: 'Small Tube Jig',
-            sub: 'white/smoke',
-            detail: 'Cast to deep structure. Slow fall presentation.',
-          },
-          {
-            name: '1/32oz Crappie Jig',
-            sub: 'pink/chartreuse',
-            detail: 'Vertical jig under dock lights at night.',
-          },
+          CR_N4,
+          CR_N5,
         ],
         'Bed Spawn': [
           {
@@ -5928,16 +5864,8 @@
             sub: 'monkey milk or electric chicken',
             detail: 'Swim slowly through spawning flats. Cover more water.',
           },
-          {
-            name: 'Small Tube Jig',
-            sub: 'white/smoke',
-            detail: 'Cast to deep structure. Slow fall presentation.',
-          },
-          {
-            name: '1/32oz Crappie Jig',
-            sub: 'pink/chartreuse',
-            detail: 'Vertical jig under dock lights at night.',
-          },
+          CR_N4,
+          CR_N5,
         ],
         'Post-Spawn': [
           {
@@ -5956,16 +5884,8 @@
             sub: 'tight-line near brush',
             detail: 'Set at thermocline depth. Let them come to you.',
           },
-          {
-            name: 'Small Tube Jig',
-            sub: 'white/smoke',
-            detail: 'Cast to deep structure. Slow fall presentation.',
-          },
-          {
-            name: '1/32oz Crappie Jig',
-            sub: 'pink/chartreuse',
-            detail: 'Vertical jig under dock lights at night.',
-          },
+          CR_N4,
+          CR_N5,
         ],
         'Summer Suspend': [
           {
@@ -5986,16 +5906,8 @@
             detail:
               'Green submersible light draws baitfish. Crappie follow. Summer secret weapon.',
           },
-          {
-            name: 'Small Tube Jig',
-            sub: 'white/smoke',
-            detail: 'Cast to deep structure. Slow fall presentation.',
-          },
-          {
-            name: '1/32oz Crappie Jig',
-            sub: 'pink/chartreuse',
-            detail: 'Vertical jig under dock lights at night.',
-          },
+          CR_N4,
+          CR_N5,
         ],
       };
 
@@ -8593,7 +8505,7 @@
 
         return (
           <>
-            {/* TODAY'S PATTERN + 3-LURE ARSENAL */}
+            {/* TODAY'S PATTERN + TOP LURES */}
             <IntelTab temp={temp} water={water} species={species} segment={segment} usgs={usgs} />
 
             {/* ANNUAL CALENDAR */}
