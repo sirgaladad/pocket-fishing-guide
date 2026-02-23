@@ -7841,7 +7841,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                   setSpecies={(s) => { setSpecies(s); }}
                   segment={segment}
                   setSegment={(s) => { setSegment(s); }}
-                  setWater={(key) => { setWater(key); setRiverSection(null); }}
+                  setWater={(key) => { setWater(key); setWaterType(getWaterTaxonomyType(key)); setSegment('all'); setRiverSection(null); }}
                   waterType={waterType}
                   setWaterType={setWaterType}
                   onPatternCta={() => setTab('techniques')}
