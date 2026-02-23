@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Live Bait Toggle**: Artificial / Live Bait toggle in Tackle Box bottom-sheet header. Filters lure view by `bait_type`; falls back to *"Limited live bait data — check local bait shops"* when fewer than 2 live bait records match. Toggle state persists via `localStorage` key `pfg_tackle_mode`. Toggle buttons meet 44 px tap target with `role="radio"` and `aria-pressed` a11y attributes
+- **`bait_type` field**: Added to all 21 lure records in `data/lure-master.json` (`"artificial"` | `"live"`). Seven new live bait master records added (lure_015–lure_021) covering White River white bass (live shad, nightcrawler) and crappie live minnow presentations
+- **`scripts/validate-species-lure-mapping.js`**: Cross-file integrity validator — ensures every `lure_id` in `species_at_location.json#best_lures[]` resolves in `lure-master.json` and every `species_id` resolves in `species.json`
+- **`data-validate.yml`**: Extended to run `validate-species-lure-mapping.js` on push/PR to `main`
+- **`scoreLures()` `baitMode` param**: Accepts `"artificial"` (default, existing behavior) or `"live"` (sources from master by `phase_affinity`, filters to `bait_type !== "artificial"`)
+- **`LURE_MASTER_STATE.lures`**: Raw lures array now stored alongside the index to enable live bait mode lookup by `phase_affinity`
+
+### Changed
+- **`scripts/validate-tackle-box.js`**: `bait_type` added to required fields; VALID_BAIT_TYPES check (`artificial`, `live`, `cut`, `scented_soft`) enforced
+- **Tackle Box**: Artificial mode now explicitly excludes `bait_type === "live"` or `"cut"` lures from the ranked list (previously lure_010 "1/16oz Jig + Live Minnow" appeared in artificial mode)
+
+### Added
 - **🎒 Tackle Box**: Top-5 lure bottom-sheet modal per species and phase. Uses `deriveClarity()` to show condition context chips (clarity + live flow CFS). Lures are condition-ranked via `scoreLures()` once `lure-master.json` hydrates the phase arrays; falls back to phase order gracefully before hydration completes
 - **`deriveClarity()` helper**: Derives water clarity (`clear`/`stained`/`muddy`) from water body type and live USGS flow CFS
 - **`scoreLures()` engine**: Condition-aware lure ranking (clarity × flow × phase) using `hydrateLuresWithMaster()` to enrich phase lures with `condition_score` from the canonical library

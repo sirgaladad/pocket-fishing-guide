@@ -28,3 +28,5 @@ jobs:
         run: node scripts/validate-tackle-box.js
       - name: Validate stations schema
         run: node scripts/validate_stations_canonical.js
+      - name: Validate species-lure mapping
+        run: node scripts/validate-species-lure-mapping.js
