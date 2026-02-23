@@ -15,23 +15,46 @@ if (!fs.existsSync(lureMasterPath)) {
   process.exit(1);
 }
 
-const { lures } = JSON.parse(fs.readFileSync(lureMasterPath, 'utf8'));
+let parsed;
+try {
+  parsed = JSON.parse(fs.readFileSync(lureMasterPath, 'utf8'));
+} catch (e) {
+  console.error('ERROR: Failed to parse data/lure-master.json as valid JSON');
+  console.error(e.message);
+  process.exit(1);
+}
+
+if (!parsed || !Array.isArray(parsed.lures)) {
+  console.error('ERROR: data/lure-master.json must contain a top-level "lures" array');
+  process.exit(1);
+}
+
+const lures = parsed.lures;
 let errors = 0;
 
 lures.forEach((lure, i) => {
   REQUIRED_FIELDS.forEach(f => {
-    if (lure[f] === undefined) {
+    if (lure[f] == null) {
       console.error(`Lure[${i}] ${lure.id || '?'}: missing required field "${f}"`);
       errors++;
     }
   });
-  if (lure.condition_score) {
-    CONDITION_SCORE_KEYS.forEach(k => {
-      if (lure.condition_score[k] === undefined) {
-        console.error(`Lure[${i}] ${lure.id}: condition_score missing key "${k}"`);
-        errors++;
-      }
-    });
+  if (lure.condition_score !== undefined && lure.condition_score !== null) {
+    if (typeof lure.condition_score !== 'object' || Array.isArray(lure.condition_score)) {
+      console.error(`Lure[${i}] ${lure.id || '?'}: condition_score must be a non-null object`);
+      errors++;
+    } else {
+      CONDITION_SCORE_KEYS.forEach(k => {
+        const score = lure.condition_score[k];
+        if (score == null) {
+          console.error(`Lure[${i}] ${lure.id || '?'}: condition_score missing key "${k}"`);
+          errors++;
+        } else if (typeof score !== 'number' || !Number.isFinite(score) || score < 1 || score > 10) {
+          console.error(`Lure[${i}] ${lure.id || '?'}: condition_score["${k}"] value ${score} out of range [1,10] or not a number`);
+          errors++;
+        }
+      });
+    }
   }
   if (lure.type && !VALID_TYPES.includes(lure.type)) {
     console.error(`Lure[${i}] ${lure.id}: invalid type "${lure.type}"`);

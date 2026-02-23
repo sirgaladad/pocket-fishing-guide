@@ -8,9 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- **🎒 Tackle Box**: Condition-ranked top-5 lure bottom-sheet modal per species and phase, scored by `deriveClarity()` (water type + live flow) + `scoreLures()` engine. Expands 3-Lure Arsenal to 5 condition-weighted lures with AGFC attribution and regulation surfacing
+- **🎒 Tackle Box**: Top-5 lure bottom-sheet modal per species and phase. Uses `deriveClarity()` to show condition context chips (clarity + live flow CFS). Lures are condition-ranked via `scoreLures()` once `lure-master.json` hydrates the phase arrays; falls back to phase order gracefully before hydration completes
 - **`deriveClarity()` helper**: Derives water clarity (`clear`/`stained`/`muddy`) from water body type and live USGS flow CFS
-- **`scoreLures()` engine**: Condition-weighted lure ranking by clarity × flow × phase
+- **`scoreLures()` engine**: Condition-aware lure ranking (clarity × flow × phase) using `hydrateLuresWithMaster()` to enrich phase lures with `condition_score` from the canonical library
 - **`data/lure-master.json`**: Canonical 14-lure library with `condition_score`, `type`, `agfc_cited`, `phase_affinity` schema
 - **`scripts/validate-tackle-box.js`**: Schema validation for lure-master.json
 - **`.github/workflows/data-validate.yml`**: CI workflow to validate data files on push/PR

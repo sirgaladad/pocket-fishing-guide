@@ -6465,6 +6465,65 @@
         return { signal, icon, label, cls, signal_score, condition_label, wading_safety };
       }
 
+      // ─── LURE MASTER HYDRATION ───────────────────────────────────────────────
+      // Loads data/lure-master.json in the background so scoreLures() can enrich
+      // phase lures with condition_score, agfc_cited, etc. Falls back gracefully
+      // if the file hasn't loaded yet or fetch is unavailable.
+      const LURE_MASTER_STATE = {
+        index: null,   // { byId: {}, byNameSub: {} }
+        loading: false
+      };
+
+      function indexLureMaster(raw) {
+        const source = Array.isArray(raw) ? raw : (raw && Array.isArray(raw.lures) ? raw.lures : []);
+        const byId = {};
+        const byNameSub = {};
+        source.forEach(function(lure) {
+          if (!lure || typeof lure !== 'object') return;
+          if (lure.id != null) byId[lure.id] = lure;
+          if (lure.name && lure.sub) {
+            byNameSub[String(lure.name).trim() + '::' + String(lure.sub).trim()] = lure;
+          }
+        });
+        return { byId: byId, byNameSub: byNameSub };
+      }
+
+      function primeLureMaster() {
+        if (LURE_MASTER_STATE.index || LURE_MASTER_STATE.loading) return;
+        if (typeof fetch !== 'function') return;
+        LURE_MASTER_STATE.loading = true;
+        fetch('data/lure-master.json')
+          .then(function(res) { return res && res.ok ? res.json() : null; })
+          .then(function(data) {
+            if (data) LURE_MASTER_STATE.index = indexLureMaster(data);
+          })
+          .catch(function(err) {
+            console && console.error && console.error('Failed to load lure-master.json', err);
+          })
+          .finally(function() { LURE_MASTER_STATE.loading = false; });
+      }
+
+      function hydrateLuresWithMaster(lures) {
+        if (!Array.isArray(lures) || !lures.length) return lures;
+        const index = LURE_MASTER_STATE.index;
+        if (!index) { primeLureMaster(); return lures; }
+        return lures.map(function(lure) {
+          if (!lure || typeof lure !== 'object') return lure;
+          var master = null;
+          if (lure.id != null && index.byId[lure.id]) {
+            master = index.byId[lure.id];
+          } else if (lure.name && lure.sub) {
+            var key = String(lure.name).trim() + '::' + String(lure.sub).trim();
+            master = index.byNameSub[key] || null;
+          }
+          // Phase lure fields win on conflict — preserves display-specific detail/sub over master defaults
+          return master ? Object.assign({}, master, lure) : lure;
+        });
+      }
+
+      // Prime lure master loading on script execution
+      primeLureMaster();
+
       function deriveClarity(waterKey, flow) {
         const w = WATERS[waterKey] || {};
         const wtype = w.subtype || w.type || '';
@@ -6478,14 +6537,16 @@
       }
 
       function scoreLures(phase, clarity, flow, lureMap) {
-        const lures = lureMap[phase] || Object.values(lureMap)[1] || [];
-        if (!lures.length) return lures;
+        const baseLures = (lureMap && phase) ? (lureMap[phase] || []) : [];
+        if (!baseLures.length) return baseLures;
+        // Enrich phase lures with canonical data (condition_score, agfc_*, etc.)
+        const lures = hydrateLuresWithMaster(baseLures);
         const hasScores = lures.some(l => l.condition_score);
         if (!hasScores) return lures;
         const isHighFlow = Number.isFinite(flow) && flow > 1500;
         const isLowFlow  = Number.isFinite(flow) && flow < 300;
         const DEFAULT_SCORE = 5; // neutral score when condition_score is absent
-        const getConditionScore = l => l.condition_score || {};
+        const getConditionScore = l => (l && l.condition_score) || {};
         const calcScore = l => {
           const cs = getConditionScore(l);
           return (cs[clarity] || DEFAULT_SCORE) +
@@ -8349,12 +8410,39 @@
         const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
         const ranked = scoreLures(phase, clarity, flow, lureMap);
         const top5 = ranked.slice(0, 5);
+        const closeButtonRef = React.useRef(null);
+
+        React.useEffect(() => {
+          if (closeButtonRef.current && typeof closeButtonRef.current.focus === 'function') {
+            closeButtonRef.current.focus();
+          }
+          function handleKeyDown(e) {
+            if (e.key === 'Escape' || e.key === 'Esc') {
+              e.stopPropagation();
+              onClose();
+            }
+          }
+          document.addEventListener('keydown', handleKeyDown);
+          return () => document.removeEventListener('keydown', handleKeyDown);
+        }, [onClose]);
+
         return (
           <div className="tackle-box-backdrop" onClick={onClose}>
-            <div className="tackle-box-sheet" onClick={e => e.stopPropagation()}>
+            <div
+              className="tackle-box-sheet"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="tackle-box-title"
+              onClick={e => e.stopPropagation()}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                <div style={{ fontWeight: 800, fontSize: 16 }}>{'\uD83C\uDF92'} Tackle Box</div>
-                <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--text2)', fontSize: 20, cursor: 'pointer' }}>{'\u2715'}</button>
+                <div id="tackle-box-title" style={{ fontWeight: 800, fontSize: 16 }}>{'\uD83C\uDF92'} Tackle Box</div>
+                <button
+                  ref={closeButtonRef}
+                  onClick={onClose}
+                  aria-label="Close tackle box"
+                  style={{ background: 'none', border: 'none', color: 'var(--text2)', fontSize: 20, cursor: 'pointer' }}
+                >{'\u2715'}</button>
               </div>
               <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 10 }}>
                 Condition-ranked for <strong style={{ color: 'var(--accent)' }}>{phase}</strong> phase
@@ -8363,7 +8451,7 @@
                 {Number.isFinite(flow) && <span className="condition-chip-inline">{'\u3030'} {flow} cfs</span>}
               </div>
               {top5.map((l, i) => (
-                <div className="lure-card" key={i}>
+                <div className="lure-card" key={l.id || l.name}>
                   <div className={`lure-num n${i + 1}`}>{i + 1}</div>
                   <div className="lure-info">
                     <h4>{l.name}</h4>

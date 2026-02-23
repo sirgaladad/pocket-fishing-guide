@@ -22,7 +22,7 @@
     },
     {
       "id": "lure_002",
-      "name": "1/8oz White Spinner (silver blade)",
+      "name": "1/8oz White Spinner",
       "sub": "with silver blade",
       "detail": "Flash triggers reaction strikes in moving water.",
       "type": "spinner",
@@ -40,7 +40,7 @@
     },
     {
       "id": "lure_003",
-      "name": "Blue/Orange Belly Rapala (suspending jerkbait)",
+      "name": "Blue/Orange Belly Rapala",
       "sub": "suspending jerkbait (small)",
       "detail": "Deadly in slack water or when fish are holding deep.",
       "type": "crankbait",
@@ -58,7 +58,7 @@
     },
     {
       "id": "lure_004",
-      "name": "White Rooster Tail 1/16oz",
+      "name": "White Rooster Tail \u2014 1/16oz",
       "sub": "inline spinner",
       "detail": "Fan cast creek mouths. Steady retrieve.",
       "type": "spinner",
@@ -76,8 +76,8 @@
     },
     {
       "id": "lure_005",
-      "name": "Small Chrome Kastmaster 1/8oz",
-      "sub": "casting spoon",
+      "name": "Small Chrome Kastmaster",
+      "sub": "1/8oz casting spoon",
       "detail": "Long casts into rapids. Let it swing in current.",
       "type": "spoon",
       "rank": 3,
@@ -94,7 +94,7 @@
     },
     {
       "id": "lure_006",
-      "name": "Small White Crankbait (shallow diving)",
+      "name": "Small White Crankbait",
       "sub": "shallow diving",
       "detail": "Burn it past creek mouth transitions. Reaction strikes.",
       "type": "crankbait",
@@ -130,7 +130,7 @@
     },
     {
       "id": "lure_008",
-      "name": "White Slab Spoon 1/2oz",
+      "name": "White Slab Spoon \u2014 1/2oz",
       "sub": "vertical jigging",
       "detail": "Vertical jig over schools. Match their depth on electronics.",
       "type": "spoon",
@@ -202,7 +202,7 @@
     },
     {
       "id": "lure_012",
-      "name": "1/8oz White Road Runner",
+      "name": "Road Runner Jig \u2014 1/16oz",
       "sub": "chartreuse/white",
       "detail": "Slow-roll along creek channels and brush lines at 8-12ft.",
       "type": "spinner",
@@ -220,7 +220,7 @@
     },
     {
       "id": "lure_013",
-      "name": "1/32oz Crappie Jig (pink/chartreuse)",
+      "name": "1/32oz Crappie Jig",
       "sub": "pink/chartreuse",
       "detail": "Vertical jig under dock lights at night.",
       "type": "jig",
@@ -238,7 +238,7 @@
     },
     {
       "id": "lure_014",
-      "name": "Small Tube Jig (white/smoke)",
+      "name": "Small Tube Jig",
       "sub": "white/smoke",
       "detail": "Cast to deep structure. Slow fall presentation.",
       "type": "jig",

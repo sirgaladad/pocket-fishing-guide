@@ -5,10 +5,12 @@ on:
     paths:
       - 'data/**'
       - 'scripts/validate-*.js'
+      - 'scripts/validate_stations_canonical.js'
   pull_request:
     paths:
       - 'data/**'
       - 'scripts/validate-*.js'
+      - 'scripts/validate_stations_canonical.js'
 
 jobs:
   validate:
