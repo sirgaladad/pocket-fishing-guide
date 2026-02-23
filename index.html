@@ -6498,7 +6498,11 @@
           .then(function(data) {
             if (data) {
               LURE_MASTER_STATE.index = indexLureMaster(data);
-              LURE_MASTER_STATE.lures = Array.isArray(data) ? data : (data && Array.isArray(data.lures) ? data.lures : []);
+              if (Array.isArray(data)) {
+                LURE_MASTER_STATE.lures = data;
+              } else if (data && Array.isArray(data.lures)) {
+                LURE_MASTER_STATE.lures = data.lures;
+              }
             }
           })
           .catch(function(err) {
@@ -8470,9 +8474,9 @@
                   style={{ background: 'none', border: 'none', color: 'var(--text2)', fontSize: 20, cursor: 'pointer' }}
                 >{'\u2715'}</button>
               </div>
-              <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+              <div role="group" aria-label="Bait mode" style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
                 <button
-                  role="radio"
+                  role="button"
                   aria-pressed={baitMode === 'artificial'}
                   onClick={() => handleToggle('artificial')}
                   style={{
@@ -8483,7 +8487,7 @@
                   }}
                 >{'\uD83C\uDFA3'} Artificial</button>
                 <button
-                  role="radio"
+                  role="button"
                   aria-pressed={baitMode === 'live'}
                   onClick={() => handleToggle('live')}
                   style={{
