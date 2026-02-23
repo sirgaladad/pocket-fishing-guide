@@ -9,9 +9,9 @@
  *   3. No duplicate station IDs.
  *   4. station_type values are within the allowed set (USGS | Corps | NWS).
  *   5. metrics_supported values are within the allowed set.
- *   6. Every waterbody_id resolves in water_bodies.json.
+ *   6. Every water_body_id resolves in water_bodies.json.
  *   7. Every non-null segment_id resolves in rivers_map.json.
- *   8. Each waterbody has at least one primary station (is_primary === true).
+ *   8. Each waterbody has exactly one primary station (is_primary === true).
  *   9. Lake Maumelle has all 3 required USGS stations.
  *  10. Each Corps station key maps to an entry in usace_levels.json.
  *
@@ -115,8 +115,8 @@ function main() {
       `Station ${sid} has a station_number`
     );
     assert(
-      typeof station.waterbody_id === "string" && station.waterbody_id.length > 0,
-      `Station ${sid} has a waterbody_id`
+      typeof station.water_body_id === "string" && station.water_body_id.length > 0,
+      `Station ${sid} has a water_body_id`
     );
     assert(
       typeof station.label === "string" && station.label.length > 0,
@@ -159,10 +159,10 @@ function main() {
     );
     seenIds.add(sid);
 
-    // Test 6: waterbody_id resolves
+    // Test 6: water_body_id resolves
     assert(
-      waterBodyIds.has(station.waterbody_id),
-      `Station ${sid} waterbody_id "${station.waterbody_id}" resolves in water_bodies.json`
+      waterBodyIds.has(station.water_body_id),
+      `Station ${sid} water_body_id "${station.water_body_id}" resolves in water_bodies.json`
     );
 
     // Test 7: non-null segment_id resolves
@@ -183,31 +183,31 @@ function main() {
 
     // Collect primary stations per waterbody (for Test 8)
     if (station.is_primary) {
-      if (!primaryByWaterbody.has(station.waterbody_id)) {
-        primaryByWaterbody.set(station.waterbody_id, []);
+      if (!primaryByWaterbody.has(station.water_body_id)) {
+        primaryByWaterbody.set(station.water_body_id, []);
       }
-      primaryByWaterbody.get(station.waterbody_id).push(sid);
+      primaryByWaterbody.get(station.water_body_id).push(sid);
     }
   }
 
-  // ── Test 8: Each waterbody with any station has at least one primary ───────
+  // ── Test 8: Each waterbody with any station has exactly one primary ────────
   console.log("\n  Primary station coverage by waterbody:");
   const waterbodiesWithStations = new Set(
-    (stations.stations || []).map((s) => s.waterbody_id)
+    (stations.stations || []).map((s) => s.water_body_id)
   );
   for (const wbId of waterbodiesWithStations) {
     const primaries = primaryByWaterbody.get(wbId) || [];
     assert(
-      primaries.length > 0,
-      `Waterbody "${wbId}" has at least one primary station`
+      primaries.length === 1,
+      `Waterbody "${wbId}" has exactly one primary station (found: ${primaries.length})`
     );
   }
 
-  // ── Test 10: Lake Maumelle has all 3 required USGS stations ──────────────
+  // ── Test 9: Lake Maumelle has all 3 required USGS stations ──────────────
   console.log("\n  Lake Maumelle station coverage:");
   const maumelleStationNumbers = new Set(
     (stations.stations || [])
-      .filter((s) => s.waterbody_id === "wb_lake_maumelle" && s.station_type === "USGS")
+      .filter((s) => s.water_body_id === "wb_lake_maumelle" && s.station_type === "USGS")
       .map((s) => s.station_number)
   );
   for (const required of REQUIRED_MAUMELLE_STATION_NUMBERS) {
@@ -219,7 +219,7 @@ function main() {
 
   // Confirm Lake Maumelle primary station is 07263300
   const maumellePrimary = (stations.stations || []).find(
-    (s) => s.waterbody_id === "wb_lake_maumelle" && s.is_primary && s.station_type === "USGS"
+    (s) => s.water_body_id === "wb_lake_maumelle" && s.is_primary && s.station_type === "USGS"
   );
   assert(
     maumellePrimary !== undefined && maumellePrimary.station_number === "07263300",
@@ -229,7 +229,7 @@ function main() {
   // ── Coverage report: water bodies with no station (informational) ─────────
   console.log("\n  Water body coverage report (informational):");
   const coveredWaterBodyIds = new Set(
-    (stations.stations || []).map((s) => s.waterbody_id)
+    (stations.stations || []).map((s) => s.water_body_id)
   );
   for (const wb of (waterBodies.water_bodies || [])) {
     if (!coveredWaterBodyIds.has(wb.water_body_id)) {
