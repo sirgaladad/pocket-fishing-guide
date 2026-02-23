@@ -1766,6 +1766,13 @@
         gap: 4px;
       }
       .data-sources-summary::-webkit-details-marker { display: none; }
+      .data-sources-summary:after {
+        content: ' ▾';
+        color: var(--text3);
+      }
+      .data-sources-disclosure[open] .data-sources-summary:after {
+        content: ' ▴';
+      }
       .data-sources-body {
         margin-top: 4px;
         padding: 6px 8px;
