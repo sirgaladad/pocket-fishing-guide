@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **🎒 Tackle Box**: Condition-ranked top-5 lure bottom-sheet modal per species and phase, scored by `deriveClarity()` (water type + live flow) + `scoreLures()` engine. Expands 3-Lure Arsenal to 5 condition-weighted lures with AGFC attribution and regulation surfacing
+- **`deriveClarity()` helper**: Derives water clarity (`clear`/`stained`/`muddy`) from water body type and live USGS flow CFS
+- **`scoreLures()` engine**: Condition-weighted lure ranking by clarity × flow × phase
+- **`data/lure-master.json`**: Canonical 14-lure library with `condition_score`, `type`, `agfc_cited`, `phase_affinity` schema
+- **`scripts/validate-tackle-box.js`**: Schema validation for lure-master.json
+- **`.github/workflows/data-validate.yml`**: CI workflow to validate data files on push/PR
+- **`data/species_at_location.json` v1.1**: Added `best_lures[]`, `clarity_profile`, `pattern` fields
+- **CSS**: `.lure-num.n4`, `.lure-num.n5` badge colors; `.tackle-box-sheet`, `.tackle-box-backdrop`, `.tackle-box-trigger`, `.condition-chip-inline`, `@keyframes slideUp`
 - **Conditions Strip**: Prominent temperature + spawn phase + trend chips displayed immediately below the hero on the Signals tab, giving at-a-glance water status without scrolling
 - **Today's Pattern heading**: Labeled section with live data timestamp above the 3-Lure Arsenal on the Signals tab
 - **Pro Intel + Local Tips accordion** on Signals tab: Water-specific expert tips surfaced directly on the main landing view (collapsed by default, expandable)
