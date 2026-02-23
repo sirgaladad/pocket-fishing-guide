@@ -126,7 +126,7 @@
       "id": "st_usgs_07057380",
       "station_type": "USGS",
       "station_number": "07057380",
-      "label": "North Fork River — Norfork Tailwater",
+      "label": "Norfork River — Norfork Tailwater",
       "water_body_id": "wb_north_fork_norfork_tailwater",
       "segment_id": null,
       "metrics_supported": ["temp", "flow", "elevation"],
