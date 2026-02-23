@@ -12,9 +12,8 @@
  *   6. Every waterbody_id resolves in water_bodies.json.
  *   7. Every non-null segment_id resolves in rivers_map.json.
  *   8. Each waterbody has at least one primary station (is_primary === true).
- *   9. No orphan stations — every station's waterbody_id exists in water_bodies.json.
- *  10. Lake Maumelle has all 3 required USGS stations.
- *  11. Each Corps station key maps to an entry in usace_levels.json.
+ *   9. Lake Maumelle has all 3 required USGS stations.
+ *  10. Each Corps station key maps to an entry in usace_levels.json.
  *
  * Exit 0 on success, exit 1 on any failure.
  */
