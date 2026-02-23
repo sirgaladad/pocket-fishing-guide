@@ -8,8 +8,17 @@
       "type": "reservoir",
       "managing_agency": "USACE/AGFC",
       "parent_system": "White River System",
-      "county": ["Carroll", "Benton", "Madison"],
-      "primary_species": ["sp_white_bass", "sp_crappie", "sp_striped_bass", "sp_largemouth_bass"],
+      "county": [
+        "Carroll",
+        "Benton",
+        "Madison"
+      ],
+      "primary_species": [
+        "sp_white_bass",
+        "sp_crappie",
+        "sp_striped_bass",
+        "sp_largemouth_bass"
+      ],
       "has_segments": false
     },
     {
@@ -18,8 +27,17 @@
       "type": "reservoir",
       "managing_agency": "USACE/AGFC",
       "parent_system": "White River System",
-      "county": ["Baxter", "Marion", "Boone"],
-      "primary_species": ["sp_white_bass", "sp_crappie", "sp_striped_bass", "sp_largemouth_bass"],
+      "county": [
+        "Baxter",
+        "Marion",
+        "Boone"
+      ],
+      "primary_species": [
+        "sp_white_bass",
+        "sp_crappie",
+        "sp_striped_bass",
+        "sp_largemouth_bass"
+      ],
       "has_segments": false
     },
     {
@@ -28,8 +46,17 @@
       "type": "reservoir",
       "managing_agency": "USACE/AGFC",
       "parent_system": "White River System",
-      "county": ["Baxter", "Fulton", "Izard"],
-      "primary_species": ["sp_white_bass", "sp_crappie", "sp_striped_bass", "sp_largemouth_bass"],
+      "county": [
+        "Baxter",
+        "Fulton",
+        "Izard"
+      ],
+      "primary_species": [
+        "sp_white_bass",
+        "sp_crappie",
+        "sp_striped_bass",
+        "sp_largemouth_bass"
+      ],
       "has_segments": false
     },
     {
@@ -38,8 +65,15 @@
       "type": "reservoir",
       "managing_agency": "USACE/AGFC",
       "parent_system": "Little Red River",
-      "county": ["Cleburne", "Van Buren"],
-      "primary_species": ["sp_white_bass", "sp_crappie", "sp_largemouth_bass"],
+      "county": [
+        "Cleburne",
+        "Van Buren"
+      ],
+      "primary_species": [
+        "sp_white_bass",
+        "sp_crappie",
+        "sp_largemouth_bass"
+      ],
       "has_segments": false
     },
     {
@@ -48,8 +82,19 @@
       "type": "reservoir",
       "managing_agency": "USACE/AGFC",
       "parent_system": "Ouachita River",
-      "county": ["Garland", "Montgomery", "Saline", "Yell"],
-      "primary_species": ["sp_white_bass", "sp_crappie", "sp_striped_bass", "sp_walleye", "sp_largemouth_bass"],
+      "county": [
+        "Garland",
+        "Montgomery",
+        "Saline",
+        "Yell"
+      ],
+      "primary_species": [
+        "sp_white_bass",
+        "sp_crappie",
+        "sp_striped_bass",
+        "sp_walleye",
+        "sp_largemouth_bass"
+      ],
       "has_segments": false
     },
     {
@@ -58,8 +103,15 @@
       "type": "reservoir",
       "managing_agency": "SWEPCO/AGFC",
       "parent_system": "Ouachita River",
-      "county": ["Garland"],
-      "primary_species": ["sp_largemouth_bass", "sp_crappie", "sp_channel_catfish", "sp_striped_bass"],
+      "county": [
+        "Garland"
+      ],
+      "primary_species": [
+        "sp_largemouth_bass",
+        "sp_crappie",
+        "sp_channel_catfish",
+        "sp_striped_bass"
+      ],
       "has_segments": false
     },
     {
@@ -68,8 +120,15 @@
       "type": "reservoir",
       "managing_agency": "SWEPCO/AGFC",
       "parent_system": "Ouachita River",
-      "county": ["Garland", "Saline"],
-      "primary_species": ["sp_largemouth_bass", "sp_crappie", "sp_channel_catfish"],
+      "county": [
+        "Garland",
+        "Saline"
+      ],
+      "primary_species": [
+        "sp_largemouth_bass",
+        "sp_crappie",
+        "sp_channel_catfish"
+      ],
       "has_segments": false
     },
     {
@@ -78,8 +137,17 @@
       "type": "reservoir",
       "managing_agency": "USACE/AGFC",
       "parent_system": "Little River",
-      "county": ["Hempstead", "Little River", "Sevier"],
-      "primary_species": ["sp_largemouth_bass", "sp_crappie", "sp_channel_catfish", "sp_blue_catfish"],
+      "county": [
+        "Hempstead",
+        "Little River",
+        "Sevier"
+      ],
+      "primary_species": [
+        "sp_largemouth_bass",
+        "sp_crappie",
+        "sp_channel_catfish",
+        "sp_blue_catfish"
+      ],
       "has_segments": false
     },
     {
@@ -88,8 +156,14 @@
       "type": "reservoir",
       "managing_agency": "USACE/AGFC",
       "parent_system": "Petit Jean River",
-      "county": ["Logan"],
-      "primary_species": ["sp_largemouth_bass", "sp_crappie", "sp_channel_catfish"],
+      "county": [
+        "Logan"
+      ],
+      "primary_species": [
+        "sp_largemouth_bass",
+        "sp_crappie",
+        "sp_channel_catfish"
+      ],
       "has_segments": false
     },
     {
@@ -98,8 +172,15 @@
       "type": "reservoir",
       "managing_agency": "USACE/AGFC",
       "parent_system": "Fourche LaFave River",
-      "county": ["Perry", "Yell"],
-      "primary_species": ["sp_largemouth_bass", "sp_crappie", "sp_channel_catfish"],
+      "county": [
+        "Perry",
+        "Yell"
+      ],
+      "primary_species": [
+        "sp_largemouth_bass",
+        "sp_crappie",
+        "sp_channel_catfish"
+      ],
       "has_segments": false
     },
     {
@@ -108,8 +189,20 @@
       "type": "reservoir",
       "managing_agency": "USACE/AGFC",
       "parent_system": "Arkansas River",
-      "county": ["Yell", "Johnson", "Franklin", "Pope", "Logan"],
-      "primary_species": ["sp_white_bass", "sp_crappie", "sp_channel_catfish", "sp_sauger", "sp_largemouth_bass"],
+      "county": [
+        "Yell",
+        "Johnson",
+        "Franklin",
+        "Pope",
+        "Logan"
+      ],
+      "primary_species": [
+        "sp_white_bass",
+        "sp_crappie",
+        "sp_channel_catfish",
+        "sp_sauger",
+        "sp_largemouth_bass"
+      ],
       "has_segments": false
     },
     {
@@ -118,8 +211,15 @@
       "type": "reservoir",
       "managing_agency": "CAW/AGFC",
       "parent_system": "Maumelle River",
-      "county": ["Pulaski", "Perry"],
-      "primary_species": ["sp_white_bass", "sp_crappie", "sp_largemouth_bass"],
+      "county": [
+        "Pulaski",
+        "Perry"
+      ],
+      "primary_species": [
+        "sp_white_bass",
+        "sp_crappie",
+        "sp_largemouth_bass"
+      ],
       "has_segments": false
     },
     {
@@ -128,8 +228,16 @@
       "type": "reservoir",
       "managing_agency": "USACE/AGFC",
       "parent_system": "Caddo River",
-      "county": ["Clark", "Hot Spring"],
-      "primary_species": ["sp_white_bass", "sp_crappie", "sp_largemouth_bass", "sp_striped_bass"],
+      "county": [
+        "Clark",
+        "Hot Spring"
+      ],
+      "primary_species": [
+        "sp_white_bass",
+        "sp_crappie",
+        "sp_largemouth_bass",
+        "sp_striped_bass"
+      ],
       "has_segments": false
     },
     {
@@ -138,8 +246,15 @@
       "type": "lake",
       "managing_agency": "AGFC",
       "parent_system": "Point Remove Creek",
-      "county": ["Faulkner"],
-      "primary_species": ["sp_crappie", "sp_white_bass", "sp_largemouth_bass", "sp_channel_catfish"],
+      "county": [
+        "Faulkner"
+      ],
+      "primary_species": [
+        "sp_crappie",
+        "sp_white_bass",
+        "sp_largemouth_bass",
+        "sp_channel_catfish"
+      ],
       "has_segments": false
     },
     {
@@ -148,8 +263,19 @@
       "type": "river",
       "managing_agency": "AGFC/USACE",
       "parent_system": "White River System",
-      "county": ["Izard", "Stone", "Independence", "Jackson", "White"],
-      "primary_species": ["sp_white_bass", "sp_crappie", "sp_channel_catfish", "sp_sauger"],
+      "county": [
+        "Izard",
+        "Stone",
+        "Independence",
+        "Jackson",
+        "White"
+      ],
+      "primary_species": [
+        "sp_white_bass",
+        "sp_crappie",
+        "sp_channel_catfish",
+        "sp_sauger"
+      ],
       "has_segments": true
     },
     {
@@ -158,8 +284,17 @@
       "type": "river",
       "managing_agency": "NPS/AGFC",
       "parent_system": null,
-      "county": ["Newton", "Searcy", "Marion", "Baxter"],
-      "primary_species": ["sp_smallmouth_bass", "sp_white_bass", "sp_channel_catfish"],
+      "county": [
+        "Newton",
+        "Searcy",
+        "Marion",
+        "Baxter"
+      ],
+      "primary_species": [
+        "sp_smallmouth_bass",
+        "sp_white_bass",
+        "sp_channel_catfish"
+      ],
       "has_segments": true
     },
     {
@@ -168,68 +303,116 @@
       "type": "stream",
       "managing_agency": "AGFC",
       "parent_system": null,
-      "county": ["Fulton", "Sharp"],
-      "primary_species": ["sp_rainbow_trout", "sp_brown_trout", "sp_smallmouth_bass"],
+      "county": [
+        "Fulton",
+        "Sharp"
+      ],
+      "primary_species": [
+        "sp_rainbow_trout",
+        "sp_brown_trout",
+        "sp_smallmouth_bass"
+      ],
       "has_segments": false
     },
     {
       "id": "wb_white_river_beaver_tailwater",
-      "name": "White River — Beaver Tailwater",
+      "name": "White River \u2014 Beaver Tailwater",
       "type": "tailwater",
       "managing_agency": "USACE/AGFC",
       "parent_system": "White River System",
-      "county": ["Carroll", "Madison"],
-      "primary_species": ["sp_rainbow_trout", "sp_brown_trout", "sp_white_bass"],
-      "has_segments": false
+      "county": [
+        "Carroll",
+        "Madison"
+      ],
+      "primary_species": [
+        "sp_rainbow_trout",
+        "sp_brown_trout",
+        "sp_white_bass"
+      ],
+      "has_segments": true
     },
     {
       "id": "wb_white_river_bull_shoals_tailwater",
-      "name": "White River — Bull Shoals Tailwater",
+      "name": "White River \u2014 Bull Shoals Tailwater",
       "type": "tailwater",
       "managing_agency": "USACE/AGFC",
       "parent_system": "White River System",
-      "county": ["Baxter", "Marion", "Izard"],
-      "primary_species": ["sp_rainbow_trout", "sp_brown_trout", "sp_cutthroat_trout", "sp_white_bass"],
-      "has_segments": false
+      "county": [
+        "Baxter",
+        "Marion",
+        "Izard"
+      ],
+      "primary_species": [
+        "sp_rainbow_trout",
+        "sp_brown_trout",
+        "sp_cutthroat_trout",
+        "sp_white_bass"
+      ],
+      "has_segments": true
     },
     {
       "id": "wb_north_fork_norfork_tailwater",
-      "name": "North Fork River — Norfork Tailwater",
+      "name": "North Fork River \u2014 Norfork Tailwater",
       "type": "tailwater",
       "managing_agency": "USACE/AGFC",
       "parent_system": "White River System",
-      "county": ["Baxter"],
-      "primary_species": ["sp_rainbow_trout", "sp_brown_trout"],
+      "county": [
+        "Baxter"
+      ],
+      "primary_species": [
+        "sp_rainbow_trout",
+        "sp_brown_trout"
+      ],
       "has_segments": false
     },
     {
       "id": "wb_little_red_river_greers_ferry_tailwater",
-      "name": "Little Red River — Greers Ferry Tailwater",
+      "name": "Little Red River \u2014 Greers Ferry Tailwater",
       "type": "tailwater",
       "managing_agency": "USACE/AGFC",
       "parent_system": "Little Red River",
-      "county": ["Cleburne", "White"],
-      "primary_species": ["sp_rainbow_trout", "sp_brown_trout", "sp_cutthroat_trout"],
+      "county": [
+        "Cleburne",
+        "White"
+      ],
+      "primary_species": [
+        "sp_rainbow_trout",
+        "sp_brown_trout",
+        "sp_cutthroat_trout"
+      ],
       "has_segments": false
     },
     {
       "id": "wb_little_missouri_narrows_tailwater",
-      "name": "Little Missouri River — Narrows Tailwater",
+      "name": "Little Missouri River \u2014 Narrows Tailwater",
       "type": "tailwater",
       "managing_agency": "USACE/AGFC",
       "parent_system": "Little Missouri River",
-      "county": ["Hempstead", "Howard"],
-      "primary_species": ["sp_white_bass", "sp_channel_catfish", "sp_largemouth_bass"],
+      "county": [
+        "Hempstead",
+        "Howard"
+      ],
+      "primary_species": [
+        "sp_white_bass",
+        "sp_channel_catfish",
+        "sp_largemouth_bass"
+      ],
       "has_segments": false
     },
     {
       "id": "wb_ouachita_river_tailwater",
-      "name": "Ouachita River — Tailwater",
+      "name": "Ouachita River \u2014 Tailwater",
       "type": "tailwater",
       "managing_agency": "USACE/AGFC",
       "parent_system": "Ouachita River",
-      "county": ["Garland"],
-      "primary_species": ["sp_white_bass", "sp_channel_catfish", "sp_largemouth_bass"],
+      "county": [
+        "Garland"
+      ],
+      "primary_species": [
+        "sp_white_bass",
+        "sp_channel_catfish",
+        "sp_largemouth_bass"
+      ],
       "has_segments": false
     }
   ]
