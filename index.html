@@ -6471,6 +6471,7 @@
       // if the file hasn't loaded yet or fetch is unavailable.
       const LURE_MASTER_STATE = {
         index: null,   // { byId: {}, byNameSub: {} }
+        lures: [],     // raw lures array for live bait mode lookup
         loading: false
       };
 
@@ -6495,7 +6496,14 @@
         fetch('data/lure-master.json')
           .then(function(res) { return res && res.ok ? res.json() : null; })
           .then(function(data) {
-            if (data) LURE_MASTER_STATE.index = indexLureMaster(data);
+            if (data) {
+              LURE_MASTER_STATE.index = indexLureMaster(data);
+              if (Array.isArray(data)) {
+                LURE_MASTER_STATE.lures = data;
+              } else if (data && Array.isArray(data.lures)) {
+                LURE_MASTER_STATE.lures = data.lures;
+              }
+            }
           })
           .catch(function(err) {
             console && console.error && console.error('Failed to load lure-master.json', err);
@@ -6536,24 +6544,38 @@
         return 'stained';
       }
 
-      function scoreLures(phase, clarity, flow, lureMap) {
-        const baseLures = (lureMap && phase) ? (lureMap[phase] || []) : [];
-        if (!baseLures.length) return baseLures;
-        // Enrich phase lures with canonical data (condition_score, agfc_*, etc.)
-        const lures = hydrateLuresWithMaster(baseLures);
-        const hasScores = lures.some(l => l.condition_score);
-        if (!hasScores) return lures;
+      function scoreLures(phase, clarity, flow, lureMap, baitMode) {
+        const mode = baitMode || 'artificial';
         const isHighFlow = Number.isFinite(flow) && flow > 1500;
         const isLowFlow  = Number.isFinite(flow) && flow < 300;
-        const DEFAULT_SCORE = 5; // neutral score when condition_score is absent
-        const getConditionScore = l => (l && l.condition_score) || {};
+        const DEFAULT_SCORE = 5;
         const calcScore = l => {
-          const cs = getConditionScore(l);
+          const cs = (l && l.condition_score) || {};
           return (cs[clarity] || DEFAULT_SCORE) +
             (isHighFlow ? (cs.high_flow || DEFAULT_SCORE) : 0) +
             (isLowFlow  ? (cs.low_flow  || DEFAULT_SCORE) : 0);
         };
-        return [...lures].sort((a, b) => calcScore(b) - calcScore(a));
+
+        if (mode === 'live') {
+          // Source live bait from master file, filtered by phase_affinity
+          const masterLures = LURE_MASTER_STATE.lures;
+          if (!masterLures.length) { primeLureMaster(); return []; }
+          const liveLures = masterLures.filter(l => l.bait_type && l.bait_type !== 'artificial');
+          const phaseFiltered = liveLures.filter(l =>
+            !l.phase_affinity || !l.phase_affinity.length || l.phase_affinity.includes(phase)
+          );
+          const toScore = phaseFiltered.length ? phaseFiltered : liveLures;
+          return [...toScore].sort((a, b) => calcScore(b) - calcScore(a));
+        }
+
+        // artificial mode (default): existing behavior, exclude live/cut bait
+        const baseLures = (lureMap && phase) ? (lureMap[phase] || []) : [];
+        if (!baseLures.length) return baseLures;
+        const lures = hydrateLuresWithMaster(baseLures);
+        const artificial = lures.filter(l => !l.bait_type || l.bait_type === 'artificial' || l.bait_type === 'scented_soft');
+        const hasScores = artificial.some(l => l.condition_score);
+        if (!hasScores) return artificial;
+        return [...artificial].sort((a, b) => calcScore(b) - calcScore(a));
       }
 
       function estimateTempFromForecast(forecast, waterType) {
@@ -8408,9 +8430,17 @@
 
       function TackleBox({ phase, clarity, flow, species, water, segment, onClose }) {
         const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
-        const ranked = scoreLures(phase, clarity, flow, lureMap);
+        const [baitMode, setBaitMode] = React.useState(function() {
+          try { return localStorage.getItem('pfg_tackle_mode') || 'artificial'; } catch(e) { return 'artificial'; }
+        });
+        const ranked = scoreLures(phase, clarity, flow, lureMap, baitMode);
         const top5 = ranked.slice(0, 5);
         const closeButtonRef = React.useRef(null);
+
+        function handleToggle(mode) {
+          setBaitMode(mode);
+          try { localStorage.setItem('pfg_tackle_mode', mode); } catch(e) {}
+        }
 
         React.useEffect(() => {
           if (closeButtonRef.current && typeof closeButtonRef.current.focus === 'function') {
@@ -8444,33 +8474,64 @@
                   style={{ background: 'none', border: 'none', color: 'var(--text2)', fontSize: 20, cursor: 'pointer' }}
                 >{'\u2715'}</button>
               </div>
+              <div role="group" aria-label="Bait mode" style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+                <button
+                  role="button"
+                  aria-pressed={baitMode === 'artificial'}
+                  onClick={() => handleToggle('artificial')}
+                  style={{
+                    flex: 1, minHeight: 44, padding: '8px 12px', borderRadius: 8, cursor: 'pointer', fontWeight: 700, fontSize: 13,
+                    border: baitMode === 'artificial' ? '2px solid var(--accent)' : '2px solid var(--border)',
+                    background: baitMode === 'artificial' ? 'var(--accent)' : 'var(--surface2)',
+                    color: baitMode === 'artificial' ? '#fff' : 'var(--text2)'
+                  }}
+                >{'\uD83C\uDFA3'} Artificial</button>
+                <button
+                  role="button"
+                  aria-pressed={baitMode === 'live'}
+                  onClick={() => handleToggle('live')}
+                  style={{
+                    flex: 1, minHeight: 44, padding: '8px 12px', borderRadius: 8, cursor: 'pointer', fontWeight: 700, fontSize: 13,
+                    border: baitMode === 'live' ? '2px solid var(--accent)' : '2px solid var(--border)',
+                    background: baitMode === 'live' ? 'var(--accent)' : 'var(--surface2)',
+                    color: baitMode === 'live' ? '#fff' : 'var(--text2)'
+                  }}
+                >{'\uD83D\uDC1F'} Live Bait</button>
+              </div>
               <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 10 }}>
                 Condition-ranked for <strong style={{ color: 'var(--accent)' }}>{phase}</strong> phase
                 {' \u00B7 '}
                 <span className="condition-chip-inline">{'\uD83D\uDCA7'} {clarity}</span>
                 {Number.isFinite(flow) && <span className="condition-chip-inline">{'\u3030'} {flow} cfs</span>}
               </div>
-              {top5.map((l, i) => (
-                <div className="lure-card" key={l.id || l.name}>
-                  <div className={`lure-num n${i + 1}`}>{i + 1}</div>
-                  <div className="lure-info">
-                    <h4>{l.name}</h4>
-                    {l.sub && <div className="lure-sub">{l.sub}</div>}
-                    <p>{l.detail}</p>
-                    {l.agfc_cited && <span className="condition-chip-inline">{'\u2713'} AGFC</span>}
+              {baitMode === 'live' && top5.length < 2
+                ? (
+                  <div style={{ padding: '16px 8px', textAlign: 'center', color: 'var(--text3)', fontSize: 13, fontStyle: 'italic' }}>
+                    Limited live bait data \u2014 check local bait shops
                   </div>
-                  <div className="lure-card-actions">
-                    <a className="tackle-link yt" href={ytSearch(l.name)} target="_blank" rel="noopener noreferrer"
-                      onClick={() => { trackEvent('lure_howto_click', { lure_name: l.name, water, species }); }}>
-                      {'\u25B6'} How-To
-                    </a>
-                    <a className="tackle-link shop" href={walmartSearch(l.name)} target="_blank" rel="noopener noreferrer"
-                      onClick={() => { trackEvent('lure_shop_click', { lure_name: l.name, water, species }); }}>
-                      {'\uD83D\uDED2'} Shop
-                    </a>
+                )
+                : top5.map((l, i) => (
+                  <div className="lure-card" key={l.id || l.name}>
+                    <div className={`lure-num n${i + 1}`}>{i + 1}</div>
+                    <div className="lure-info">
+                      <h4>{l.name}</h4>
+                      {l.sub && <div className="lure-sub">{l.sub}</div>}
+                      <p>{l.detail}</p>
+                      {l.agfc_cited && <span className="condition-chip-inline">{'\u2713'} AGFC</span>}
+                    </div>
+                    <div className="lure-card-actions">
+                      <a className="tackle-link yt" href={ytSearch(l.name)} target="_blank" rel="noopener noreferrer"
+                        onClick={() => { trackEvent('lure_howto_click', { lure_name: l.name, water, species }); }}>
+                        {'\u25B6'} How-To
+                      </a>
+                      <a className="tackle-link shop" href={walmartSearch(l.name)} target="_blank" rel="noopener noreferrer"
+                        onClick={() => { trackEvent('lure_shop_click', { lure_name: l.name, water, species }); }}>
+                        {'\uD83D\uDED2'} Shop
+                      </a>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              }
               <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 12 }}>
                 Lure recommendations sourced from AGFC weekly fishing reports and species management data.
                 Always verify current regulations at{' '}

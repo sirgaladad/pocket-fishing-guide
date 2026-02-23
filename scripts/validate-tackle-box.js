@@ -3,9 +3,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const REQUIRED_FIELDS = ['id', 'name', 'sub', 'detail', 'rank', 'condition_score', 'type', 'agfc_cited'];
+const REQUIRED_FIELDS = ['id', 'name', 'sub', 'detail', 'rank', 'condition_score', 'type', 'agfc_cited', 'bait_type'];
 const CONDITION_SCORE_KEYS = ['clear', 'stained', 'muddy', 'high_flow', 'low_flow'];
 const VALID_TYPES = ['jig', 'spinner', 'crankbait', 'topwater', 'fly', 'live_bait', 'spoon', 'blade'];
+const VALID_BAIT_TYPES = ['artificial', 'live', 'cut', 'scented_soft'];
 const MIN_RANK = 1;
 const MAX_RANK = 5;
 
@@ -58,6 +59,10 @@ lures.forEach((lure, i) => {
   }
   if (lure.type && !VALID_TYPES.includes(lure.type)) {
     console.error(`Lure[${i}] ${lure.id}: invalid type "${lure.type}"`);
+    errors++;
+  }
+  if (lure.bait_type && !VALID_BAIT_TYPES.includes(lure.bait_type)) {
+    console.error(`Lure[${i}] ${lure.id}: invalid bait_type "${lure.bait_type}"`);
     errors++;
   }
   if (lure.rank !== undefined && (lure.rank < MIN_RANK || lure.rank > MAX_RANK)) {
