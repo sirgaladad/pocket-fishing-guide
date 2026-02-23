@@ -6,6 +6,8 @@ const path = require('path');
 const REQUIRED_FIELDS = ['id', 'name', 'sub', 'detail', 'rank', 'condition_score', 'type', 'agfc_cited'];
 const CONDITION_SCORE_KEYS = ['clear', 'stained', 'muddy', 'high_flow', 'low_flow'];
 const VALID_TYPES = ['jig', 'spinner', 'crankbait', 'topwater', 'fly', 'live_bait', 'spoon', 'blade'];
+const MIN_RANK = 1;
+const MAX_RANK = 5;
 
 const lureMasterPath = path.join(__dirname, '../data/lure-master.json');
 if (!fs.existsSync(lureMasterPath)) {
@@ -35,8 +37,8 @@ lures.forEach((lure, i) => {
     console.error(`Lure[${i}] ${lure.id}: invalid type "${lure.type}"`);
     errors++;
   }
-  if (lure.rank !== undefined && (lure.rank < 1 || lure.rank > 5)) {
-    console.error(`Lure[${i}] ${lure.id}: rank ${lure.rank} out of range [1,5]`);
+  if (lure.rank !== undefined && (lure.rank < MIN_RANK || lure.rank > MAX_RANK)) {
+    console.error(`Lure[${i}] ${lure.id}: rank ${lure.rank} out of range [${MIN_RANK},${MAX_RANK}]`);
     errors++;
   }
 });

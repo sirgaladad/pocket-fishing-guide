@@ -6484,12 +6484,15 @@
         if (!hasScores) return lures;
         const isHighFlow = Number.isFinite(flow) && flow > 1500;
         const isLowFlow  = Number.isFinite(flow) && flow < 300;
-        return [...lures].sort((a, b) => {
-          const cs = l => l.condition_score || {};
-          const scoreA = (cs(a)[clarity] || 5) + (isHighFlow ? (cs(a).high_flow || 5) : 0) + (isLowFlow ? (cs(a).low_flow || 5) : 0);
-          const scoreB = (cs(b)[clarity] || 5) + (isHighFlow ? (cs(b).high_flow || 5) : 0) + (isLowFlow ? (cs(b).low_flow || 5) : 0);
-          return scoreB - scoreA;
-        });
+        const DEFAULT_SCORE = 5; // neutral score when condition_score is absent
+        const getConditionScore = l => l.condition_score || {};
+        const calcScore = l => {
+          const cs = getConditionScore(l);
+          return (cs[clarity] || DEFAULT_SCORE) +
+            (isHighFlow ? (cs.high_flow || DEFAULT_SCORE) : 0) +
+            (isLowFlow  ? (cs.low_flow  || DEFAULT_SCORE) : 0);
+        };
+        return [...lures].sort((a, b) => calcScore(b) - calcScore(a));
       }
 
       function estimateTempFromForecast(forecast, waterType) {
