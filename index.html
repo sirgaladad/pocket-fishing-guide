@@ -5957,6 +5957,63 @@
         return taxType === 'river' || taxType === 'tailwater';
       }
 
+      // ─── SPECIES CATALOG ────────────────────────────────────────────
+      // Mirrors /data/species.json — drives the species dropdown and name
+      // display helpers. 'wb' and 'cr' are the primary signal-logic codes.
+      // display_tier: 1=primary, 2=secondary, 3=specialty
+      const SPECIES_CATALOG = [
+        { group: 'Bass', species: [
+          { id: 'wb',      name: 'White Bass',        display_tier: 1, primary: true },
+          { id: 'lmb',     name: 'Largemouth Bass',   display_tier: 1 },
+          { id: 'smb',     name: 'Smallmouth Bass',   display_tier: 1 },
+          { id: 'spb',     name: 'Spotted Bass',      display_tier: 1 },
+          { id: 'kyb',     name: 'Kentucky Bass',     display_tier: 2 },
+          { id: 'striper', name: 'Striped Bass',      display_tier: 1 },
+          { id: 'hybrid',  name: 'Hybrid Striped Bass', display_tier: 1 },
+        ]},
+        { group: 'Crappie', species: [
+          { id: 'cr',          name: 'Crappie',       display_tier: 1, primary: true },
+          { id: 'blkcrappie',  name: 'Black Crappie', display_tier: 2 },
+          { id: 'whtcrappie',  name: 'White Crappie', display_tier: 2 },
+        ]},
+        { group: 'Sunfish', species: [
+          { id: 'bluegill', name: 'Bluegill',         display_tier: 1 },
+          { id: 'redear',   name: 'Redear Sunfish',   display_tier: 2 },
+          { id: 'greensf',  name: 'Green Sunfish',    display_tier: 2 },
+          { id: 'warmouth', name: 'Warmouth',         display_tier: 2 },
+        ]},
+        { group: 'Catfish', species: [
+          { id: 'chancat',  name: 'Channel Catfish',  display_tier: 1 },
+          { id: 'bluecat',  name: 'Blue Catfish',     display_tier: 1 },
+          { id: 'flathead', name: 'Flathead Catfish', display_tier: 1 },
+        ]},
+        { group: 'Trout', species: [
+          { id: 'rainbow',    name: 'Rainbow Trout',   display_tier: 1 },
+          { id: 'browntrout', name: 'Brown Trout',     display_tier: 1 },
+          { id: 'cutthroat',  name: 'Cutthroat Trout', display_tier: 2 },
+          { id: 'brook',      name: 'Brook Trout',     display_tier: 2 },
+        ]},
+        { group: 'Other', species: [
+          { id: 'walleye',    name: 'Walleye',         display_tier: 1 },
+          { id: 'sauger',     name: 'Sauger',          display_tier: 2 },
+          { id: 'saugeye',    name: 'Saugeye',         display_tier: 2 },
+          { id: 'paddlefish', name: 'Paddlefish',      display_tier: 3 },
+          { id: 'lngar',      name: 'Longnose Gar',    display_tier: 3 },
+          { id: 'alligar',    name: 'Alligator Gar',   display_tier: 3 },
+          { id: 'bowfin',     name: 'Bowfin',          display_tier: 3 },
+        ]},
+      ];
+
+      function getSpeciesDisplayName(speciesId) {
+        for (const g of SPECIES_CATALOG) {
+          const s = g.species.find((e) => e.id === speciesId);
+          if (s) return s.name;
+        }
+        return speciesId || 'Unknown Species';
+      }
+
+      const ALL_SPECIES_IDS = SPECIES_CATALOG.flatMap((g) => g.species.map((s) => s.id));
+
       const TABS = [
         { id: 'signals', icon: '\uD83D\uDCCA', label: 'Signals' },
         { id: 'forecast', icon: '\u2600\uFE0F', label: 'Forecast' },
@@ -6580,7 +6637,7 @@
         const temp = usgs?.temp ?? null;
         const phase = getPhase(temp, species);
         const spawnTrigger = species === 'cr' ? 60 : 50;
-        const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
+        const speciesName = getSpeciesDisplayName(species);
         const tempIsEstimated = usgs?.tempSource === 'estimated';
         const triggerDist =
           temp !== null ? Math.max(0, spawnTrigger - temp).toFixed(1) : null;
@@ -6736,7 +6793,7 @@
           parts.push(`**Priority:** ${priority}`);
           parts.push(`**Journey Stage:** ${journey}`);
           parts.push(
-            `**Current Context:** ${WATERS[water]?.name || water} • ${species === 'cr' ? 'Crappie' : 'White Bass'} • ${tab}`
+            `**Current Context:** ${WATERS[water]?.name || water} • ${getSpeciesDisplayName(species)} • ${tab}`
           );
           if (goal) parts.push(`**What were you trying to do?**\n${goal}`);
           if (outcome) parts.push(`**What should have happened?**\n${outcome}`);
@@ -7148,7 +7205,7 @@
                       <>
                         {verdict.label}{' '}
                         <span className="hero-hl">
-                          {species === 'cr' ? 'Crappie' : 'White bass'} spawn
+                          {getSpeciesDisplayName(species)} spawn
                           temps reached!
                         </span>
                       </>
@@ -7166,7 +7223,7 @@
                         HOLD TIGHT{' '}
                         <span className="hero-hl">
                           Water still cold for{' '}
-                          {species === 'cr' ? 'crappie' : 'white bass'}
+                          {getSpeciesDisplayName(species).toLowerCase()}
                         </span>
                       </>
                     )}
@@ -8013,7 +8070,7 @@
             <div className="card">
               <div className="card-title">
                 {'\uD83C\uDFC6'} The 3-Lure Arsenal{' '}
-                {species === 'cr' ? '(Crappie)' : "(AGFC Chris Racey's Picks)"}
+                {species === 'cr' ? '(Crappie)' : `(${getSpeciesDisplayName(species)})`}
               </div>
               <div
                 style={{
@@ -8024,7 +8081,7 @@
               >
                 {species === 'cr'
                   ? `Top crappie setups for ${phase.name} pattern \u2014 ranked by effectiveness:`
-                  : `AGFC Deputy Director's personal white bass setup \u2014 this is all you need:`}
+                  : `Top ${getSpeciesDisplayName(species).toLowerCase()} setups for ${phase.name} pattern:`}
               </div>
               {lures.map((l, i) => (
                 <div className="lure-card" key={i}>
@@ -8064,7 +8121,7 @@
       function TechniquesTab({ temp, water, species, segment }) {
         const calendarData = species === 'cr' ? CR_CALENDAR : WB_CALENDAR;
         const w = WATERS[water];
-        const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
+        const speciesName = getSpeciesDisplayName(species);
 
         return (
           <>
@@ -8116,7 +8173,7 @@
         const phase = getPhase(temp, species);
         const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
         const lures = lureMap[phase.name] || Object.values(lureMap)[1];
-        const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
+        const speciesName = getSpeciesDisplayName(species);
 
         return (
           <div className="card">
@@ -8179,7 +8236,7 @@
         const phase = getPhase(temp, species);
         const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
         const lures = lureMap[phase.name] || Object.values(lureMap)[1];
-        const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
+        const speciesName = getSpeciesDisplayName(species);
 
         return (
           <div className="card">
@@ -8523,8 +8580,13 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                   }}
                   aria-label="Species"
                 >
-                  <option value="wb">{'🐟'} White Bass</option>
-                  <option value="cr">{'🐟'} Crappie</option>
+                  {SPECIES_CATALOG.map((g) => (
+                    <optgroup key={g.group} label={g.group}>
+                      {g.species.map((s) => (
+                        <option key={s.id} value={s.id}>{'🐟'} {s.name}</option>
+                      ))}
+                    </optgroup>
+                  ))}
                 </select>
               </div>
               {showSegment && (
@@ -8642,7 +8704,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
         const phase = getPhase(temp, species);
         const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
         const lures = lureMap[phase.name] || Object.values(lureMap)[1]; // fallback: pre-spawn phase (index 1)
-        const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
+        const speciesName = getSpeciesDisplayName(species);
         return (
           <div className="card">
             <div className="card-title">{'\uD83D\uDCFA'} Media + Gear &mdash; {speciesName}</div>
@@ -8861,7 +8923,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
 
                       <div className="water-metric">
                         <div className="water-metric-label">
-                          🎣 {species === 'cr' ? 'Crappie' : 'W.Bass'} Phase
+                          🎣 {getSpeciesDisplayName(species)} Phase
                         </div>
                         <div
                           className="water-metric-value"
@@ -8990,7 +9052,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
         const [species, setSpecies] = useState(() => {
           try {
             const stored = localStorage.getItem('pfg_species') || localStorage.getItem('selectedSpecies');
-            if (stored === 'wb' || stored === 'cr') {
+            if (stored && ALL_SPECIES_IDS.includes(stored)) {
               return stored;
             }
             // Fallback to default and repair invalid or missing value
@@ -9229,7 +9291,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
             )
           : null;
 
-        const speciesLabel = species === 'cr' ? 'Crappie' : 'White Bass';
+        const speciesLabel = getSpeciesDisplayName(species);
         const speciesIcon = species === 'cr' ? '\uD83D\uDC1F' : '\uD83D\uDC1F';
 
         return (
