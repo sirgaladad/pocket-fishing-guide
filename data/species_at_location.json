@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "description": "Many-to-many bridge connecting species to water bodies and fishing locations with fishing-quality metadata. Powers the Cars.com-style species + water body filter search.",
+  "version": "1.1",
+  "description": "Many-to-many bridge connecting species to water bodies and fishing locations with fishing-quality metadata. Includes best_lures (lure IDs from lure-master.json), clarity_profile, and pattern fields. Powers the Cars.com-style species + water body filter search.",
   "species_at_location": [
     {
       "record_id": "sal_white_hole_rainbow",
@@ -15,6 +15,9 @@
       "best_techniques": ["fly_fishing", "power_bait", "spinners"],
       "best_depths_ft": { "min": 2, "max": 8 },
       "notes": "White Hole is a tailout below a riffle — prime dry fly water during generation gaps.",
+      "best_lures": ["lure_004", "lure_002"],
+      "clarity_profile": "clear",
+      "pattern": "Tailwater dry fly during generation gaps",
       "source": "agfc_creel_survey",
       "last_updated": "2024-03-01"
     },
@@ -31,6 +34,9 @@
       "best_techniques": ["streamers", "nymphing", "spinners"],
       "best_depths_ft": { "min": 3, "max": 12 },
       "notes": "Trophy brown trout present year-round. Large streamers effective near structure.",
+      "best_lures": ["lure_003", "lure_002"],
+      "clarity_profile": "clear",
+      "pattern": "Deep streamers near structure year-round",
       "source": "agfc_creel_survey",
       "last_updated": "2024-03-01"
     },
@@ -47,6 +53,9 @@
       "best_techniques": ["fly_fishing", "power_bait", "spinners", "nymphing"],
       "best_depths_ft": { "min": 1, "max": 10 },
       "notes": "World-class trout fishery. AGFC stocks millions of rainbow trout annually in the Bull Shoals tailwater.",
+      "best_lures": ["lure_004", "lure_002", "lure_003"],
+      "clarity_profile": "clear",
+      "pattern": "World-class tailwater stocked fishery",
       "source": "agfc_stocking_report",
       "last_updated": "2024-03-01"
     },
@@ -159,6 +168,9 @@
       "best_techniques": ["spinners", "jigs", "crankbaits"],
       "best_depths_ft": { "min": 2, "max": 10 },
       "notes": "Spring white bass run moves up from Greers Ferry Lake below the dam.",
+      "best_lures": ["lure_001", "lure_002", "lure_004", "lure_005"],
+      "clarity_profile": "stained",
+      "pattern": "Spring run up tailwater from reservoir",
       "source": "agfc_creel_survey",
       "last_updated": "2024-04-01"
     },
@@ -191,6 +203,9 @@
       "best_techniques": ["jigs", "minnows", "drop_shot"],
       "best_depths_ft": { "min": 8, "max": 25 },
       "notes": "One of the top crappie lakes in Arkansas. Brush piles and dock fishing productive.",
+      "best_lures": ["lure_010", "lure_011", "lure_013", "lure_014"],
+      "clarity_profile": "clear",
+      "pattern": "Deep brush piles and dock structure year-round",
       "source": "agfc_creel_survey",
       "last_updated": "2024-05-01"
     },
@@ -255,6 +270,9 @@
       "best_techniques": ["jigs", "spinners", "crankbaits"],
       "best_depths_ft": { "min": 2, "max": 12 },
       "notes": "Spring white bass run in the lower White River — Batesville to Newport reach is prime staging water.",
+      "best_lures": ["lure_001", "lure_002", "lure_004", "lure_006", "lure_009"],
+      "clarity_profile": "stained",
+      "pattern": "Spring staging run Batesville to Newport",
       "source": "agfc_creel_survey",
       "last_updated": "2024-04-01"
     },
