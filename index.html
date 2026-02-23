@@ -4380,6 +4380,7 @@
         { id: 'signals', icon: '\uD83D\uDCCA', label: 'Signals' },
         { id: 'forecast', icon: '\u2600\uFE0F', label: 'Forecast' },
         { id: 'techniques', icon: '\uD83C\uDFAF', label: 'Techniques' },
+        { id: 'access', icon: '\uD83D\uDCCD', label: 'Access' },
       ];
 
       function getPhase(temp, species) {
@@ -7790,19 +7791,10 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
               {tab === 'forecast' && (
                 <ForecastTab forecast={forecast} water={water} />
               )}
-              {tab === 'lures' && (
-                <IntelTab temp={temp} water={water} species={species} segment={segment} />
-              )}
               {tab === 'techniques' && (
                 <TechniquesTab temp={temp} water={water} species={species} />
               )}
-              {tab === 'guides' && <AccessTab water={water} />}
-              {tab === 'videos' && (
-                <VideosTab temp={temp} water={water} species={species} segment={segment} />
-              )}
-              {tab === 'buy' && (
-                <BuyTab temp={temp} water={water} species={species} segment={segment} />
-              )}
+              {tab === 'access' && <AccessTab water={water} />}
 
               <div className="footer">
                 Tale Waters & Tides, LLC {'\u00B7'} Data: {getStationLabel(w)} +
