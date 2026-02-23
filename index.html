@@ -403,6 +403,7 @@
       /* ─── CONDITIONS STRIP ─── */
       .conditions-strip-wrapper {
         position: relative;
+        margin: 8px -16px;
       }
       .conditions-strip-wrapper::after {
         content: '';
@@ -418,10 +419,11 @@
         display: flex;
         gap: 8px;
         align-items: center;
-        padding: 8px 12px;
-        min-height: 52px;
-        background: var(--bg2);
-        border-bottom: 1px solid var(--bg3);
+        padding: 6px 16px;
+        min-height: 40px;
+        background: rgba(255, 255, 255, 0.04);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         overflow-x: auto;
         scrollbar-width: none;
         flex-wrap: nowrap;
@@ -433,9 +435,9 @@
         gap: 5px;
         background: var(--bg3);
         border-radius: 10px;
-        padding: 6px 10px;
-        min-height: 44px;
-        font-size: 13px;
+        padding: 4px 8px;
+        min-height: 36px;
+        font-size: 12px;
         font-weight: 600;
         color: var(--text);
         white-space: nowrap;
@@ -1748,6 +1750,31 @@
         color: var(--text2);
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
+      .data-sources-disclosure {
+        margin-top: 6px;
+        text-align: left;
+        display: inline-block;
+      }
+      .data-sources-summary {
+        cursor: pointer;
+        font-size: 10px;
+        color: var(--text3);
+        font-weight: 600;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .data-sources-summary::-webkit-details-marker { display: none; }
+      .data-sources-body {
+        margin-top: 4px;
+        padding: 6px 8px;
+        background: var(--bg3);
+        border-radius: var(--radius-sm);
+        font-size: 10px;
+        color: var(--text3);
+        line-height: 1.7;
+      }
 
       /* ─── OVERVIEW GRID ─── */
       .water-type-filter {
@@ -2260,7 +2287,7 @@
 
       /* ─── LAKE HERO ─── */
       .lake-hero {
-        padding: 16px;
+        padding: 10px 16px;
         border-bottom: 1px solid var(--bg3);
         background: linear-gradient(135deg, #0d2137 0%, #0a3d5c 50%, #0d4a5e 100%);
       }
@@ -2279,8 +2306,8 @@
       .hero-selects {
         display: flex;
         flex-direction: column;
-        gap: 8px;
-        margin-bottom: 10px;
+        gap: 6px;
+        margin-bottom: 8px;
       }
       .hero-select {
         flex: 1;
@@ -2289,7 +2316,7 @@
         color: var(--text);
         font-size: 12px;
         font-weight: 600;
-        padding: 12px 14px;
+        padding: 8px 10px;
         border-radius: var(--radius-sm);
         cursor: pointer;
         font-family: inherit;
@@ -2310,9 +2337,10 @@
         background: var(--accent);
         border: none;
         color: #000;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 800;
-        padding: 16px;
+        padding: 10px 14px;
+        margin-top: 8px;
         border-radius: var(--radius-sm);
         cursor: pointer;
         font-family: inherit;
@@ -2494,7 +2522,10 @@
           max-width: 960px;
         }
         .lake-hero {
-          padding: 24px;
+          padding: 14px 24px;
+        }
+        .conditions-strip-wrapper {
+          margin: 8px -24px;
         }
         .lake-hero-name {
           font-size: 28px;
@@ -6900,8 +6931,20 @@
         buffalo: 'First national river \u00B7 wild & scenic',
       };
 
-function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, onPatternCta }) {
+function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, onPatternCta, temp, usgs, loading }) {
         const w = WATERS[water];
+        const showStrip = !loading && temp !== null;
+        const isCrappie = species === 'cr';
+        const hotThreshold = isCrappie ? 60 : 55;
+        const warmThreshold = isCrappie ? 55 : 47;
+        const chipClass = showStrip
+          ? temp >= hotThreshold ? 'hot' : temp >= warmThreshold ? 'warm' : 'cool'
+          : '';
+        const t24 = usgs?.tempTrend24;
+        const trendStr = showStrip && Number.isFinite(t24)
+          ? ` ${t24 > 0 ? '\u25B2' : t24 < 0 ? '\u25BC' : '\u2192'}${Math.abs(t24)}\u00B0/24hr`
+          : '';
+        const phase = showStrip ? getPhase(temp, species) : null;
         return (
           <div className="lake-hero">
             <div className="hero-selects pfg-dropdown-nav">
@@ -6958,6 +7001,31 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
                 </select>
               </div>
             </div>
+            {showStrip && (
+              <div className="conditions-strip-wrapper">
+                <div className="conditions-strip">
+                  <div className={`conditions-chip ${chipClass}`}>
+                    <span role="img" aria-label="thermometer">{'\uD83C\uDF21\uFE0F'}</span> {temp.toFixed(1)}{'\u00B0'}F
+                    {trendStr && <span className="conditions-chip-label">{trendStr}</span>}
+                  </div>
+                  <div className="conditions-chip">
+                    <span role="img" aria-label={phase.name}>{phase.icon}</span> {phase.name}
+                  </div>
+                  {Number.isFinite(usgs?.gage) && (
+                    <div className="conditions-chip">
+                      <span role="img" aria-label="ruler">{'\uD83D\uDCCF'}</span> {usgs.gage.toFixed(2)} ft
+                      <span className="conditions-chip-label">gage ht</span>
+                    </div>
+                  )}
+                  {Number.isFinite(usgs?.tempTrend7) && (
+                    <div className="conditions-chip">
+                      <span role="img" aria-label={usgs.tempTrend7 > 0 ? 'fire' : usgs.tempTrend7 < 0 ? 'snowflake' : 'right arrow'}>{usgs.tempTrend7 > 0 ? '\uD83D\uDD25' : usgs.tempTrend7 < 0 ? '\u2744\uFE0F' : '\u2192'}</span> {usgs.tempTrend7 > 0 ? '+' : ''}{usgs.tempTrend7}{'\u00B0'}/7d
+                      <span className="conditions-chip-label">trend</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
             <button
               className="hero-cta-btn"
               onClick={() => {
@@ -7619,10 +7687,6 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
               {timestamp && (
                 <div className="header-meta">
                   Data: {timestamp}
-                  <span className="header-meta-stations">
-                    <br />
-                    {getStationIdsLabel(w)} {'\u00B7'} NWS {w.nwsOffice}
-                  </span>
                 </div>
               )}
               {isStale && hoursStale && (
@@ -7672,6 +7736,9 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
                   setSegment={(s) => { setSegment(s); }}
                   setWater={(key) => { setWater(key); setRiverSection(null); }}
                   onPatternCta={() => setTab('techniques')}
+                  temp={temp}
+                  usgs={usgs}
+                  loading={loading}
                 />
                 <div className="tabs">
                   {tabs.map((t) => (
@@ -7703,44 +7770,6 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
               )}
               {tab === 'signals' && (
                 <>
-                  {/* ── CONDITIONS STRIP: temp + spawn phase + trend ── */}
-                  {!loading && temp !== null && (() => {
-                    const p = getPhase(temp, species);
-                    const t24 = usgs?.tempTrend24;
-                    const isCrappie = species === 'cr';
-                    const hotThreshold = isCrappie ? 60 : 55;
-                    const warmThreshold = isCrappie ? 55 : 47;
-                    const chipClass = temp >= hotThreshold ? 'hot' : temp >= warmThreshold ? 'warm' : 'cool';
-                    const trendStr = Number.isFinite(t24)
-                      ? ` ${t24 > 0 ? '\u25B2' : t24 < 0 ? '\u25BC' : '\u2192'}${Math.abs(t24)}\u00B0/24hr`
-                      : '';
-                    return (
-                      <div className="conditions-strip-wrapper">
-                        <div className="conditions-strip">
-                          <div className={`conditions-chip ${chipClass}`}>
-                            <span role="img" aria-label="thermometer">{'\uD83C\uDF21\uFE0F'}</span> {temp.toFixed(1)}{'\u00B0'}F
-                            {trendStr && <span className="conditions-chip-label">{trendStr}</span>}
-                          </div>
-                          <div className="conditions-chip">
-                            <span role="img" aria-label={p.name}>{p.icon}</span> {p.name}
-                          </div>
-                          {Number.isFinite(usgs?.gage) && (
-                            <div className="conditions-chip">
-                              <span role="img" aria-label="ruler">{'\uD83D\uDCCF'}</span> {usgs.gage.toFixed(2)} ft
-                              <span className="conditions-chip-label">gage ht</span>
-                            </div>
-                          )}
-                          {Number.isFinite(usgs?.tempTrend7) && (
-                            <div className="conditions-chip">
-                              <span role="img" aria-label={usgs.tempTrend7 > 0 ? 'fire' : usgs.tempTrend7 < 0 ? 'snowflake' : 'right arrow'}>{usgs.tempTrend7 > 0 ? '\uD83D\uDD25' : usgs.tempTrend7 < 0 ? '\u2744\uFE0F' : '\u2192'}</span> {usgs.tempTrend7 > 0 ? '+' : ''}{usgs.tempTrend7}{'\u00B0'}/7d
-                              <span className="conditions-chip-label">trend</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })()}
-
                   {/* ── FULL WATER SIGNALS ── */}
                   <DashboardTab
                     usgs={usgs}
@@ -7761,13 +7790,25 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
               {tab === 'access' && <AccessTab water={water} />}
 
               <div className="footer">
-                Tale Waters & Tides, LLC {'\u00B7'} Data: {getStationLabel(w)} +
-                NWS {w.nwsOffice}
-                <br />
                 <em>
                   Not a substitute for checking conditions. Fish responsibly.
                 </em>{' '}
                 {'\uD83C\uDFA3'}
+                <details className="data-sources-disclosure">
+                  <summary className="data-sources-summary">
+                    {'\uD83D\uDD17'} Data Sources
+                  </summary>
+                  <div className="data-sources-body">
+                    <div>USGS: {getStationIdsLabel(w)}</div>
+                    <div>NWS Office: {w.nwsOffice}</div>
+                    {usgs?.levelProvider && (
+                      <div>Level/Flow: {usgs.levelProvider}</div>
+                    )}
+                    {usgs?.lastReading && (
+                      <div>Last reading: {usgs.lastReading.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' })}</div>
+                    )}
+                  </div>
+                </details>
                 <div className="support-links">
                   <a
                     className="support-link kofi"
