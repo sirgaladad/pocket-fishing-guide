@@ -1,0 +1,226 @@
+{
+  "version": "1.0",
+  "description": "Fishing regulations by zone and species for Arkansas water bodies. Includes special regulations for tailwaters, catch-and-release zones, and permit requirements. Always verify current rules at agfc.com.",
+  "regulations": [
+    {
+      "regulation_id": "reg_bull_shoals_catch_release",
+      "name": "Bull Shoals Tailwater Catch-and-Release Zone",
+      "water_body_id": "wb_white_river_bull_shoals_tailwater",
+      "species_id": "sp_rainbow_trout",
+      "reg_type": "special",
+      "zone_description": "From Bull Shoals Dam downstream to Rim Shoals",
+      "rules": {
+        "catch_and_release_only": true,
+        "artificial_lures_only": true,
+        "size_limit_in": null,
+        "daily_limit": 0,
+        "gear_restrictions": ["single_barbless_hook", "artificial_only"]
+      },
+      "requires_permit": ["fishing_license", "trout_permit"],
+      "effective_date": "2024-01-01",
+      "expiration_date": null,
+      "emergency_reg": false,
+      "agfc_source_url": "https://www.agfc.com/fishing/where-to-fish/trout-waters/bull-shoals-tailwater/",
+      "agfc_guidebook_year": 2026,
+      "notes": "Emergency regs may override — always check agfc.com/TroutRegsNews"
+    },
+    {
+      "regulation_id": "reg_bull_shoals_catch_release_brown",
+      "name": "Bull Shoals Tailwater Catch-and-Release Zone — Brown Trout",
+      "water_body_id": "wb_white_river_bull_shoals_tailwater",
+      "species_id": "sp_brown_trout",
+      "reg_type": "special",
+      "zone_description": "From Bull Shoals Dam downstream to Rim Shoals",
+      "rules": {
+        "catch_and_release_only": true,
+        "artificial_lures_only": true,
+        "size_limit_in": null,
+        "daily_limit": 0,
+        "gear_restrictions": ["single_barbless_hook", "artificial_only"]
+      },
+      "requires_permit": ["fishing_license", "trout_permit"],
+      "effective_date": "2024-01-01",
+      "expiration_date": null,
+      "emergency_reg": false,
+      "agfc_source_url": "https://www.agfc.com/fishing/where-to-fish/trout-waters/bull-shoals-tailwater/",
+      "agfc_guidebook_year": 2026,
+      "notes": "Same zone applies to all trout species from Bull Shoals Dam to Rim Shoals."
+    },
+    {
+      "regulation_id": "reg_bull_shoals_standard",
+      "name": "Bull Shoals Tailwater Standard Trout Regulations",
+      "water_body_id": "wb_white_river_bull_shoals_tailwater",
+      "species_id": "sp_rainbow_trout",
+      "reg_type": "special",
+      "zone_description": "From Rim Shoals downstream — standard trout regulations apply",
+      "rules": {
+        "catch_and_release_only": false,
+        "artificial_lures_only": false,
+        "size_limit_in": 9,
+        "daily_limit": 5,
+        "gear_restrictions": []
+      },
+      "requires_permit": ["fishing_license", "trout_permit"],
+      "effective_date": "2024-01-01",
+      "expiration_date": null,
+      "emergency_reg": false,
+      "agfc_source_url": "https://www.agfc.com/fishing/where-to-fish/trout-waters/bull-shoals-tailwater/",
+      "agfc_guidebook_year": 2026,
+      "notes": "Standard statewide trout regulations apply below Rim Shoals."
+    },
+    {
+      "regulation_id": "reg_norfork_tailwater_standard",
+      "name": "Norfork Tailwater Trout Regulations",
+      "water_body_id": "wb_north_fork_norfork_tailwater",
+      "species_id": "sp_rainbow_trout",
+      "reg_type": "special",
+      "zone_description": "Entire Norfork tailwater reach below Norfork Dam to White River confluence",
+      "rules": {
+        "catch_and_release_only": false,
+        "artificial_lures_only": false,
+        "size_limit_in": 9,
+        "daily_limit": 5,
+        "gear_restrictions": []
+      },
+      "requires_permit": ["fishing_license", "trout_permit"],
+      "effective_date": "2024-01-01",
+      "expiration_date": null,
+      "emergency_reg": false,
+      "agfc_source_url": "https://www.agfc.com/fishing/where-to-fish/trout-waters/norfork-tailwater/",
+      "agfc_guidebook_year": 2026,
+      "notes": "Check AGFC for current regulations; some sections may have artificial-only restrictions."
+    },
+    {
+      "regulation_id": "reg_little_red_tailwater_special",
+      "name": "Little Red River Tailwater Special Trout Regulations",
+      "water_body_id": "wb_little_red_river_greers_ferry_tailwater",
+      "species_id": "sp_rainbow_trout",
+      "reg_type": "special",
+      "zone_description": "Little Red River below Greers Ferry Dam to Hwy 16 bridge",
+      "rules": {
+        "catch_and_release_only": false,
+        "artificial_lures_only": false,
+        "size_limit_in": 9,
+        "daily_limit": 5,
+        "gear_restrictions": []
+      },
+      "requires_permit": ["fishing_license", "trout_permit"],
+      "effective_date": "2024-01-01",
+      "expiration_date": null,
+      "emergency_reg": false,
+      "agfc_source_url": "https://www.agfc.com/fishing/where-to-fish/trout-waters/little-red-river/",
+      "agfc_guidebook_year": 2026,
+      "notes": "World-record brown trout water. Check for any seasonal restrictions on upper reach."
+    },
+    {
+      "regulation_id": "reg_spring_river_trout",
+      "name": "Spring River Trout Regulations",
+      "water_body_id": "wb_spring_river",
+      "species_id": "sp_rainbow_trout",
+      "reg_type": "special",
+      "zone_description": "Spring River from Mammoth Spring to Hardy",
+      "rules": {
+        "catch_and_release_only": false,
+        "artificial_lures_only": false,
+        "size_limit_in": 9,
+        "daily_limit": 5,
+        "gear_restrictions": []
+      },
+      "requires_permit": ["fishing_license", "trout_permit"],
+      "effective_date": "2024-01-01",
+      "expiration_date": null,
+      "emergency_reg": false,
+      "agfc_source_url": "https://www.agfc.com/fishing/where-to-fish/trout-waters/spring-river/",
+      "agfc_guidebook_year": 2026,
+      "notes": "Cold spring-fed river managed as a trout fishery. No dam control; consistent cold temps year-round."
+    },
+    {
+      "regulation_id": "reg_statewide_crappie",
+      "name": "Statewide Crappie Regulations — Arkansas",
+      "water_body_id": null,
+      "species_id": "sp_crappie",
+      "reg_type": "general",
+      "zone_description": "Statewide — all public waters in Arkansas",
+      "rules": {
+        "catch_and_release_only": false,
+        "artificial_lures_only": false,
+        "size_limit_in": 10,
+        "daily_limit": 30,
+        "gear_restrictions": []
+      },
+      "requires_permit": ["fishing_license"],
+      "effective_date": "2024-01-01",
+      "expiration_date": null,
+      "emergency_reg": false,
+      "agfc_source_url": "https://www.agfc.com/fishing/regulations/",
+      "agfc_guidebook_year": 2026,
+      "notes": "Some waters have special crappie regulations — always check the AGFC Fishing Guidebook."
+    },
+    {
+      "regulation_id": "reg_statewide_largemouth_bass",
+      "name": "Statewide Largemouth Bass Regulations — Arkansas",
+      "water_body_id": null,
+      "species_id": "sp_largemouth_bass",
+      "reg_type": "general",
+      "zone_description": "Statewide — all public waters in Arkansas",
+      "rules": {
+        "catch_and_release_only": false,
+        "artificial_lures_only": false,
+        "size_limit_in": 12,
+        "daily_limit": 6,
+        "gear_restrictions": []
+      },
+      "requires_permit": ["fishing_license"],
+      "effective_date": "2024-01-01",
+      "expiration_date": null,
+      "emergency_reg": false,
+      "agfc_source_url": "https://www.agfc.com/fishing/regulations/",
+      "agfc_guidebook_year": 2026,
+      "notes": "Some tournament or designated lakes may have special bass size/bag limits."
+    },
+    {
+      "regulation_id": "reg_statewide_striped_bass",
+      "name": "Statewide Striped Bass Regulations — Arkansas",
+      "water_body_id": null,
+      "species_id": "sp_striped_bass",
+      "reg_type": "general",
+      "zone_description": "Statewide — all public waters in Arkansas",
+      "rules": {
+        "catch_and_release_only": false,
+        "artificial_lures_only": false,
+        "size_limit_in": 18,
+        "daily_limit": 2,
+        "gear_restrictions": []
+      },
+      "requires_permit": ["fishing_license"],
+      "effective_date": "2024-01-01",
+      "expiration_date": null,
+      "emergency_reg": false,
+      "agfc_source_url": "https://www.agfc.com/fishing/regulations/",
+      "agfc_guidebook_year": 2026,
+      "notes": "Hybrid striped bass may have different regulations — see hybrid striped bass rules."
+    },
+    {
+      "regulation_id": "reg_statewide_alligator_gar",
+      "name": "Statewide Alligator Gar Regulations — Arkansas",
+      "water_body_id": null,
+      "species_id": "sp_alligator_gar",
+      "reg_type": "special",
+      "zone_description": "Statewide — all public waters in Arkansas",
+      "rules": {
+        "catch_and_release_only": false,
+        "artificial_lures_only": false,
+        "size_limit_in": null,
+        "daily_limit": 1,
+        "gear_restrictions": ["special_alligator_gar_permit_required"]
+      },
+      "requires_permit": ["fishing_license", "alligator_gar_permit"],
+      "effective_date": "2024-01-01",
+      "expiration_date": null,
+      "emergency_reg": false,
+      "agfc_source_url": "https://www.agfc.com/fishing/regulations/",
+      "agfc_guidebook_year": 2026,
+      "notes": "Special permit required to harvest alligator gar. Free permit from AGFC."
+    }
+  ]
+}

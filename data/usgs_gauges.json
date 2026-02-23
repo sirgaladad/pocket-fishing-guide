@@ -1,0 +1,466 @@
+{
+  "version": "1.0",
+  "description": "USGS stream and flow monitoring stations for Arkansas. Maps directly to the 126 USGS monitoring locations across 55 Arkansas counties. Covers the White River system and other key tailwater and river gauges used for fishing conditions.",
+  "usgs_gauges": [
+    {
+      "gauge_id": "usgs_07047980",
+      "usgs_site_number": "07047980",
+      "name": "White River at Elkins, AR",
+      "water_body_id": "wb_white_river",
+      "coordinates": { "lat": 36.0000, "lng": -94.0000 },
+      "county": "Washington",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07047980&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 500,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07048600",
+      "usgs_site_number": "07048600",
+      "name": "White River near Fayetteville, AR",
+      "water_body_id": "wb_white_river",
+      "coordinates": { "lat": 36.0600, "lng": -94.1500 },
+      "county": "Washington",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07048600&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 600,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07049691",
+      "usgs_site_number": "07049691",
+      "name": "White River at Beaver Dam, AR",
+      "water_body_id": "wb_white_river_beaver_tailwater",
+      "coordinates": { "lat": 36.4428, "lng": -93.9012 },
+      "county": "Carroll",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07049691&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 400,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07049698",
+      "usgs_site_number": "07049698",
+      "name": "White River near Busch, AR",
+      "water_body_id": "wb_white_river_beaver_tailwater",
+      "coordinates": { "lat": 36.4200, "lng": -93.8500 },
+      "county": "Carroll",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07049698&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 400,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07054501",
+      "usgs_site_number": "07054501",
+      "name": "White River at Bull Shoals Dam, AR",
+      "water_body_id": "wb_white_river_bull_shoals_tailwater",
+      "coordinates": { "lat": 36.3705, "lng": -92.5665 },
+      "county": "Marion",
+      "data_types_available": ["discharge_cfs", "gage_height_ft", "water_temp_f"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07054501&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 600,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07054527",
+      "usgs_site_number": "07054527",
+      "name": "White River below Bull Shoals Dam, AR",
+      "water_body_id": "wb_white_river_bull_shoals_tailwater",
+      "coordinates": { "lat": 36.3780, "lng": -92.5510 },
+      "county": "Marion",
+      "data_types_available": ["discharge_cfs", "gage_height_ft", "water_temp_f"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07054527&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 600,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07057370",
+      "usgs_site_number": "07057370",
+      "name": "White River near Norfork, AR",
+      "water_body_id": "wb_white_river_bull_shoals_tailwater",
+      "coordinates": { "lat": 36.4292, "lng": -92.2476 },
+      "county": "Baxter",
+      "data_types_available": ["discharge_cfs", "gage_height_ft", "water_temp_f"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07057370&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 800,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07057380",
+      "usgs_site_number": "07057380",
+      "name": "North Fork River (Norfork Tailwater), AR",
+      "water_body_id": "wb_north_fork_norfork_tailwater",
+      "coordinates": { "lat": 36.2473, "lng": -92.2527 },
+      "county": "Baxter",
+      "data_types_available": ["discharge_cfs", "gage_height_ft", "water_temp_f"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07057380&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 500,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07060500",
+      "usgs_site_number": "07060500",
+      "name": "White River at Calico Rock, AR",
+      "water_body_id": "wb_white_river",
+      "coordinates": { "lat": 36.1256, "lng": -92.1325 },
+      "county": "Izard",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07060500&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": null,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07061000",
+      "usgs_site_number": "07061000",
+      "name": "White River at Batesville, AR",
+      "water_body_id": "wb_white_river",
+      "coordinates": { "lat": 35.7691, "lng": -91.6418 },
+      "county": "Independence",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07061000&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": null,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07074500",
+      "usgs_site_number": "07074500",
+      "name": "White River at Newport, AR",
+      "water_body_id": "wb_white_river",
+      "coordinates": { "lat": 35.6087, "lng": -91.2773 },
+      "county": "Jackson",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07074500&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": null,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07074850",
+      "usgs_site_number": "07074850",
+      "name": "White River near Augusta, AR",
+      "water_body_id": "wb_white_river",
+      "coordinates": { "lat": 35.2842, "lng": -91.3668 },
+      "county": "White",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07074850&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": null,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07076750",
+      "usgs_site_number": "07076750",
+      "name": "White River at Georgetown, AR",
+      "water_body_id": "wb_white_river",
+      "coordinates": { "lat": 35.1200, "lng": -91.4000 },
+      "county": "White",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07076750&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": null,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07077000",
+      "usgs_site_number": "07077000",
+      "name": "White River at DeValls Bluff, AR",
+      "water_body_id": "wb_white_river",
+      "coordinates": { "lat": 34.7790, "lng": -91.4429 },
+      "county": "Prairie",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07077000&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": null,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07076000",
+      "usgs_site_number": "07076000",
+      "name": "Little Red River near Heber Springs, AR",
+      "water_body_id": "wb_little_red_river_greers_ferry_tailwater",
+      "coordinates": { "lat": 35.5313, "lng": -92.0154 },
+      "county": "Cleburne",
+      "data_types_available": ["discharge_cfs", "gage_height_ft", "water_temp_f"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07076000&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 400,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07055660",
+      "usgs_site_number": "07055660",
+      "name": "Buffalo River at Ponca, AR",
+      "water_body_id": "wb_buffalo_national_river",
+      "coordinates": { "lat": 36.0344, "lng": -93.3780 },
+      "county": "Newton",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07055660&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 300,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07056000",
+      "usgs_site_number": "07056000",
+      "name": "Buffalo River near St. Joe, AR",
+      "water_body_id": "wb_buffalo_national_river",
+      "coordinates": { "lat": 36.0100, "lng": -92.9000 },
+      "county": "Searcy",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07056000&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 400,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07056700",
+      "usgs_site_number": "07056700",
+      "name": "Buffalo River near Harriet, AR",
+      "water_body_id": "wb_buffalo_national_river",
+      "coordinates": { "lat": 36.0600, "lng": -92.6700 },
+      "county": "Marion",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07056700&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 500,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07358501",
+      "usgs_site_number": "07358501",
+      "name": "Ouachita River at Carpenter Dam, AR",
+      "water_body_id": "wb_ouachita_river_tailwater",
+      "coordinates": { "lat": 34.5365, "lng": -93.1754 },
+      "county": "Garland",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07358501&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 600,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07356000",
+      "usgs_site_number": "07356000",
+      "name": "Ouachita River near Mount Ida, AR",
+      "water_body_id": "wb_lake_ouachita",
+      "coordinates": { "lat": 34.5800, "lng": -93.5900 },
+      "county": "Montgomery",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07356000&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": null,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07068000",
+      "usgs_site_number": "07068000",
+      "name": "Spring River at Mammoth Spring, AR",
+      "water_body_id": "wb_spring_river",
+      "coordinates": { "lat": 36.4986, "lng": -91.7321 },
+      "county": "Fulton",
+      "data_types_available": ["discharge_cfs", "gage_height_ft", "water_temp_f"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07068000&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": 350,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07359610",
+      "usgs_site_number": "07359610",
+      "name": "Caddo River near Caddo Gap, AR",
+      "water_body_id": "wb_degray_lake",
+      "coordinates": { "lat": 34.3000, "lng": -93.6500 },
+      "county": "Montgomery",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07359610&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": null,
+      "fishing_condition": null
+    },
+    {
+      "gauge_id": "usgs_07359700",
+      "usgs_site_number": "07359700",
+      "name": "Caddo River at Glenwood, AR",
+      "water_body_id": "wb_degray_lake",
+      "coordinates": { "lat": 34.3200, "lng": -93.5500 },
+      "county": "Pike",
+      "data_types_available": ["discharge_cfs", "gage_height_ft"],
+      "api_endpoint": "https://waterservices.usgs.gov/nwis/iv/?sites=07359700&format=json",
+      "realtime_data": {
+        "discharge_cfs": null,
+        "gage_height_ft": null,
+        "water_temp_f": null,
+        "condition_percentile": null,
+        "condition_label": null,
+        "timestamp": null
+      },
+      "wading_threshold_cfs": null,
+      "fishing_condition": null
+    }
+  ]
+}
