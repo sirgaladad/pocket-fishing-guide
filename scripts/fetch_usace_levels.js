@@ -11,6 +11,11 @@ const { execFileSync } = require("child_process");
 
 const OUT_PATH = path.resolve(__dirname, "..", "data", "usace_levels.json");
 
+// Primary source reference for all SWL-managed waters:
+// https://www.swl-wc.usace.army.mil/WM_Reports/current_conditions.html
+// Individual tabular pages below are scraped per-lake; current_conditions.html
+// provides the canonical current-conditions cross-validation source.
+
 const SOURCES = {
   greers: {
     name: "Greers Ferry Lake",
@@ -30,6 +35,48 @@ const SOURCES = {
     format: "swl-tabular",
     url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/beaver.htm",
   },
+  norfork: {
+    name: "Norfork Lake",
+    provider: "USACE-SWL",
+    format: "swl-tabular",
+    url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/norfdam.htm",
+  },
+  millwood: {
+    name: "Millwood Lake",
+    provider: "USACE-SWL",
+    format: "swl-tabular",
+    url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/millwood.htm",
+  },
+  blueMountain: {
+    name: "Blue Mountain Lake",
+    provider: "USACE-SWL",
+    format: "swl-tabular",
+    url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bluemtn.htm",
+  },
+  nimrod: {
+    name: "Nimrod Lake",
+    provider: "USACE-SWL",
+    format: "swl-tabular",
+    url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/nimrod.htm",
+  },
+  dardanelle: {
+    name: "Lake Dardanelle",
+    provider: "USACE-SWL",
+    format: "swl-tabular",
+    url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/dardam.htm",
+  },
+  narrowsTailwater: {
+    name: "Narrows Tailwater (Little Missouri)",
+    provider: "USACE-SWL",
+    format: "swl-tabular",
+    url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/narrows.htm",
+  },
+  ouachitaTailwater: {
+    name: "Ouachita River Tailwater (Carpenter Dam)",
+    provider: "USACE-SWL",
+    format: "swl-tabular",
+    url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/ouachita.htm",
+  },
   ouachita: {
     name: "Lake Ouachita (Blakely)",
     provider: "USACE-MVK",
@@ -44,6 +91,15 @@ const SOURCES = {
     reservoirName: "DeGray",
     url: "https://r.jina.ai/http://www.mvk-wc.usace.army.mil/resrep.htm",
   },
+};
+
+// Tailwaters that share dam data with their upstream reservoir.
+// Keys must match WATERS constant in index.html.
+const DERIVED_KEYS = {
+  beaverTailwater:     "beaver",
+  bullShoalsTailwater: "bullshoals",
+  norforkTailwater:    "norfork",
+  greersTailwater:     "greers",
 };
 
 const MONTHS = {
@@ -246,6 +302,14 @@ async function main() {
         sourceUrl: src.url,
         error: String(err && err.message ? err.message : err),
       };
+    }
+  }
+
+  // Populate tailwater keys that share dam data with their upstream reservoir.
+  for (const [twKey, reservoirKey] of Object.entries(DERIVED_KEYS)) {
+    const reservoirData = out.waters[reservoirKey];
+    if (reservoirData) {
+      out.waters[twKey] = { ...reservoirData };
     }
   }
 

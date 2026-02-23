@@ -1,9 +1,9 @@
 {
-  "status": "ok",
-  "generatedAt": "2026-02-20T19:21:17.836Z",
+  "status": "degraded",
+  "generatedAt": "2026-02-23T08:07:01.026Z",
   "dataSources": {
     "usace": {
-      "status": "ok",
+      "status": "degraded",
       "note": "Reservoir elevation and release data fetched at build time from USACE district pages.",
       "waters": {
         "greers": {
@@ -21,6 +21,41 @@
           "provider": "USACE-SWL",
           "lastReading": "2026-02-14T12:00:00.000Z"
         },
+        "norfork": {
+          "status": "pending",
+          "provider": "USACE-SWL",
+          "lastReading": null
+        },
+        "millwood": {
+          "status": "pending",
+          "provider": "USACE-SWL",
+          "lastReading": null
+        },
+        "blueMountain": {
+          "status": "pending",
+          "provider": "USACE-SWL",
+          "lastReading": null
+        },
+        "nimrod": {
+          "status": "pending",
+          "provider": "USACE-SWL",
+          "lastReading": null
+        },
+        "dardanelle": {
+          "status": "pending",
+          "provider": "USACE-SWL",
+          "lastReading": null
+        },
+        "narrowsTailwater": {
+          "status": "pending",
+          "provider": "USACE-SWL",
+          "lastReading": null
+        },
+        "ouachitaTailwater": {
+          "status": "pending",
+          "provider": "USACE-SWL",
+          "lastReading": null
+        },
         "ouachita": {
           "status": "ok",
           "provider": "USACE-MVK",
@@ -30,6 +65,26 @@
           "status": "ok",
           "provider": "USACE-MVK",
           "lastReading": "2026-02-14T13:00:00.000Z"
+        },
+        "beaverTailwater": {
+          "status": "ok",
+          "provider": "USACE-SWL",
+          "lastReading": "2026-02-14T12:00:00.000Z"
+        },
+        "bullShoalsTailwater": {
+          "status": "ok",
+          "provider": "USACE-SWL",
+          "lastReading": "2026-02-14T12:00:00.000Z"
+        },
+        "norforkTailwater": {
+          "status": "pending",
+          "provider": "USACE-SWL",
+          "lastReading": null
+        },
+        "greersTailwater": {
+          "status": "ok",
+          "provider": "USACE-SWL",
+          "lastReading": "2026-02-14T12:00:00.000Z"
         }
       }
     },

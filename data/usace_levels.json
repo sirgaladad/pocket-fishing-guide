@@ -106,6 +106,48 @@
       ],
       "lastReading": "2026-02-14T12:00:00.000Z"
     },
+    "norfork": {
+      "status": "pending",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/norfdam.htm",
+      "error": "Not yet fetched — will populate on next scheduled refresh"
+    },
+    "millwood": {
+      "status": "pending",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/millwood.htm",
+      "error": "Not yet fetched — will populate on next scheduled refresh"
+    },
+    "blueMountain": {
+      "status": "pending",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bluemtn.htm",
+      "error": "Not yet fetched — will populate on next scheduled refresh"
+    },
+    "nimrod": {
+      "status": "pending",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/nimrod.htm",
+      "error": "Not yet fetched — will populate on next scheduled refresh"
+    },
+    "dardanelle": {
+      "status": "pending",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/dardam.htm",
+      "error": "Not yet fetched — will populate on next scheduled refresh"
+    },
+    "narrowsTailwater": {
+      "status": "pending",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/narrows.htm",
+      "error": "Not yet fetched — will populate on next scheduled refresh"
+    },
+    "ouachitaTailwater": {
+      "status": "pending",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/ouachita.htm",
+      "error": "Not yet fetched — will populate on next scheduled refresh"
+    },
     "ouachita": {
       "status": "ok",
       "provider": "USACE-MVK",
@@ -153,6 +195,117 @@
       "powerPoolElevation": 408,
       "aboveBelowPowerPool": -6.9,
       "lastReading": "2026-02-14T13:00:00.000Z"
+    },
+    "beaverTailwater": {
+      "status": "ok",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/beaver.htm",
+      "topFloodPool": 1130,
+      "currentPowerPool": 1120.43,
+      "feetBelowFloodPool": 9.57,
+      "gage": 1112.53,
+      "flow": 20,
+      "gageTrend24": -0.03,
+      "gageTrend7": -0.07,
+      "flowTrend24": 0,
+      "flowTrend7": 0,
+      "gages7": [
+        {
+          "day": "Feb 13",
+          "avg": 1112.58
+        },
+        {
+          "day": "Feb 14",
+          "avg": 1112.55
+        }
+      ],
+      "flows7": [
+        {
+          "day": "Feb 13",
+          "avg": 509
+        },
+        {
+          "day": "Feb 14",
+          "avg": 20
+        }
+      ],
+      "lastReading": "2026-02-14T12:00:00.000Z"
+    },
+    "bullShoalsTailwater": {
+      "status": "ok",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/bulsdam.htm",
+      "topFloodPool": 695,
+      "currentPowerPool": 659,
+      "feetBelowFloodPool": 36,
+      "gage": 652.77,
+      "flow": 716,
+      "gageTrend24": 0.24,
+      "gageTrend7": 0.18,
+      "flowTrend24": 27,
+      "flowTrend7": -46,
+      "gages7": [
+        {
+          "day": "Feb 13",
+          "avg": 652.54
+        },
+        {
+          "day": "Feb 14",
+          "avg": 652.66
+        }
+      ],
+      "flows7": [
+        {
+          "day": "Feb 13",
+          "avg": 3029
+        },
+        {
+          "day": "Feb 14",
+          "avg": 709
+        }
+      ],
+      "lastReading": "2026-02-14T12:00:00.000Z"
+    },
+    "norforkTailwater": {
+      "status": "pending",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/norfdam.htm",
+      "error": "Not yet fetched — will populate on next scheduled refresh"
+    },
+    "greersTailwater": {
+      "status": "ok",
+      "provider": "USACE-SWL",
+      "sourceUrl": "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/greersf.htm",
+      "topFloodPool": 487,
+      "currentPowerPool": 462.04,
+      "feetBelowFloodPool": 24.96,
+      "gage": 454.08,
+      "flow": 20,
+      "gageTrend24": -0.01,
+      "gageTrend7": -0.01,
+      "flowTrend24": 0,
+      "flowTrend7": 0,
+      "gages7": [
+        {
+          "day": "Feb 13",
+          "avg": 454.09
+        },
+        {
+          "day": "Feb 14",
+          "avg": 454.08
+        }
+      ],
+      "flows7": [
+        {
+          "day": "Feb 13",
+          "avg": 283
+        },
+        {
+          "day": "Feb 14",
+          "avg": 20
+        }
+      ],
+      "lastReading": "2026-02-14T12:00:00.000Z"
     }
   }
 }
