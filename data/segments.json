@@ -1,0 +1,60 @@
+{
+  "version": "1.0",
+  "description": "River and stream segments for Arkansas water bodies. Used by the UI to localize fishing conditions and filter USGS station data. Lake and reservoir bodies do not require segments.",
+  "segments": [
+    {
+      "id": "seg_white_river_upper",
+      "waterbody_id": "wb_white_river",
+      "name": "Upper White River",
+      "start_mile_marker": 0,
+      "end_mile_marker": 55,
+      "nearest_access": "Calico Rock Access",
+      "primary_station_ids": ["07061000"]
+    },
+    {
+      "id": "seg_white_river_middle",
+      "waterbody_id": "wb_white_river",
+      "name": "Middle White River",
+      "start_mile_marker": 55,
+      "end_mile_marker": 90,
+      "nearest_access": "Batesville City Ramp",
+      "primary_station_ids": ["07061000", "07074500"]
+    },
+    {
+      "id": "seg_white_river_lower",
+      "waterbody_id": "wb_white_river",
+      "name": "Lower White River",
+      "start_mile_marker": 90,
+      "end_mile_marker": 130,
+      "nearest_access": "Newport White River Park",
+      "primary_station_ids": ["07074500", "07074850"]
+    },
+    {
+      "id": "seg_buffalo_upper",
+      "waterbody_id": "wb_buffalo_national_river",
+      "name": "Upper Buffalo",
+      "start_mile_marker": 0,
+      "end_mile_marker": 35,
+      "nearest_access": "Ponca / Boxley Valley",
+      "primary_station_ids": ["07055660"]
+    },
+    {
+      "id": "seg_buffalo_middle",
+      "waterbody_id": "wb_buffalo_national_river",
+      "name": "Middle Buffalo",
+      "start_mile_marker": 35,
+      "end_mile_marker": 95,
+      "nearest_access": "Gilbert Access",
+      "primary_station_ids": ["07056000"]
+    },
+    {
+      "id": "seg_buffalo_lower",
+      "waterbody_id": "wb_buffalo_national_river",
+      "name": "Lower Buffalo",
+      "start_mile_marker": 95,
+      "end_mile_marker": 135,
+      "nearest_access": "Rush Landing",
+      "primary_station_ids": ["07056700"]
+    }
+  ]
+}

@@ -4475,24 +4475,29 @@
         },
         segments: {
           whiteRiver: [
-            { id: 'all',                              label: 'All Sections' },
-            { id: 'white-river-tailwater-beaver',     label: 'Beaver Tailwater' },
-            { id: 'white-river-tailwater-bullshoals', label: 'Bull Shoals Tailwater' },
-            { id: 'white-river-upper',                label: 'Upper White River' },
-            { id: 'white-river-middle',               label: 'Middle White River' },
-            { id: 'white-river-lower',                label: 'Lower White River' },
+            { id: 'all',                label: 'All Sections',                   primary_station_ids: [] },
+            { id: 'white-river-upper',  label: 'Upper (Calico Rock–Batesville)', primary_station_ids: ['07061000'] },
+            { id: 'white-river-middle', label: 'Middle (Batesville–Newport)',     primary_station_ids: ['07061000', '07074500'] },
+            { id: 'white-river-lower',  label: 'Lower (Newport–Augusta)',         primary_station_ids: ['07074500', '07074850'] },
           ],
           buffalo: [
-            { id: 'all',            label: 'All Sections' },
-            { id: 'buffalo-upper',  label: 'Upper Buffalo' },
-            { id: 'buffalo-middle', label: 'Middle Buffalo' },
-            { id: 'buffalo-lower',  label: 'Lower Buffalo' },
+            { id: 'all',            label: 'All Sections',   primary_station_ids: [] },
+            { id: 'buffalo-upper',  label: 'Upper Buffalo',  primary_station_ids: ['07055660'] },
+            { id: 'buffalo-middle', label: 'Middle Buffalo', primary_station_ids: ['07056000'] },
+            { id: 'buffalo-lower',  label: 'Lower Buffalo',  primary_station_ids: ['07056700'] },
           ],
         },
       };
 
       function getWaterSegments(waterKey) {
-        return TAXONOMY.segments[waterKey] || [{ id: 'all', label: 'All Sections' }];
+        return TAXONOMY.segments[waterKey] || [{ id: 'all', label: 'All Sections', primary_station_ids: [] }];
+      }
+
+      function getSegmentPrimaryStation(waterKey, segmentId) {
+        if (!segmentId || segmentId === 'all') return null;
+        const segs = TAXONOMY.segments[waterKey] || [];
+        const seg = segs.find((s) => s.id === segmentId);
+        return (seg?.primary_station_ids?.length > 0) ? seg.primary_station_ids[0] : null;
       }
 
       function getWaterTaxonomyType(waterKey) {
@@ -7845,7 +7850,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                   species={species}
                   setSpecies={(s) => { setSpecies(s); }}
                   segment={segment}
-                  setSegment={(s) => { setSegment(s); }}
+                  setSegment={(s) => { setSegment(s); setRiverSection(getSegmentPrimaryStation(water, s)); }}
                   setWater={(key) => { setWater(key); setWaterType(getWaterTaxonomyType(key)); setSegment('all'); setRiverSection(null); }}
                   waterType={waterType}
                   setWaterType={setWaterType}
