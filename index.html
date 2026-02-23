@@ -2565,6 +2565,9 @@
         .header-meta-stations {
           display: none;
         }
+        .pfg-row2 {
+          flex-direction: column;
+        }
       }
     </style>
   </head>
@@ -8695,7 +8698,7 @@
         buffalo: 'First national river \u00B7 wild & scenic',
       };
 
-function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, waterType, setWaterType, onPatternCta, temp, usgs, loading }) {
+function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, waterType, setWaterType, temp, usgs, loading }) {
         const w = WATERS[water];
         const showStrip = !loading && temp !== null;
         const isCrappie = species === 'cr';
@@ -8832,15 +8835,6 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                 </div>
               </div>
             )}
-            <button
-              className="hero-cta-btn"
-              onClick={() => {
-                trackEvent('pattern_cta_click', { water, species, segment });
-                onPatternCta();
-              }}
-            >
-              {'🎣'} View Today&apos;s Pattern {'→'}
-            </button>
           </div>
         );
       }
@@ -9564,7 +9558,6 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                   setWater={(key) => { setWater(key); setWaterType(getWaterTaxonomyType(key)); setSegment('all'); setRiverSection(null); }}
                   waterType={waterType}
                   setWaterType={setWaterType}
-                  onPatternCta={() => setTab('techniques')}
                   temp={temp}
                   usgs={usgs}
                   loading={loading}
