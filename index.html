@@ -4619,6 +4619,7 @@
           type: 'river',
           subtype: 'tailwater',
           usgs: '07049691',
+          generationScheduleUrl: 'https://www.swpa.gov/genSchedule.aspx',
           usgsStations: [
             {
               id: '07049691',
@@ -4721,6 +4722,7 @@
           type: 'river',
           subtype: 'tailwater',
           usgs: '07054501',
+          generationScheduleUrl: 'https://www.swpa.gov/genSchedule.aspx',
           usgsStations: [
             {
               id: '07054501',
@@ -4846,6 +4848,7 @@
           type: 'river',
           subtype: 'tailwater',
           usgs: '07057380',
+          generationScheduleUrl: 'https://www.swpa.gov/genSchedule.aspx',
           usgsStations: [
             {
               id: '07057380',
@@ -4943,6 +4946,7 @@
           type: 'river',
           subtype: 'tailwater',
           usgs: '07076000',
+          generationScheduleUrl: 'https://www.swpa.gov/genSchedule.aspx',
           usgsStations: [
             {
               id: '07076000',
@@ -5063,6 +5067,7 @@
           type: 'river',
           subtype: 'tailwater',
           usgs: '07360050',
+          generationScheduleUrl: 'https://www.swl.usace.army.mil/Missions/Recreation/Lakes/Millwood-Lake/',
           usgsStations: [
             {
               id: '07360050',
@@ -5160,6 +5165,7 @@
           type: 'river',
           subtype: 'tailwater',
           usgs: '07358501',
+          generationScheduleUrl: 'https://www.swl.usace.army.mil/Missions/Recreation/Lakes/Lake-Ouachita/',
           usgsStations: [
             {
               id: '07358501',
@@ -5308,6 +5314,39 @@
           notes: 'No USGS gauge configured during renovation period.',
         },
       };
+
+      // ─── SOURCE RESOLVER ────────────────────────────────────────────
+      function resolveSource(waterKey, metric) {
+        const taxType = TAXONOMY.waterTypeMap[waterKey] || 'all';
+        // Tailwaters with dedicated USACE dam ops data
+        if (taxType === 'tailwater') {
+          const meta = WATER_LEVEL_SOURCES[waterKey];
+          if (meta?.provider?.startsWith('USACE')) return 'USACE';
+          return 'USGS';
+        }
+        if (taxType === 'reservoir' || taxType === 'lake') {
+          return WATER_LEVEL_SOURCES[waterKey]?.provider?.startsWith('USACE') ? 'USACE' : 'USGS';
+        }
+        return 'USGS';
+      }
+
+      function get7DayLevelLabel(waterKey) {
+        const taxType = TAXONOMY.waterTypeMap[waterKey] || 'all';
+        if (taxType === 'reservoir' || taxType === 'lake') return '7-Day Lake Level';
+        if (taxType === 'river') return '7-Day River Level';
+        if (taxType === 'stream') return '7-Day Stream Level';
+        if (taxType === 'tailwater') return '7-Day Tailwater Level';
+        return '7-Day Water Level';
+      }
+
+      function getWaterLevelStatusLabel(waterKey) {
+        const taxType = TAXONOMY.waterTypeMap[waterKey] || 'all';
+        if (taxType === 'reservoir' || taxType === 'lake') return 'Lake Level Status';
+        if (taxType === 'river') return 'River Level Status';
+        if (taxType === 'stream') return 'Stream Level Status';
+        if (taxType === 'tailwater') return 'Tailwater Level Status';
+        return 'Water Level Status';
+      }
 
       function getWaterStations(waterDef) {
         if (!waterDef) return [];
@@ -7119,6 +7158,13 @@
         const sourceProvider = usgs?.levelProvider || sourceMeta.provider;
         const sourceUrl = usgs?.levelSourceUrl || sourceMeta.primaryUrl || null;
         const sourceStatus = usgs?.levelSourceStatus || null;
+        const levelLabel = get7DayLevelLabel(water);
+        const levelStatusLabel = getWaterLevelStatusLabel(water);
+        const sourceBadge = usgs?.levelProvider
+          ? (usgs.levelProvider.startsWith('USACE') ? 'USACE' : 'USGS')
+          : resolveSource(water, 'level');
+        const isTailwater = TAXONOMY.waterTypeMap[water] === 'tailwater';
+        const genScheduleUrl = WATERS[water]?.generationScheduleUrl || null;
         const tempSourceLabel = usgs?.tempSourceLabel || 'No temperature feed';
         const tempIsEstimated = usgs?.tempSource === 'estimated';
         const gageTrend7 = usgs?.gageTrend7 ?? null;
@@ -7282,7 +7328,20 @@
             {/* DATA SOURCE STATUS */}
             <div className="card">
               <div className="card-title">
-                {'\uD83D\uDD17'} Level & Flow Source
+                {'\uD83D\uDD17'} Level & Flow Source{' '}
+                <span
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 700,
+                    padding: '1px 5px',
+                    borderRadius: 3,
+                    background: sourceBadge === 'USACE' ? 'var(--accent)' : '#5c9ed6',
+                    color: '#fff',
+                    marginLeft: 6,
+                  }}
+                >
+                  {sourceBadge}
+                </span>
               </div>
               <div
                 style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.5 }}
@@ -7615,7 +7674,7 @@
             {/* 7-DAY GAGE HEIGHT TREND */}
             <div className="card">
               <div className="card-title">
-                {'\uD83D\uDCCF'} 7-Day Lake Level (Gage Height) Trend
+                {'\uD83D\uDCCF'} {levelLabel} (Gage Height) Trend
               </div>
               {usgs?.gages7?.length > 0 ? (
                 <>
@@ -7668,7 +7727,7 @@
                       style={{ marginTop: 10 }}
                     >
                       <div className="fw-card-title">
-                        {'\uD83E\uDDED'} Lake Level Status: {gageStatus.label}
+                        {'\uD83E\uDDED'} {levelStatusLabel}: {gageStatus.label}
                       </div>
                       <div className="fw-card-body">
                         {Number.isFinite(usgs?.currentPowerPool) ? (
@@ -7701,7 +7760,7 @@
               ) : (
                 <div className="fw-card note">
                   <div className="fw-card-title">
-                    {'\u26A0'} Lake Level Status: Data Unavailable
+                    {'\u26A0'} {levelStatusLabel}: Data Unavailable
                   </div>
                   <div className="fw-card-body">
                     This USGS gauge currently has no gage-height time series for
@@ -7715,7 +7774,7 @@
             {/* 7-DAY FLOW TREND */}
             <div className="card">
               <div className="card-title">
-                {'\uD83D\uDCA7'} 7-Day Flow Trend
+                {'\uD83D\uDCA7'} {isTailwater ? 'Trout Flow — 7-Day Trend (Total Release, cfs)' : '7-Day Flow Trend'}
               </div>
               {usgs?.flows7?.length > 0 ? (
                 <>
@@ -7766,26 +7825,74 @@
                       style={{ marginTop: 10 }}
                     >
                       <div className="fw-card-title">
-                        {'\uD83C\uDF0A'} Flow Meaning: {flowStatus.label}
+                        {'\uD83C\uDF0A'} {isTailwater ? 'Trout Flow' : 'Flow'} Status: {flowStatus.label}
                       </div>
                       <div className="fw-card-body">
-                        Current flow: {usgs.flow.toLocaleString()} cfs. 24hr{' '}
+                        {isTailwater ? 'Trout Flow (Total Release)' : 'Current flow'}:{' '}
+                        {usgs.flow.toLocaleString()} cfs. 24hr{' '}
                         {fmtSigned(usgs.flowTrend24, ' cfs')}, 7day{' '}
                         {fmtSigned(usgs.flowTrend7, ' cfs')}. {flowStatus.note}
                       </div>
+                    </div>
+                  )}
+                  {isTailwater && genScheduleUrl && (
+                    <div
+                      style={{
+                        marginTop: 10,
+                        padding: '6px 10px',
+                        background: 'var(--card-bg)',
+                        border: '1px solid var(--border)',
+                        borderRadius: 6,
+                        fontSize: 12,
+                      }}
+                    >
+                      {'\uD83D\uDCC5'}{' '}
+                      <a
+                        href={genScheduleUrl}
+                        target="_blank"
+                        rel="noopener"
+                        style={{ color: 'var(--accent)', fontWeight: 600 }}
+                      >
+                        Generation Schedule
+                      </a>
+                      <span
+                        style={{
+                          color: 'var(--text3)',
+                          marginLeft: 6,
+                          fontSize: 11,
+                        }}
+                      >
+                        — Operational schedule may change
+                      </span>
                     </div>
                   )}
                 </>
               ) : (
                 <div className="fw-card note">
                   <div className="fw-card-title">
-                    {'\u26A0'} Flow Meaning: Data Unavailable
+                    {'\u26A0'} {isTailwater ? 'Trout Flow' : 'Flow'} Status: Data Unavailable
                   </div>
                   <div className="fw-card-body">
-                    This USGS gauge currently has no flow time series for the
-                    selected period. Try another water body or check the USGS
-                    station page.
+                    {isTailwater
+                      ? 'No flow time series available for this tailwater. Check USACE or try refreshing.'
+                      : 'This USGS gauge currently has no flow time series for the selected period. Try another water body or check the USGS station page.'}
                   </div>
+                  {isTailwater && genScheduleUrl && (
+                    <div style={{ marginTop: 8 }}>
+                      {'\uD83D\uDCC5'}{' '}
+                      <a
+                        href={genScheduleUrl}
+                        target="_blank"
+                        rel="noopener"
+                        style={{ color: 'var(--accent)', fontWeight: 600, fontSize: 12 }}
+                      >
+                        Generation Schedule
+                      </a>
+                      <span style={{ color: 'var(--text3)', marginLeft: 6, fontSize: 11 }}>
+                        — Operational schedule may change
+                      </span>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -9431,13 +9538,43 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                     {'\uD83D\uDD17'} Data Sources
                   </summary>
                   <div className="data-sources-body">
-                    <div>USGS: {getStationIdsLabel(w)}</div>
+                    <div>
+                      <strong>Level/Flow:</strong>{' '}
+                      {usgs?.levelProvider || resolveSource(water, 'level')}
+                      {' '}
+                      <span style={{ color: 'var(--text3)', fontSize: 11 }}>
+                        (Source: {usgs?.levelProvider
+                          ? (usgs.levelProvider.startsWith('USACE') ? 'USACE' : 'USGS')
+                          : resolveSource(water, 'level')})
+                      </span>
+                    </div>
+                    <div>
+                      <strong>USGS stations:</strong> {getStationIdsLabel(w)}
+                    </div>
                     <div>NWS Office: {w.nwsOffice}</div>
-                    {usgs?.levelProvider && (
-                      <div>Level/Flow: {usgs.levelProvider}</div>
+                    {TAXONOMY.waterTypeMap[water] === 'tailwater' && (
+                      <div style={{ color: 'var(--text3)', fontSize: 11, marginTop: 4 }}>
+                        USGS stations listed above are validation context for tailwater flows.
+                        Primary flow source is USACE dam operations data.
+                      </div>
                     )}
                     {usgs?.lastReading && (
                       <div>Last reading: {usgs.lastReading.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' })}</div>
+                    )}
+                    {WATERS[water]?.generationScheduleUrl && (
+                      <div>
+                        <a
+                          href={WATERS[water].generationScheduleUrl}
+                          target="_blank"
+                          rel="noopener"
+                          style={{ color: 'var(--accent)', fontSize: 12 }}
+                        >
+                          Generation Schedule
+                        </a>
+                        <span style={{ color: 'var(--text3)', fontSize: 11, marginLeft: 6 }}>
+                          — Operational schedule may change
+                        </span>
+                      </div>
                     )}
                   </div>
                 </details>
