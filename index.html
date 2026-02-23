@@ -255,8 +255,8 @@
       }
       .tab {
         flex: 1;
-        min-width: 64px;
-        padding: 10px 4px 8px;
+        min-width: 72px;
+        padding: 12px 8px 10px;
         text-align: center;
         cursor: pointer;
         transition: all 0.2s;
@@ -267,12 +267,12 @@
         border-bottom-color: var(--accent);
       }
       .tab-icon {
-        font-size: 16px;
+        font-size: 20px;
         display: block;
         margin-bottom: 2px;
       }
       .tab-label {
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 600;
         color: var(--text3);
         letter-spacing: 0.5px;
@@ -401,11 +401,25 @@
       }
 
       /* ─── CONDITIONS STRIP ─── */
+      .conditions-strip-wrapper {
+        position: relative;
+      }
+      .conditions-strip-wrapper::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 32px;
+        background: linear-gradient(to right, transparent, var(--bg2));
+        pointer-events: none;
+      }
       .conditions-strip {
         display: flex;
         gap: 8px;
         align-items: center;
         padding: 8px 12px;
+        min-height: 52px;
         background: var(--bg2);
         border-bottom: 1px solid var(--bg3);
         overflow-x: auto;
@@ -419,8 +433,9 @@
         gap: 5px;
         background: var(--bg3);
         border-radius: 10px;
-        padding: 4px 10px;
-        font-size: 12px;
+        padding: 6px 10px;
+        min-height: 44px;
+        font-size: 13px;
         font-weight: 600;
         color: var(--text);
         white-space: nowrap;
@@ -443,7 +458,7 @@
         border-color: rgba(0, 188, 212, 0.25);
       }
       .conditions-chip-label {
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 400;
         opacity: 0.7;
         margin-left: 2px;
@@ -1458,7 +1473,7 @@
       /* ─── FEEDBACK WIDGET ─── */
       .fb-fab {
         position: fixed;
-        bottom: 20px;
+        bottom: 80px;
         right: 20px;
         width: 48px;
         height: 48px;
@@ -2274,7 +2289,7 @@
         color: var(--text);
         font-size: 12px;
         font-weight: 600;
-        padding: 8px 10px;
+        padding: 12px 14px;
         border-radius: var(--radius-sm);
         cursor: pointer;
         font-family: inherit;
@@ -2283,7 +2298,7 @@
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238899aa' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: right 10px center;
-        padding-right: 28px;
+        padding-right: 32px;
       }
       .hero-select:focus {
         outline: none;
@@ -2295,9 +2310,9 @@
         background: var(--accent);
         border: none;
         color: #000;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: 800;
-        padding: 13px;
+        padding: 16px;
         border-radius: var(--radius-sm);
         cursor: pointer;
         font-family: inherit;
@@ -2483,6 +2498,33 @@
         }
         .lake-hero-name {
           font-size: 28px;
+        }
+      }
+
+      /* ─── MOBILE ENHANCEMENTS (≤480px) ─── */
+      @media (max-width: 480px) {
+        .pattern-cols {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+        .lure-card {
+          flex-direction: column;
+          gap: 10px;
+        }
+        .lure-card-actions {
+          flex-direction: row;
+          width: 100%;
+          margin-left: 0;
+        }
+        .lure-card-actions .tackle-link {
+          flex: 1;
+          text-align: center;
+          justify-content: center;
+          padding: 10px;
+          min-height: 44px;
+        }
+        .header-meta-stations {
+          display: none;
         }
       }
     </style>
@@ -7605,8 +7647,10 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
               {timestamp && (
                 <div className="header-meta">
                   Data: {timestamp}
-                  <br />
-                  {getStationIdsLabel(w)} {'\u00B7'} NWS {w.nwsOffice}
+                  <span className="header-meta-stations">
+                    <br />
+                    {getStationIdsLabel(w)} {'\u00B7'} NWS {w.nwsOffice}
+                  </span>
                 </div>
               )}
               {isStale && hoursStale && (
@@ -7699,26 +7743,28 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
                       ? ` ${t24 > 0 ? '\u25B2' : t24 < 0 ? '\u25BC' : '\u2192'}${Math.abs(t24)}\u00B0/24hr`
                       : '';
                     return (
-                      <div className="conditions-strip">
-                        <div className={`conditions-chip ${chipClass}`}>
-                          <span role="img" aria-label="thermometer">{'\uD83C\uDF21\uFE0F'}</span> {temp.toFixed(1)}{'\u00B0'}F
-                          {trendStr && <span className="conditions-chip-label">{trendStr}</span>}
-                        </div>
-                        <div className="conditions-chip">
-                          <span role="img" aria-label={p.name}>{p.icon}</span> {p.name}
-                        </div>
-                        {Number.isFinite(usgs?.gage) && (
-                          <div className="conditions-chip">
-                            <span role="img" aria-label="ruler">{'\uD83D\uDCCF'}</span> {usgs.gage.toFixed(2)} ft
-                            <span className="conditions-chip-label">gage ht</span>
+                      <div className="conditions-strip-wrapper">
+                        <div className="conditions-strip">
+                          <div className={`conditions-chip ${chipClass}`}>
+                            <span role="img" aria-label="thermometer">{'\uD83C\uDF21\uFE0F'}</span> {temp.toFixed(1)}{'\u00B0'}F
+                            {trendStr && <span className="conditions-chip-label">{trendStr}</span>}
                           </div>
-                        )}
-                        {Number.isFinite(usgs?.tempTrend7) && (
                           <div className="conditions-chip">
-                            <span role="img" aria-label={usgs.tempTrend7 > 0 ? 'fire' : usgs.tempTrend7 < 0 ? 'snowflake' : 'right arrow'}>{usgs.tempTrend7 > 0 ? '\uD83D\uDD25' : usgs.tempTrend7 < 0 ? '\u2744\uFE0F' : '\u2192'}</span> {usgs.tempTrend7 > 0 ? '+' : ''}{usgs.tempTrend7}{'\u00B0'}/7d
-                            <span className="conditions-chip-label">trend</span>
+                            <span role="img" aria-label={p.name}>{p.icon}</span> {p.name}
                           </div>
-                        )}
+                          {Number.isFinite(usgs?.gage) && (
+                            <div className="conditions-chip">
+                              <span role="img" aria-label="ruler">{'\uD83D\uDCCF'}</span> {usgs.gage.toFixed(2)} ft
+                              <span className="conditions-chip-label">gage ht</span>
+                            </div>
+                          )}
+                          {Number.isFinite(usgs?.tempTrend7) && (
+                            <div className="conditions-chip">
+                              <span role="img" aria-label={usgs.tempTrend7 > 0 ? 'fire' : usgs.tempTrend7 < 0 ? 'snowflake' : 'right arrow'}>{usgs.tempTrend7 > 0 ? '\uD83D\uDD25' : usgs.tempTrend7 < 0 ? '\u2744\uFE0F' : '\u2192'}</span> {usgs.tempTrend7 > 0 ? '+' : ''}{usgs.tempTrend7}{'\u00B0'}/7d
+                              <span className="conditions-chip-label">trend</span>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     );
                   })()}
