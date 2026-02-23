@@ -1,0 +1,151 @@
+{
+  "version": "1.0",
+  "description": "River and stream segments for Arkansas water bodies. Used by the UI to localize fishing conditions and filter USGS station data. Lake and reservoir bodies do not require segments.",
+  "segments": [
+    {
+      "id": "seg_white_river_upper",
+      "waterbody_id": "wb_white_river",
+      "name": "Upper White River",
+      "start_mile_marker": 0,
+      "end_mile_marker": 55,
+      "nearest_access": "Calico Rock Access",
+      "primary_station_ids": [
+        "07061000"
+      ]
+    },
+    {
+      "id": "seg_white_river_middle",
+      "waterbody_id": "wb_white_river",
+      "name": "Middle White River",
+      "start_mile_marker": 55,
+      "end_mile_marker": 90,
+      "nearest_access": "Batesville City Ramp",
+      "primary_station_ids": [
+        "07061000",
+        "07074500"
+      ]
+    },
+    {
+      "id": "seg_white_river_lower",
+      "waterbody_id": "wb_white_river",
+      "name": "Lower White River",
+      "start_mile_marker": 90,
+      "end_mile_marker": 130,
+      "nearest_access": "Newport White River Park",
+      "primary_station_ids": [
+        "07074500",
+        "07074850"
+      ]
+    },
+    {
+      "id": "seg_buffalo_upper",
+      "waterbody_id": "wb_buffalo_national_river",
+      "name": "Upper Buffalo",
+      "start_mile_marker": 0,
+      "end_mile_marker": 35,
+      "nearest_access": "Ponca / Boxley Valley",
+      "primary_station_ids": [
+        "07055660"
+      ]
+    },
+    {
+      "id": "seg_buffalo_middle",
+      "waterbody_id": "wb_buffalo_national_river",
+      "name": "Middle Buffalo",
+      "start_mile_marker": 35,
+      "end_mile_marker": 95,
+      "nearest_access": "Gilbert Access",
+      "primary_station_ids": [
+        "07056000"
+      ]
+    },
+    {
+      "id": "seg_buffalo_lower",
+      "waterbody_id": "wb_buffalo_national_river",
+      "name": "Lower Buffalo",
+      "start_mile_marker": 95,
+      "end_mile_marker": 135,
+      "nearest_access": "Rush Landing",
+      "primary_station_ids": [
+        "07056700"
+      ]
+    },
+    {
+      "id": "seg_beaver_tailwater_upper",
+      "waterbody_id": "wb_white_river_beaver_tailwater",
+      "name": "Below Beaver Dam",
+      "start_mile_marker": 0,
+      "end_mile_marker": 8,
+      "nearest_access": "Below Beaver Dam Recreation Area",
+      "primary_station_ids": [
+        "07049691"
+      ]
+    },
+    {
+      "id": "seg_beaver_tailwater_lower",
+      "waterbody_id": "wb_white_river_beaver_tailwater",
+      "name": "Lower Beaver Tailwater (near Busch)",
+      "start_mile_marker": 8,
+      "end_mile_marker": 15,
+      "nearest_access": "Houseman Access",
+      "primary_station_ids": [
+        "07049698"
+      ]
+    },
+    {
+      "id": "seg_bull_shoals_tailwater_upper",
+      "waterbody_id": "wb_white_river_bull_shoals_tailwater",
+      "name": "Upper (Below Bull Shoals Dam)",
+      "start_mile_marker": 0,
+      "end_mile_marker": 20,
+      "nearest_access": "Bull Shoals Dam / Cotter Bridge",
+      "primary_station_ids": [
+        "07054501"
+      ]
+    },
+    {
+      "id": "seg_bull_shoals_tailwater_middle",
+      "waterbody_id": "wb_white_river_bull_shoals_tailwater",
+      "name": "Middle (Cotter to Buffalo Point)",
+      "start_mile_marker": 20,
+      "end_mile_marker": 60,
+      "nearest_access": "Buffalo City / Rim Shoals",
+      "primary_station_ids": [
+        "07054527"
+      ]
+    },
+    {
+      "id": "seg_bull_shoals_tailwater_lower",
+      "waterbody_id": "wb_white_river_bull_shoals_tailwater",
+      "name": "Lower (Buffalo Point to Norfork)",
+      "start_mile_marker": 60,
+      "end_mile_marker": 102,
+      "nearest_access": "Norfork Access",
+      "primary_station_ids": [
+        "07057370"
+      ]
+    },
+    {
+      "id": "seg_greers_ferry_tailwater_upper",
+      "waterbody_id": "wb_little_red_river_greers_ferry_tailwater",
+      "name": "Upper (Dam to Heber Springs)",
+      "start_mile_marker": 0,
+      "end_mile_marker": 15,
+      "nearest_access": "Below Greers Ferry Dam / Swinging Bridge",
+      "primary_station_ids": [
+        "07076000"
+      ]
+    },
+    {
+      "id": "seg_greers_ferry_tailwater_lower",
+      "waterbody_id": "wb_little_red_river_greers_ferry_tailwater",
+      "name": "Lower (Heber Springs to Searcy)",
+      "start_mile_marker": 15,
+      "end_mile_marker": 32,
+      "nearest_access": "Shiloh / John F Kennedy Access",
+      "primary_station_ids": [
+        "07076000"
+      ]
+    }
+  ]
+}

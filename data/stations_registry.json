@@ -193,6 +193,22 @@
       "proximity": "DeGray Lake vicinity (legacy)",
       "type": "gage",
       "tailwater": false
+    },
+    {
+      "station_id": "07360050",
+      "label": "Little Missouri River below Narrows Dam",
+      "river": "Little Missouri River",
+      "proximity": "immediately below Narrows Dam tailwater",
+      "type": "gage",
+      "tailwater": true
+    },
+    {
+      "station_id": "07057370",
+      "label": "White River near Norfork",
+      "river": "White River",
+      "proximity": "near Norfork, toward North Fork confluence",
+      "type": "gage",
+      "tailwater": true
     }
   ]
 }
