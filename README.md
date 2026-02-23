@@ -22,7 +22,7 @@ A lightweight, mobile-first **fishing intelligence app** for Arkansas waters. Bu
 
 ## Features
 
-- **Visual Dashboard Overview**: Compare all 9 Arkansas waters at a glance with temperature heat maps, spawn phase indicators, and 7-day trend sparklines
+- **Visual Dashboard Overview**: Compare all 23 Arkansas waters at a glance with temperature heat maps, spawn phase indicators, and 7-day trend sparklines
 - **🎒 Tackle Box**: Condition-ranked top-5 lures per species and phase, scored by water clarity, flow rate, and temperature. Each lure includes a How-To video link and direct purchase option. Sourced from AGFC weekly reports.
 - **Phase-Based Fishing Intelligence**: Species-specific, temperature-driven fishing phases (6 per species) with science-backed recommendations
 - **Live Water Data**: Real-time temperature, flow rate, and gage height from USGS Water Services
