@@ -6522,43 +6522,15 @@
         );
       }
 
-      function TechniquesTab({ temp, water, species }) {
-        const phase = getPhase(temp, species);
+      function TechniquesTab({ temp, water, species, segment }) {
         const calendarData = species === 'cr' ? CR_CALENDAR : WB_CALENDAR;
         const w = WATERS[water];
         const speciesName = species === 'cr' ? 'Crappie' : 'White Bass';
 
-        const whereNow =
-          (species === 'cr' ? CR_WHERE : WB_WHERE)[phase.name] ||
-          'Check electronics and target structure.';
-        const whatThrow =
-          (species === 'cr' ? CR_WHAT : WB_WHAT)[phase.name] ||
-          'Match the hatch and adjust retrieve speed.';
-
         return (
           <>
-            {/* CURRENT PATTERN */}
-            <div className="pattern-card">
-              <div className="here-badge">YOU ARE HERE</div>
-              <div className="pattern-name">
-                {'\uD83C\uDF21\uFE0F'} Current Pattern: {phase.name}
-              </div>
-              <div className="pattern-desc">{phase.short}</div>
-              <div className="pattern-cols">
-                <div className="pattern-col">
-                  <div className="pattern-col-title">
-                    {'\uD83D\uDCCD'} Where to Fish Now
-                  </div>
-                  <p>{whereNow}</p>
-                </div>
-                <div className="pattern-col">
-                  <div className="pattern-col-title">
-                    {'\uD83C\uDFA3'} What to Throw
-                  </div>
-                  <p>{whatThrow}</p>
-                </div>
-              </div>
-            </div>
+            {/* TODAY'S PATTERN + 3-LURE ARSENAL */}
+            <IntelTab temp={temp} water={water} species={species} segment={segment} />
 
             {/* ANNUAL CALENDAR */}
             <div className="card">
@@ -6592,10 +6564,10 @@
               </div>
             </div>
 
-            {/* PRO TIPS */}
+            {/* PRO INTEL + LOCAL TIPS */}
             <ProTipsList
               tips={species === 'cr' && w.crTips ? w.crTips : w.tips}
-              title={`\uD83D\uDCA1 ${w.name} ${speciesName} Pro Tips`}
+              title={'\uD83D\uDCA1 Pro Intel + Local Tips'}
             />
           </>
         );
@@ -7699,7 +7671,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
                   segment={segment}
                   setSegment={(s) => { setSegment(s); }}
                   setWater={(key) => { setWater(key); setRiverSection(null); }}
-                  onPatternCta={() => setTab('signals')}
+                  onPatternCta={() => setTab('techniques')}
                 />
                 <div className="tabs">
                   {tabs.map((t) => (
@@ -7769,61 +7741,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
                     );
                   })()}
 
-                  {/* ── TWO-COLUMN LANDING GRID ── */}
-                  <div className="landing-grid">
-                    <div className="landing-primary">
-                      {/* Today's Pattern heading with data timestamp */}
-                      <div className="todays-pattern-heading">
-                        <span className="todays-pattern-title">
-                          {'\uD83C\uDFA3'} Today&apos;s Pattern
-                        </span>
-                        {usgs?.lastReading && (
-                          <span className="todays-pattern-updated">
-                            Updated{' '}
-                            {usgs.lastReading.toLocaleTimeString('en-US', {
-                              hour: 'numeric',
-                              minute: '2-digit',
-                            })}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* 3-Lure Arsenal + Current Pattern (from IntelTab) */}
-                      {!loading && (
-                        <IntelTab
-                          temp={temp}
-                          water={water}
-                          species={species}
-                          segment={segment}
-                        />
-                      )}
-
-                      {/* Pro Intel + Local Tips accordion */}
-                      {!loading && (
-                        <ProTipsList
-                          tips={
-                            species === 'cr' && WATERS[water].crTips
-                              ? WATERS[water].crTips
-                              : WATERS[water].tips
-                          }
-                          title={'\uD83D\uDCA1 Pro Intel + Local Tips'}
-                          defaultOpen={false}
-                        />
-                      )}
-                    </div>
-
-                  </div>
-
-                  {/* ── DIVIDER before water signals data ── */}
-                  <div
-                    style={{
-                      height: 1,
-                      background: 'var(--bg3)',
-                      margin: '4px 0 8px',
-                    }}
-                  />
-
-                  {/* ── FULL WATER SIGNALS (below fold) ── */}
+                  {/* ── FULL WATER SIGNALS ── */}
                   <DashboardTab
                     usgs={usgs}
                     forecast={forecast}
@@ -7838,7 +7756,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, o
                 <ForecastTab forecast={forecast} water={water} />
               )}
               {tab === 'techniques' && (
-                <TechniquesTab temp={temp} water={water} species={species} />
+                <TechniquesTab temp={temp} water={water} species={species} segment={segment} />
               )}
               {tab === 'access' && <AccessTab water={water} />}
 
