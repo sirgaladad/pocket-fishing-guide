@@ -5,14 +5,16 @@ on:
     paths:
       - 'data/**'
       - 'scripts/validate-*.js'
-      - 'scripts/validate-*.js'
       - 'scripts/validate_stations_canonical.js'
+      - 'scripts/test-moon-phase.js'
+      - 'index.html'
   pull_request:
     paths:
       - 'data/**'
       - 'scripts/validate-*.js'
       - 'scripts/validate_stations_canonical.js'
-      - 'scripts/validate_stations_canonical.js'
+      - 'scripts/test-moon-phase.js'
+      - 'index.html'
 
 jobs:
   validate:
@@ -30,3 +32,5 @@ jobs:
         run: node scripts/validate_stations_canonical.js
       - name: Validate species-lure mapping
         run: node scripts/validate-species-lure-mapping.js
+      - name: Test moon phase calculation
+        run: node scripts/test-moon-phase.js
