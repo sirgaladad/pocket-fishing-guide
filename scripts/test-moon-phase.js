@@ -191,7 +191,7 @@ console.log('\nLast Quarter – Feb 8, 2026 12:01 UTC (USNO exact)');
 {
   const p = _getMoonPhaseFromEvents(new Date(Date.UTC(2026, 1, 8, 12, 1)), USNO_EVENTS_2026);
   assert('name is Last Quarter at USNO time', p.name, 'Last Quarter');
-    assertRange('illumination 45–65% at Last Quarter (cosine formula offset is normal)', p.illumination, 45, 65);
+  assertRange('illumination 45–65% at Last Quarter (cosine formula offset is normal)', p.illumination, 45, 65);
 }
 
 // ─── Last Quarter – +7.5 days after old reference (regression guard) ─────────
