@@ -2626,6 +2626,173 @@
         from { transform: translateY(100%); }
         to   { transform: translateY(0); }
       }
+      /* ─── MOON PHASE MODAL ─── */
+      .moon-trigger {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--bg3);
+        border: 1px solid var(--bg4);
+        border-radius: var(--radius);
+        padding: 10px 14px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        width: 100%;
+        color: var(--text);
+        text-align: left;
+      }
+      .moon-trigger-left { flex: 1; min-width: 0; }
+      .moon-trigger-phase { font-size: 15px; font-weight: 700; }
+      .moon-trigger-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
+      .moon-trigger-cta {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--accent);
+        white-space: nowrap;
+        margin-left: 12px;
+        flex-shrink: 0;
+      }
+      .moon-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        z-index: 200;
+        display: flex;
+        align-items: flex-end;
+      }
+      .moon-modal-sheet {
+        background: var(--bg2);
+        border-radius: 16px 16px 0 0;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 20px 16px 32px;
+        animation: slideUp 0.28s ease;
+      }
+      .moon-modal-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .moon-modal-tab {
+        flex: 1;
+        padding: 8px;
+        border-radius: var(--radius-sm);
+        border: 2px solid transparent;
+        background: var(--bg3);
+        color: var(--text2);
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        min-height: 44px;
+      }
+      .moon-modal-tab.active {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .moon-lunar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        margin-bottom: 16px;
+      }
+      .moon-day-cell {
+        background: var(--bg3);
+        border-radius: var(--radius-sm);
+        padding: 5px 2px;
+        text-align: center;
+        border: 1px solid transparent;
+        font-size: 10px;
+      }
+      .moon-day-cell.peak { border-color: #ffd54f; }
+      .moon-day-cell-emoji { font-size: 16px; line-height: 1.3; }
+      .moon-day-cell-label { color: var(--text3); margin-top: 1px; font-size: 9px; }
+      .moon-day-cell-pct { color: var(--text2); font-weight: 600; font-size: 9px; }
+      .moon-peak-callout {
+        background: rgba(255,213,79,0.12);
+        border: 1px solid #ffd54f;
+        border-radius: var(--radius-sm);
+        padding: 8px 12px;
+        font-size: 12px;
+        margin-bottom: 14px;
+        color: var(--text);
+      }
+      .moon-impact-badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 9px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+      }
+      .moon-impact-HIGH { background: #f44336; color: #fff; }
+      .moon-impact-MED-HIGH { background: #ff9800; color: #fff; }
+      .moon-impact-MEDIUM { background: #2196f3; color: #fff; }
+      .moon-impact-LOW-MED { background: var(--bg4); color: var(--text2); }
+      .moon-impact-LOW { background: var(--bg4); color: var(--text3); }
+      .moon-best-phases {
+        font-size: 11px;
+        color: var(--text2);
+        margin-bottom: 10px;
+      }
+      .moon-strategy-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .moon-strategy-card {
+        background: var(--bg3);
+        border-radius: var(--radius-sm);
+        padding: 10px;
+        font-size: 12px;
+        color: var(--text2);
+        line-height: 1.45;
+      }
+      .moon-strategy-card-title { font-weight: 700; margin-bottom: 5px; font-size: 11px; color: var(--text); }
+      .moon-source-footer { font-size: 10px; color: var(--text3); margin-top: 12px; border-top: 1px solid var(--bg4); padding-top: 8px; }
+      .moon-tailwater-warn {
+        background: rgba(255,152,0,0.12);
+        border: 1px solid var(--orange);
+        border-radius: var(--radius-sm);
+        padding: 8px 12px;
+        font-size: 12px;
+        color: var(--orange);
+        margin-top: 10px;
+      }
+      .moon-no-data { color: var(--text3); font-size: 13px; font-style: italic; padding: 12px 0; }
+      .moon-filter-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+      .moon-pill {
+        padding: 5px 11px;
+        border-radius: 14px;
+        font-size: 11px;
+        font-weight: 700;
+        border: 1px solid var(--bg4);
+        background: var(--bg3);
+        color: var(--text2);
+        cursor: pointer;
+        min-height: 32px;
+      }
+      .moon-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+      .moon-species-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 10px;
+        background: var(--bg3);
+        border-radius: var(--radius-sm);
+        margin-bottom: 4px;
+        border: 1px solid transparent;
+        min-height: 44px;
+      }
+      .moon-species-row.selected { border-color: var(--accent); }
+      .moon-species-name { font-size: 13px; font-weight: 600; }
+      .moon-species-selected-label { font-size: 10px; color: var(--accent); margin-left: 6px; }
     </style>
   </head>
   <body>
@@ -6281,6 +6448,72 @@
         return '\uD83C\uDF24\uFE0F';
       }
 
+      // ─── MOON PHASE UTILITY ──────────────────────────────────────────────────
+      // Reference full moon: Feb 12, 2026 (validated against timeanddate.com).
+      // getMoonPhase(new Date('2026-02-12')) → Full Moon 🌕
+      // getMoonPhase(new Date('2026-03-14')) → Full Moon 🌕
+      const MOON_FULL_REF_MS = Date.UTC(2026, 1, 12); // Feb 12, 2026 UTC
+      const LUNAR_CYCLE = 29.53059;
+
+      function getMoonPhase(date) {
+        const MS_PER_DAY = 86400000;
+        const rawAge = (date.getTime() - MOON_FULL_REF_MS) / MS_PER_DAY;
+        const age = ((rawAge % LUNAR_CYCLE) + LUNAR_CYCLE) % LUNAR_CYCLE;
+        const illum = Math.round((1 + Math.cos(2 * Math.PI * age / LUNAR_CYCLE)) / 2 * 100);
+        var emoji, name;
+        if (age < 1.85 || age >= 27.68)      { emoji = '\uD83C\uDF15'; name = 'Full Moon'; }
+        else if (age < 7.38)                  { emoji = '\uD83C\uDF16'; name = 'Waning Gibbous'; }
+        else if (age < 9.22)                  { emoji = '\uD83C\uDF17'; name = 'Last Quarter'; }
+        else if (age < 14.77)                 { emoji = '\uD83C\uDF18'; name = 'Waning Crescent'; }
+        else if (age < 16.61)                 { emoji = '\uD83C\uDF11'; name = 'New Moon'; }
+        else if (age < 22.15)                 { emoji = '\uD83C\uDF12'; name = 'Waxing Crescent'; }
+        else if (age < 24.0)                  { emoji = '\uD83C\uDF13'; name = 'First Quarter'; }
+        else                                  { emoji = '\uD83C\uDF14'; name = 'Waxing Gibbous'; }
+        var daysToFull = age < 0.5 ? 0 : Math.round((LUNAR_CYCLE - age) * 10) / 10;
+        var newPhaseAge = LUNAR_CYCLE / 2;
+        var daysToNew = age <= newPhaseAge
+          ? Math.round((newPhaseAge - age) * 10) / 10
+          : Math.round((LUNAR_CYCLE - age + newPhaseAge) * 10) / 10;
+        return { emoji: emoji, name: name, illumination: illum, daysToFull: daysToFull, daysToNew: daysToNew, age: Math.round(age * 10) / 10 };
+      }
+
+      // ─── MOON SPECIES MATRIX ─────────────────────────────────────────────────
+      // Lunar impact ratings for all species. Loaded from data/moon-species-matrix.json
+      // but also defined inline here for zero-latency access. Impact order (high→low):
+      // HIGH > MED-HIGH > MEDIUM > LOW-MED > LOW
+      const MOON_IMPACT_ORDER = { 'HIGH': 0, 'MED-HIGH': 1, 'MEDIUM': 2, 'LOW-MED': 3, 'LOW': 4 };
+
+      const MOON_SPECIES_MATRIX = {
+        wb:        { impact: 'HIGH',     bestPhases: ['Full Moon','New Moon'],  dayStrategy: 'Target baitfish schools in open water. Full Moon concentrates shad in coves \u2014 follow sonar marks toward shallow flats.', nightStrategy: 'Aggressive topwater bite under Full Moon. Cast around dock lights and bright shoreline areas. White or chrome lures.', source: "Fish'n Canada 350,000-record study; AGFC White Bass management guide" },
+        walleye:   { impact: 'HIGH',     bestPhases: ['Full Moon','New Moon'],  dayStrategy: 'Hunt deeper structure (10\u201320 ft) and channel edges during daylight. Tapetum lucidum eye gives dominant advantage after dark.', nightStrategy: 'Peak feeding under Full Moon. Slow jigging near bottom, or trolling cranks along main lake points and rock piles.', source: "Fish'n Canada 40-year catch record study (350,000 records confirm Full Moon correlation)" },
+        cr:        { impact: 'MED-HIGH', bestPhases: ['Full Moon','New Moon'],  dayStrategy: 'Vertical jigging near brush piles and submerged timber. Pre/post-spawn bedding activity concentrated around Full Moon windows in spring.', nightStrategy: 'Suspend small jigs under dock lights. Full Moon triggers aggressive night bites near structure.', source: 'AGFC Crappie management; seasonal solunar correlation studies' },
+        blkcrappie:{ impact: 'MED-HIGH', bestPhases: ['Full Moon','New Moon'],  dayStrategy: 'Clearer water preference \u2014 target submerged grass edges and brush in 6\u201312 ft. Full Moon concentrates spawning in spring.', nightStrategy: 'Night biting under lights near Full Moon. Favors slightly deeper structure than White Crappie after dark.', source: 'AGFC Crappie management; species-specific solunar studies' },
+        whtcrappie:{ impact: 'MED-HIGH', bestPhases: ['Full Moon','New Moon'],  dayStrategy: 'Tolerates turbidity \u2014 target stained-water brush piles and channel edges. Full Moon spawn timing applies in spring.', nightStrategy: 'Light-attracted baitfish draws crappie under Full Moon near dock and bridge lights.', source: 'AGFC Crappie management; solunar correlation studies' },
+        striper:   { impact: 'MED-HIGH', bestPhases: ['Full Moon'],             dayStrategy: 'Follow shad schools on main lake humps and channel edges. Electronics key \u2014 mark bait, fish directly below.', nightStrategy: 'Surface-feeding blitzes on shad under Full Moon. White swimbaits or topwater poppers over open water.', tailwaterNote: 'Cannot reproduce in Arkansas \u2014 AGFC-stocked. Lunar influence is feeding-only, not spawn-driven.', source: 'AGFC Striped Bass stocking program; feeding behavior correlation studies' },
+        hybrid:    { impact: 'MED-HIGH', bestPhases: ['Full Moon'],             dayStrategy: 'Open-water shad schools; mid-column presentations on main lake points and river channels.', nightStrategy: 'Aggressive surface feeding under Full Moon near shad schools. Topwater or white swimbaits effective.', tailwaterNote: 'Cannot reproduce naturally \u2014 AGFC-stocked. Feeding-only lunar correlation.', source: 'AGFC Hybrid Striper stocking program; Striped Bass feeding analogue studies' },
+        bluegill:  { impact: 'MED-HIGH', bestPhases: ['Full Moon'],             dayStrategy: 'Shallow bedding areas in spring. Full Moon concentrates spawning activity May\u2013July. Target gravel flats in 1\u20134 ft.', nightStrategy: 'Less aggressive after dark; focus on pre-dawn and dusk windows within 3 days of Full Moon.', source: "AGFC Randy Zellers: 'focus on the days before and after the Full Moon' for bream bedding \u2014 Arkansas.com" },
+        redear:    { impact: 'MED-HIGH', bestPhases: ['Full Moon'],             dayStrategy: 'Beds near mussel and snail habitat in sandy-bottomed coves. Full Moon triggers spawning beds through summer months.', nightStrategy: 'Not a strong night feeder. Prime windows are early morning within 2 days of Full Moon.', source: 'AGFC Redear Sunfish management; Full Moon bream bedding correlation (Arkansas.com)' },
+        flathead:  { impact: 'MED-HIGH', bestPhases: ['Full Moon','New Moon'],  dayStrategy: 'Ambush spots near woody structure and undercut banks. Activity extends through dusk \u2014 Full Moon stretches feeding windows.', nightStrategy: 'Most active nocturnal predator. Full Moon periods produce consistent trophy-class catches on live bait.', source: 'Solunar theory (Knight 1936); AGFC Flathead Catfish management' },
+        sauger:    { impact: 'MED-HIGH', bestPhases: ['Full Moon','New Moon'],  dayStrategy: 'Deep river channel structure and current breaks in daylight. Tapetum lucidum eye similar to Walleye \u2014 thrives after dark.', nightStrategy: 'Active night feeder. Full Moon amplifies feeding windows along main river channels and below dams.', source: "AGFC Sauger management; walleye/sauger shared photoreceptor biology" },
+        saugeye:   { impact: 'MED-HIGH', bestPhases: ['Full Moon','New Moon'],  dayStrategy: 'Structure-oriented in daylight \u2014 points, ledges, rocky transitions. Hybrid of walleye/sauger light-sensitive behavior.', nightStrategy: 'Full Moon feeding windows similar to walleye parent. Jig or live minnow along main lake structure.', source: 'AGFC Saugeye stocking program; hybrid walleye/sauger behavior studies' },
+        lmb:       { impact: 'MEDIUM',   bestPhases: ['Full Moon'],             dayStrategy: 'Cover-oriented (laydowns, docks, vegetation). Moderate lunar influence; spawn timing and temperature outweigh lunar cycles.', nightStrategy: 'Some topwater activity near Full Moon. Black or dark lures along weed edges and dock perimeters.', source: 'Lukas & Sass 2011 \u2014 telemetry study showing limited but present lunar correlation' },
+        smb:       { impact: 'MEDIUM',   bestPhases: ['Full Moon'],             dayStrategy: 'Current seams in rivers; rocky ledges and boulders in reservoirs. Moderate lunar sensitivity.', nightStrategy: 'Some night feeding near Full Moon along rocky structure. Tube baits and crayfish imitators.', source: 'Lukas & Sass 2011 framework; AGFC Smallmouth Bass management' },
+        spb:       { impact: 'MEDIUM',   bestPhases: ['Full Moon'],             dayStrategy: 'Rocky points, ledges, and mid-depth cover. Behaves similarly to Smallmouth with moderate lunar sensitivity.', nightStrategy: 'Moderate night activity near Full Moon. Finesse presentations along deep structure.', source: 'AGFC Spotted Bass management; bass lunar correlation studies' },
+        kyb:       { impact: 'MEDIUM',   bestPhases: ['Full Moon'],             dayStrategy: 'Submerged timber and rocky main-lake structure. Mid-range lunar sensitivity shared with other black bass.', nightStrategy: 'Limited night feeding; some activity during strong Full Moon near deep structure.', source: 'AGFC Kentucky Bass management; Lukas & Sass 2011 framework' },
+        greensf:   { impact: 'MEDIUM',   bestPhases: ['Full Moon'],             dayStrategy: 'Shallow structure and bank cover. Moderate lunar correlation similar to other sunfish during spring spawn.', nightStrategy: 'Minimal night activity; focus on dawn/dusk windows near Full Moon during spawning season.', source: 'Solunar theory framework; AGFC sunfish management' },
+        warmouth:  { impact: 'MEDIUM',   bestPhases: ['Full Moon'],             dayStrategy: 'Heavy cover \u2014 woody debris, stumps, and aquatic vegetation. Moderate response to lunar cycles in spring.', nightStrategy: 'Some activity near Full Moon; better at dawn and dusk than true night.', source: 'Solunar theory framework; AGFC sunfish management' },
+        chancat:   { impact: 'MEDIUM',   bestPhases: ['Full Moon','New Moon'],  dayStrategy: 'Active throughout the day with moderate lunar influence on peak feeding windows. Channel breaks and deep holes.', nightStrategy: 'Night fishing effective year-round; modest Full Moon enhancement. Stinkbaits and cut bait.', source: 'Solunar theory framework; AGFC Channel Catfish management' },
+        bluecat:   { impact: 'MEDIUM',   bestPhases: ['Full Moon','New Moon'],  dayStrategy: 'Main channel structure, ledges, and dam tailraces. Moderate lunar sensitivity \u2014 bait selection matters more.', nightStrategy: 'Good night feeder year-round; lunar impact is secondary to proper baiting and structure location.', source: 'Solunar theory framework; AGFC Blue Catfish management' },
+        browntrout:{ impact: 'LOW-MED',  bestPhases: ['Full Moon'],             dayStrategy: 'Generation schedule dominates in tailwaters. Feed on invertebrate hatches (mayflies, midges) during low-generation windows.', nightStrategy: 'Large Brown Trout are nocturnal hunters; slight Full Moon advantage. Streamers after dark on low-generation nights.', tailwaterNote: 'Generation schedule overrides lunar influence in tailwaters. Check SWPA/USACE release schedule first.', source: 'Quigley et al. (peer-reviewed: solunar tables fail to predict CPUE in tailwater trout); AGFC Brown Trout management' },
+        paddlefish: { impact: 'LOW-MED', bestPhases: ['Full Moon'],             dayStrategy: "Filter-feeders targeting zooplankton; some plankton migration is lunar-correlated. Snag fishing in deep, slow river bends.", nightStrategy: 'Minimal night-specific advantage. Snag fishing depends on fish congregation, not active feeding.', source: 'AGFC Paddlefish management; plankton tidal/lunar migration studies' },
+        lngar:     { impact: 'LOW-MED',  bestPhases: ['Full Moon'],             dayStrategy: 'Ambush predators near shallow bays and slow backwaters. Slight spawning lunar correlation in May\u2013June.', nightStrategy: 'Some activity in warm months near Full Moon. Rope lures for gar are daytime-focused.', source: 'AGFC Longnose Gar management; gar spawning biology studies' },
+        alligar:   { impact: 'LOW-MED',  bestPhases: ['Full Moon'],             dayStrategy: 'Apex ambush predator in slow, warm backwaters. Spring spawn shows some lunar correlation. Target large structure.', nightStrategy: 'Occasional nocturnal hunting but not strongly lunar-driven. Primary feeding is opportunistic.', source: 'AGFC Alligator Gar management; gar spawning biology' },
+        bowfin:    { impact: 'LOW-MED',  bestPhases: ['Full Moon'],             dayStrategy: 'Spring spawn shows some lunar correlation; guards nests aggressively. Heavy cover \u2014 vegetation and woody debris.', nightStrategy: 'Can be active at night but not strongly lunar-dependent. Aggressive on artificial lures near spawning areas.', source: 'AGFC Bowfin management; primitive fish spawn biology' },
+        rainbow:   { impact: 'LOW',      bestPhases: ['Full Moon'],             dayStrategy: 'Generation schedule dominates in tailwaters. Focus on post-generation feeding windows when flows stabilize.', nightStrategy: 'Minimal lunar advantage. Tailwater flows and temperature determine feeding activity \u2014 check generation schedule.', tailwaterNote: 'Generation schedule overrides lunar influence. Quigley et al. confirmed solunar tables fail to predict CPUE in tailwater trout fisheries.', source: 'Quigley et al. peer-reviewed study; AGFC Rainbow Trout management' },
+        cutthroat: { impact: 'LOW',      bestPhases: ['Full Moon'],             dayStrategy: 'Similar to Rainbow in tailwaters. Flow-driven activity dominates over lunar cycles. Dry flies during hatches.', nightStrategy: 'Minimal lunar-driven night advantage. Generation schedule is primary predictor of feeding activity.', tailwaterNote: 'Generation schedule overrides lunar influence in Arkansas tailwaters.', source: 'Quigley et al. peer-reviewed study; AGFC Cutthroat Trout management' },
+        brook:     { impact: 'LOW',      bestPhases: ['Full Moon'],             dayStrategy: 'Cold-water specialist in spring creeks and tailwaters. Feeding tied to generation and temperature more than lunar phase.', nightStrategy: 'Minimal lunar influence. Focus on generation release windows and temperature stability (below 65\u00B0F).', tailwaterNote: 'Generation schedule overrides lunar influence in Arkansas tailwaters.', source: 'Quigley et al. peer-reviewed study; AGFC Brook Trout management' },
+      };
+
       function rateFishing(period) {
         const s = (period.shortForecast || '').toLowerCase();
         const temp = period.temperature || 50;
@@ -8319,14 +8552,46 @@
         );
       }
 
-      function ForecastTab({ forecast, water }) {
+      function ForecastTab({ forecast, water, species }) {
         if (!forecast || forecast.length === 0) return <Loading />;
         const w = WATERS[water];
         const allPeriods = forecast.slice(0, 14);
         const dayPeriods = forecast.filter((p) => p.isDaytime).slice(0, 7);
+        const [showMoonModal, setShowMoonModal] = React.useState(false);
+
+        const todayPhase = getMoonPhase(new Date());
+
+        function getNightEmoji(period, idx) {
+          if (period.isDaytime) return '\u2705';
+          var d = period.startTime ? new Date(period.startTime) : (function() {
+            var x = new Date(); x.setDate(x.getDate() + Math.floor(idx / 2)); return x;
+          })();
+          return getMoonPhase(d).emoji;
+        }
 
         return (
           <>
+            {/* Moon trigger button */}
+            <button
+              className="moon-trigger"
+              onClick={() => setShowMoonModal(true)}
+              aria-label="Open lunar fishing intel"
+            >
+              <div className="moon-trigger-left">
+                <div className="moon-trigger-phase">{todayPhase.emoji} {todayPhase.name} {'\u00B7'} {todayPhase.illumination}% illuminated</div>
+                <div className="moon-trigger-sub">{todayPhase.daysToFull}d to Full {'\u00B7'} {todayPhase.daysToNew}d to New {'\u00B7'} Tap for lunar fishing intel</div>
+              </div>
+              <div className="moon-trigger-cta">LUNAR {'\u2192'}</div>
+            </button>
+
+            {showMoonModal && (
+              <MoonPhaseModal
+                onClose={() => setShowMoonModal(false)}
+                species={species}
+                water={water}
+              />
+            )}
+
             <div className="card">
               <div className="card-title">
                 {'\u2600\uFE0F'} 7-Day Forecast {'\u2014'} {w.name} Area
@@ -8348,7 +8613,7 @@
                     )}
                   </div>
                   <div className="fc-daynight">
-                    {p.isDaytime ? '\u2705' : '\uD83C\uDF19'}
+                    {getNightEmoji(p, i)}
                   </div>
                 </div>
               ))}
@@ -8425,6 +8690,181 @@
               </div>
             </div>
           </>
+        );
+      }
+
+      function MoonPhaseModal({ onClose, species, water }) {
+        const [modalTab, setModalTab] = React.useState('species');
+        const [filter, setFilter] = React.useState('All');
+        const closeRef = React.useRef(null);
+
+        React.useEffect(() => {
+          if (closeRef.current && typeof closeRef.current.focus === 'function') {
+            closeRef.current.focus();
+          }
+          function onKey(e) {
+            if (e.key === 'Escape' || e.key === 'Esc') { e.stopPropagation(); onClose(); }
+          }
+          document.addEventListener('keydown', onKey);
+          return () => document.removeEventListener('keydown', onKey);
+        }, [onClose]);
+
+        // 7-day lunar grid
+        var today = new Date(); today.setHours(0, 0, 0, 0);
+        var DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        var days = Array.from({ length: 7 }, function(_, i) {
+          var d = new Date(today); d.setDate(d.getDate() + i);
+          return { date: d, phase: getMoonPhase(d) };
+        });
+
+        var peakDay = days.find(function(d) { return d.phase.name === 'Full Moon' || d.phase.name === 'New Moon'; });
+        var todayPhase = getMoonPhase(today);
+
+        // Current species
+        var currentData = MOON_SPECIES_MATRIX[species] || null;
+        var currentName = getSpeciesDisplayName(species);
+        var isTailwater = TAXONOMY.waterTypeMap[water] === 'tailwater';
+
+        // All species sorted by impact
+        var allSpeciesRows = SPECIES_CATALOG.reduce(function(acc, g) {
+          return acc.concat(g.species.map(function(s) {
+            return { id: s.id, name: s.name, data: MOON_SPECIES_MATRIX[s.id] || null };
+          }));
+        }, []).sort(function(a, b) {
+          var ia = a.data ? (MOON_IMPACT_ORDER[a.data.impact] !== undefined ? MOON_IMPACT_ORDER[a.data.impact] : 99) : 99;
+          var ib = b.data ? (MOON_IMPACT_ORDER[b.data.impact] !== undefined ? MOON_IMPACT_ORDER[b.data.impact] : 99) : 99;
+          return ia - ib;
+        });
+
+        var FILTERS = ['All','HIGH','MED-HIGH','MEDIUM','LOW-MED','LOW'];
+        var filtered = filter === 'All' ? allSpeciesRows : allSpeciesRows.filter(function(s) { return s.data && s.data.impact === filter; });
+
+        return (
+          <div className="moon-modal-backdrop" onClick={onClose}>
+            <div
+              className="moon-modal-sheet"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="moon-modal-title"
+              onClick={function(e) { e.stopPropagation(); }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                <div id="moon-modal-title" style={{ fontWeight: 800, fontSize: 16 }}>{todayPhase.emoji} Lunar Fishing Intel</div>
+                <button
+                  ref={closeRef}
+                  onClick={onClose}
+                  aria-label="Close lunar intel"
+                  style={{ background: 'none', border: 'none', color: 'var(--text2)', fontSize: 20, cursor: 'pointer' }}
+                >{'\u2715'}</button>
+              </div>
+
+              {/* 7-day lunar grid */}
+              <div className="moon-lunar-grid">
+                {days.map(function(d, i) {
+                  var isPeak = d.phase.name === 'Full Moon' || d.phase.name === 'New Moon';
+                  return (
+                    <div key={i} className={'moon-day-cell' + (isPeak ? ' peak' : '')}>
+                      <div className="moon-day-cell-label">{DAY_NAMES[d.date.getDay()]}</div>
+                      <div className="moon-day-cell-emoji">{d.phase.emoji}</div>
+                      <div className="moon-day-cell-pct">{d.phase.illumination}%</div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Peak phase callout */}
+              {peakDay && (
+                <div className="moon-peak-callout">
+                  {'\u2B50'} <strong>{peakDay.phase.name}</strong> on {DAY_NAMES[peakDay.date.getDay()]} within the 7-day window.
+                  {currentData && (currentData.impact === 'HIGH' || currentData.impact === 'MED-HIGH') &&
+                    ' Prime time for ' + currentName + '.'}
+                </div>
+              )}
+
+              {/* Internal tabs */}
+              <div className="moon-modal-tabs">
+                <button
+                  className={'moon-modal-tab' + (modalTab === 'species' ? ' active' : '')}
+                  onClick={() => setModalTab('species')}
+                >{'\u2B50'} Current Species</button>
+                <button
+                  className={'moon-modal-tab' + (modalTab === 'all' ? ' active' : '')}
+                  onClick={() => setModalTab('all')}
+                >{'\uD83D\uDCCB'} All Species</button>
+              </div>
+
+              {/* Current Species tab */}
+              {modalTab === 'species' && (
+                <>
+                  {currentData ? (
+                    <>
+                      <div style={{ marginBottom: 4 }}>
+                        <strong style={{ fontSize: 14 }}>{currentName}</strong>
+                      </div>
+                      <span className={'moon-impact-badge moon-impact-' + currentData.impact}>
+                        {currentData.impact} Lunar Impact
+                      </span>
+                      <div className="moon-best-phases" style={{ marginTop: 6 }}>
+                        Best phases: {currentData.bestPhases.join(', ')}
+                      </div>
+                      <div className="moon-strategy-cards">
+                        <div className="moon-strategy-card">
+                          <div className="moon-strategy-card-title">{'\u2600\uFE0F'} Daytime Strategy</div>
+                          {currentData.dayStrategy}
+                        </div>
+                        <div className="moon-strategy-card">
+                          <div className="moon-strategy-card-title">{todayPhase.emoji} Nighttime Strategy</div>
+                          {currentData.nightStrategy}
+                        </div>
+                      </div>
+                      {isTailwater && currentData.tailwaterNote && (
+                        <div className="moon-tailwater-warn">
+                          {'\u26A0\uFE0F'} <strong>Tailwater note:</strong> {currentData.tailwaterNote}
+                        </div>
+                      )}
+                      <div className="moon-source-footer">
+                        {'\uD83D\uDD17'} Source: {currentData.source}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="moon-no-data">No lunar data yet for {currentName}.</div>
+                  )}
+                </>
+              )}
+
+              {/* All Species tab */}
+              {modalTab === 'all' && (
+                <>
+                  {isTailwater && (
+                    <div className="moon-tailwater-warn" style={{ marginBottom: 10 }}>
+                      {'\u26A0\uFE0F'} <strong>Tailwater:</strong> Generation schedule typically overrides lunar influence for trout species.
+                    </div>
+                  )}
+                  <div className="moon-filter-pills">
+                    {FILTERS.map(function(f) {
+                      return (
+                        <button key={f} className={'moon-pill' + (filter === f ? ' active' : '')} onClick={() => setFilter(f)}>{f}</button>
+                      );
+                    })}
+                  </div>
+                  {filtered.map(function(s) {
+                    return (
+                      <div key={s.id} className={'moon-species-row' + (s.id === species ? ' selected' : '')}>
+                        <span>
+                          <span className="moon-species-name">{s.name}</span>
+                          {s.id === species && <span className="moon-species-selected-label">{'\u2190'} selected</span>}
+                        </span>
+                        {s.data
+                          ? <span className={'moon-impact-badge moon-impact-' + s.data.impact}>{s.data.impact}</span>
+                          : <span style={{ fontSize: 11, color: 'var(--text3)' }}>No data</span>
+                        }
+                      </div>
+                    );
+                  })}
+                </>
+              )}
+            </div>
+          </div>
         );
       }
 
@@ -9943,7 +10383,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                 </>
               )}
               {tab === 'forecast' && (
-                <ForecastTab forecast={forecast} water={water} />
+                <ForecastTab forecast={forecast} water={water} species={species} />
               )}
               {tab === 'techniques' && (
                 <TechniquesTab temp={temp} water={water} species={species} segment={segment} usgs={usgs} />

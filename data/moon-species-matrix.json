@@ -1,0 +1,297 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "description": "Lunar impact ratings for all 28 Arkansas sport fish species. Impact scale: HIGH > MED-HIGH > MEDIUM > LOW-MED > LOW.",
+    "last_updated": "2026-02-24",
+    "sources": [
+      "Quigley et al. — 'Popular solunar tables fail to predict fishing success in North American recreational freshwater trout fisheries' (peer-reviewed)",
+      "Fish'n Canada — 350,000 catch records over 40 years, walleye Full Moon correlation",
+      "Lukas & Sass 2011 — largemouth bass lunar activity telemetry study",
+      "AGFC Randy Zellers direct quote — bream full moon confirmation via Arkansas.com",
+      "AGFC.com species management pages",
+      "Solunar theory — John Alden Knight (1936)"
+    ]
+  },
+  "species": [
+    {
+      "id": "wb",
+      "name": "White Bass",
+      "impact": "HIGH",
+      "bestPhases": ["Full Moon", "New Moon"],
+      "dayStrategy": "Target baitfish schools in open water. Full Moon concentrates shad in coves — follow sonar marks toward shallow flats.",
+      "nightStrategy": "Aggressive topwater bite under Full Moon. Cast around dock lights and bright shoreline areas. White or chrome lures.",
+      "tailwaterNote": null,
+      "source": "Fish'n Canada 350,000-record study; AGFC White Bass management guide"
+    },
+    {
+      "id": "walleye",
+      "name": "Walleye",
+      "impact": "HIGH",
+      "bestPhases": ["Full Moon", "New Moon"],
+      "dayStrategy": "Hunt deeper structure (10–20 ft) and channel edges during daylight. Tapetum lucidum eye gives dominant advantage after dark.",
+      "nightStrategy": "Peak feeding under Full Moon. Slow jigging near bottom, or trolling cranks along main lake points and rock piles.",
+      "tailwaterNote": null,
+      "source": "Fish'n Canada 40-year catch record study (350,000 records confirm Full Moon correlation)"
+    },
+    {
+      "id": "cr",
+      "name": "Crappie",
+      "impact": "MED-HIGH",
+      "bestPhases": ["Full Moon", "New Moon"],
+      "dayStrategy": "Vertical jigging near brush piles and submerged timber. Pre/post-spawn bedding activity concentrated around Full Moon windows in spring.",
+      "nightStrategy": "Suspend small jigs (1/32–1/16 oz) under dock lights. Full Moon triggers aggressive night bites near structure.",
+      "tailwaterNote": null,
+      "source": "AGFC Crappie management; seasonal solunar correlation studies"
+    },
+    {
+      "id": "blkcrappie",
+      "name": "Black Crappie",
+      "impact": "MED-HIGH",
+      "bestPhases": ["Full Moon", "New Moon"],
+      "dayStrategy": "Clearer water preference — target submerged grass edges and brush in 6–12 ft. Full Moon concentrates spawning in spring.",
+      "nightStrategy": "Night biting under lights near Full Moon. Favors slightly deeper structure than White Crappie after dark.",
+      "tailwaterNote": null,
+      "source": "AGFC Crappie management; species-specific solunar studies"
+    },
+    {
+      "id": "whtcrappie",
+      "name": "White Crappie",
+      "impact": "MED-HIGH",
+      "bestPhases": ["Full Moon", "New Moon"],
+      "dayStrategy": "Tolerates turbidity — target stained-water brush piles and channel edges. Full Moon spawn timing applies in spring.",
+      "nightStrategy": "Light-attracted baitfish draws crappie under Full Moon near dock and bridge lights.",
+      "tailwaterNote": null,
+      "source": "AGFC Crappie management; solunar correlation studies"
+    },
+    {
+      "id": "striper",
+      "name": "Striped Bass",
+      "impact": "MED-HIGH",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Follow shad schools on main lake humps and channel edges. Electronics key — mark bait, fish directly below.",
+      "nightStrategy": "Surface-feeding blitzes on shad under Full Moon. White swimbaits or topwater poppers over open water.",
+      "tailwaterNote": "Cannot reproduce in Arkansas — AGFC-stocked. Lunar influence is feeding-only, not spawn-driven.",
+      "source": "AGFC Striped Bass stocking program; feeding behavior correlation studies"
+    },
+    {
+      "id": "hybrid",
+      "name": "Hybrid Striped Bass",
+      "impact": "MED-HIGH",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Open-water shad schools; mid-column presentations on main lake points and river channels.",
+      "nightStrategy": "Aggressive surface feeding under Full Moon near shad schools. Topwater or white swimbaits effective.",
+      "tailwaterNote": "Cannot reproduce naturally — AGFC-stocked. Feeding-only lunar correlation.",
+      "source": "AGFC Hybrid Striper stocking program; Striped Bass feeding analogue studies"
+    },
+    {
+      "id": "bluegill",
+      "name": "Bluegill",
+      "impact": "MED-HIGH",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Shallow bedding areas in spring. Full Moon concentrates spawning activity May–July. Target gravel flats in 1–4 ft.",
+      "nightStrategy": "Less aggressive after dark; focus on pre-dawn and dusk windows within 3 days of Full Moon.",
+      "tailwaterNote": null,
+      "source": "AGFC Randy Zellers: 'focus on the days before and after the Full Moon' for bream bedding — Arkansas.com"
+    },
+    {
+      "id": "redear",
+      "name": "Redear Sunfish",
+      "impact": "MED-HIGH",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Beds near mussel and snail habitat in sandy-bottomed coves. Full Moon triggers spawning beds through summer months.",
+      "nightStrategy": "Not a strong night feeder. Prime windows are early morning within 2 days of Full Moon.",
+      "tailwaterNote": null,
+      "source": "AGFC Redear Sunfish management; Full Moon bream bedding correlation (Arkansas.com)"
+    },
+    {
+      "id": "flathead",
+      "name": "Flathead Catfish",
+      "impact": "MED-HIGH",
+      "bestPhases": ["Full Moon", "New Moon"],
+      "dayStrategy": "Ambush spots near woody structure and undercut banks. Activity extends through dusk — Full Moon stretches feeding windows.",
+      "nightStrategy": "Most active nocturnal predator. Full Moon periods produce consistent trophy-class catches on live bait.",
+      "tailwaterNote": null,
+      "source": "Solunar theory (Knight 1936); AGFC Flathead Catfish management"
+    },
+    {
+      "id": "sauger",
+      "name": "Sauger",
+      "impact": "MED-HIGH",
+      "bestPhases": ["Full Moon", "New Moon"],
+      "dayStrategy": "Deep river channel structure and current breaks in daylight. Tapetum lucidum eye similar to Walleye — thrives after dark.",
+      "nightStrategy": "Active night feeder. Full Moon amplifies feeding windows along main river channels and below dams.",
+      "tailwaterNote": null,
+      "source": "AGFC Sauger management; walleye/sauger shared photoreceptor biology"
+    },
+    {
+      "id": "saugeye",
+      "name": "Saugeye",
+      "impact": "MED-HIGH",
+      "bestPhases": ["Full Moon", "New Moon"],
+      "dayStrategy": "Structure-oriented in daylight — points, ledges, rocky transitions. Hybrid of walleye/sauger light-sensitive behavior.",
+      "nightStrategy": "Full Moon feeding windows similar to walleye parent. Jig or live minnow along main lake structure.",
+      "tailwaterNote": null,
+      "source": "AGFC Saugeye stocking program; hybrid walleye/sauger behavior studies"
+    },
+    {
+      "id": "lmb",
+      "name": "Largemouth Bass",
+      "impact": "MEDIUM",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Cover-oriented (laydowns, docks, vegetation). Moderate lunar influence; spawn timing and temperature outweigh lunar cycles.",
+      "nightStrategy": "Some topwater activity near Full Moon. Black or dark lures along weed edges and dock perimeters.",
+      "tailwaterNote": null,
+      "source": "Lukas & Sass 2011 — telemetry study showing limited but present lunar correlation"
+    },
+    {
+      "id": "smb",
+      "name": "Smallmouth Bass",
+      "impact": "MEDIUM",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Current seams in rivers; rocky ledges and boulders in reservoirs. Moderate lunar sensitivity.",
+      "nightStrategy": "Some night feeding near Full Moon along rocky structure. Tube baits and crayfish imitators.",
+      "tailwaterNote": null,
+      "source": "Lukas & Sass 2011 framework; AGFC Smallmouth Bass management"
+    },
+    {
+      "id": "spb",
+      "name": "Spotted Bass",
+      "impact": "MEDIUM",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Rocky points, ledges, and mid-depth cover. Behaves similarly to Smallmouth with moderate lunar sensitivity.",
+      "nightStrategy": "Moderate night activity near Full Moon. Finesse presentations along deep structure.",
+      "tailwaterNote": null,
+      "source": "AGFC Spotted Bass management; bass lunar correlation studies"
+    },
+    {
+      "id": "kyb",
+      "name": "Kentucky Bass",
+      "impact": "MEDIUM",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Submerged timber and rocky main-lake structure. Mid-range lunar sensitivity shared with other black bass.",
+      "nightStrategy": "Limited night feeding; some activity during strong Full Moon near deep structure.",
+      "tailwaterNote": null,
+      "source": "AGFC Kentucky Bass management; Lukas & Sass 2011 framework"
+    },
+    {
+      "id": "greensf",
+      "name": "Green Sunfish",
+      "impact": "MEDIUM",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Shallow structure and bank cover. Moderate lunar correlation similar to other sunfish during spring spawn.",
+      "nightStrategy": "Minimal night activity; focus on dawn/dusk windows near Full Moon during spawning season.",
+      "tailwaterNote": null,
+      "source": "Solunar theory framework; AGFC sunfish management"
+    },
+    {
+      "id": "warmouth",
+      "name": "Warmouth",
+      "impact": "MEDIUM",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Heavy cover — woody debris, stumps, and aquatic vegetation. Moderate response to lunar cycles in spring.",
+      "nightStrategy": "Some activity near Full Moon; better at dawn and dusk than true night.",
+      "tailwaterNote": null,
+      "source": "Solunar theory framework; AGFC sunfish management"
+    },
+    {
+      "id": "chancat",
+      "name": "Channel Catfish",
+      "impact": "MEDIUM",
+      "bestPhases": ["Full Moon", "New Moon"],
+      "dayStrategy": "Active throughout the day with moderate lunar influence on peak feeding windows. Channel breaks and deep holes.",
+      "nightStrategy": "Night fishing effective year-round; modest Full Moon enhancement. Stinkbaits and cut bait.",
+      "tailwaterNote": null,
+      "source": "Solunar theory framework; AGFC Channel Catfish management"
+    },
+    {
+      "id": "bluecat",
+      "name": "Blue Catfish",
+      "impact": "MEDIUM",
+      "bestPhases": ["Full Moon", "New Moon"],
+      "dayStrategy": "Main channel structure, ledges, and dam tailraces. Moderate lunar sensitivity — bait selection matters more.",
+      "nightStrategy": "Good night feeder year-round; lunar impact is secondary to proper baiting and structure location.",
+      "tailwaterNote": null,
+      "source": "Solunar theory framework; AGFC Blue Catfish management"
+    },
+    {
+      "id": "browntrout",
+      "name": "Brown Trout",
+      "impact": "LOW-MED",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Generation schedule dominates in tailwaters. Feed on invertebrate hatches (mayflies, midges) during low-generation windows.",
+      "nightStrategy": "Large Brown Trout are nocturnal hunters; slight Full Moon advantage. Streamers after dark on low-generation nights.",
+      "tailwaterNote": "Generation schedule overrides lunar influence in tailwaters. Check SWPA/USACE release schedule first.",
+      "source": "Quigley et al. (peer-reviewed: solunar tables fail to predict CPUE in tailwater trout); AGFC Brown Trout management"
+    },
+    {
+      "id": "paddlefish",
+      "name": "Paddlefish",
+      "impact": "LOW-MED",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Filter-feeders targeting zooplankton; some plankton migration is lunar-correlated. Snag fishing in deep, slow river bends.",
+      "nightStrategy": "Minimal night-specific advantage. Snag fishing depends on fish congregation, not active feeding.",
+      "tailwaterNote": null,
+      "source": "AGFC Paddlefish management; plankton tidal/lunar migration studies"
+    },
+    {
+      "id": "lngar",
+      "name": "Longnose Gar",
+      "impact": "LOW-MED",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Ambush predators near shallow bays and slow backwaters. Slight spawning lunar correlation in May–June.",
+      "nightStrategy": "Some activity in warm months near Full Moon. Rope lures for gar are daytime-focused.",
+      "tailwaterNote": null,
+      "source": "AGFC Longnose Gar management; gar spawning biology studies"
+    },
+    {
+      "id": "alligar",
+      "name": "Alligator Gar",
+      "impact": "LOW-MED",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Apex ambush predator in slow, warm backwaters. Spring spawn shows some lunar correlation. Target large structure.",
+      "nightStrategy": "Occasional nocturnal hunting but not strongly lunar-driven. Primary feeding is opportunistic.",
+      "tailwaterNote": null,
+      "source": "AGFC Alligator Gar management; gar spawning biology"
+    },
+    {
+      "id": "bowfin",
+      "name": "Bowfin",
+      "impact": "LOW-MED",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Spring spawn shows some lunar correlation; guards nests aggressively. Heavy cover — vegetation and woody debris.",
+      "nightStrategy": "Can be active at night but not strongly lunar-dependent. Aggressive on artificial lures near spawning areas.",
+      "tailwaterNote": null,
+      "source": "AGFC Bowfin management; primitive fish spawn biology"
+    },
+    {
+      "id": "rainbow",
+      "name": "Rainbow Trout",
+      "impact": "LOW",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Generation schedule dominates in tailwaters. Focus on post-generation feeding windows when flows stabilize.",
+      "nightStrategy": "Minimal lunar advantage. Tailwater flows and temperature determine feeding activity — check generation schedule.",
+      "tailwaterNote": "Generation schedule overrides lunar influence. Quigley et al. confirmed solunar tables fail to predict CPUE in tailwater trout fisheries.",
+      "source": "Quigley et al. peer-reviewed study; AGFC Rainbow Trout management"
+    },
+    {
+      "id": "cutthroat",
+      "name": "Cutthroat Trout",
+      "impact": "LOW",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Similar to Rainbow in tailwaters. Flow-driven activity dominates over lunar cycles. Dry flies during hatches.",
+      "nightStrategy": "Minimal lunar-driven night advantage. Generation schedule is primary predictor of feeding activity.",
+      "tailwaterNote": "Generation schedule overrides lunar influence in Arkansas tailwaters.",
+      "source": "Quigley et al. peer-reviewed study; AGFC Cutthroat Trout management"
+    },
+    {
+      "id": "brook",
+      "name": "Brook Trout",
+      "impact": "LOW",
+      "bestPhases": ["Full Moon"],
+      "dayStrategy": "Cold-water specialist in spring creeks and tailwaters. Feeding tied to generation and temperature more than lunar phase.",
+      "nightStrategy": "Minimal lunar influence. Focus on generation release windows and temperature stability (below 65°F).",
+      "tailwaterNote": "Generation schedule overrides lunar influence in Arkansas tailwaters.",
+      "source": "Quigley et al. peer-reviewed study; AGFC Brook Trout management"
+    }
+  ]
+}
