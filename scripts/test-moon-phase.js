@@ -5,11 +5,13 @@
 // Mirrors the getMoonPhase() implementation in index.html.
 // Keep both in sync when updating the formula or reference date.
 //
-// Reference: Feb 12, 2026 full moon at 05:53 UTC (timeanddate.com)
-// Next new moon: Feb 27, 2026 at ~00:15 UTC (reference + 14.765 days)
-// Next full moon: Mar 14, 2026 at ~06:55 UTC (reference + 29.53 days)
+// Reference: Feb 1, 2026 full moon at 22:11 UTC (Jean Meeus algorithm,
+//            confirmed against USNO astronomical data)
+// Previous full moon: Jan 3, 2026 at ~09:27 UTC (reference − 29.53 days)
+// Next new moon:      Feb 17, 2026 at ~12:03 UTC (~15.6 days after reference)
+// Next full moon:     Mar 3, 2026  at ~10:55 UTC (reference + 29.53 days)
 
-const MOON_FULL_REF_MS = Date.UTC(2026, 1, 12, 5, 53); // Feb 12, 2026 05:53 UTC
+const MOON_FULL_REF_MS = Date.UTC(2026, 1, 1, 22, 11); // Feb 1, 2026 22:11 UTC
 const LUNAR_CYCLE = 29.53059;
 
 function getMoonPhase(date) {
@@ -71,10 +73,10 @@ function assertRange(description, actual, min, max) {
   }
 }
 
-// ─── Test: Known full moon (Feb 12, 2026 peak at 05:53 UTC) ──────────────────
-console.log('\nFull Moon – Feb 12, 2026 (05:53 UTC reference)');
+// ─── Test: Known full moon (Feb 1, 2026 22:11 UTC reference) ─────────────────
+console.log('\nFull Moon – Feb 1, 2026 (22:11 UTC reference)');
 {
-  const p = getMoonPhase(new Date(Date.UTC(2026, 1, 12, 5, 53)));
+  const p = getMoonPhase(new Date(Date.UTC(2026, 1, 1, 22, 11)));
   assert('name is Full Moon at peak', p.name, 'Full Moon');
   assert('illumination is 100% at peak', p.illumination, 100);
   assert('daysToFull is 0 at peak', p.daysToFull, 0);
@@ -82,23 +84,23 @@ console.log('\nFull Moon – Feb 12, 2026 (05:53 UTC reference)');
 }
 
 // ─── Test: Still Full Moon 1 day after peak ───────────────────────────────────
-console.log('\nFull Moon – Feb 13, 2026 (~1 day after peak)');
+console.log('\nFull Moon – Feb 2, 2026 (~1 day after peak)');
 {
-  const p = getMoonPhase(new Date(Date.UTC(2026, 1, 13, 5, 53)));
+  const p = getMoonPhase(new Date(Date.UTC(2026, 1, 2, 22, 11)));
   assert('name is Full Moon 1d after peak', p.name, 'Full Moon');
   assertRange('illumination >90% 1d after peak', p.illumination, 90, 100);
 }
 
 // ─── Test: Waning Gibbous after Full Moon ────────────────────────────────────
-console.log('\nWaning Gibbous – Feb 15, 2026 (~3 days after peak)');
+console.log('\nWaning Gibbous – Feb 4, 2026 (~3 days after peak)');
 {
-  const p = getMoonPhase(new Date(Date.UTC(2026, 1, 15, 5, 53)));
+  const p = getMoonPhase(new Date(Date.UTC(2026, 1, 4, 22, 11)));
   assert('name is Waning Gibbous', p.name, 'Waning Gibbous');
   assertRange('illumination 70–90%', p.illumination, 70, 90);
 }
 
 // ─── Test: Last Quarter (~7.4 days after full moon) ──────────────────────────
-console.log('\nLast Quarter – Feb 19, 2026 (~7.5 days after peak)');
+console.log('\nLast Quarter – Feb 9, 2026 (~7.5 days after peak)');
 {
   // 7.5 days after full moon peak
   const d = new Date(MOON_FULL_REF_MS + 7.5 * 86400000);
@@ -107,12 +109,12 @@ console.log('\nLast Quarter – Feb 19, 2026 (~7.5 days after peak)');
   assertRange('illumination ~50%', p.illumination, 45, 55);
 }
 
-// ─── Test: Known new moon – Feb 27, 2026 ─────────────────────────────────────
-// The New Moon phase label starts at age=14.77 (Feb 27, 2026 00:21 UTC).
-// Feb 27 at 01:00 UTC (age≈14.80) is safely within the New Moon label window.
-console.log('\nNew Moon – Feb 27, 2026 (01:00 UTC, confirmed in New Moon label window)');
+// ─── Test: Known new moon – Feb 17, 2026 ─────────────────────────────────────
+// The New Moon phase label starts at age=14.77 days after full moon.
+// Feb 17, 2026 12:03 UTC (age≈15.58) is confirmed by Jean Meeus algorithm.
+console.log('\nNew Moon – Feb 17, 2026 (12:03 UTC, confirmed by Meeus algorithm)');
 {
-  const d = new Date(Date.UTC(2026, 1, 27, 1, 0));
+  const d = new Date(Date.UTC(2026, 1, 17, 12, 3));
   const p = getMoonPhase(d);
   assert('name is New Moon', p.name, 'New Moon');
   assertRange('illumination ≤5% at new moon', p.illumination, 0, 5);
@@ -120,7 +122,7 @@ console.log('\nNew Moon – Feb 27, 2026 (01:00 UTC, confirmed in New Moon label
 }
 
 // ─── Test: First Quarter (~22.2 days after full moon) ────────────────────────
-console.log('\nFirst Quarter – Mar 6, 2026 (~22.2 days after peak)');
+console.log('\nFirst Quarter – Feb 24, 2026 (~22.2 days after peak)');
 {
   const d = new Date(MOON_FULL_REF_MS + 22.2 * 86400000);
   const p = getMoonPhase(d);
@@ -129,7 +131,7 @@ console.log('\nFirst Quarter – Mar 6, 2026 (~22.2 days after peak)');
 }
 
 // ─── Test: Waxing Gibbous between First Quarter and next Full Moon ────────────
-console.log('\nWaxing Gibbous – Mar 10, 2026 (~26 days after peak)');
+console.log('\nWaxing Gibbous – Feb 27, 2026 (~26 days after peak)');
 {
   const d = new Date(MOON_FULL_REF_MS + 26 * 86400000);
   const p = getMoonPhase(d);
@@ -137,8 +139,8 @@ console.log('\nWaxing Gibbous – Mar 10, 2026 (~26 days after peak)');
   assertRange('illumination 70–95%', p.illumination, 70, 95);
 }
 
-// ─── Test: Next full moon (Mar 14, 2026) ─────────────────────────────────────
-console.log('\nFull Moon – Mar 14, 2026 (one cycle after reference)');
+// ─── Test: Next full moon (Mar 3, 2026) ──────────────────────────────────────
+console.log('\nFull Moon – Mar 3, 2026 (one cycle after reference)');
 {
   const nextFullMs = MOON_FULL_REF_MS + LUNAR_CYCLE * 86400000;
   const p = getMoonPhase(new Date(nextFullMs));
@@ -146,20 +148,20 @@ console.log('\nFull Moon – Mar 14, 2026 (one cycle after reference)');
   assert('illumination is 100% next cycle', p.illumination, 100);
 }
 
-// ─── Test: Timezone boundary – 11:30 PM CST = 05:30 UTC next day ─────────────
-// Verifies that a user in CST (UTC-6) at 11:30 PM on Feb 26 (= Feb 27 05:30 UTC)
+// ─── Test: Timezone boundary – 11:30 PM CST Feb 16 = 05:30 UTC Feb 17 ────────
+// Verifies that a user in CST (UTC-6) at 11:30 PM on Feb 16 (= Feb 17 05:30 UTC)
 // sees New Moon, not Waning Crescent.
-console.log('\nTimezone boundary – 11:30 PM CST Feb 26 = 05:30 UTC Feb 27');
+console.log('\nTimezone boundary – 11:30 PM CST Feb 16 = 05:30 UTC Feb 17');
 {
-  const d = new Date(Date.UTC(2026, 1, 27, 5, 30)); // 11:30 PM CST Feb 26
+  const d = new Date(Date.UTC(2026, 1, 17, 5, 30)); // 11:30 PM CST Feb 16
   const p = getMoonPhase(d);
   assert('name is New Moon at CST boundary', p.name, 'New Moon');
   assertRange('illumination ≤5% at CST boundary', p.illumination, 0, 5);
 }
 
-// ─── Test: Historical full moon – Jan 13, 2026 ───────────────────────────────
+// ─── Test: Historical full moon – Jan 3, 2026 ────────────────────────────────
 // One cycle before the reference full moon.
-console.log('\nHistorical full moon – Jan 13, 2026 (prev cycle)');
+console.log('\nHistorical full moon – Jan 3, 2026 (prev cycle)');
 {
   const prevFullMs = MOON_FULL_REF_MS - LUNAR_CYCLE * 86400000;
   const p = getMoonPhase(new Date(prevFullMs));
@@ -177,13 +179,33 @@ console.log('\nWaxing Crescent – ~18 days after reference full moon');
 }
 
 // ─── Test: Waning Crescent (between last quarter and new moon) ────────────────
-// At 12 days past full moon, illumination is ~8% (low, near new moon).
+// At 12 days past full moon, illumination is low (near new moon).
 console.log('\nWaning Crescent – ~12 days after reference full moon');
 {
   const d = new Date(MOON_FULL_REF_MS + 12 * 86400000);
   const p = getMoonPhase(d);
   assert('name is Waning Crescent', p.name, 'Waning Crescent');
   assertRange('illumination 5–15%', p.illumination, 5, 15);
+}
+
+// ─── Test: Bug regression – Feb 23, 2026 must be Waxing Crescent (not Waning) ─
+// This was the core bug: old reference (Feb 12) caused the wrong phase.
+// Actual astronomical data: Full Moon Feb 1, New Moon Feb 17, First Quarter Feb 24.
+console.log('\nBug regression – Feb 23, 2026 midnight CST (06:00 UTC) must be Waxing Crescent');
+{
+  const d = new Date(Date.UTC(2026, 1, 23, 6, 0)); // midnight CST = 06:00 UTC
+  const p = getMoonPhase(d);
+  assert('name is Waxing Crescent on Feb 23 (not Waning)', p.name, 'Waxing Crescent');
+  assertRange('illumination 30–50% on Feb 23 (increasing toward first quarter)', p.illumination, 30, 50);
+}
+
+// ─── Test: Feb 24, 2026 must be First Quarter ────────────────────────────────
+console.log('\nFirst Quarter – Feb 24, 2026 midnight CST (06:00 UTC)');
+{
+  const d = new Date(Date.UTC(2026, 1, 24, 6, 0)); // midnight CST = 06:00 UTC
+  const p = getMoonPhase(d);
+  assert('name is First Quarter on Feb 24', p.name, 'First Quarter');
+  assertRange('illumination ~50% on Feb 24', p.illumination, 45, 60);
 }
 
 // ─── Summary ───────────────────────────────────────────────────────────────────

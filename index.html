@@ -6454,13 +6454,13 @@
       }
 
       // ─── MOON PHASE UTILITY ──────────────────────────────────────────────────
-      // Reference full moon: Feb 12, 2026 at 05:53 UTC (validated against
-      // timeanddate.com; uses the actual peak time, not midnight, for accuracy).
-      // getMoonPhase(new Date(Date.UTC(2026,1,12,5,53))) → Full Moon 🌕
-      // getMoonPhase(new Date(Date.UTC(2026,2,14))) → Full Moon 🌕
+      // Reference full moon: Feb 1, 2026 at 22:11 UTC (Jean Meeus algorithm,
+      // confirmed against USNO/astronomical data; previous ref Feb 12 was wrong).
+      // getMoonPhase(new Date(Date.UTC(2026,1,1,22,11))) → Full Moon 🌕
+      // getMoonPhase(new Date(Date.UTC(2026,2,3)))       → Full Moon 🌕
       // Calendar grid uses local midnight (setHours(0,0,0,0)) so the phase
       // shown for each day reflects the user's local timezone (CST/CDT for AR).
-      const MOON_FULL_REF_MS = Date.UTC(2026, 1, 12, 5, 53); // Feb 12, 2026 05:53 UTC
+      const MOON_FULL_REF_MS = Date.UTC(2026, 1, 1, 22, 11); // Feb 1, 2026 22:11 UTC
       const LUNAR_CYCLE = 29.53059;
 
       function getMoonPhase(date) {
