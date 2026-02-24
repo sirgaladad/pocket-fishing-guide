@@ -6494,41 +6494,61 @@
         return null;
       }());
 
+      var _moonPhaseEventsPromise = null;
+
       async function fetchMoonPhaseData() {
-        try {
-          // Start 35 days ago so we always capture the most-recent New Moon event
-          // needed to anchor illumination calculations (a lunar cycle is ~29.5 days).
-          var LOOKBACK_DAYS = 35;
-          var ref = new Date(Date.now() - LOOKBACK_DAYS * 86400000);
-          var dateStr = ref.getUTCFullYear() + '-' +
-            String(ref.getUTCMonth() + 1).padStart(2, '0') + '-' +
-            String(ref.getUTCDate()).padStart(2, '0');
-          var resp = await fetch(
-            'https://aa.usno.navy.mil/api/moon/phases/date?date=' + dateStr + '&nump=20'
-          );
-          if (!resp.ok) throw new Error('USNO HTTP ' + resp.status);
-          var json = await resp.json();
-          if (json.error || !Array.isArray(json.phasedata)) throw new Error('USNO: bad response');
-          var events = json.phasedata
-            .map(function (ev) {
-              var parts = ev.time.split(':');
-              return {
-                ms: Date.UTC(ev.year, ev.month - 1, ev.day, +parts[0], +parts[1]),
-                phase: ev.phase,
-              };
-            })
-            .filter(function (e) { return isFinite(e.ms); })
-            .sort(function (a, b) { return a.ms - b.ms; });
-          if (events.length < 4) throw new Error('USNO: too few events');
-          _moonPhaseEvents = events;
-          try {
-            localStorage.setItem(MOON_PHASES_CACHE_KEY, JSON.stringify({ ts: Date.now(), events: events }));
-          } catch (e) {}
-          return events;
-        } catch (e) {
-          // API unavailable – formula fallback will be used
-          return null;
+        // If we already have cached events in memory, return them immediately.
+        if (Array.isArray(_moonPhaseEvents) && _moonPhaseEvents.length > 0) {
+          return _moonPhaseEvents;
         }
+
+        // If a fetch is already in progress, share that promise.
+        if (_moonPhaseEventsPromise) {
+          return _moonPhaseEventsPromise;
+        }
+
+        // Start a new fetch and remember the in-flight promise.
+        _moonPhaseEventsPromise = (async function () {
+          try {
+            // Start 35 days ago so we always capture the most-recent New Moon event
+            // needed to anchor illumination calculations (a lunar cycle is ~29.5 days).
+            var LOOKBACK_DAYS = 35;
+            var ref = new Date(Date.now() - LOOKBACK_DAYS * 86400000);
+            var dateStr = ref.getUTCFullYear() + '-' +
+              String(ref.getUTCMonth() + 1).padStart(2, '0') + '-' +
+              String(ref.getUTCDate()).padStart(2, '0');
+            var resp = await fetch(
+              'https://aa.usno.navy.mil/api/moon/phases/date?date=' + dateStr + '&nump=20'
+            );
+            if (!resp.ok) throw new Error('USNO HTTP ' + resp.status);
+            var json = await resp.json();
+            if (json.error || !Array.isArray(json.phasedata)) throw new Error('USNO: bad response');
+            var events = json.phasedata
+              .map(function (ev) {
+                var parts = ev.time.split(':');
+                return {
+                  ms: Date.UTC(ev.year, ev.month - 1, ev.day, +parts[0], +parts[1]),
+                  phase: ev.phase,
+                };
+              })
+              .filter(function (e) { return isFinite(e.ms); })
+              .sort(function (a, b) { return a.ms - b.ms; });
+            if (events.length < 4) throw new Error('USNO: too few events');
+            _moonPhaseEvents = events;
+            try {
+              localStorage.setItem(MOON_PHASES_CACHE_KEY, JSON.stringify({ ts: Date.now(), events: events }));
+            } catch (e) {}
+            return events;
+          } catch (e) {
+            // API unavailable – formula fallback will be used
+            return null;
+          } finally {
+            // Allow future calls to trigger a fresh fetch if needed.
+            _moonPhaseEventsPromise = null;
+          }
+        })();
+
+        return _moonPhaseEventsPromise;
       }
 
       // Determine phase label from USNO event list.
