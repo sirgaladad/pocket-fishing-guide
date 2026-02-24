@@ -8,7 +8,7 @@
 // Reference: Feb 1, 2026 full moon at 22:11 UTC (Jean Meeus algorithm,
 //            confirmed against USNO astronomical data)
 // Previous full moon: Jan 3, 2026 at ~09:27 UTC (reference − 29.53 days)
-// Next new moon:      Feb 17, 2026 at ~12:03 UTC (reference + 14.77 days)
+// Next new moon:      Feb 17, 2026 at ~12:03 UTC (~15.6 days after reference)
 // Next full moon:     Mar 3, 2026  at ~10:55 UTC (reference + 29.53 days)
 
 const MOON_FULL_REF_MS = Date.UTC(2026, 1, 1, 22, 11); // Feb 1, 2026 22:11 UTC
