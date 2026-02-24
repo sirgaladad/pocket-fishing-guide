@@ -6454,10 +6454,13 @@
       }
 
       // ─── MOON PHASE UTILITY ──────────────────────────────────────────────────
-      // Reference full moon: Feb 12, 2026 (validated against timeanddate.com).
-      // getMoonPhase(new Date('2026-02-12')) → Full Moon 🌕
-      // getMoonPhase(new Date('2026-03-14')) → Full Moon 🌕
-      const MOON_FULL_REF_MS = Date.UTC(2026, 1, 12); // Feb 12, 2026 UTC
+      // Reference full moon: Feb 12, 2026 at 05:53 UTC (validated against
+      // timeanddate.com; uses the actual peak time, not midnight, for accuracy).
+      // getMoonPhase(new Date(Date.UTC(2026,1,12,5,53))) → Full Moon 🌕
+      // getMoonPhase(new Date(Date.UTC(2026,2,14))) → Full Moon 🌕
+      // Calendar grid uses local midnight (setHours(0,0,0,0)) so the phase
+      // shown for each day reflects the user's local timezone (CST/CDT for AR).
+      const MOON_FULL_REF_MS = Date.UTC(2026, 1, 12, 5, 53); // Feb 12, 2026 05:53 UTC
       const LUNAR_CYCLE = 29.53059;
 
       function getMoonPhase(date) {
@@ -6481,10 +6484,14 @@
           var fullPhaseStartAge = 27.68;
           daysToFull = Math.round((fullPhaseStartAge - age) * 10) / 10;
         }
-        var newPhaseAge = LUNAR_CYCLE / 2;
-        var daysToNew = age <= newPhaseAge
-          ? Math.round((newPhaseAge - age) * 10) / 10
-          : Math.round((LUNAR_CYCLE - age + newPhaseAge) * 10) / 10;
+        var daysToNew;
+        if (age >= 14.77 && age < 16.61) {
+          daysToNew = 0;
+        } else if (age < 14.77) {
+          daysToNew = Math.round((14.77 - age) * 10) / 10;
+        } else {
+          daysToNew = Math.round((LUNAR_CYCLE - age + 14.77) * 10) / 10;
+        }
         return { emoji: emoji, name: name, illumination: illum, daysToFull: daysToFull, daysToNew: daysToNew, age: Math.round(age * 10) / 10 };
       }
 
