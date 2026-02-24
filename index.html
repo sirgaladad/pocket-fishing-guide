@@ -6454,35 +6454,185 @@
       }
 
       // ─── MOON PHASE UTILITY ──────────────────────────────────────────────────
-      // Reference full moon: Feb 1, 2026 at 22:11 UTC (Jean Meeus algorithm,
-      // confirmed against USNO/astronomical data; previous ref Feb 12 was wrong).
-      // getMoonPhase(new Date(Date.UTC(2026,1,1,22,11))) → Full Moon 🌕
-      // getMoonPhase(new Date(Date.UTC(2026,2,3)))       → Full Moon 🌕
-      // Calendar grid uses local midnight (setHours(0,0,0,0)) so the phase
-      // shown for each day reflects the user's local timezone (CST/CDT for AR).
-      const MOON_FULL_REF_MS = Date.UTC(2026, 1, 1, 22, 11); // Feb 1, 2026 22:11 UTC
+      // Phase data is fetched from the USNO (US Naval Observatory) free API:
+      //   https://aa.usno.navy.mil/api/moon/phases/date?date=YYYY-MM-DD&nump=20
+      // Events are cached in localStorage for 12 hours. If the API is
+      // unavailable, getMoonPhase() falls back to the formula below.
+      //
+      // Formula fallback: Feb 1, 2026 22:11 UTC full-moon reference (USNO-confirmed).
+      const MOON_FULL_REF_MS = Date.UTC(2026, 1, 1, 22, 11);
       const LUNAR_CYCLE = 29.53059;
 
-      function getMoonPhase(date) {
+      // Phase name → emoji mapping (used by both USNO and fallback paths)
+      const MOON_PHASE_EMOJI = {
+        'New Moon':       '\uD83C\uDF11',
+        'Waxing Crescent':'\uD83C\uDF12',
+        'First Quarter':  '\uD83C\uDF13',
+        'Waxing Gibbous': '\uD83C\uDF14',
+        'Full Moon':      '\uD83C\uDF15',
+        'Waning Gibbous': '\uD83C\uDF16',
+        'Last Quarter':   '\uD83C\uDF17',
+        'Waning Crescent':'\uD83C\uDF18',
+      };
+
+      // ── USNO event cache ────────────────────────────────────────────────────
+      const MOON_PHASES_CACHE_KEY = 'pfg_moon_phases_v1';
+      const MOON_PHASES_CACHE_MS  = 12 * 60 * 60 * 1000; // 12 hours
+
+      // Sorted array of {ms, phase} objects loaded from USNO or localStorage.
+      // Null means no data yet; formula fallback is used instead.
+      var _moonPhaseEvents = (function () {
+        try {
+          var raw = localStorage.getItem(MOON_PHASES_CACHE_KEY);
+          if (!raw) return null;
+          var parsed = JSON.parse(raw);
+          if (Date.now() - parsed.ts < MOON_PHASES_CACHE_MS &&
+              Array.isArray(parsed.events) && parsed.events.length >= 4) {
+            return parsed.events;
+          }
+        } catch (e) {}
+        return null;
+      }());
+
+      var _moonPhaseEventsPromise = null;
+
+      async function fetchMoonPhaseData() {
+        // If we already have cached events in memory, return them immediately.
+        if (Array.isArray(_moonPhaseEvents) && _moonPhaseEvents.length > 0) {
+          return _moonPhaseEvents;
+        }
+
+        // If a fetch is already in progress, share that promise.
+        if (_moonPhaseEventsPromise) {
+          return _moonPhaseEventsPromise;
+        }
+
+        // Start a new fetch and remember the in-flight promise.
+        _moonPhaseEventsPromise = (async function () {
+          try {
+            // Start 35 days ago so we always capture the most-recent New Moon event
+            // needed to anchor illumination calculations (a lunar cycle is ~29.5 days).
+            var LOOKBACK_DAYS = 35;
+            var ref = new Date(Date.now() - LOOKBACK_DAYS * 86400000);
+            var dateStr = ref.getUTCFullYear() + '-' +
+              String(ref.getUTCMonth() + 1).padStart(2, '0') + '-' +
+              String(ref.getUTCDate()).padStart(2, '0');
+            var resp = await fetch(
+              'https://aa.usno.navy.mil/api/moon/phases/date?date=' + dateStr + '&nump=20'
+            );
+            if (!resp.ok) throw new Error('USNO HTTP ' + resp.status);
+            var json = await resp.json();
+            if (json.error || !Array.isArray(json.phasedata)) throw new Error('USNO: bad response');
+            var events = json.phasedata
+              .map(function (ev) {
+                var parts = ev.time.split(':');
+                return {
+                  ms: Date.UTC(ev.year, ev.month - 1, ev.day, +parts[0], +parts[1]),
+                  phase: ev.phase,
+                };
+              })
+              .filter(function (e) { return isFinite(e.ms); })
+              .sort(function (a, b) { return a.ms - b.ms; });
+            if (events.length < 4) throw new Error('USNO: too few events');
+            _moonPhaseEvents = events;
+            try {
+              localStorage.setItem(MOON_PHASES_CACHE_KEY, JSON.stringify({ ts: Date.now(), events: events }));
+            } catch (e) {}
+            return events;
+          } catch (e) {
+            // API unavailable – formula fallback will be used
+            return null;
+          } finally {
+            // Allow future calls to trigger a fresh fetch if needed.
+            _moonPhaseEventsPromise = null;
+          }
+        })();
+
+        return _moonPhaseEventsPromise;
+      }
+
+      // Determine phase label from USNO event list.
+      // Major phase names are shown for up to 1.85 days after the event;
+      // in between, the transitional name is returned.
+      function _phaseNameFromEvents(nowMs, events) {
+        var prev = null;
+        for (var i = 0; i < events.length; i++) {
+          if (events[i].ms <= nowMs) prev = events[i];
+          else break;
+        }
+        if (!prev) return 'Waxing Crescent';
+        var daysSince = (nowMs - prev.ms) / 86400000;
+        if (daysSince <= 1.85) return prev.phase;
+        switch (prev.phase) {
+          case 'New Moon':      return 'Waxing Crescent';
+          case 'First Quarter': return 'Waxing Gibbous';
+          case 'Full Moon':     return 'Waning Gibbous';
+          case 'Last Quarter':  return 'Waning Crescent';
+          default:              return prev.phase;
+        }
+      }
+
+      // Build a full getMoonPhase result object from USNO events.
+      function _getMoonPhaseFromEvents(date, events) {
+        var nowMs = date.getTime();
+        var name  = _phaseNameFromEvents(nowMs, events);
+        var emoji = MOON_PHASE_EMOJI[name] || '\uD83C\uDF15';
+
+        // Illumination from days since last New Moon (anchored to exact USNO time)
+        var lastNew = null;
+        for (var i = 0; i < events.length; i++) {
+          if (events[i].phase === 'New Moon' && events[i].ms <= nowMs) lastNew = events[i];
+        }
+        var illum = 50, age = 0;
+        if (lastNew) {
+          var d = (nowMs - lastNew.ms) / 86400000;
+          age   = Math.round(d * 10) / 10;
+          illum = Math.round((1 - Math.cos(2 * Math.PI * d / LUNAR_CYCLE)) / 2 * 100);
+        }
+
+        // Days to next Full Moon and New Moon
+        var daysToFull = 0, daysToNew = 0;
+        for (var j = 0; j < events.length; j++) {
+          var ev = events[j];
+          if (ev.ms > nowMs) {
+            if (!daysToFull && ev.phase === 'Full Moon') {
+              var df = (ev.ms - nowMs) / 86400000;
+              daysToFull = Math.round(df * 10) / 10;
+            }
+            if (!daysToNew && ev.phase === 'New Moon') {
+              var dn = (ev.ms - nowMs) / 86400000;
+              daysToNew = Math.round(dn * 10) / 10;
+            }
+            if (daysToFull && daysToNew) break;
+          }
+        }
+        if (name === 'Full Moon') daysToFull = 0;
+        if (name === 'New Moon')  daysToNew  = 0;
+
+        return { emoji: emoji, name: name, illumination: illum, daysToFull: daysToFull, daysToNew: daysToNew, age: age };
+      }
+
+      // ── Formula fallback (used when USNO data is unavailable) ───────────────
+      function _getMoonPhaseCalc(date) {
         const MS_PER_DAY = 86400000;
         const rawAge = (date.getTime() - MOON_FULL_REF_MS) / MS_PER_DAY;
         const age = ((rawAge % LUNAR_CYCLE) + LUNAR_CYCLE) % LUNAR_CYCLE;
         const illum = Math.round((1 + Math.cos(2 * Math.PI * age / LUNAR_CYCLE)) / 2 * 100);
-        var emoji, name;
-        if (age < 1.85 || age >= 27.68)      { emoji = '\uD83C\uDF15'; name = 'Full Moon'; }
-        else if (age < 7.38)                  { emoji = '\uD83C\uDF16'; name = 'Waning Gibbous'; }
-        else if (age < 9.22)                  { emoji = '\uD83C\uDF17'; name = 'Last Quarter'; }
-        else if (age < 14.77)                 { emoji = '\uD83C\uDF18'; name = 'Waning Crescent'; }
-        else if (age < 16.61)                 { emoji = '\uD83C\uDF11'; name = 'New Moon'; }
-        else if (age < 22.15)                 { emoji = '\uD83C\uDF12'; name = 'Waxing Crescent'; }
-        else if (age < 24.0)                  { emoji = '\uD83C\uDF13'; name = 'First Quarter'; }
-        else                                  { emoji = '\uD83C\uDF14'; name = 'Waxing Gibbous'; }
+        var name;
+        if (age < 1.85 || age >= 27.68)      name = 'Full Moon';
+        else if (age < 7.38)                  name = 'Waning Gibbous';
+        else if (age < 9.22)                  name = 'Last Quarter';
+        else if (age < 14.77)                 name = 'Waning Crescent';
+        else if (age < 16.61)                 name = 'New Moon';
+        else if (age < 22.15)                 name = 'Waxing Crescent';
+        else if (age < 24.0)                  name = 'First Quarter';
+        else                                  name = 'Waxing Gibbous';
+        var emoji = MOON_PHASE_EMOJI[name] || '\uD83C\uDF15';
         var daysToFull;
         if (age < 1.85 || age >= 27.68) {
           daysToFull = 0;
         } else {
-          var fullPhaseStartAge = 27.68;
-          daysToFull = Math.round((fullPhaseStartAge - age) * 10) / 10;
+          daysToFull = Math.round((27.68 - age) * 10) / 10;
         }
         var daysToNew;
         if (age >= 14.77 && age < 16.61) {
@@ -6493,6 +6643,15 @@
           daysToNew = Math.round((LUNAR_CYCLE - age + 14.77) * 10) / 10;
         }
         return { emoji: emoji, name: name, illumination: illum, daysToFull: daysToFull, daysToNew: daysToNew, age: Math.round(age * 10) / 10 };
+      }
+
+      // ── Public API ──────────────────────────────────────────────────────────
+      // Uses USNO event data when available; falls back to formula otherwise.
+      function getMoonPhase(date) {
+        if (_moonPhaseEvents && _moonPhaseEvents.length >= 4) {
+          return _getMoonPhaseFromEvents(date, _moonPhaseEvents);
+        }
+        return _getMoonPhaseCalc(date);
       }
 
       // ─── MOON SPECIES MATRIX ─────────────────────────────────────────────────
@@ -8576,6 +8735,16 @@
         const allPeriods = forecast.slice(0, 14);
         const dayPeriods = forecast.filter((p) => p.isDaytime).slice(0, 7);
         const [showMoonModal, setShowMoonModal] = React.useState(false);
+        const [, _moonTick] = React.useState(0);
+
+        // Fetch USNO moon phase data on mount; re-render when it arrives
+        React.useEffect(function () {
+          if (!_moonPhaseEvents) {
+            fetchMoonPhaseData().then(function (events) {
+              if (events) _moonTick(function (n) { return n + 1; });
+            });
+          }
+        }, []);
 
         const todayPhase = getMoonPhase(new Date());
 
