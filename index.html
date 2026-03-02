@@ -2839,7 +2839,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       // ─── GA4 EVENT HELPER ─────────────────────────────────────
       const trackEvent = (name, params) => {
-        try { window.gtag('event', name, params || {}); } catch (e) { console.warn('GA4 tracking failed:', e); }
+        try {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push(Object.assign({ event: name }, params || {}));
+        } catch (e) { console.warn('GA4 tracking failed:', e); }
       };
 
       // ─── WATER BODY DATA ───────────────────────────────────────
