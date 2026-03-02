@@ -19,6 +19,31 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-M36K8X2Q');</script>
+    <script>
+      (function (w) {
+        // Ensure dataLayer exists (compatible with GTM snippet above)
+        w.dataLayer = w.dataLayer || [];
+
+        // Provide a minimal gtag shim that forwards events into dataLayer
+        if (typeof w.gtag !== 'function') {
+          w.gtag = function () {
+            var args = Array.prototype.slice.call(arguments);
+            if (!args.length) return;
+
+            var command = args[0];
+
+            // Handle gtag('event', eventName, params)
+            if (command === 'event' && typeof args[1] === 'string') {
+              var eventName = args[1];
+              var params = (args[2] && typeof args[2] === 'object') ? args[2] : {};
+              var payload = Object.assign({ event: eventName }, params);
+              w.dataLayer.push(payload);
+            }
+            // Other gtag commands can be extended here if needed
+          };
+        }
+      })(window);
+    </script>
     <!-- End Google Tag Manager -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
