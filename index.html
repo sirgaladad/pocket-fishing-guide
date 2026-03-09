@@ -7460,12 +7460,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             );
           if (usgs?.flow)
             lines.push(`\uD83D\uDCA7 Flow: ${usgs.flow.toLocaleString()} cfs`);
-          if (Number.isFinite(usgs?.gage))
-            lines.push(`\uD83D\uDCCF Lake level: ${usgs.gage.toFixed(2)} ft`);
+          if (Number.isFinite(usgs?.gage)) {
+            const stationLabel = usgs.summaryStationLabel || usgs.primaryStationLabel || 'USGS station';
+            lines.push(`\uD83D\uDCCF Gage: ${usgs.gage.toFixed(2)} ft at ${stationLabel}*`);
+          }
+          const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+          const clarity = deriveClarity(water, usgs?.flow);
+          const topLures = scoreLures(phase.name, clarity, usgs?.flow, lureMap, 'artificial');
+          const topLure = topLures?.[0];
+          if (topLure) {
+            lines.push(
+              `\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500`
+            );
+            lines.push(`\uD83C\uDFA3 Top Pick: ${topLure.name}`);
+            lines.push(`   ${topLure.detail}`);
+            lines.push(`   \u2192 https://pocketfishinguide.com#tackle`);
+          }
+          const tip = w?.tips?.[0]?.text;
+          if (tip) lines.push(`\uD83D\uDCA1 Pro Tip: ${tip}`);
           lines.push(
             `\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500`
           );
-          lines.push(`sirgaladad.github.io/pocket-fishing-guide`);
+          if (Number.isFinite(usgs?.gage)) {
+            const gageId = usgs.summaryStationId || usgs.primaryStationId || '';
+            lines.push(`*Gage height${gageId ? ` at USGS ${gageId}` : ''} \u2014 not lake depth.`);
+          }
+          lines.push(`https://pocketfishinguide.com`);
           return lines.join('\n');
         };
 
