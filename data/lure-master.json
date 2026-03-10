@@ -589,7 +589,7 @@
         "high_flow": 7,
         "low_flow": 9
       },
-      "phase_affinity": ["Striper Pre-Run", "Striper Run", "Striper Post-Spawn", "Striper Summer"]
+      "phase_affinity": ["Striper Winter Hold", "Striper Pre-Run", "Striper Run", "Striper Post-Spawn", "Striper Summer", "Striper Summer Deep"]
     },
     {
       "id": "lure_032",
@@ -741,7 +741,7 @@
         "high_flow": 9,
         "low_flow": 7
       },
-      "phase_affinity": ["Catfish Spring Feed", "Catfish Spawn", "Catfish Summer Night"]
+      "phase_affinity": ["Catfish Winter Deep", "Catfish Spring Feed", "Catfish Spawn", "Catfish Post-Spawn", "Catfish Summer Night"]
     },
     {
       "id": "lure_040",
@@ -760,7 +760,7 @@
         "high_flow": 8,
         "low_flow": 8
       },
-      "phase_affinity": ["Catfish Spring Feed", "Catfish Spawn", "Catfish Summer Night", "Catfish Winter Deep"]
+      "phase_affinity": ["Catfish Winter Deep", "Catfish Spring Feed", "Catfish Spawn", "Catfish Post-Spawn", "Catfish Summer Night"]
     },
     {
       "id": "lure_041",

@@ -6226,39 +6226,39 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         { name: 'Bass Summer Deep',    min: 80,  max: 999, color: '#ffd54f', icon: '\u2600\uFE0F', short: 'Bass pushed deep by heat. Target 15-25ft structure at dawn/dusk or night. Deep cranks and drop shots.' },
       ];
 
-      const BASS_N4 = { name: 'Finesse Drop Shot (4" Roboworm, 1/4oz weight)', sub: 'drop shot rig', detail: 'For pressured fish in clear water. Deadliest in summer.' };
-      const BASS_N5 = { name: 'Topwater Popper (Rebel Pop-R, chrome/black back)', sub: 'dawn/dusk topwater', detail: 'Pop-pause-pop during low-light windows.' };
+      const BASS_N4 = { id: 'lure_027', name: 'Finesse Drop Shot (4" Roboworm, 1/4oz weight)', sub: 'drop shot rig', detail: 'For pressured fish in clear water. Deadliest in summer.' };
+      const BASS_N5 = { id: 'lure_028', name: 'Topwater Popper (Rebel Pop-R, chrome/black back)', sub: 'dawn/dusk topwater', detail: 'Pop-pause-pop during low-light windows.' };
 
       const BASS_LURES_BY_PHASE = {
         'Bass Winter Lull': [
-          { name: 'Suspending Jerkbait (shad pattern, 4" Rapala)', sub: 'suspending, pause-twitch', detail: 'GO-TO. Pause 5-10 seconds in cold water. Deadly.' },
-          { name: '3/8oz Jig-and-Pig (black/blue)', sub: 'black/blue trailer', detail: 'Drag slowly along the deepest structure you can find.' },
+          { id: 'lure_024', name: 'Suspending Jerkbait (shad pattern, 4" Rapala)', sub: 'suspending, pause-twitch', detail: 'GO-TO. Pause 5-10 seconds in cold water. Deadly.' },
+          { id: 'lure_022', name: '3/8oz Jig-and-Pig (black/blue)', sub: 'black/blue trailer', detail: 'Drag slowly along the deepest structure you can find.' },
           BASS_N4, BASS_N5,
         ],
         'Bass Pre-Spawn': [
-          { name: 'Suspending Jerkbait (shad pattern, 4" Rapala)', sub: 'suspending, pause-twitch', detail: 'GO-TO. Hit secondary points and channel bends.' },
-          { name: '3/8oz Jig-and-Pig (black/blue)', sub: 'black/blue trailer', detail: 'Pitch to laydowns and dock posts on warming trend.' },
+          { id: 'lure_024', name: 'Suspending Jerkbait (shad pattern, 4" Rapala)', sub: 'suspending, pause-twitch', detail: 'GO-TO. Hit secondary points and channel bends.' },
+          { id: 'lure_022', name: '3/8oz Jig-and-Pig (black/blue)', sub: 'black/blue trailer', detail: 'Pitch to laydowns and dock posts on warming trend.' },
           BASS_N4, BASS_N5,
         ],
         'Bass Spawn Staging': [
-          { name: '3/8oz Jig-and-Pig (black/blue)', sub: 'black/blue trailer', detail: 'GO-TO. Work the base of dock posts and rocky cover.' },
-          { name: '7" Ribbon Tail Worm (Texas rig, 3/16oz)', sub: 'Texas rig, watermelon/june bug', detail: 'Drag slowly through spawning flats and coves.' },
+          { id: 'lure_022', name: '3/8oz Jig-and-Pig (black/blue)', sub: 'black/blue trailer', detail: 'GO-TO. Work the base of dock posts and rocky cover.' },
+          { id: 'lure_023', name: '7" Ribbon Tail Worm (Texas rig, 3/16oz)', sub: 'Texas rig, watermelon/june bug', detail: 'Drag slowly through spawning flats and coves.' },
           BASS_N4, BASS_N5,
         ],
         'Bass Peak Spawn': [
-          { name: '7" Ribbon Tail Worm (Texas rig, 3/16oz)', sub: 'Texas rig, slow drag', detail: 'GO-TO. Sight cast to visible beds. Slow drag into the bed.' },
-          { name: 'Hollow Body Frog (black/white)', sub: 'weedless topwater', detail: 'Walk over shallow mats and slop near bedding areas.' },
+          { id: 'lure_023', name: '7" Ribbon Tail Worm (Texas rig, 3/16oz)', sub: 'Texas rig, slow drag', detail: 'GO-TO. Sight cast to visible beds. Slow drag into the bed.' },
+          { id: 'lure_026', name: 'Hollow Body Frog (black/white)', sub: 'weedless topwater', detail: 'Walk over shallow mats and slop near bedding areas.' },
           BASS_N4, BASS_N5,
         ],
         'Bass Post-Spawn': [
-          { name: 'Topwater Popper (Rebel Pop-R, chrome/black back)', sub: 'dawn/dusk topwater', detail: 'GO-TO. Work creek mouths and main lake points at first light.' },
-          { name: 'Medium-Diving Crankbait (shad/crawfish, 6-10ft diver)', sub: '6-10ft diver', detail: 'Deflect off hard bottom and rocks. Reaction bites.' },
-          BASS_N4, BASS_N5,
+          BASS_N5,
+          { id: 'lure_025', name: 'Medium-Diving Crankbait (shad/crawfish, 6-10ft diver)', sub: '6-10ft diver', detail: 'Deflect off hard bottom and rocks. Reaction bites.' },
+          BASS_N4,
         ],
         'Bass Summer Deep': [
-          { name: 'Finesse Drop Shot (4" Roboworm, 1/4oz weight)', sub: 'deep drop shot', detail: 'GO-TO for summer deep bass. Hold over structure and shake.' },
-          { name: 'Medium-Diving Crankbait (shad/crawfish, 6-10ft diver)', sub: '6-10ft diver', detail: 'Troll or cast parallel to structure at dawn.' },
-          BASS_N4, BASS_N5,
+          BASS_N4,
+          { id: 'lure_025', name: 'Medium-Diving Crankbait (shad/crawfish, 6-10ft diver)', sub: '6-10ft diver', detail: 'Troll or cast parallel to structure at dawn.' },
+          BASS_N5,
         ],
       };
 
@@ -6298,39 +6298,39 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         { name: 'Striper Summer Deep',  min: 78,  max: 999, color: '#ef5350', icon: '\uD83D\uDCA7', short: 'Heat stress zone — stripers pushed very deep (30-40ft). Find thermocline on electronics and fish it.' },
       ];
 
-      const STRIPER_N4 = { name: 'Live Threadfin Shad (free-lined, #2/0 circle hook)', sub: 'free-lined, circle hook', detail: 'Most natural presentation. Keep shad alive in aerator.' };
-      const STRIPER_N5 = { name: 'Large Topwater Plug (Zara Spook, 4", chrome)', sub: 'walk-the-dog, chrome', detail: 'When they\'re busting, nothing beats this. Work it fast.' };
+      const STRIPER_N4 = { id: 'lure_031', name: 'Live Threadfin Shad (free-lined, #2/0 circle hook)', sub: 'free-lined, circle hook', detail: 'Most natural presentation. Keep shad alive in aerator.' };
+      const STRIPER_N5 = { id: 'lure_032', name: 'Large Topwater Plug (Zara Spook, 4", chrome)', sub: 'walk-the-dog, chrome', detail: 'When they\'re busting, nothing beats this. Work it fast.' };
 
       const STRIPER_LURES_BY_PHASE = {
         'Striper Winter Hold': [
-          { name: 'Umbrella Rig / Alabama Rig (5-wire, shad trailers)', sub: '5-wire, swimbait trailers', detail: 'GO-TO. School imitation works on deep winter stripers.' },
-          { name: 'Bucktail Jig 1oz (white/chartreuse)', sub: '1oz, white/chartreuse', detail: 'Vertical jig over deep structure. Match shad depth.' },
+          { id: 'lure_033', name: 'Umbrella Rig / Alabama Rig (5-wire, shad trailers)', sub: '5-wire, swimbait trailers', detail: 'GO-TO. School imitation works on deep winter stripers.' },
+          { id: 'lure_030', name: 'Bucktail Jig 1oz (white/chartreuse)', sub: '1oz, white/chartreuse', detail: 'Vertical jig over deep structure. Match shad depth.' },
           STRIPER_N4, STRIPER_N5,
         ],
         'Striper Pre-Run': [
-          { name: 'Bucktail Jig 1oz (white/chartreuse)', sub: '1oz, white/chartreuse', detail: 'GO-TO. Cast to current breaks near river channel mouths.' },
-          { name: '5" Paddle Tail Swimbait (white/silver, 1oz head)', sub: '1oz jighead, white/silver', detail: 'Slow steady retrieve along the current seam.' },
+          { id: 'lure_030', name: 'Bucktail Jig 1oz (white/chartreuse)', sub: '1oz, white/chartreuse', detail: 'GO-TO. Cast to current breaks near river channel mouths.' },
+          { id: 'lure_029', name: '5" Paddle Tail Swimbait (white/silver, 1oz head)', sub: '1oz jighead, white/silver', detail: 'Slow steady retrieve along the current seam.' },
           STRIPER_N4, STRIPER_N5,
         ],
         'Striper Run': [
-          { name: 'Bucktail Jig 1oz (white/chartreuse)', sub: '1oz, heavy current', detail: 'GO-TO. Work tailraces and current breaks. Heavy jig stays in zone.' },
-          { name: '5" Paddle Tail Swimbait (white/silver, 1oz head)', sub: 'cast and retrieve', detail: 'Fan cast current seams. Retrieve through the strike zone.' },
+          { id: 'lure_030', name: 'Bucktail Jig 1oz (white/chartreuse)', sub: '1oz, heavy current', detail: 'GO-TO. Work tailraces and current breaks. Heavy jig stays in zone.' },
+          { id: 'lure_029', name: '5" Paddle Tail Swimbait (white/silver, 1oz head)', sub: 'cast and retrieve', detail: 'Fan cast current seams. Retrieve through the strike zone.' },
           STRIPER_N4, STRIPER_N5,
         ],
         'Striper Post-Spawn': [
-          { name: 'Large Topwater Plug (Zara Spook, 4", chrome)', sub: 'walk-the-dog, dawn', detail: 'GO-TO. Walk through schooling fish at first light.' },
-          { name: '5" Paddle Tail Swimbait (white/silver, 1oz head)', sub: 'mid-column retrieve', detail: 'Match depth to feeding fish. Electronics help.' },
-          STRIPER_N4, STRIPER_N5,
+          STRIPER_N5,
+          { id: 'lure_029', name: '5" Paddle Tail Swimbait (white/silver, 1oz head)', sub: 'mid-column retrieve', detail: 'Match depth to feeding fish. Electronics help.' },
+          STRIPER_N4,
         ],
         'Striper Summer': [
-          { name: '5" Paddle Tail Swimbait (white/silver, 1oz head)', sub: 'thermocline depth', detail: 'GO-TO. Locate thermocline, match depth with swimbait.' },
-          { name: 'Live Threadfin Shad (free-lined, #2/0 circle hook)', sub: 'free-lined at thermocline', detail: 'Keep shad alive, fish at exact thermocline depth.' },
-          STRIPER_N4, STRIPER_N5,
+          { id: 'lure_029', name: '5" Paddle Tail Swimbait (white/silver, 1oz head)', sub: 'thermocline depth', detail: 'GO-TO. Locate thermocline, match depth with swimbait.' },
+          STRIPER_N4,
+          STRIPER_N5,
         ],
         'Striper Summer Deep': [
-          { name: 'Live Threadfin Shad (free-lined, #2/0 circle hook)', sub: 'deep presentation', detail: 'GO-TO. Fish very deep (30-40ft) near structure. Hardest to find, biggest fish.' },
-          { name: 'Umbrella Rig / Alabama Rig (5-wire, shad trailers)', sub: 'deep vertical', detail: 'Vertical presentation at extreme depth. Electronics required.' },
-          STRIPER_N4, STRIPER_N5,
+          STRIPER_N4,
+          { id: 'lure_033', name: 'Umbrella Rig / Alabama Rig (5-wire, shad trailers)', sub: 'deep vertical', detail: 'Vertical presentation at extreme depth. Electronics required.' },
+          STRIPER_N5,
         ],
       };
 
@@ -6369,34 +6369,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         { name: 'Sunfish Summer Active', min: 82,  max: 999, color: '#ffd54f', icon: '\u2600\uFE0F', short: 'Early morning and evening topwater bite. Shade is key at midday. Night fishing under lights with crickets.' },
       ];
 
-      const SUNFISH_N4 = { name: 'Beetle Spin 1/16oz (yellow/black)', sub: 'yellow/black, slow roll', detail: 'Almost universally effective on sunfish. Fish it slow.' };
-      const SUNFISH_N5 = { name: 'Live Cricket on #6 Hook (under slip bobber)', sub: 'slip bobber, 2-3ft', detail: 'Never fails. Classic Arkansas panfish setup.' };
+      const SUNFISH_N4 = { id: 'lure_034', name: 'Beetle Spin 1/16oz (yellow/black)', sub: 'yellow/black, slow roll', detail: 'Almost universally effective on sunfish. Fish it slow.' };
+      const SUNFISH_N5 = { id: 'lure_035', name: 'Live Cricket on #6 Hook (under slip bobber)', sub: 'slip bobber, 2-3ft', detail: 'Never fails. Classic Arkansas panfish setup.' };
 
       const SUNFISH_LURES_BY_PHASE = {
         'Sunfish Winter Slow': [
-          { name: 'Wax Worm on #8 Hook (tight-line, no weight)', sub: 'no weight, tight-line', detail: 'GO-TO in cold water. Drop to the bottom near deep wood.' },
-          { name: '1/32oz Crappie Jig (pink/chartreuse)', sub: 'pink/chartreuse, slow lift', detail: 'Tiny jig fished painfully slow near the bottom.' },
+          { id: 'lure_036', name: 'Wax Worm on #8 Hook (tight-line, no weight)', sub: 'no weight, tight-line', detail: 'GO-TO in cold water. Drop to the bottom near deep wood.' },
+          { id: 'lure_013', name: '1/32oz Crappie Jig (pink/chartreuse)', sub: 'pink/chartreuse, slow lift', detail: 'Tiny jig fished painfully slow near the bottom.' },
           SUNFISH_N4, SUNFISH_N5,
         ],
         'Sunfish Pre-Spawn': [
-          { name: 'Live Cricket on #6 Hook (under slip bobber)', sub: 'slip bobber, dock edges', detail: 'GO-TO. Set 2-3ft near docks and weed edges.' },
-          { name: 'Beetle Spin 1/16oz (yellow/black)', sub: 'slow roll, shallow', detail: 'Slow-roll along warming shallow banks and dock edges.' },
-          SUNFISH_N4, SUNFISH_N5,
+          SUNFISH_N5,
+          SUNFISH_N4,
         ],
         'Sunfish Bed Spawn': [
-          { name: 'Live Cricket on #6 Hook (under slip bobber)', sub: 'slip bobber over beds', detail: 'GO-TO. Spot beds in 1-3ft and drift cricket over them.' },
-          { name: 'Foam Popper Spider (#10, deer hair legs)', sub: 'foam popper, fly rod', detail: 'Pop and wait. Explosive surface strikes on beds.' },
-          SUNFISH_N4, SUNFISH_N5,
+          SUNFISH_N5,
+          { id: 'lure_037', name: 'Foam Popper Spider (#10, deer hair legs)', sub: 'foam popper, fly rod', detail: 'Pop and wait. Explosive surface strikes on beds.' },
+          SUNFISH_N4,
         ],
         'Sunfish Post-Spawn': [
-          { name: 'Beetle Spin 1/16oz (yellow/black)', sub: 'slow roll near shade', detail: 'GO-TO. Target shaded dock edges and overhanging trees.' },
-          { name: 'Live Cricket on #6 Hook (under slip bobber)', sub: 'evening presentation', detail: 'Evening session near docks and calm banks.' },
-          SUNFISH_N4, SUNFISH_N5,
+          SUNFISH_N4,
+          SUNFISH_N5,
         ],
         'Sunfish Summer Active': [
-          { name: 'Small Inline Spinner 1/32oz (Mepps #0, gold blade)', sub: 'Mepps #0, dawn retrieve', detail: 'GO-TO at dawn. Slow retrieve through shady cover.' },
-          { name: 'Live Cricket on #6 Hook (under slip bobber)', sub: 'evening bite', detail: 'Classic evening session. Set near lights or dock edges.' },
-          SUNFISH_N4, SUNFISH_N5,
+          { id: 'lure_038', name: 'Small Inline Spinner 1/32oz (Mepps #0, gold blade)', sub: 'Mepps #0, dawn retrieve', detail: 'GO-TO at dawn. Slow retrieve through shady cover.' },
+          SUNFISH_N4,
+          SUNFISH_N5,
         ],
       };
 
@@ -6432,34 +6430,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         { name: 'Catfish Summer Night',  min: 82,  max: 999, color: '#ffd54f', icon: '\uD83C\uDF19', short: 'Summer catfish go nocturnal. Night bite on cut shad and livers near current and structure. Best action 10pm-2am.' },
       ];
 
-      const CATFISH_N4 = { name: 'Fresh Cut Shad (3" chunk, #3/0 circle hook)', sub: 'cut shad, circle hook', detail: 'Best big-cat bait. Keep it fresh. Target holes and tailwaters.' };
-      const CATFISH_N5 = { name: 'Chicken Liver on #2 Treble Hook (slip sinker rig)', sub: 'slip sinker, current edge', detail: 'Channel cat magnet. Let current carry scent.' };
+      const CATFISH_N4 = { id: 'lure_040', name: 'Fresh Cut Shad (3" chunk, #3/0 circle hook)', sub: 'cut shad, circle hook', detail: 'Best big-cat bait. Keep it fresh. Target holes and tailwaters.' };
+      const CATFISH_N5 = { id: 'lure_039', name: 'Chicken Liver on #2 Treble Hook (slip sinker rig)', sub: 'slip sinker, current edge', detail: 'Channel cat magnet. Let current carry scent.' };
 
       const CATFISH_LURES_BY_PHASE = {
         'Catfish Winter Deep': [
-          { name: 'Fresh Cut Shad (3" chunk, #3/0 circle hook)', sub: 'heavy sinker, deep hole', detail: 'GO-TO. Fish deep holes (20-30ft) with heavy weight. Slow night.' },
-          { name: 'Punch Bait / Stink Bait (dip tube rig)', sub: 'dip tube, still water', detail: 'Stink bait in slow deep holes. Long soak required.' },
-          CATFISH_N4, CATFISH_N5,
+          CATFISH_N4,
+          { id: 'lure_042', name: 'Punch Bait / Stink Bait (dip tube rig)', sub: 'dip tube, still water', detail: 'Stink bait in slow deep holes. Long soak required.' },
+          CATFISH_N5,
         ],
         'Catfish Spring Feed': [
-          { name: 'Chicken Liver on #2 Treble Hook (slip sinker rig)', sub: 'slip sinker, current edge', detail: 'GO-TO. Fish current seams and channel bends. Let scent drift.' },
-          { name: 'Live Nightcrawler on #4 Circle Hook (no weight, drift)', sub: 'drift, no weight', detail: 'Drift along bottom in current. Great for channel cats.' },
-          CATFISH_N4, CATFISH_N5,
+          CATFISH_N5,
+          { id: 'lure_041', name: 'Live Nightcrawler on #4 Circle Hook (no weight, drift)', sub: 'drift, no weight', detail: 'Drift along bottom in current. Great for channel cats.' },
+          CATFISH_N4,
         ],
         'Catfish Spawn': [
-          { name: 'Live Perch / Sunfish (3-4", #3/0 hook)', sub: 'live bait near structure', detail: 'GO-TO for flatheads. Fish near deep timber at night during spawn.' },
-          { name: 'Fresh Cut Shad (3" chunk, #3/0 circle hook)', sub: 'fresh cut bait', detail: 'Best for blue cats in tailwaters. Stay fresh, change every 30min.' },
-          CATFISH_N4, CATFISH_N5,
+          { id: 'lure_043', name: 'Live Perch / Sunfish (3-4", #3/0 hook)', sub: 'live bait near structure', detail: 'GO-TO for flatheads. Fish near deep timber at night during spawn.' },
+          CATFISH_N4,
+          CATFISH_N5,
         ],
         'Catfish Post-Spawn': [
-          { name: 'Fresh Cut Shad (3" chunk, #3/0 circle hook)', sub: 'current seam, post-spawn', detail: 'GO-TO. Aggressive feeding. Current seams and tailraces loaded.' },
-          { name: 'Chicken Liver on #2 Treble Hook (slip sinker rig)', sub: 'slip sinker', detail: 'Set in current break. Post-spawn cats actively chasing scent.' },
-          CATFISH_N4, CATFISH_N5,
+          CATFISH_N4,
+          CATFISH_N5,
         ],
         'Catfish Summer Night': [
-          { name: 'Fresh Cut Shad (3" chunk, #3/0 circle hook)', sub: 'night, current edge', detail: 'GO-TO. Night bite is prime. Set multiple rods in current seams.' },
-          { name: 'Live Perch / Sunfish (3-4", #3/0 hook)', sub: 'live bait, night', detail: 'Big flatheads on live bait at night. Patience required.' },
-          CATFISH_N4, CATFISH_N5,
+          CATFISH_N4,
+          { id: 'lure_043', name: 'Live Perch / Sunfish (3-4", #3/0 hook)', sub: 'live bait, night', detail: 'Big flatheads on live bait at night. Patience required.' },
+          CATFISH_N5,
         ],
       };
 
@@ -6495,28 +6492,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         { name: 'Trout Fall Run',         min: 45,  max: 58,  color: '#ff6b35', icon: '\uD83C\uDF42', short: 'Brown trout spawn run in fall. Large aggressive fish in tailwaters. Streamer and egg patterns work.' },
       ];
 
-      const TROUT_N4 = { name: 'San Juan Worm (red/pink, #12)', sub: 'dead drift, near bottom', detail: 'Deadliest tailwater fly. Dead drift along the bottom.' };
-      const TROUT_N5 = { name: 'Mepps Aglia #2 Spinner (gold blade, squirrel tail)', sub: 'cast upstream, steady retrieve', detail: 'Best all-around trout spinner. Works all seasons.' };
+      const TROUT_N4 = { id: 'lure_047', name: 'San Juan Worm (red/pink, #12)', sub: 'dead drift, near bottom', detail: 'Deadliest tailwater fly. Dead drift along the bottom.' };
+      const TROUT_N5 = { id: 'lure_044', name: 'Mepps Aglia #2 Spinner (gold blade, squirrel tail)', sub: 'cast upstream, steady retrieve', detail: 'Best all-around trout spinner. Works all seasons.' };
 
       const TROUT_LURES_BY_PHASE = {
         'Trout Winter Tailwater': [
-          { name: 'San Juan Worm (red/pink, #12)', sub: 'dead drift near bottom', detail: 'GO-TO. Dead drift along tailwater bottom. Trout can\'t resist.' },
-          { name: 'Woolly Bugger (olive/black, #8)', sub: 'strip retrieve or dead drift', detail: 'Larger pattern for big browns and rainbows.' },
-          TROUT_N4, TROUT_N5,
+          TROUT_N4,
+          { id: 'lure_049', name: 'Woolly Bugger (olive/black, #8)', sub: 'strip retrieve or dead drift', detail: 'Larger pattern for big browns and rainbows.' },
+          TROUT_N5,
         ],
         'Trout Stocking Active': [
-          { name: 'PowerBait Dough (rainbow/chartreuse, #14 treble)', sub: 'float rig, 12" off bottom', detail: 'GO-TO for stockers. Berkley scent carries far. Leave it soaking.' },
-          { name: 'Mepps Aglia #2 Spinner (gold blade, squirrel tail)', sub: 'cast upstream, retrieve', detail: 'Stockers hit spinners immediately. Steady retrieve.' },
-          TROUT_N4, TROUT_N5,
+          { id: 'lure_045', name: 'PowerBait Dough (rainbow/chartreuse, #14 treble)', sub: 'float rig, 12" off bottom', detail: 'GO-TO for stockers. Berkley scent carries far. Leave it soaking.' },
+          TROUT_N5,
+          TROUT_N4,
         ],
         'Trout Spring Prime': [
-          { name: 'Elk Hair Caddis (tan, #14)', sub: 'dry fly, dead drift', detail: 'GO-TO during caddis hatches. Evening dry fly action is excellent.' },
-          { name: 'Mepps Aglia #2 Spinner (gold blade, squirrel tail)', sub: 'upstream cast', detail: 'Cast upstream in riffles. Retrieve through runs and pools.' },
-          TROUT_N4, TROUT_N5,
+          { id: 'lure_048', name: 'Elk Hair Caddis (tan, #14)', sub: 'dry fly, dead drift', detail: 'GO-TO during caddis hatches. Evening dry fly action is excellent.' },
+          TROUT_N5,
+          TROUT_N4,
         ],
         'Trout Fall Run': [
-          { name: 'Woolly Bugger (olive/black, #8)', sub: 'streamer, strip fast', detail: 'GO-TO for fall brown trout. Strip aggressively near spawning browns.' },
-          { name: 'Salmon Egg / Egg Pattern Fly (bead, 6mm pink)', sub: 'dead drift indicator', detail: 'Egg patterns deadly in fall below dam outlets.' },
+          { id: 'lure_049', name: 'Woolly Bugger (olive/black, #8)', sub: 'streamer, strip fast', detail: 'GO-TO for fall brown trout. Strip aggressively near spawning browns.' },
+          { id: 'lure_046', name: 'Salmon Egg / Egg Pattern Fly (bead, 6mm pink)', sub: 'dead drift indicator', detail: 'Egg patterns deadly in fall below dam outlets.' },
           TROUT_N4, TROUT_N5,
         ],
       };
@@ -6551,39 +6548,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         { name: 'Walleye Fall Active',  min: 48,  max: 60,  color: '#ff7043', icon: '\uD83C\uDF42', short: 'Fall walleye chase shad near main lake structure. Crankbaits and jig-minnow combos. Excellent pre-winter action.' },
       ];
 
-      const WALLEYE_N4 = { name: 'Jig + Live Minnow (1/4oz chartreuse jighead)', sub: '1/4oz, live minnow', detail: 'Never fails for walleye. Bounce along bottom structure.' };
-      const WALLEYE_N5 = { name: 'Jigging Rapala (VMC #5, silver/blue)', sub: 'vertical jigging', detail: 'Lift-fall presentation at thermocline. Walleye can\'t resist it.' };
+      const WALLEYE_N4 = { id: 'lure_050', name: 'Jig + Live Minnow (1/4oz chartreuse jighead)', sub: '1/4oz, live minnow', detail: 'Never fails for walleye. Bounce along bottom structure.' };
+      const WALLEYE_N5 = { id: 'lure_054', name: 'Jigging Rapala (VMC #5, silver/blue)', sub: 'vertical jigging', detail: 'Lift-fall presentation at thermocline. Walleye can\'t resist it.' };
 
       const WALLEYE_LURES_BY_PHASE = {
         'Walleye Winter Hold': [
-          { name: 'Jigging Rapala (VMC #5, silver/blue)', sub: 'vertical jigging', detail: 'GO-TO. Slow vertical jigging over deep main lake structure at dusk.' },
-          { name: 'Jig + Live Minnow (1/4oz chartreuse jighead)', sub: '1/4oz, slow bounce', detail: 'Drag painfully slow along bottom through the coldest days.' },
-          WALLEYE_N4, WALLEYE_N5,
+          WALLEYE_N5,
+          WALLEYE_N4,
         ],
         'Walleye Pre-Spawn': [
-          { name: 'Jig + Live Minnow (1/4oz chartreuse jighead)', sub: '1/4oz, channel edges', detail: 'GO-TO. Bounce along channel-to-gravel transitions at dusk.' },
-          { name: 'Flicker Shad Crankbait (size 5, fire tiger)', sub: 'fire tiger, shallow', detail: 'Cast parallel to rocky banks and riprap.' },
-          WALLEYE_N4, WALLEYE_N5,
+          WALLEYE_N4,
+          { id: 'lure_053', name: 'Flicker Shad Crankbait (size 5, fire tiger)', sub: 'fire tiger, shallow', detail: 'Cast parallel to rocky banks and riprap.' },
+          WALLEYE_N5,
         ],
         'Walleye Spawn Run': [
-          { name: 'Flicker Shad Crankbait (size 5, fire tiger)', sub: 'fire tiger, slow troll', detail: 'GO-TO. Troll along rocky points and riprap at night.' },
-          { name: 'Jig + Live Minnow (1/4oz chartreuse jighead)', sub: 'pitch to rocks', detail: 'Pitch near rocky shallows and gravel bars at night.' },
-          WALLEYE_N4, WALLEYE_N5,
+          { id: 'lure_053', name: 'Flicker Shad Crankbait (size 5, fire tiger)', sub: 'fire tiger, slow troll', detail: 'GO-TO. Troll along rocky points and riprap at night.' },
+          WALLEYE_N4,
+          WALLEYE_N5,
         ],
         'Walleye Post-Spawn': [
-          { name: 'Nightcrawler Harness (spinner blades, #4 hook)', sub: 'Colorado blade, slow troll', detail: 'GO-TO. Slow troll hard bottom transitions. Deadly in spring.' },
-          { name: 'Bottom Bouncer + Crankbait (3/4oz bouncer, shad)', sub: 'troll at 1.5mph', detail: 'Work channel edges and hard transitions. Snap bottom.' },
+          { id: 'lure_051', name: 'Nightcrawler Harness (spinner blades, #4 hook)', sub: 'Colorado blade, slow troll', detail: 'GO-TO. Slow troll hard bottom transitions. Deadly in spring.' },
+          { id: 'lure_052', name: 'Bottom Bouncer + Crankbait (3/4oz bouncer, shad)', sub: 'troll at 1.5mph', detail: 'Work channel edges and hard transitions. Snap bottom.' },
           WALLEYE_N4, WALLEYE_N5,
         ],
         'Walleye Summer Pattern': [
-          { name: 'Jigging Rapala (VMC #5, silver/blue)', sub: 'deep vertical, night', detail: 'GO-TO. Night fish deep structure (15-25ft). Lift-fall.' },
-          { name: 'Bottom Bouncer + Crankbait (3/4oz bouncer, shad)', sub: 'deep troll at dusk', detail: 'Troll deep channel edges at dusk and dawn.' },
-          WALLEYE_N4, WALLEYE_N5,
+          WALLEYE_N5,
+          { id: 'lure_052', name: 'Bottom Bouncer + Crankbait (3/4oz bouncer, shad)', sub: 'deep troll at dusk', detail: 'Troll deep channel edges at dusk and dawn.' },
+          WALLEYE_N4,
         ],
         'Walleye Fall Active': [
-          { name: 'Flicker Shad Crankbait (size 5, fire tiger)', sub: 'fire tiger, fall troll', detail: 'GO-TO. Troll main lake structure as water cools.' },
-          { name: 'Jig + Live Minnow (1/4oz chartreuse jighead)', sub: 'pitch to points', detail: 'Pitch to main lake points and secondary structure.' },
-          WALLEYE_N4, WALLEYE_N5,
+          { id: 'lure_053', name: 'Flicker Shad Crankbait (size 5, fire tiger)', sub: 'fire tiger, fall troll', detail: 'GO-TO. Troll main lake structure as water cools.' },
+          WALLEYE_N4,
+          WALLEYE_N5,
         ],
       };
 
@@ -6620,24 +6616,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         { name: 'Specialty Summer Warm',    min: 68,  max: 999, color: '#ffd54f', icon: '\u2600\uFE0F', short: 'Peak gar and bowfin season. Surface rolling visible. Dawn/dusk best. Paddlefish snag season varies — check regulations.' },
       ];
 
-      const SPECIALTY_N4 = { name: 'Rope Lure (nylon rope frayed, unweighted)', sub: 'frayed nylon, 6-8"', detail: 'Traditional gar lure. No hook needed — teeth tangle in rope.' };
-      const SPECIALTY_N5 = { name: 'Spinnerbait 3/8oz (chartreuse/white skirt)', sub: 'willow blade, slow roll', detail: 'Works for bowfin and gar near vegetation. Slow-roll.' };
+      const SPECIALTY_N4 = { id: 'lure_055', name: 'Rope Lure (nylon rope frayed, unweighted)', sub: 'frayed nylon, 6-8"', detail: 'Traditional gar lure. No hook needed — teeth tangle in rope.' };
+      const SPECIALTY_N5 = { id: 'lure_057', name: 'Spinnerbait 3/8oz (chartreuse/white skirt)', sub: 'willow blade, slow roll', detail: 'Works for bowfin and gar near vegetation. Slow-roll.' };
 
       const SPECIALTY_LURES_BY_PHASE = {
         'Specialty Winter Cold': [
-          { name: 'Large Sucker / Carp Bait (6-8", freeline)', sub: 'large live bait, deep', detail: 'GO-TO for alligator gar near deep slow backwaters in winter.' },
-          { name: 'Rope Lure (nylon rope frayed, unweighted)', sub: 'cast near surface rolls', detail: 'Even in cool weather, gar will strike rope near surface.' },
-          SPECIALTY_N4, SPECIALTY_N5,
+          { id: 'lure_056', name: 'Large Sucker / Carp Bait (6-8", freeline)', sub: 'large live bait, deep', detail: 'GO-TO for alligator gar near deep slow backwaters in winter.' },
+          SPECIALTY_N4,
+          SPECIALTY_N5,
         ],
         'Specialty Spring Active': [
-          { name: 'Rope Lure (nylon rope frayed, unweighted)', sub: 'cast to spawning gar', detail: 'GO-TO for longnose and alligator gar. Prime season.' },
-          { name: 'Spinnerbait 3/8oz (chartreuse/white skirt)', sub: 'through vegetation', detail: 'Excellent for bowfin in spawning backwaters.' },
-          SPECIALTY_N4, SPECIALTY_N5,
+          SPECIALTY_N4,
+          SPECIALTY_N5,
         ],
         'Specialty Summer Warm': [
-          { name: 'Rope Lure (nylon rope frayed, unweighted)', sub: 'cast to surface rolling gar', detail: 'GO-TO. Gar roll on the surface to breathe. Cast right to them.' },
-          { name: 'Large Sucker / Carp Bait (6-8", freeline)', sub: 'large live bait, backwater', detail: 'Best for trophy alligator gar in slow warm backwaters.' },
-          SPECIALTY_N4, SPECIALTY_N5,
+          SPECIALTY_N4,
+          { id: 'lure_056', name: 'Large Sucker / Carp Bait (6-8", freeline)', sub: 'large live bait, backwater', detail: 'Best for trophy alligator gar in slow warm backwaters.' },
+          SPECIALTY_N5,
         ],
       };
 
@@ -6912,8 +6907,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       // Returns spawn trigger temperature (°F) for the given species, or null when
-      // species-specific data has not yet been authored. Always guard callers with
-      // Number.isFinite(spawnTrigger) before using the value.
+      // the species has no temperature-based spawn model. This can mean either:
+      //   (a) species data has not yet been authored (unimplemented species), or
+      //   (b) the species is implemented but uses a stocking/season-based system
+      //       with no meaningful spawn temperature trigger (e.g. rainbow, cutthroat, brook trout).
+      // Always guard callers with Number.isFinite(spawnTrigger) before using the value.
+      // Use isSpeciesImplemented(speciesId) to distinguish case (a) from case (b).
       // @param {string} speciesId
       // @returns {number|null}
       function getSpeciesSpawnTrigger(speciesId) {
@@ -6928,8 +6927,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (speciesId === 'sauger') return 48;
         if (speciesId === 'walleye' || speciesId === 'saugeye') return 50;
         if (speciesId === 'browntrout') return 52;
+        if (SPECIALTY_IDS.has(speciesId)) return 65;
         // rainbow, cutthroat, brook: stocking-driven, no temp-based spawn trigger
-        // specialty (paddlefish, gar, bowfin): no spawn signal modeled
         return null;
       }
 
@@ -6947,6 +6946,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (CATFISH_IDS.has(speciesId)) return 62;
         if (speciesId === 'sauger') return 42;
         if (speciesId === 'walleye' || speciesId === 'saugeye') return 44;
+        if (speciesId === 'browntrout') return 45;
+        if (SPECIALTY_IDS.has(speciesId)) return 50;
         return null;
       }
 
@@ -7345,7 +7346,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         // For species without authored spawn data, emit a neutral WAIT signal so
         // "GO FISH!" never fires at the wrong temperature trigger.
+        // Implemented species without a spawn-trigger model (stocking-driven trout) get
+        // a "Season Guide" label instead of "No Species Data" so the UI stays consistent.
         if (!Number.isFinite(spawnTrigger)) {
+          if (isSpeciesImplemented(species)) {
+            return {
+              signal: "wait",
+              icon: "\uD83D\uDCC5",
+              label: "SEASON",
+              cls: "wait",
+              signal_score: 30,
+              condition_label: "See Season Guide",
+              wading_safety: null,
+            };
+          }
           return {
             signal: "wait",
             icon: "\u23F3",
@@ -7366,7 +7380,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           cls = "go";
           signal_score = 80;
           condition_label = "Prime Spawn";
-        } else if (temp >= scoutTemp) {
+        } else if (Number.isFinite(scoutTemp) && temp >= scoutTemp) {
           signal = "scout";
           icon = "\uD83D\uDC40";
           label = "SCOUT";
