@@ -6446,6 +6446,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       // All others show a "coming soon" stub instead of silently falling back to WB data.
       const IMPLEMENTED_SPECIES = new Set(['wb', 'cr', 'blkcrappie', 'whtcrappie']);
 
+      // Returns true when species-specific phase/lure/calendar data is fully authored.
+      // @param {string} speciesId
+      // @returns {boolean}
       function isSpeciesImplemented(speciesId) {
         return IMPLEMENTED_SPECIES.has(speciesId);
       }
@@ -6453,13 +6456,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       // Returns spawn trigger temperature (°F) for the given species, or null when
       // species-specific data has not yet been authored. Always guard callers with
       // Number.isFinite(spawnTrigger) before using the value.
+      // @param {string} speciesId
+      // @returns {number|null}
       function getSpeciesSpawnTrigger(speciesId) {
         if (CRAPPIE_IDS.has(speciesId)) return 60;
         if (speciesId === 'wb') return 50;
         return null;
       }
 
-      // Returns pre-spawn scout temperature (°F) for the given species, or null.
+      // Returns pre-spawn scout temperature (°F) for the given species, or null when
+      // species data is not yet authored. Guard callers with Number.isFinite(scoutTemp).
+      // @param {string} speciesId
+      // @returns {number|null}
       function getSpeciesScoutTemp(speciesId) {
         if (CRAPPIE_IDS.has(speciesId)) return 55;
         if (speciesId === 'wb') return 45;
