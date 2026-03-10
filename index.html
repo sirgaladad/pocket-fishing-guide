@@ -5850,8 +5850,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         },
       ];
 
-      const PHASES = WB_PHASES; // default
-
       // Shared n4/n5 lures added to all white bass phases
       const WB_N4 = { name: 'Topwater White Tiny Torpedo (surface bait)', sub: 'surface bait', detail: 'Dawn/dusk bite. Walk-the-dog through surface schools.' };
       const WB_N5 = { name: 'Paddle Tail Swimbait White (3" on 1/8oz head)', sub: '3" swimbait on 1/8oz head', detail: 'Match schooling shad depth. Steady retrieve at thermocline.' };
@@ -5948,9 +5946,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             detail: 'Cover water along main body shorelines.',
           },
           {
-            name: 'Topwater White Tiny Torpedo (surface bait)',
-            sub: 'surface bait',
-            detail: 'Early morning surface bites can be explosive post-spawn.',
+            name: 'Live Shad on #4 Hook (free-line)',
+            sub: 'free-line',
+            detail: 'Free-line live shad around current seams and schooling activity.',
           },
           WB_N4,
           WB_N5,
@@ -6211,9 +6209,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           lures: 'Jigging spoons, small swimbaits, live minnow under light',
         },
       ];
-
-      const CALENDAR_PHASES = WB_CALENDAR;
-
       // ─── SHARED TECHNIQUE LOOKUP DATA ─────────────────────────
       const WB_WHERE = {
         'Winter Hold':
@@ -6271,6 +6266,43 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         'Summer Suspend':
           'Jigging spoon (1/8oz) at thermocline. Small swimbaits. Night fish with lights.',
       };
+
+      function getSpeciesLureMap(speciesId) {
+        const normalized = normalizeSpeciesId(speciesId);
+        if (normalized === 'cr') return CR_LURES_BY_PHASE;
+        if (normalized === 'wb') return LURES_BY_PHASE;
+        return {};
+      }
+
+      function getSpeciesCalendar(speciesId) {
+        const normalized = normalizeSpeciesId(speciesId);
+        if (normalized === 'cr') return CR_CALENDAR;
+        if (normalized === 'wb') return WB_CALENDAR;
+        return [];
+      }
+
+      function getSpeciesWhere(speciesId) {
+        const normalized = normalizeSpeciesId(speciesId);
+        if (normalized === 'cr') return CR_WHERE;
+        if (normalized === 'wb') return WB_WHERE;
+        return {};
+      }
+
+      function getSpeciesWhat(speciesId) {
+        const normalized = normalizeSpeciesId(speciesId);
+        if (normalized === 'cr') return CR_WHAT;
+        if (normalized === 'wb') return WB_WHAT;
+        return {};
+      }
+
+      function getSpeciesTipsForWater(waterKey, speciesId) {
+        const w = WATERS[waterKey];
+        if (!w) return null;
+        const normalized = normalizeSpeciesId(speciesId);
+        if (normalized === 'cr' && w.crTips) return w.crTips;
+        return w.tips || null;
+      }
+
       const CAT_COLORS = {
         Behavior: '#29b6f6',
         Timing: '#ff6b35',
@@ -6439,6 +6471,49 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       // All crappie sub-types that share CR phases, lure maps, and tips
       const CRAPPIE_IDS = new Set(['cr', 'blkcrappie', 'whtcrappie']);
+      const SUPPORTED_SPECIES = new Set(['wb', 'cr']);
+
+      const STUB_PHASES = [
+        {
+          name: 'Data Coming Soon',
+          min: -Infinity,
+          max: Infinity,
+          color: '#9e9e9e',
+          icon: '\u23F3',
+          short: 'Species data coming soon. Check back soon for full techniques.',
+        },
+      ];
+
+      function normalizeSpeciesId(speciesId) {
+        if (!speciesId) return 'wb';
+        if (CRAPPIE_IDS.has(speciesId)) return 'cr';
+        return speciesId;
+      }
+
+      function isSupportedSpecies(speciesId) {
+        return SUPPORTED_SPECIES.has(normalizeSpeciesId(speciesId));
+      }
+
+      function getSpeciesPhases(speciesId) {
+        const normalized = normalizeSpeciesId(speciesId);
+        if (normalized === 'cr') return CR_PHASES;
+        if (normalized === 'wb') return WB_PHASES;
+        return STUB_PHASES;
+      }
+
+      function getSpeciesSpawnTrigger(speciesId) {
+        const normalized = normalizeSpeciesId(speciesId);
+        if (normalized === 'cr') return 60;
+        if (normalized === 'wb') return 50;
+        return null;
+      }
+
+      function getSpeciesScoutTemp(speciesId) {
+        const normalized = normalizeSpeciesId(speciesId);
+        if (normalized === 'cr') return 55;
+        if (normalized === 'wb') return 45;
+        return null;
+      }
 
       const TABS = [
         { id: 'signals', icon: '\uD83D\uDCCA', label: 'Signals' },
@@ -6448,7 +6523,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       ];
 
       function getPhase(temp, species) {
-        const list = CRAPPIE_IDS.has(species) ? CR_PHASES : WB_PHASES;
+        const list = getSpeciesPhases(species);
         if (temp === null || temp === undefined) return list[0];
         for (const p of list) {
           if (temp >= p.min && temp < p.max) return p;
@@ -6457,7 +6532,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       function getPhaseIndex(temp, species) {
-        const list = CRAPPIE_IDS.has(species) ? CR_PHASES : WB_PHASES;
+        const list = getSpeciesPhases(species);
         if (temp === null || temp === undefined) return 0;
         for (let i = 0; i < list.length; i++) {
           if (temp >= list[i].min && temp < list[i].max) return i;
@@ -6753,10 +6828,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       // @returns {{ signal, icon, label, cls, signal_score, condition_label, wading_safety }}
       function computeSignal(waterSubtype, usgs, species, temp) {
         const hasTemp = Number.isFinite(temp);
-        const spawnTrigger = species === "cr" ? 60 : 50;
-        const scoutTemp = species === "cr" ? 55 : 45;
+        const spawnTrigger = getSpeciesSpawnTrigger(species);
+        const scoutTemp = getSpeciesScoutTemp(species);
 
-        if (!hasTemp) {
+        if (!hasTemp || !Number.isFinite(spawnTrigger) || !Number.isFinite(scoutTemp)) {
           return {
             signal: "wait",
             icon: "\u23F3",
@@ -7413,11 +7488,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const w = WATERS[water];
         const temp = usgs?.temp ?? null;
         const phase = getPhase(temp, species);
-        const spawnTrigger = CRAPPIE_IDS.has(species) ? 60 : 50;
+        const spawnTrigger = getSpeciesSpawnTrigger(species);
+        const speciesSupported = isSupportedSpecies(species);
         const speciesName = getSpeciesDisplayName(species);
         const tempIsEstimated = usgs?.tempSource === 'estimated';
         const triggerDist =
-          temp !== null ? Math.max(0, spawnTrigger - temp).toFixed(1) : null;
+          temp !== null && Number.isFinite(spawnTrigger)
+            ? Math.max(0, spawnTrigger - temp).toFixed(1)
+            : null;
         const dayPeriods = (forecast || [])
           .filter((p) => p.isDaytime)
           .slice(0, 3);
@@ -7449,11 +7527,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 : 'n/a';
             lines.push(`\uD83D\uDCC8 24hr: ${t24} \u2022 7day: ${t7}`);
           }
-          if (triggerDist > 0)
+          if (triggerDist > 0 && Number.isFinite(spawnTrigger))
             lines.push(
               `\uD83C\uDFAF ${triggerDist}\u00B0F to ${CRAPPIE_IDS.has(species) ? 'bed spawn' : 'spawn trigger'}`
             );
-          else if (temp >= spawnTrigger)
+          else if (Number.isFinite(spawnTrigger) && temp >= spawnTrigger)
             lines.push(
               `\uD83D\uDD25 ${CRAPPIE_IDS.has(species) ? 'Bed spawn' : 'Spawn'} temps reached!`
             );
@@ -7467,9 +7545,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             const stationLabel = usgs.summaryStationLabel || usgs.primaryStationLabel || 'USGS station';
             lines.push(`\uD83D\uDCCF Gage: ${usgs.gage.toFixed(2)} ft at ${stationLabel}*`);
           }
-          const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+          const lureMap = getSpeciesLureMap(species);
           const clarity = deriveClarity(water, usgs?.flow);
-          if (temp !== null) {
+          if (speciesSupported && temp !== null) {
             const topLures = scoreLures(phase.name, clarity, usgs?.flow, lureMap, 'artificial');
             const topLure = topLures?.[0];
             if (topLure) {
@@ -7481,7 +7559,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               lines.push(`   \u2192 https://pocketfishinguide.com#tackle`);
             }
           }
-          const tips = CRAPPIE_IDS.has(species) && w?.crTips ? w.crTips : w?.tips;
+          const tips = speciesSupported ? getSpeciesTipsForWater(water, species) : null;
           const tip = tips?.[0]?.text;
           if (tip) lines.push(`\uD83D\uDCA1 Pro Tip: ${tip}`);
           lines.push(
@@ -7829,14 +7907,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const hasGage = Number.isFinite(usgs?.gage);
         const phase = getPhase(temp, species);
         const phaseIdx = getPhaseIndex(temp, species);
-        const phaseList = CRAPPIE_IDS.has(species) ? CR_PHASES : WB_PHASES;
-        const spawnTrigger = CRAPPIE_IDS.has(species) ? 60 : 50;
-        const scoutTemp = CRAPPIE_IDS.has(species) ? 55 : 45;
+        const phaseList = getSpeciesPhases(species);
+        const spawnTrigger = getSpeciesSpawnTrigger(species);
+        const scoutTemp = getSpeciesScoutTemp(species);
         const tempC = hasTemp ? (((temp - 32) * 5) / 9).toFixed(1) : null;
-        const triggerDistValue = hasTemp
+        const triggerDistValue =
+          hasTemp && Number.isFinite(spawnTrigger)
           ? Math.max(0, spawnTrigger - temp)
           : null;
-        const triggerDist = hasTemp ? triggerDistValue.toFixed(1) : null;
+        const triggerDist = Number.isFinite(triggerDistValue) ? triggerDistValue.toFixed(1) : null;
         const daysEst =
           Number.isFinite(usgs?.tempTrend7) &&
           usgs.tempTrend7 > 0 &&
@@ -7885,27 +7964,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             : best;
         }, null);
         const verdict = computeSignal(w.subtype || w.type, usgs, species, temp);
+        const speciesSupported = isSupportedSpecies(species);
 
         // Spawn bar
         const minT = 40,
-          maxT = CRAPPIE_IDS.has(species) ? 75 : 70;
-        const pct = hasTemp
-          ? Math.min(100, Math.max(0, ((temp - minT) / (maxT - minT)) * 100))
-          : 0;
+          maxT = speciesSupported && CRAPPIE_IDS.has(species) ? 75 : 70;
+        const pct =
+          hasTemp && speciesSupported
+            ? Math.min(100, Math.max(0, ((temp - minT) / (maxT - minT)) * 100))
+            : 0;
         const msPct = (t) => ((t - minT) / (maxT - minT)) * 100;
 
         const milestones =
-          CRAPPIE_IDS.has(species)
+          speciesSupported && CRAPPIE_IDS.has(species)
             ? [
                 { label: 'Move', temp: 48, color: '#ab47bc' },
                 { label: 'Stage', temp: 55, color: '#e040fb' },
                 { label: 'Bed Spawn', temp: 60, color: '#f44336' },
               ]
-            : [
+            : speciesSupported
+              ? [
                 { label: 'Staging', temp: 45, color: '#29b6f6' },
                 { label: 'Spawn', temp: 50, color: '#ff6b35' },
                 { label: 'Peak Run', temp: 55, color: '#f44336' },
-              ];
+              ]
+              : [];
 
         // Day forecasts for weather cards
         const dayPeriods = (forecast || [])
@@ -8298,7 +8381,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
 
             {/* SPAWN TEMPERATURE TRACKER */}
-            {hasTemp && (
+            {hasTemp && speciesSupported && (
               <div className="card">
                 <div className="card-title">
                   {'\uD83D\uDCCA'} Spawn Temperature Tracker
@@ -8349,6 +8432,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            )}
+            {!speciesSupported && (
+              <div className="card">
+                <div className="card-title">
+                  {'\u23F3'} Spawn tracker coming soon
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--text2)' }}>
+                  Species-specific spawn temperatures and trends for {getSpeciesDisplayName(species)} are being authored.
                 </div>
               </div>
             )}
@@ -9110,7 +9203,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       function TackleBox({ phase, clarity, flow, species, water, segment, onClose }) {
-        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lureMap = getSpeciesLureMap(species);
+        const speciesSupported = isSupportedSpecies(species);
         const [baitMode, setBaitMode] = React.useState(function() {
           try { return localStorage.getItem('pfg_tackle_mode') || 'artificial'; } catch(e) { return 'artificial'; }
         });
@@ -9136,6 +9230,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           document.addEventListener('keydown', handleKeyDown);
           return () => document.removeEventListener('keydown', handleKeyDown);
         }, [onClose]);
+
+        if (!speciesSupported) {
+          return (
+            <div className="tackle-box-backdrop" onClick={onClose}>
+              <div
+                className="tackle-box-sheet"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="tackle-box-title"
+                onClick={e => e.stopPropagation()}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                  <div id="tackle-box-title" style={{ fontWeight: 800, fontSize: 16 }}>{'\uD83C\uDF92'} Tackle Box</div>
+                  <button
+                    ref={closeButtonRef}
+                    onClick={onClose}
+                    aria-label="Close tackle box"
+                    style={{ background: 'none', border: 'none', color: 'var(--text2)', fontSize: 20, cursor: 'pointer' }}
+                  >{'\u2715'}</button>
+                </div>
+                <div style={{ fontSize: 13, color: 'var(--text2)' }}>
+                  Species data for {getSpeciesDisplayName(species)} is coming soon. Lure and bait recommendations will appear once authored.
+                </div>
+              </div>
+            </div>
+          );
+        }
 
         return (
           <div className="tackle-box-backdrop" onClick={onClose}>
@@ -9226,17 +9347,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       function IntelTab({ temp, water, species, segment, usgs }) {
         const phase = getPhase(temp, species);
-        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
-        const lures = lureMap[phase.name] || Object.values(lureMap)[1];
+        const lureMap = getSpeciesLureMap(species);
+        const speciesSupported = isSupportedSpecies(species);
+        const lures = lureMap[phase.name] || Object.values(lureMap)[1] || [];
         const [showTackleBox, setShowTackleBox] = React.useState(false);
         const clarity = deriveClarity(water, usgs && usgs.flow);
 
         const whereNow =
-          (CRAPPIE_IDS.has(species) ? CR_WHERE : WB_WHERE)[phase.name] ||
-          'Check electronics and target structure.';
+          getSpeciesWhere(species)[phase.name] ||
+          'Species data coming soon. No cross-species fallback shown.';
         const whatThrow =
-          (CRAPPIE_IDS.has(species) ? CR_WHAT : WB_WHAT)[phase.name] ||
-          'Match the hatch and adjust retrieve speed.';
+          getSpeciesWhat(species)[phase.name] ||
+          'Species data coming soon. No cross-species fallback shown.';
+
+        if (!speciesSupported) {
+          return (
+            <div className="card">
+              <div className="card-title">
+                {'\uD83D\uDC1F'} Species data coming soon
+              </div>
+              <div className="pattern-desc">
+                We are authoring full techniques for {getSpeciesDisplayName(species)}. No white bass fallback will be shown.
+              </div>
+            </div>
+          );
+        }
 
         return (
           <>
@@ -9332,61 +9467,90 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       function TechniquesTab({ temp, water, species, segment, usgs }) {
-        const calendarData = CRAPPIE_IDS.has(species) ? CR_CALENDAR : WB_CALENDAR;
+        const calendarData = getSpeciesCalendar(species);
         const w = WATERS[water];
         const speciesName = getSpeciesDisplayName(species);
+        const speciesSupported = isSupportedSpecies(species);
 
         return (
           <>
             {/* TODAY'S PATTERN + TOP LURES */}
             <IntelTab temp={temp} water={water} species={species} segment={segment} usgs={usgs} />
 
+            {!speciesSupported && (
+              <div className="card">
+                <div className="card-title">
+                  {'\u23F3'} Techniques coming soon — {speciesName}
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--text2)' }}>
+                  Full lure, bait, and seasonal guidance for {speciesName} is being authored. No white bass fallback will be shown.
+                </div>
+              </div>
+            )}
+
             {/* ANNUAL CALENDAR */}
-            <div className="card">
-              <div className="card-title">
-                {'\uD83D\uDCC5'} Annual {speciesName} Calendar
-              </div>
-              <div className="calendar">
-                {calendarData.map((cp, i) => {
-                  const now = isNow(cp.months);
-                  return (
-                    <div
-                      className="cal-phase"
-                      key={i}
-                      style={{ borderLeftColor: now ? 'var(--accent)' : 'var(--bg4)' }}
-                    >
-                      <div className="cal-phase-head">
-                        <div className="cal-phase-name">
-                          {cp.icon} {cp.name}
-                          {now && <span className="cal-phase-now">NOW</span>}
+            {speciesSupported && calendarData.length > 0 && (
+              <div className="card">
+                <div className="card-title">
+                  {'\uD83D\uDCC5'} Annual {speciesName} Calendar
+                </div>
+                <div className="calendar">
+                  {calendarData.map((cp, i) => {
+                    const now = isNow(cp.months);
+                    return (
+                      <div
+                        className="cal-phase"
+                        key={i}
+                        style={{ borderLeftColor: now ? 'var(--accent)' : 'var(--bg4)' }}
+                      >
+                        <div className="cal-phase-head">
+                          <div className="cal-phase-name">
+                            {cp.icon} {cp.name}
+                            {now && <span className="cal-phase-now">NOW</span>}
+                          </div>
+                          <div className="cal-phase-time">{cp.months}</div>
                         </div>
-                        <div className="cal-phase-time">{cp.months}</div>
+                        <div className="cal-phase-desc">{cp.desc}</div>
+                        <div className="cal-phase-meta">
+                          {'\uD83D\uDCCD'} {cp.where} {'\u00B7'} {'\uD83C\uDFA3'}{' '}
+                          {cp.lures}
+                        </div>
                       </div>
-                      <div className="cal-phase-desc">{cp.desc}</div>
-                      <div className="cal-phase-meta">
-                        {'\uD83D\uDCCD'} {cp.where} {'\u00B7'} {'\uD83C\uDFA3'}{' '}
-                        {cp.lures}
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* PRO INTEL + LOCAL TIPS */}
-            <ProTipsList
-              tips={CRAPPIE_IDS.has(species) && w.crTips ? w.crTips : w.tips}
-              title={'\uD83D\uDCA1 Pro Intel + Local Tips'}
-            />
+            {speciesSupported && (
+              <ProTipsList
+                tips={getSpeciesTipsForWater(water, species)}
+                title={'\uD83D\uDCA1 Pro Intel + Local Tips'}
+              />
+            )}
           </>
         );
       }
 
       function VideosTab({ temp, water, species, segment }) {
         const phase = getPhase(temp, species);
-        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
-        const lures = lureMap[phase.name] || Object.values(lureMap)[1];
+        const lureMap = getSpeciesLureMap(species);
+        const lures = lureMap[phase.name] || Object.values(lureMap)[1] || [];
         const speciesName = getSpeciesDisplayName(species);
+
+        if (!lures.length) {
+          return (
+            <div className="card">
+              <div className="card-title">
+                {'\u25B6\uFE0F'} How-To Videos — {speciesName}
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--text2)' }}>
+                Species data coming soon. No videos available yet.
+              </div>
+            </div>
+          );
+        }
 
         return (
           <div className="card">
@@ -9447,9 +9611,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       function BuyTab({ temp, water, species, segment }) {
         const phase = getPhase(temp, species);
-        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
-        const lures = lureMap[phase.name] || Object.values(lureMap)[1];
+        const lureMap = getSpeciesLureMap(species);
+        const lures = lureMap[phase.name] || Object.values(lureMap)[1] || [];
         const speciesName = getSpeciesDisplayName(species);
+
+        if (!lures.length) {
+          return (
+            <div className="card">
+              <div className="card-title">
+                {'\uD83D\uDED2'} Buy Tackle — {speciesName}
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--text2)' }}>
+                Species data coming soon. Tackle recommendations will appear once authored.
+              </div>
+            </div>
+          );
+        }
 
         return (
           <div className="card">
@@ -9913,9 +10090,19 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
       // ─── MEDIA + GEAR SHELF ──────────────────────────────────────
       function MediaGearShelf({ temp, water, species, segment }) {
         const phase = getPhase(temp, species);
-        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
-        const lures = lureMap[phase.name] || Object.values(lureMap)[1]; // fallback: pre-spawn phase (index 1)
+        const lureMap = getSpeciesLureMap(species);
+        const lures = lureMap[phase.name] || Object.values(lureMap)[1] || []; // fallback: pre-spawn phase (index 1)
         const speciesName = getSpeciesDisplayName(species);
+        if (!lures.length) {
+          return (
+            <div className="card">
+              <div className="card-title">{'\uD83D\uDCFA'} Media + Gear &mdash; {speciesName}</div>
+              <div style={{ fontSize: 12, color: 'var(--text2)' }}>
+                Species data coming soon. No gear or video recommendations yet.
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="card">
             <div className="card-title">{'\uD83D\uDCFA'} Media + Gear &mdash; {speciesName}</div>
@@ -10045,11 +10232,16 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
           loadAllWaters();
         }, []);
 
-        const spawnTrigger = CRAPPIE_IDS.has(species) ? 60 : 50;
-        const scoutTemp = CRAPPIE_IDS.has(species) ? 55 : 45;
+        const spawnTrigger = getSpeciesSpawnTrigger(species);
+        const scoutTemp = getSpeciesScoutTemp(species);
 
         const getVerdict = (temp) => {
-          if (!Number.isFinite(temp)) return { icon: '⏳', cls: 'no-data' };
+          if (
+            !Number.isFinite(temp) ||
+            !Number.isFinite(spawnTrigger) ||
+            !Number.isFinite(scoutTemp)
+          )
+            return { icon: '⏳', cls: 'no-data' };
           if (temp >= spawnTrigger) return { icon: '🔥', cls: 'go' };
           if (temp >= scoutTemp) return { icon: '👀', cls: 'scout' };
           return { icon: '❄️', cls: 'wait' };
@@ -10474,9 +10666,11 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
         const temp = usgs?.temp ?? null;
         const phase = getPhase(temp, species);
         const w = WATERS[water];
-        const spawnTrigger = CRAPPIE_IDS.has(species) ? 60 : 50;
+        const spawnTrigger = getSpeciesSpawnTrigger(species);
         const triggerDist =
-          temp !== null ? Math.max(0, spawnTrigger - temp).toFixed(1) : null;
+          temp !== null && Number.isFinite(spawnTrigger)
+            ? Math.max(0, spawnTrigger - temp).toFixed(1)
+            : null;
 
         const tabs = TABS;
 
