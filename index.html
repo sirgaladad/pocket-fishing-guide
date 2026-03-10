@@ -8098,7 +8098,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     : ''}
                   {daysEst
                     ? `. ~${daysEst} days to ${CRAPPIE_IDS.has(species) ? 'bed spawn' : 'spawn'} trigger at current rate.`
-                    : temp >= spawnTrigger
+                    : (Number.isFinite(spawnTrigger) && temp >= spawnTrigger)
                       ? '. Fish are moving!'
                       : '.'}
                   {bestWindowDay ? ` Best window: ${bestWindowDay.name}.` : ''}
@@ -8127,15 +8127,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                       ft
                     </div>
                   )}
-                  <div
-                    className="hero-pill"
-                    style={{
-                      borderColor: phase.color + '44',
-                      color: phase.color,
-                    }}
-                  >
-                    {phase.icon} <span className="pill-val">{phase.name}</span>
-                  </div>
+                  {isSpeciesImplemented(species) && (
+                    <div
+                      className="hero-pill"
+                      style={{
+                        borderColor: phase.color + '44',
+                        color: phase.color,
+                      }}
+                    >
+                      {phase.icon} <span className="pill-val">{phase.name}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -8323,36 +8325,44 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
               <div className="card">
                 <div className="card-title">{'\uD83C\uDFA3'} Spawn Phase</div>
-                <div className="phase-icon">{phase.icon}</div>
-                <div className="phase-name" style={{ color: phase.color }}>
-                  {phase.name}
-                </div>
-                <div className="phase-dots">
-                  {phaseList.map((_, i) => (
-                    <div
-                      key={i}
-                      className={`phase-dot ${i <= phaseIdx ? 'active' : ''}`}
-                      style={i <= phaseIdx ? { background: phase.color } : {}}
-                    ></div>
-                  ))}
-                </div>
-                <div className="phase-desc">
-                  {phase.short?.substring(0, 60)}
-                  {phase.short?.length > 60 ? '...' : ''}
-                </div>
-                {triggerDist > 0 && (
-                  <div className="phase-countdown">
-                    <span>
-                      {triggerDist}
-                      {'\u00B0'}F to{' '}
-                      {CRAPPIE_IDS.has(species) ? 'bed spawn' : 'spawn trigger'}
-                    </span>
-                    {daysEst && (
-                      <>
-                        {' '}
-                        {'\u00B7'} ~{daysEst} days at current rate
-                      </>
+                {isSpeciesImplemented(species) ? (
+                  <>
+                    <div className="phase-icon">{phase.icon}</div>
+                    <div className="phase-name" style={{ color: phase.color }}>
+                      {phase.name}
+                    </div>
+                    <div className="phase-dots">
+                      {phaseList.map((_, i) => (
+                        <div
+                          key={i}
+                          className={`phase-dot ${i <= phaseIdx ? 'active' : ''}`}
+                          style={i <= phaseIdx ? { background: phase.color } : {}}
+                        ></div>
+                      ))}
+                    </div>
+                    <div className="phase-desc">
+                      {phase.short?.substring(0, 60)}
+                      {phase.short?.length > 60 ? '...' : ''}
+                    </div>
+                    {triggerDist > 0 && (
+                      <div className="phase-countdown">
+                        <span>
+                          {triggerDist}
+                          {'\u00B0'}F to{' '}
+                          {CRAPPIE_IDS.has(species) ? 'bed spawn' : 'spawn trigger'}
+                        </span>
+                        {daysEst && (
+                          <>
+                            {' '}
+                            {'\u00B7'} ~{daysEst} days at current rate
+                          </>
+                        )}
+                      </div>
                     )}
+                  </>
+                ) : (
+                  <div style={{ fontSize: 13, color: 'var(--text3)', marginTop: 8 }}>
+                    {'\uD83D\uDEA7'} Species data coming soon
                   </div>
                 )}
               </div>
