@@ -6437,6 +6437,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       const ALL_SPECIES_IDS = SPECIES_CATALOG.flatMap((g) => g.species.map((s) => s.id));
 
+      // All crappie sub-types that share CR phases, lure maps, and tips
+      const CRAPPIE_IDS = new Set(['cr', 'blkcrappie', 'whtcrappie']);
+
       const TABS = [
         { id: 'signals', icon: '\uD83D\uDCCA', label: 'Signals' },
         { id: 'forecast', icon: '\u2600\uFE0F', label: 'Forecast' },
@@ -6445,7 +6448,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       ];
 
       function getPhase(temp, species) {
-        const list = species === 'cr' ? CR_PHASES : WB_PHASES;
+        const list = CRAPPIE_IDS.has(species) ? CR_PHASES : WB_PHASES;
         if (temp === null || temp === undefined) return list[0];
         for (const p of list) {
           if (temp >= p.min && temp < p.max) return p;
@@ -6454,7 +6457,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       function getPhaseIndex(temp, species) {
-        const list = species === 'cr' ? CR_PHASES : WB_PHASES;
+        const list = CRAPPIE_IDS.has(species) ? CR_PHASES : WB_PHASES;
         if (temp === null || temp === undefined) return 0;
         for (let i = 0; i < list.length; i++) {
           if (temp >= list[i].min && temp < list[i].max) return i;
@@ -7410,7 +7413,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const w = WATERS[water];
         const temp = usgs?.temp ?? null;
         const phase = getPhase(temp, species);
-        const spawnTrigger = species === 'cr' ? 60 : 50;
+        const spawnTrigger = CRAPPIE_IDS.has(species) ? 60 : 50;
         const speciesName = getSpeciesDisplayName(species);
         const tempIsEstimated = usgs?.tempSource === 'estimated';
         const triggerDist =
@@ -7448,11 +7451,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           }
           if (triggerDist > 0)
             lines.push(
-              `\uD83C\uDFAF ${triggerDist}\u00B0F to ${species === 'cr' ? 'bed spawn' : 'spawn trigger'}`
+              `\uD83C\uDFAF ${triggerDist}\u00B0F to ${CRAPPIE_IDS.has(species) ? 'bed spawn' : 'spawn trigger'}`
             );
           else if (temp >= spawnTrigger)
             lines.push(
-              `\uD83D\uDD25 ${species === 'cr' ? 'Bed spawn' : 'Spawn'} temps reached!`
+              `\uD83D\uDD25 ${CRAPPIE_IDS.has(species) ? 'Bed spawn' : 'Spawn'} temps reached!`
             );
           if (bestDay)
             lines.push(
@@ -7460,12 +7463,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             );
           if (usgs?.flow)
             lines.push(`\uD83D\uDCA7 Flow: ${usgs.flow.toLocaleString()} cfs`);
-          if (Number.isFinite(usgs?.gage))
-            lines.push(`\uD83D\uDCCF Lake level: ${usgs.gage.toFixed(2)} ft`);
+          if (Number.isFinite(usgs?.gage)) {
+            const stationLabel = usgs.summaryStationLabel || usgs.primaryStationLabel || 'USGS station';
+            lines.push(`\uD83D\uDCCF Gage: ${usgs.gage.toFixed(2)} ft at ${stationLabel}*`);
+          }
+          const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+          const clarity = deriveClarity(water, usgs?.flow);
+          if (temp !== null) {
+            const topLures = scoreLures(phase.name, clarity, usgs?.flow, lureMap, 'artificial');
+            const topLure = topLures?.[0];
+            if (topLure) {
+              lines.push(
+                `\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500`
+              );
+              lines.push(`\uD83C\uDFA3 Top Pick: ${topLure.name}`);
+              lines.push(`   ${topLure.detail}`);
+              lines.push(`   \u2192 https://pocketfishinguide.com#tackle`);
+            }
+          }
+          const tips = CRAPPIE_IDS.has(species) && w?.crTips ? w.crTips : w?.tips;
+          const tip = tips?.[0]?.text;
+          if (tip) lines.push(`\uD83D\uDCA1 Pro Tip: ${tip}`);
           lines.push(
             `\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500`
           );
-          lines.push(`sirgaladad.github.io/pocket-fishing-guide`);
+          if (Number.isFinite(usgs?.gage)) {
+            const gageId = usgs.summaryStationId || usgs.primaryStationId || '';
+            lines.push(`*Gage height${gageId ? ` at USGS ${gageId}` : ''} \u2014 not lake depth.`);
+          }
+          lines.push(`https://pocketfishinguide.com`);
           return lines.join('\n');
         };
 
@@ -7803,9 +7829,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const hasGage = Number.isFinite(usgs?.gage);
         const phase = getPhase(temp, species);
         const phaseIdx = getPhaseIndex(temp, species);
-        const phaseList = species === 'cr' ? CR_PHASES : WB_PHASES;
-        const spawnTrigger = species === 'cr' ? 60 : 50;
-        const scoutTemp = species === 'cr' ? 55 : 45;
+        const phaseList = CRAPPIE_IDS.has(species) ? CR_PHASES : WB_PHASES;
+        const spawnTrigger = CRAPPIE_IDS.has(species) ? 60 : 50;
+        const scoutTemp = CRAPPIE_IDS.has(species) ? 55 : 45;
         const tempC = hasTemp ? (((temp - 32) * 5) / 9).toFixed(1) : null;
         const triggerDistValue = hasTemp
           ? Math.max(0, spawnTrigger - temp)
@@ -7862,14 +7888,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         // Spawn bar
         const minT = 40,
-          maxT = species === 'cr' ? 75 : 70;
+          maxT = CRAPPIE_IDS.has(species) ? 75 : 70;
         const pct = hasTemp
           ? Math.min(100, Math.max(0, ((temp - minT) / (maxT - minT)) * 100))
           : 0;
         const msPct = (t) => ((t - minT) / (maxT - minT)) * 100;
 
         const milestones =
-          species === 'cr'
+          CRAPPIE_IDS.has(species)
             ? [
                 { label: 'Move', temp: 48, color: '#ab47bc' },
                 { label: 'Stage', temp: 55, color: '#e040fb' },
@@ -7989,7 +8015,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <span className="hero-hl">
                           {triggerDist}
                           {'\u00B0'}F to{' '}
-                          {species === 'cr' ? 'bed spawn' : 'spawn'} trigger
+                          {CRAPPIE_IDS.has(species) ? 'bed spawn' : 'spawn'} trigger
                         </span>
                       </>
                     ) : (
@@ -8010,7 +8036,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     ? `, ${usgs.tempTrend24 > 0 ? 'warming' : 'cooling'} ${Math.abs(usgs.tempTrend24)}\u00B0 in 24hr`
                     : ''}
                   {daysEst
-                    ? `. ~${daysEst} days to ${species === 'cr' ? 'bed spawn' : 'spawn'} trigger at current rate.`
+                    ? `. ~${daysEst} days to ${CRAPPIE_IDS.has(species) ? 'bed spawn' : 'spawn'} trigger at current rate.`
                     : temp >= spawnTrigger
                       ? '. Fish are moving!'
                       : '.'}
@@ -8258,7 +8284,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <span>
                       {triggerDist}
                       {'\u00B0'}F to{' '}
-                      {species === 'cr' ? 'bed spawn' : 'spawn trigger'}
+                      {CRAPPIE_IDS.has(species) ? 'bed spawn' : 'spawn trigger'}
                     </span>
                     {daysEst && (
                       <>
@@ -8282,7 +8308,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     {minT}
                     {'\u00B0'}F
                   </span>
-                  {species === 'cr' ? (
+                  {CRAPPIE_IDS.has(species) ? (
                     <>
                       <span>48{'\u00B0'} Move</span>
                       <span>55{'\u00B0'} Stage</span>
@@ -9084,7 +9110,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       function TackleBox({ phase, clarity, flow, species, water, segment, onClose }) {
-        const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
         const [baitMode, setBaitMode] = React.useState(function() {
           try { return localStorage.getItem('pfg_tackle_mode') || 'artificial'; } catch(e) { return 'artificial'; }
         });
@@ -9200,16 +9226,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       function IntelTab({ temp, water, species, segment, usgs }) {
         const phase = getPhase(temp, species);
-        const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
         const lures = lureMap[phase.name] || Object.values(lureMap)[1];
         const [showTackleBox, setShowTackleBox] = React.useState(false);
         const clarity = deriveClarity(water, usgs && usgs.flow);
 
         const whereNow =
-          (species === 'cr' ? CR_WHERE : WB_WHERE)[phase.name] ||
+          (CRAPPIE_IDS.has(species) ? CR_WHERE : WB_WHERE)[phase.name] ||
           'Check electronics and target structure.';
         const whatThrow =
-          (species === 'cr' ? CR_WHAT : WB_WHAT)[phase.name] ||
+          (CRAPPIE_IDS.has(species) ? CR_WHAT : WB_WHAT)[phase.name] ||
           'Match the hatch and adjust retrieve speed.';
 
         return (
@@ -9241,7 +9267,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div className="card">
               <div className="card-title">
                 {'\uD83C\uDFC6'} Top Lures{' '}
-                {species === 'cr' ? '(Crappie)' : `(${getSpeciesDisplayName(species)})`}
+                {CRAPPIE_IDS.has(species) ? '(Crappie)' : `(${getSpeciesDisplayName(species)})`}
               </div>
               <div
                 style={{
@@ -9250,7 +9276,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   marginBottom: 10,
                 }}
               >
-                {species === 'cr'
+                {CRAPPIE_IDS.has(species)
                   ? `Top crappie setups for ${phase.name} pattern \u2014 ranked by effectiveness:`
                   : `Top ${getSpeciesDisplayName(species).toLowerCase()} setups for ${phase.name} pattern:`}
                 {' '}
@@ -9306,7 +9332,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       function TechniquesTab({ temp, water, species, segment, usgs }) {
-        const calendarData = species === 'cr' ? CR_CALENDAR : WB_CALENDAR;
+        const calendarData = CRAPPIE_IDS.has(species) ? CR_CALENDAR : WB_CALENDAR;
         const w = WATERS[water];
         const speciesName = getSpeciesDisplayName(species);
 
@@ -9349,7 +9375,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             {/* PRO INTEL + LOCAL TIPS */}
             <ProTipsList
-              tips={species === 'cr' && w.crTips ? w.crTips : w.tips}
+              tips={CRAPPIE_IDS.has(species) && w.crTips ? w.crTips : w.tips}
               title={'\uD83D\uDCA1 Pro Intel + Local Tips'}
             />
           </>
@@ -9358,7 +9384,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       function VideosTab({ temp, water, species, segment }) {
         const phase = getPhase(temp, species);
-        const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
         const lures = lureMap[phase.name] || Object.values(lureMap)[1];
         const speciesName = getSpeciesDisplayName(species);
 
@@ -9421,7 +9447,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       function BuyTab({ temp, water, species, segment }) {
         const phase = getPhase(temp, species);
-        const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
         const lures = lureMap[phase.name] || Object.values(lureMap)[1];
         const speciesName = getSpeciesDisplayName(species);
 
@@ -9646,7 +9672,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     White Bass
                   </button>
                   <button
-                    className={`nav-drawer-species-btn${species === 'cr' ? ' active-cr' : ''}`}
+                    className={`nav-drawer-species-btn${CRAPPIE_IDS.has(species) ? ' active-cr' : ''}`}
                     onClick={() => { setSpecies('cr'); trackEvent('select_species', { species: 'cr', water, tab: 'nav' }); }}
                   >
                     Crappie
@@ -9686,7 +9712,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, waterType, setWaterType, temp, usgs, loading, onRefresh }) {
         const w = WATERS[water];
         const showStrip = !loading && temp !== null;
-        const isCrappie = species === 'cr';
+        const isCrappie = CRAPPIE_IDS.has(species);
         const hotThreshold = isCrappie ? 60 : 55;
         const warmThreshold = isCrappie ? 55 : 47;
         const chipClass = showStrip
@@ -9887,7 +9913,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
       // ─── MEDIA + GEAR SHELF ──────────────────────────────────────
       function MediaGearShelf({ temp, water, species, segment }) {
         const phase = getPhase(temp, species);
-        const lureMap = species === 'cr' ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
         const lures = lureMap[phase.name] || Object.values(lureMap)[1]; // fallback: pre-spawn phase (index 1)
         const speciesName = getSpeciesDisplayName(species);
         return (
@@ -10019,8 +10045,8 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
           loadAllWaters();
         }, []);
 
-        const spawnTrigger = species === 'cr' ? 60 : 50;
-        const scoutTemp = species === 'cr' ? 55 : 45;
+        const spawnTrigger = CRAPPIE_IDS.has(species) ? 60 : 50;
+        const scoutTemp = CRAPPIE_IDS.has(species) ? 55 : 45;
 
         const getVerdict = (temp) => {
           if (!Number.isFinite(temp)) return { icon: '⏳', cls: 'no-data' };
@@ -10448,7 +10474,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
         const temp = usgs?.temp ?? null;
         const phase = getPhase(temp, species);
         const w = WATERS[water];
-        const spawnTrigger = species === 'cr' ? 60 : 50;
+        const spawnTrigger = CRAPPIE_IDS.has(species) ? 60 : 50;
         const triggerDist =
           temp !== null ? Math.max(0, spawnTrigger - temp).toFixed(1) : null;
 
