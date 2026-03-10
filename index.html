@@ -5850,8 +5850,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         },
       ];
 
-      const PHASES = WB_PHASES; // default
-
       // Shared n4/n5 lures added to all white bass phases
       const WB_N4 = { name: 'Topwater White Tiny Torpedo (surface bait)', sub: 'surface bait', detail: 'Dawn/dusk bite. Walk-the-dog through surface schools.' };
       const WB_N5 = { name: 'Paddle Tail Swimbait White (3" on 1/8oz head)', sub: '3" swimbait on 1/8oz head', detail: 'Match schooling shad depth. Steady retrieve at thermocline.' };
@@ -5948,9 +5946,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             detail: 'Cover water along main body shorelines.',
           },
           {
-            name: 'Topwater White Tiny Torpedo (surface bait)',
-            sub: 'surface bait',
-            detail: 'Early morning surface bites can be explosive post-spawn.',
+            name: 'Live Shad on #4 Hook (free-line)',
+            sub: 'free-line',
+            detail: 'Free-line live shad near current. Natural presentation.',
           },
           WB_N4,
           WB_N5,
@@ -6439,6 +6437,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       // All crappie sub-types that share CR phases, lure maps, and tips
       const CRAPPIE_IDS = new Set(['cr', 'blkcrappie', 'whtcrappie']);
+
+      // Species with full data implementation (phases, lures, calendar, techniques)
+      const IMPLEMENTED_SPECIES = new Set(['wb', 'cr', 'blkcrappie', 'whtcrappie']);
+
+      // Check if a species has complete data
+      function isSpeciesImplemented(speciesId) {
+        return IMPLEMENTED_SPECIES.has(speciesId);
+      }
 
       const TABS = [
         { id: 'signals', icon: '\uD83D\uDCCA', label: 'Signals' },
@@ -9225,6 +9231,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       function IntelTab({ temp, water, species, segment, usgs }) {
+        const speciesName = getSpeciesDisplayName(species);
+
+        // Show placeholder for unimplemented species
+        if (!isSpeciesImplemented(species)) {
+          return (
+            <div className="card">
+              <div className="card-title">
+                {'\uD83D\uDEE0\uFE0F'} {speciesName} Data Coming Soon
+              </div>
+              <div style={{ padding: '20px 0', textAlign: 'center', color: 'var(--text2)' }}>
+                <p style={{ marginBottom: 16 }}>
+                  We're currently building comprehensive fishing intelligence for {speciesName}.
+                </p>
+                <p style={{ fontSize: 14, color: 'var(--text3)' }}>
+                  Check back soon for species-specific lures, techniques, spawn calendars, and local pro tips.
+                </p>
+                <p style={{ marginTop: 20, fontSize: 12, color: 'var(--text3)' }}>
+                  Currently available: <strong>White Bass</strong> and <strong>Crappie</strong>
+                </p>
+              </div>
+            </div>
+          );
+        }
+
         const phase = getPhase(temp, species);
         const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
         const lures = lureMap[phase.name] || Object.values(lureMap)[1];
@@ -9267,7 +9297,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div className="card">
               <div className="card-title">
                 {'\uD83C\uDFC6'} Top Lures{' '}
-                {CRAPPIE_IDS.has(species) ? '(Crappie)' : `(${getSpeciesDisplayName(species)})`}
+                {CRAPPIE_IDS.has(species) ? '(Crappie)' : `(${speciesName})`}
               </div>
               <div
                 style={{
@@ -9278,7 +9308,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               >
                 {CRAPPIE_IDS.has(species)
                   ? `Top crappie setups for ${phase.name} pattern \u2014 ranked by effectiveness:`
-                  : `Top ${getSpeciesDisplayName(species).toLowerCase()} setups for ${phase.name} pattern:`}
+                  : `Top ${speciesName.toLowerCase()} setups for ${phase.name} pattern:`}
                 {' '}
                 <span className="condition-chip-inline">{'\uD83D\uDCA7'} {clarity}</span>
               </div>
