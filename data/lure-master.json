@@ -400,6 +400,690 @@
         "low_flow": 10
       },
       "phase_affinity": ["Bed Spawn", "Spawn Staging"]
+    },
+    {
+      "id": "lure_022",
+      "name": "3/8oz Jig-and-Pig (black/blue)",
+      "sub": "black/blue trailer",
+      "detail": "GO-TO for pre-spawn bass near wood and rock. Drag or hop along bottom.",
+      "type": "jig",
+      "bait_type": "artificial",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/bass/largemouth-bass/",
+      "condition_score": {
+        "clear": 7,
+        "stained": 10,
+        "muddy": 8,
+        "high_flow": 5,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Bass Winter Lull", "Bass Pre-Spawn", "Bass Spawn Staging"]
+    },
+    {
+      "id": "lure_023",
+      "name": "7\" Ribbon Tail Worm (Texas rig, 3/16oz)",
+      "sub": "Texas rig, 3/16oz sinker",
+      "detail": "Classic finesse. Drag through beds and along laydowns. Any color — june bug and watermelon dominate.",
+      "type": "jig",
+      "bait_type": "artificial",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/bass/largemouth-bass/",
+      "condition_score": {
+        "clear": 9,
+        "stained": 8,
+        "muddy": 6,
+        "high_flow": 4,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Bass Spawn Staging", "Bass Peak Spawn", "Bass Post-Spawn"]
+    },
+    {
+      "id": "lure_024",
+      "name": "Suspending Jerkbait (shad pattern, 4\" Rapala)",
+      "sub": "shad pattern, suspending",
+      "detail": "Pause-twitch-pause in cold water. Irresistible when fish are sluggish.",
+      "type": "crankbait",
+      "bait_type": "artificial",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/bass/",
+      "condition_score": {
+        "clear": 10,
+        "stained": 7,
+        "muddy": 3,
+        "high_flow": 4,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Bass Winter Lull", "Bass Pre-Spawn"]
+    },
+    {
+      "id": "lure_025",
+      "name": "Medium-Diving Crankbait (shad/crawfish, 6-10ft diver)",
+      "sub": "6-10ft diving depth",
+      "detail": "Run the weed edges and hard bottom transitions post-spawn. Deflection = strikes.",
+      "type": "crankbait",
+      "bait_type": "artificial",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/bass/",
+      "condition_score": {
+        "clear": 9,
+        "stained": 8,
+        "muddy": 5,
+        "high_flow": 6,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Bass Post-Spawn", "Bass Summer Deep"]
+    },
+    {
+      "id": "lure_026",
+      "name": "Hollow Body Frog (black/white)",
+      "sub": "hollow body, weedless",
+      "detail": "Walk over mats and slop. Explosive topwater strikes in summer. Patience after the blow-up.",
+      "type": "topwater",
+      "bait_type": "artificial",
+      "rank": 3,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 8,
+        "stained": 9,
+        "muddy": 7,
+        "high_flow": 3,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Bass Peak Spawn", "Bass Post-Spawn", "Bass Summer Deep"]
+    },
+    {
+      "id": "lure_027",
+      "name": "Finesse Drop Shot (4\" Roboworm, 1/4oz weight)",
+      "sub": "drop shot, 1/4oz",
+      "detail": "For pressured fish in clear water. Nose-hook, leave bait dangling. Hold and shake.",
+      "type": "jig",
+      "bait_type": "artificial",
+      "rank": 3,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 10,
+        "stained": 7,
+        "muddy": 3,
+        "high_flow": 3,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Bass Summer Deep", "Bass Post-Spawn"]
+    },
+    {
+      "id": "lure_028",
+      "name": "Topwater Popper (Rebel Pop-R, chrome/black back)",
+      "sub": "chrome/black back",
+      "detail": "Pop-pause-pop at dawn and dusk near surface cover. Prime for post-spawn bass chasing shad.",
+      "type": "topwater",
+      "bait_type": "artificial",
+      "rank": 3,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/bass/",
+      "condition_score": {
+        "clear": 10,
+        "stained": 7,
+        "muddy": 2,
+        "high_flow": 2,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Bass Post-Spawn", "Bass Summer Deep"]
+    },
+    {
+      "id": "lure_029",
+      "name": "5\" Paddle Tail Swimbait (white/silver, 1oz head)",
+      "sub": "1oz jighead, white/silver",
+      "detail": "GO-TO for stripers. Match shad size. Steady mid-column retrieve. Follow your electronics.",
+      "type": "jig",
+      "bait_type": "artificial",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/striped-bass/",
+      "condition_score": {
+        "clear": 9,
+        "stained": 8,
+        "muddy": 5,
+        "high_flow": 7,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Striper Pre-Run", "Striper Run", "Striper Post-Spawn", "Striper Summer"]
+    },
+    {
+      "id": "lure_030",
+      "name": "Bucktail Jig 1oz (white/chartreuse)",
+      "sub": "white/chartreuse, 1oz",
+      "detail": "Cast into current seams below dams. Bounce along bottom in tailwaters. Old reliable.",
+      "type": "jig",
+      "bait_type": "artificial",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/striped-bass/",
+      "condition_score": {
+        "clear": 7,
+        "stained": 9,
+        "muddy": 8,
+        "high_flow": 9,
+        "low_flow": 6
+      },
+      "phase_affinity": ["Striper Winter Hold", "Striper Pre-Run", "Striper Run"]
+    },
+    {
+      "id": "lure_031",
+      "name": "Live Threadfin Shad (free-lined, #2/0 circle hook)",
+      "sub": "free-lined, circle hook",
+      "detail": "Hard to beat. Keep shad alive in aerator. Free-line near surface schools or current breaks.",
+      "type": "live_bait",
+      "bait_type": "live",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/striped-bass/",
+      "condition_score": {
+        "clear": 8,
+        "stained": 10,
+        "muddy": 9,
+        "high_flow": 7,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Striper Pre-Run", "Striper Run", "Striper Post-Spawn", "Striper Summer"]
+    },
+    {
+      "id": "lure_032",
+      "name": "Large Topwater Plug (Zara Spook, 4\", chrome)",
+      "sub": "walk-the-dog, 4\"",
+      "detail": "Walk-the-dog over schooling fish. When stripers bust on top at dawn, throw this immediately.",
+      "type": "topwater",
+      "bait_type": "artificial",
+      "rank": 3,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 10,
+        "stained": 7,
+        "muddy": 2,
+        "high_flow": 3,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Striper Post-Spawn", "Striper Summer"]
+    },
+    {
+      "id": "lure_033",
+      "name": "Umbrella Rig / Alabama Rig (5-wire, shad trailers)",
+      "sub": "5-wire rig with swimbait trailers",
+      "detail": "Mimics a shad school. Deadly for stripers in open water. Check local regulations before use.",
+      "type": "jig",
+      "bait_type": "artificial",
+      "rank": 2,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 9,
+        "stained": 8,
+        "muddy": 5,
+        "high_flow": 6,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Striper Winter Hold", "Striper Summer"]
+    },
+    {
+      "id": "lure_034",
+      "name": "Beetle Spin 1/16oz (yellow/black)",
+      "sub": "yellow/black, 1/16oz",
+      "detail": "GO-TO for bluegill and sunfish. Slow roll near beds and dock edges. Almost can't fish it wrong.",
+      "type": "spinner",
+      "bait_type": "artificial",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/bream-bluegill/",
+      "condition_score": {
+        "clear": 9,
+        "stained": 8,
+        "muddy": 6,
+        "high_flow": 5,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Sunfish Bed Spawn", "Sunfish Pre-Spawn", "Sunfish Post-Spawn"]
+    },
+    {
+      "id": "lure_035",
+      "name": "Live Cricket on #6 Hook (under slip bobber)",
+      "sub": "under slip bobber, 2-4ft",
+      "detail": "Classic Arkansas bluegill bait. Set bobber 2-3ft. Target shade, docks, and beds.",
+      "type": "live_bait",
+      "bait_type": "live",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/bream-bluegill/",
+      "condition_score": {
+        "clear": 9,
+        "stained": 9,
+        "muddy": 7,
+        "high_flow": 4,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Sunfish Pre-Spawn", "Sunfish Bed Spawn", "Sunfish Post-Spawn", "Sunfish Summer Active"]
+    },
+    {
+      "id": "lure_036",
+      "name": "Wax Worm on #8 Hook (tight-line, no weight)",
+      "sub": "no weight, #8 hook",
+      "detail": "Ideal for redear and bluegill near the bottom. Let it sink naturally near mussel beds.",
+      "type": "live_bait",
+      "bait_type": "live",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/bream-bluegill/",
+      "condition_score": {
+        "clear": 9,
+        "stained": 8,
+        "muddy": 6,
+        "high_flow": 4,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Sunfish Winter Slow", "Sunfish Pre-Spawn", "Sunfish Bed Spawn"]
+    },
+    {
+      "id": "lure_037",
+      "name": "Foam Popper Spider (#10, deer hair legs)",
+      "sub": "foam body, rubber legs",
+      "detail": "Fly rod surface bait. Pop once, let rings die, pop again. Explosive strikes on beds.",
+      "type": "fly",
+      "bait_type": "artificial",
+      "rank": 3,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 10,
+        "stained": 6,
+        "muddy": 2,
+        "high_flow": 2,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Sunfish Bed Spawn", "Sunfish Post-Spawn"]
+    },
+    {
+      "id": "lure_038",
+      "name": "Small Inline Spinner 1/32oz (Mepps #0, gold blade)",
+      "sub": "Mepps #0, gold blade",
+      "detail": "Ultra-light setup for sunfish. Slow steady retrieve through shallow cover.",
+      "type": "spinner",
+      "bait_type": "artificial",
+      "rank": 3,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 10,
+        "stained": 7,
+        "muddy": 4,
+        "high_flow": 4,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Sunfish Pre-Spawn", "Sunfish Summer Active"]
+    },
+    {
+      "id": "lure_039",
+      "name": "Chicken Liver on #2 Treble Hook (slip sinker rig)",
+      "sub": "slip sinker rig, #2 treble",
+      "detail": "GO-TO for channel cats. Cast to current seams and holes. Smell does the work.",
+      "type": "live_bait",
+      "bait_type": "cut",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/catfish/",
+      "condition_score": {
+        "clear": 5,
+        "stained": 9,
+        "muddy": 10,
+        "high_flow": 9,
+        "low_flow": 7
+      },
+      "phase_affinity": ["Catfish Spring Feed", "Catfish Spawn", "Catfish Summer Night"]
+    },
+    {
+      "id": "lure_040",
+      "name": "Fresh Cut Shad (3\" chunk, #3/0 circle hook)",
+      "sub": "cut shad, circle hook",
+      "detail": "Best big-cat bait. Cut shad fresh, hook through skin. Target deep holes and tailwaters.",
+      "type": "live_bait",
+      "bait_type": "cut",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/catfish/",
+      "condition_score": {
+        "clear": 6,
+        "stained": 9,
+        "muddy": 10,
+        "high_flow": 8,
+        "low_flow": 8
+      },
+      "phase_affinity": ["Catfish Spring Feed", "Catfish Spawn", "Catfish Summer Night", "Catfish Winter Deep"]
+    },
+    {
+      "id": "lure_041",
+      "name": "Live Nightcrawler on #4 Circle Hook (no weight, drift)",
+      "sub": "no weight, drift rig",
+      "detail": "Drift along bottom in current. Excellent for channel cats in rivers and creeks.",
+      "type": "live_bait",
+      "bait_type": "live",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/catfish/",
+      "condition_score": {
+        "clear": 7,
+        "stained": 9,
+        "muddy": 8,
+        "high_flow": 8,
+        "low_flow": 7
+      },
+      "phase_affinity": ["Catfish Spring Feed", "Catfish Post-Spawn"]
+    },
+    {
+      "id": "lure_042",
+      "name": "Punch Bait / Stink Bait (dip tube rig)",
+      "sub": "dip tube, punch bait",
+      "detail": "Channel cat magnet. Use a dip tube or treble hook. Fish still water near current edges.",
+      "type": "live_bait",
+      "bait_type": "cut",
+      "rank": 2,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 4,
+        "stained": 8,
+        "muddy": 10,
+        "high_flow": 7,
+        "low_flow": 8
+      },
+      "phase_affinity": ["Catfish Spring Feed", "Catfish Summer Night"]
+    },
+    {
+      "id": "lure_043",
+      "name": "Live Perch / Sunfish (3-4\", #3/0 hook)",
+      "sub": "live perch on big hook",
+      "detail": "Top bait for flathead catfish. Fish near structure at night. Hook through lips or back.",
+      "type": "live_bait",
+      "bait_type": "live",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/catfish/",
+      "condition_score": {
+        "clear": 7,
+        "stained": 9,
+        "muddy": 9,
+        "high_flow": 6,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Catfish Spawn", "Catfish Summer Night"]
+    },
+    {
+      "id": "lure_044",
+      "name": "Mepps Aglia #2 Spinner (gold blade, squirrel tail)",
+      "sub": "gold blade, squirrel tail",
+      "detail": "GO-TO trout spinner. Cast upstream, retrieve just fast enough to keep blade spinning.",
+      "type": "spinner",
+      "bait_type": "artificial",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/trout/",
+      "condition_score": {
+        "clear": 10,
+        "stained": 8,
+        "muddy": 4,
+        "high_flow": 6,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Trout Stocking Active", "Trout Spring Prime", "Trout Fall Run"]
+    },
+    {
+      "id": "lure_045",
+      "name": "PowerBait Dough (rainbow/chartreuse, #14 treble)",
+      "sub": "formed on #14 treble, float rig",
+      "detail": "Bread-and-butter for stockers. Form golf-ball sized bait around hook. Float 12\" off bottom.",
+      "type": "live_bait",
+      "bait_type": "artificial",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/trout/",
+      "condition_score": {
+        "clear": 8,
+        "stained": 9,
+        "muddy": 7,
+        "high_flow": 6,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Trout Stocking Active", "Trout Winter Tailwater"]
+    },
+    {
+      "id": "lure_046",
+      "name": "Salmon Egg / Egg Pattern Fly (bead, 6mm pink)",
+      "sub": "6mm pink bead or egg fly",
+      "detail": "Effective in tailwaters below dams where eggs drift naturally. Dead drift under an indicator.",
+      "type": "fly",
+      "bait_type": "artificial",
+      "rank": 2,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 10,
+        "stained": 7,
+        "muddy": 3,
+        "high_flow": 5,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Trout Fall Run", "Trout Winter Tailwater"]
+    },
+    {
+      "id": "lure_047",
+      "name": "San Juan Worm (red/pink, #12)",
+      "sub": "red or pink, #12 hook",
+      "detail": "Deadliest tailwater fly. Dead drift near the bottom — trout can't resist an easy worm meal.",
+      "type": "fly",
+      "bait_type": "artificial",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/trout/",
+      "condition_score": {
+        "clear": 9,
+        "stained": 8,
+        "muddy": 6,
+        "high_flow": 7,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Trout Winter Tailwater", "Trout Spring Prime", "Trout Stocking Active"]
+    },
+    {
+      "id": "lure_048",
+      "name": "Elk Hair Caddis (tan, #14)",
+      "sub": "dry fly, #14",
+      "detail": "Best dry fly on AR tailwaters in warm months. Fish during caddis hatches (evening). Dead drift.",
+      "type": "fly",
+      "bait_type": "artificial",
+      "rank": 3,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 10,
+        "stained": 5,
+        "muddy": 1,
+        "high_flow": 3,
+        "low_flow": 10
+      },
+      "phase_affinity": ["Trout Spring Prime", "Trout Fall Run"]
+    },
+    {
+      "id": "lure_049",
+      "name": "Woolly Bugger (olive/black, #8)",
+      "sub": "streamer, marabou tail, #8",
+      "detail": "Versatile streamer for big browns and rainbows. Strip fast for reaction strikes or slow dead drift.",
+      "type": "fly",
+      "bait_type": "artificial",
+      "rank": 3,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/trout/",
+      "condition_score": {
+        "clear": 8,
+        "stained": 8,
+        "muddy": 5,
+        "high_flow": 7,
+        "low_flow": 8
+      },
+      "phase_affinity": ["Trout Winter Tailwater", "Trout Spring Prime", "Trout Fall Run", "Trout Stocking Active"]
+    },
+    {
+      "id": "lure_050",
+      "name": "Jig + Live Minnow (1/4oz chartreuse jighead)",
+      "sub": "1/4oz chartreuse, live minnow",
+      "detail": "GO-TO for walleye. Drift or slow troll along rocky bottom transitions. Bounce off structure.",
+      "type": "jig",
+      "bait_type": "live",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/other-species/walleye/",
+      "condition_score": {
+        "clear": 8,
+        "stained": 10,
+        "muddy": 8,
+        "high_flow": 7,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Walleye Winter Hold", "Walleye Pre-Spawn", "Walleye Spawn Run", "Walleye Post-Spawn"]
+    },
+    {
+      "id": "lure_051",
+      "name": "Nightcrawler Harness (spinner blades, #4 hook)",
+      "sub": "Colorado blade harness",
+      "detail": "Classic walleye killer. Slow troll above bottom or bottom-bounce along gravel flats.",
+      "type": "spinner",
+      "bait_type": "live",
+      "rank": 2,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/other-species/walleye/",
+      "condition_score": {
+        "clear": 7,
+        "stained": 9,
+        "muddy": 7,
+        "high_flow": 7,
+        "low_flow": 8
+      },
+      "phase_affinity": ["Walleye Post-Spawn", "Walleye Summer Pattern"]
+    },
+    {
+      "id": "lure_052",
+      "name": "Bottom Bouncer + Crankbait (3/4oz bouncer, shad)",
+      "sub": "3/4oz bouncer, shad crankbait",
+      "detail": "Troll slow (1.5mph) along deeper structure. Keep snapping bottom. Walleye ambush from below.",
+      "type": "crankbait",
+      "bait_type": "artificial",
+      "rank": 3,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 8,
+        "stained": 9,
+        "muddy": 7,
+        "high_flow": 8,
+        "low_flow": 8
+      },
+      "phase_affinity": ["Walleye Summer Pattern", "Walleye Post-Spawn"]
+    },
+    {
+      "id": "lure_053",
+      "name": "Flicker Shad Crankbait (size 5, fire tiger)",
+      "sub": "fire tiger or chartreuse, size 5",
+      "detail": "Fast-vibrating crankbait triggers neutral walleye. Cast to current breaks at dusk.",
+      "type": "crankbait",
+      "bait_type": "artificial",
+      "rank": 2,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 9,
+        "stained": 8,
+        "muddy": 5,
+        "high_flow": 6,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Walleye Spawn Run", "Walleye Pre-Spawn"]
+    },
+    {
+      "id": "lure_054",
+      "name": "Jigging Rapala (VMC #5, silver/blue)",
+      "sub": "vertical jigging, #5",
+      "detail": "Vertical jigging for suspended walleye and sauger. Lift-fall over structure at the thermocline.",
+      "type": "spoon",
+      "bait_type": "artificial",
+      "rank": 3,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/other-species/walleye/",
+      "condition_score": {
+        "clear": 8,
+        "stained": 8,
+        "muddy": 6,
+        "high_flow": 5,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Walleye Winter Hold", "Walleye Summer Pattern"]
+    },
+    {
+      "id": "lure_055",
+      "name": "Rope Lure (nylon rope frayed, unweighted)",
+      "sub": "frayed nylon, 6-8\"",
+      "detail": "Traditional gar lure. Gar teeth tangle in rope fibers — no hook needed. Cast near surface rolls.",
+      "type": "jig",
+      "bait_type": "artificial",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/gar/",
+      "condition_score": {
+        "clear": 7,
+        "stained": 8,
+        "muddy": 7,
+        "high_flow": 5,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Specialty Summer Warm", "Specialty Spring Active"]
+    },
+    {
+      "id": "lure_056",
+      "name": "Large Sucker / Carp Bait (6-8\", freeline)",
+      "sub": "large live bait, freeline",
+      "detail": "Best alligator gar and big flathead bait. Large live sucker on a 7/0 hook. Fish near slow backwaters.",
+      "type": "live_bait",
+      "bait_type": "live",
+      "rank": 1,
+      "agfc_cited": true,
+      "agfc_source_url": "https://www.agfc.com/fishing/gar/",
+      "condition_score": {
+        "clear": 6,
+        "stained": 8,
+        "muddy": 9,
+        "high_flow": 5,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Specialty Summer Warm", "Specialty Spring Active"]
+    },
+    {
+      "id": "lure_057",
+      "name": "Spinnerbait 3/8oz (chartreuse/white skirt)",
+      "sub": "willow blade, chartreuse/white",
+      "detail": "Good multi-use option for bowfin, pike, and specialty species near heavy vegetation. Slow-roll through weeds.",
+      "type": "spinner",
+      "bait_type": "artificial",
+      "rank": 2,
+      "agfc_cited": false,
+      "agfc_source_url": null,
+      "condition_score": {
+        "clear": 7,
+        "stained": 9,
+        "muddy": 8,
+        "high_flow": 5,
+        "low_flow": 9
+      },
+      "phase_affinity": ["Specialty Spring Active", "Specialty Summer Warm"]
     }
   ]
 }
