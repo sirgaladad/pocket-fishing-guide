@@ -6216,6 +6216,448 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       const CALENDAR_PHASES = WB_CALENDAR;
 
+      // ─── BLACK BASS (lmb, smb, spb, kyb) ────────────────────────
+      const BASS_PHASES = [
+        { name: 'Bass Winter Lull',    min: 0,   max: 48,  color: '#4fc3f7', icon: '\u2744\uFE0F', short: 'Bass inactive and deep. Target 20-30ft main lake humps with slow presentations. Wait for warming trend.' },
+        { name: 'Bass Pre-Spawn',      min: 48,  max: 58,  color: '#29b6f6', icon: '\uD83C\uDF21\uFE0F', short: 'Bass staging near spawning areas. Move to secondary points and transitions. Suspending jerkbaits and finesse jigs shine.' },
+        { name: 'Bass Spawn Staging',  min: 58,  max: 63,  color: '#ff6b35', icon: '\uD83D\uDD25', short: 'Fish moving shallow — males fanning beds. Target coves, flats, and dock areas in 2-6ft.' },
+        { name: 'Bass Peak Spawn',     min: 63,  max: 72,  color: '#f44336', icon: '\uD83D\uDD25', short: 'Bass actively on beds. Sight fish or pitch to shallow cover. Slow moving baits near beds produce.' },
+        { name: 'Bass Post-Spawn',     min: 72,  max: 80,  color: '#66bb6a', icon: '\uD83C\uDF3F', short: 'Fish recovering and feeding. Chase shad near surface at dawn/dusk. Reaction baits and topwater.' },
+        { name: 'Bass Summer Deep',    min: 80,  max: 999, color: '#ffd54f', icon: '\u2600\uFE0F', short: 'Bass pushed deep by heat. Target 15-25ft structure at dawn/dusk or night. Deep cranks and drop shots.' },
+      ];
+
+      const BASS_N4 = { name: 'Finesse Drop Shot (4" Roboworm, 1/4oz weight)', sub: 'drop shot rig', detail: 'For pressured fish in clear water. Deadliest in summer.' };
+      const BASS_N5 = { name: 'Topwater Popper (Rebel Pop-R, chrome/black back)', sub: 'dawn/dusk topwater', detail: 'Pop-pause-pop during low-light windows.' };
+
+      const BASS_LURES_BY_PHASE = {
+        'Bass Winter Lull': [
+          { name: 'Suspending Jerkbait (shad pattern, 4" Rapala)', sub: 'suspending, pause-twitch', detail: 'GO-TO. Pause 5-10 seconds in cold water. Deadly.' },
+          { name: '3/8oz Jig-and-Pig (black/blue)', sub: 'black/blue trailer', detail: 'Drag slowly along the deepest structure you can find.' },
+          BASS_N4, BASS_N5,
+        ],
+        'Bass Pre-Spawn': [
+          { name: 'Suspending Jerkbait (shad pattern, 4" Rapala)', sub: 'suspending, pause-twitch', detail: 'GO-TO. Hit secondary points and channel bends.' },
+          { name: '3/8oz Jig-and-Pig (black/blue)', sub: 'black/blue trailer', detail: 'Pitch to laydowns and dock posts on warming trend.' },
+          BASS_N4, BASS_N5,
+        ],
+        'Bass Spawn Staging': [
+          { name: '3/8oz Jig-and-Pig (black/blue)', sub: 'black/blue trailer', detail: 'GO-TO. Work the base of dock posts and rocky cover.' },
+          { name: '7" Ribbon Tail Worm (Texas rig, 3/16oz)', sub: 'Texas rig, watermelon/june bug', detail: 'Drag slowly through spawning flats and coves.' },
+          BASS_N4, BASS_N5,
+        ],
+        'Bass Peak Spawn': [
+          { name: '7" Ribbon Tail Worm (Texas rig, 3/16oz)', sub: 'Texas rig, slow drag', detail: 'GO-TO. Sight cast to visible beds. Slow drag into the bed.' },
+          { name: 'Hollow Body Frog (black/white)', sub: 'weedless topwater', detail: 'Walk over shallow mats and slop near bedding areas.' },
+          BASS_N4, BASS_N5,
+        ],
+        'Bass Post-Spawn': [
+          { name: 'Topwater Popper (Rebel Pop-R, chrome/black back)', sub: 'dawn/dusk topwater', detail: 'GO-TO. Work creek mouths and main lake points at first light.' },
+          { name: 'Medium-Diving Crankbait (shad/crawfish, 6-10ft diver)', sub: '6-10ft diver', detail: 'Deflect off hard bottom and rocks. Reaction bites.' },
+          BASS_N4, BASS_N5,
+        ],
+        'Bass Summer Deep': [
+          { name: 'Finesse Drop Shot (4" Roboworm, 1/4oz weight)', sub: 'deep drop shot', detail: 'GO-TO for summer deep bass. Hold over structure and shake.' },
+          { name: 'Medium-Diving Crankbait (shad/crawfish, 6-10ft diver)', sub: '6-10ft diver', detail: 'Troll or cast parallel to structure at dawn.' },
+          BASS_N4, BASS_N5,
+        ],
+      };
+
+      const BASS_CALENDAR = [
+        { name: 'Bass Winter Lull',   icon: '\u2744\uFE0F',    months: 'Dec\u2013Feb',      desc: 'Bass holding deep (20-30ft). Slow jig and drop shot presentations near deep structure.', where: 'Main lake humps, deep points, channel bends', lures: 'Jerkbait, 3/8oz jig, drop shot' },
+        { name: 'Bass Pre-Spawn',     icon: '\uD83C\uDF21\uFE0F', months: 'Late Feb\u2013Mar', desc: 'Fish staging on secondary points and transitions as water warms toward 58\u00B0F.', where: 'Secondary points, channel transitions, 8-15ft', lures: 'Suspending jerkbait, finesse jig' },
+        { name: 'The Spawn',          icon: '\uD83D\uDD25',    months: 'Apr\u2013May',      desc: 'Bass on beds at 63-72\u00B0F. Sight fishing and pitch-to-cover tactics dominate.', where: 'Shallow coves, dock posts, flats 1-6ft', lures: 'Texas rig worm, jig, frog' },
+        { name: 'Bass Post-Spawn',    icon: '\uD83C\uDF3F',    months: 'May\u2013Jun',      desc: 'Aggressive feeding phase. Bass chasing shad near surface at dawn and dusk.', where: 'Creek mouths, main points, shad schools', lures: 'Topwater, crankbait, spinnerbait' },
+        { name: 'Bass Summer Deep',   icon: '\u2600\uFE0F',    months: 'Jun\u2013Sep',      desc: 'Heat drives bass to 15-25ft structure. Best bites at dawn, dusk, or night.', where: 'Deep humps, ledges, channel edges 15-25ft', lures: 'Drop shot, deep crank, football jig' },
+        { name: 'Bass Fall Feed',     icon: '\uD83C\uDF42',    months: 'Oct\u2013Nov',      desc: 'Bass chasing shad into creeks. Aggressive feeding before winter.', where: 'Creek channels, shad concentrations, banks', lures: 'Crankbait, spinnerbait, topwater' },
+      ];
+
+      const BASS_WHERE = {
+        'Bass Winter Lull':   'Main lake humps, deep channel bends, and ledges (20-30ft). Slow down everything.',
+        'Bass Pre-Spawn':     'Secondary points, channel-to-bank transitions, and isolated rocks (8-15ft).',
+        'Bass Spawn Staging': 'Shallow coves, dock posts, and visible laydowns in 2-8ft of water.',
+        'Bass Peak Spawn':    'Sight-fish visible beds. Flats near spawning coves, dock pilings, rocky banks in 1-4ft.',
+        'Bass Post-Spawn':    'Creek mouths, main lake points, shad-feeding areas. Fish fast and cover water.',
+        'Bass Summer Deep':   'Deep humps, ledges, main lake structure at 15-25ft. Electronics are critical.',
+      };
+      const BASS_WHAT = {
+        'Bass Winter Lull':   'Suspending jerkbaits with long pauses. Slow-drag jig. Drop shot on deep structure.',
+        'Bass Pre-Spawn':     'Jerkbait on secondary points. Jig-and-pig near laydowns. Finesse with drop shot.',
+        'Bass Spawn Staging': 'Pitch jig or Texas rig worm to every piece of cover. Drag slowly. Stay longer than you think.',
+        'Bass Peak Spawn':    'Sight fish beds with worm or jig. Slow and methodical. Frog through nearby shallow mats.',
+        'Bass Post-Spawn':    'Topwater at first light. Crankbait along main points. Fast-moving reaction baits.',
+        'Bass Summer Deep':   'Drop shot near bottom structure. Deep crankbait at dawn. Football jig on ledges.',
+      };
+
+      // ─── STRIPED BASS & HYBRID (striper, hybrid) ──────────────────
+      const STRIPER_PHASES = [
+        { name: 'Striper Winter Hold',  min: 0,   max: 48,  color: '#4fc3f7', icon: '\u2744\uFE0F', short: 'Stripers schooled deep over main lake structure. Vertical jig with large swimbaits or umbrella rigs. Slow up.' },
+        { name: 'Striper Pre-Run',      min: 48,  max: 55,  color: '#29b6f6', icon: '\uD83C\uDF21\uFE0F', short: 'Fish staging near river channel mouths. Large bucktail jigs or live shad. Big fish moving first.' },
+        { name: 'Striper Run',          min: 55,  max: 62,  color: '#ff6b35', icon: '\uD83D\uDD25', short: 'Stripers running! Target tail-races, river mouths, and current breaks. Heavy action on bucktail and swimbaits.' },
+        { name: 'Striper Post-Spawn',   min: 62,  max: 70,  color: '#66bb6a', icon: '\uD83C\uDF3F', short: 'Fish moving back to main lake. Surface blitzes at dawn — walk-the-dog through feeding schools.' },
+        { name: 'Striper Summer',       min: 70,  max: 78,  color: '#ffd54f', icon: '\u2600\uFE0F', short: 'Stripers schooling on deep shad concentrations. Vertical jig at thermocline or live shad fished deep.' },
+        { name: 'Striper Summer Deep',  min: 78,  max: 999, color: '#ef5350', icon: '\uD83D\uDCA7', short: 'Heat stress zone — stripers pushed very deep (30-40ft). Find thermocline on electronics and fish it.' },
+      ];
+
+      const STRIPER_N4 = { name: 'Live Threadfin Shad (free-lined, #2/0 circle hook)', sub: 'free-lined, circle hook', detail: 'Most natural presentation. Keep shad alive in aerator.' };
+      const STRIPER_N5 = { name: 'Large Topwater Plug (Zara Spook, 4", chrome)', sub: 'walk-the-dog, chrome', detail: 'When they\'re busting, nothing beats this. Work it fast.' };
+
+      const STRIPER_LURES_BY_PHASE = {
+        'Striper Winter Hold': [
+          { name: 'Umbrella Rig / Alabama Rig (5-wire, shad trailers)', sub: '5-wire, swimbait trailers', detail: 'GO-TO. School imitation works on deep winter stripers.' },
+          { name: 'Bucktail Jig 1oz (white/chartreuse)', sub: '1oz, white/chartreuse', detail: 'Vertical jig over deep structure. Match shad depth.' },
+          STRIPER_N4, STRIPER_N5,
+        ],
+        'Striper Pre-Run': [
+          { name: 'Bucktail Jig 1oz (white/chartreuse)', sub: '1oz, white/chartreuse', detail: 'GO-TO. Cast to current breaks near river channel mouths.' },
+          { name: '5" Paddle Tail Swimbait (white/silver, 1oz head)', sub: '1oz jighead, white/silver', detail: 'Slow steady retrieve along the current seam.' },
+          STRIPER_N4, STRIPER_N5,
+        ],
+        'Striper Run': [
+          { name: 'Bucktail Jig 1oz (white/chartreuse)', sub: '1oz, heavy current', detail: 'GO-TO. Work tailraces and current breaks. Heavy jig stays in zone.' },
+          { name: '5" Paddle Tail Swimbait (white/silver, 1oz head)', sub: 'cast and retrieve', detail: 'Fan cast current seams. Retrieve through the strike zone.' },
+          STRIPER_N4, STRIPER_N5,
+        ],
+        'Striper Post-Spawn': [
+          { name: 'Large Topwater Plug (Zara Spook, 4", chrome)', sub: 'walk-the-dog, dawn', detail: 'GO-TO. Walk through schooling fish at first light.' },
+          { name: '5" Paddle Tail Swimbait (white/silver, 1oz head)', sub: 'mid-column retrieve', detail: 'Match depth to feeding fish. Electronics help.' },
+          STRIPER_N4, STRIPER_N5,
+        ],
+        'Striper Summer': [
+          { name: '5" Paddle Tail Swimbait (white/silver, 1oz head)', sub: 'thermocline depth', detail: 'GO-TO. Locate thermocline, match depth with swimbait.' },
+          { name: 'Live Threadfin Shad (free-lined, #2/0 circle hook)', sub: 'free-lined at thermocline', detail: 'Keep shad alive, fish at exact thermocline depth.' },
+          STRIPER_N4, STRIPER_N5,
+        ],
+        'Striper Summer Deep': [
+          { name: 'Live Threadfin Shad (free-lined, #2/0 circle hook)', sub: 'deep presentation', detail: 'GO-TO. Fish very deep (30-40ft) near structure. Hardest to find, biggest fish.' },
+          { name: 'Umbrella Rig / Alabama Rig (5-wire, shad trailers)', sub: 'deep vertical', detail: 'Vertical presentation at extreme depth. Electronics required.' },
+          STRIPER_N4, STRIPER_N5,
+        ],
+      };
+
+      const STRIPER_CALENDAR = [
+        { name: 'Striper Winter Hold', icon: '\u2744\uFE0F',    months: 'Dec\u2013Feb',      desc: 'Stripers deep (25-40ft) over main lake structure. Umbrella rigs and vertical jigging.', where: 'Main lake deep points, humps, channel bends', lures: 'Umbrella rig, bucktail jig, swimbait' },
+        { name: 'Striper Pre-Run',     icon: '\uD83C\uDF21\uFE0F', months: 'Late Feb\u2013Mar', desc: 'Fish stage near river mouths as water approaches 50\u00B0F. Large bait fish present.', where: 'River channel mouths, current breaks, 10-20ft', lures: 'Bucktail jig, swimbait, live shad' },
+        { name: 'Striper Run',         icon: '\uD83D\uDD25',    months: 'Mar\u2013May',      desc: 'Main spawning run when water hits 55-62\u00B0F. Tailraces and river channels loaded.', where: 'Tailraces, river channels, current seams', lures: 'Bucktail, swimbait, live shad' },
+        { name: 'Striper Post-Spawn',  icon: '\uD83C\uDF3F',    months: 'May\u2013Jun',      desc: 'Return to main lake. Surface blitzes at dawn. Great topwater season.', where: 'Main lake schools, open water, shad concentrations', lures: 'Topwater, swimbait, live shad' },
+        { name: 'Striper Summer',      icon: '\u2600\uFE0F',    months: 'Jun\u2013Sep',      desc: 'Deep thermocline bite (20-35ft). Fish when oxygen levels allow. Night fishing productive.', where: 'Deep humps, thermocline depth, open water', lures: 'Swimbait at depth, live shad, vertical jig' },
+        { name: 'Fall Striper Feed',   icon: '\uD83C\uDF42',    months: 'Oct\u2013Nov',      desc: 'Stripers following shad into creeks. Great topwater and subsurface action.', where: 'Creek mouths, shad schools, main points', lures: 'Topwater, swimbait, bucktail' },
+      ];
+
+      const STRIPER_WHERE = {
+        'Striper Winter Hold':  'Deep main lake structure (25-40ft). Humps, channel bends, long points. Use electronics.',
+        'Striper Pre-Run':      'River channel mouths, current break near tributaries, 10-20ft staging areas.',
+        'Striper Run':          'Tailraces, river channels, current seams below dams and at tributary entrances.',
+        'Striper Post-Spawn':   'Open main lake, shad schools, surface feeding areas at dawn. Follow birds.',
+        'Striper Summer':       'Thermocline depth (20-35ft). Find the oxygen layer on your sonar.',
+        'Striper Summer Deep':  'Deepest available structure (30-45ft). Very low light or night only.',
+      };
+      const STRIPER_WHAT = {
+        'Striper Winter Hold':  'Umbrella rig slow-rolled deep. Vertical bucktail jig. Match shad size.',
+        'Striper Pre-Run':      'Bucktail at channel mouths. Large swimbait in current breaks. Live shad fished deep.',
+        'Striper Run':          'Heavy bucktail in current. Swimbait fan cast. Free-line live shad in current seams.',
+        'Striper Post-Spawn':   'Walk-the-dog topwater at dawn. Swimbait through schooling fish. Birds show you where.',
+        'Striper Summer':       'Locate thermocline, fish swimbait or live shad at that exact depth. Electronics critical.',
+        'Striper Summer Deep':  'Deep live shad or umbrella rig. Night bite with large swimbaits near deep structure.',
+      };
+
+      // ─── SUNFISH / PANFISH (bluegill, redear, greensf, warmouth) ──
+      const SUNFISH_PHASES = [
+        { name: 'Sunfish Winter Slow',   min: 0,   max: 50,  color: '#4fc3f7', icon: '\u2744\uFE0F', short: 'Sunfish holding in deeper water near structure. Small jigs and wax worms presented slowly near the bottom.' },
+        { name: 'Sunfish Pre-Spawn',     min: 50,  max: 62,  color: '#ab47bc', icon: '\uD83C\uDF21\uFE0F', short: 'Fish moving shallow as water warms. Target dock edges and wood. Beetle spins and live worms.' },
+        { name: 'Sunfish Bed Spawn',     min: 62,  max: 75,  color: '#f44336', icon: '\uD83D\uDD25', short: 'Sunfish on beds in 1-4ft. Sight-fish with crickets or beetles. Prime season — easy to find, aggressive bite.' },
+        { name: 'Sunfish Post-Spawn',    min: 75,  max: 82,  color: '#66bb6a', icon: '\uD83C\uDF3F', short: 'Fish recovering post-spawn. Target shade near docks and vegetation. Evening bite is best.' },
+        { name: 'Sunfish Summer Active', min: 82,  max: 999, color: '#ffd54f', icon: '\u2600\uFE0F', short: 'Early morning and evening topwater bite. Shade is key at midday. Night fishing under lights with crickets.' },
+      ];
+
+      const SUNFISH_N4 = { name: 'Beetle Spin 1/16oz (yellow/black)', sub: 'yellow/black, slow roll', detail: 'Almost universally effective on sunfish. Fish it slow.' };
+      const SUNFISH_N5 = { name: 'Live Cricket on #6 Hook (under slip bobber)', sub: 'slip bobber, 2-3ft', detail: 'Never fails. Classic Arkansas panfish setup.' };
+
+      const SUNFISH_LURES_BY_PHASE = {
+        'Sunfish Winter Slow': [
+          { name: 'Wax Worm on #8 Hook (tight-line, no weight)', sub: 'no weight, tight-line', detail: 'GO-TO in cold water. Drop to the bottom near deep wood.' },
+          { name: '1/32oz Crappie Jig (pink/chartreuse)', sub: 'pink/chartreuse, slow lift', detail: 'Tiny jig fished painfully slow near the bottom.' },
+          SUNFISH_N4, SUNFISH_N5,
+        ],
+        'Sunfish Pre-Spawn': [
+          { name: 'Live Cricket on #6 Hook (under slip bobber)', sub: 'slip bobber, dock edges', detail: 'GO-TO. Set 2-3ft near docks and weed edges.' },
+          { name: 'Beetle Spin 1/16oz (yellow/black)', sub: 'slow roll, shallow', detail: 'Slow-roll along warming shallow banks and dock edges.' },
+          SUNFISH_N4, SUNFISH_N5,
+        ],
+        'Sunfish Bed Spawn': [
+          { name: 'Live Cricket on #6 Hook (under slip bobber)', sub: 'slip bobber over beds', detail: 'GO-TO. Spot beds in 1-3ft and drift cricket over them.' },
+          { name: 'Foam Popper Spider (#10, deer hair legs)', sub: 'foam popper, fly rod', detail: 'Pop and wait. Explosive surface strikes on beds.' },
+          SUNFISH_N4, SUNFISH_N5,
+        ],
+        'Sunfish Post-Spawn': [
+          { name: 'Beetle Spin 1/16oz (yellow/black)', sub: 'slow roll near shade', detail: 'GO-TO. Target shaded dock edges and overhanging trees.' },
+          { name: 'Live Cricket on #6 Hook (under slip bobber)', sub: 'evening presentation', detail: 'Evening session near docks and calm banks.' },
+          SUNFISH_N4, SUNFISH_N5,
+        ],
+        'Sunfish Summer Active': [
+          { name: 'Small Inline Spinner 1/32oz (Mepps #0, gold blade)', sub: 'Mepps #0, dawn retrieve', detail: 'GO-TO at dawn. Slow retrieve through shady cover.' },
+          { name: 'Live Cricket on #6 Hook (under slip bobber)', sub: 'evening bite', detail: 'Classic evening session. Set near lights or dock edges.' },
+          SUNFISH_N4, SUNFISH_N5,
+        ],
+      };
+
+      const SUNFISH_CALENDAR = [
+        { name: 'Sunfish Winter Slow',   icon: '\u2744\uFE0F',    months: 'Dec\u2013Feb',      desc: 'Sunfish deep and slow near brush piles at 6-12ft. Tiny jigs and wax worms near bottom.', where: 'Deep brush, dock pilings, wood structure 6-12ft', lures: 'Wax worm, 1/32oz jig, tight-line' },
+        { name: 'Sunfish Pre-Spawn',     icon: '\uD83C\uDF21\uFE0F', months: 'Mar\u2013Apr',      desc: 'Moving to shallow cover as water approaches 62\u00B0F. Males begin scouting.', where: 'Dock edges, gravel banks, shallow wood cover', lures: 'Cricket under bobber, Beetle Spin' },
+        { name: 'Sunfish Bed Spawn',     icon: '\uD83D\uDD25',    months: 'Apr\u2013Jun',      desc: 'Prime bluegill and redear season. Beds visible in clear water 1-4ft near hard bottom.', where: 'Gravel flats, sandy banks, dock pilings 1-4ft', lures: 'Cricket, foam popper, Beetle Spin' },
+        { name: 'Sunfish Post-Spawn',    icon: '\uD83C\uDF3F',    months: 'Jun\u2013Jul',      desc: 'Multiple spawn cycles — sunfish bed several times. Target shade and vegetation.', where: 'Dock shade, vegetation edges, lily pad pockets', lures: 'Beetle Spin, cricket, small worm' },
+        { name: 'Sunfish Summer Active', icon: '\u2600\uFE0F',    months: 'Jul\u2013Oct',      desc: 'Morning and evening bite near cover. Night fishing with lights is a summer secret.', where: 'Dock lights, weed edges, shady banks', lures: 'Cricket under bobber, inline spinner, foam popper' },
+      ];
+
+      const SUNFISH_WHERE = {
+        'Sunfish Winter Slow':   'Deep brush piles and dock pilings (6-12ft). Slow vertical presentations.',
+        'Sunfish Pre-Spawn':     'Dock edges, gravel shallows, and isolated wood cover warming in the sun.',
+        'Sunfish Bed Spawn':     'Sandy or gravel flats in 1-4ft. Visible beds in clear water. Look for fanned-out circles.',
+        'Sunfish Post-Spawn':    'Shaded dock edges, lily pad pockets, and overhanging vegetation.',
+        'Sunfish Summer Active': 'Dock lights at night. Weed edges and shady banks at dawn/dusk.',
+      };
+      const SUNFISH_WHAT = {
+        'Sunfish Winter Slow':   'Tiny jig or wax worm near the bottom. Painfully slow. Let the bait hang.',
+        'Sunfish Pre-Spawn':     'Cricket under bobber near warming structure. Beetle Spin slow-rolled in shallow cover.',
+        'Sunfish Bed Spawn':     'Cricket drifted over visible bed. Foam popper on fly rod. Sight fish beds.',
+        'Sunfish Post-Spawn':    'Beetle Spin in shaded areas. Evening sessions near docks. Cricket under bobber.',
+        'Sunfish Summer Active': 'Dawn/dusk Beetle Spin. Night cricket under dock lights. Foam popper at first light.',
+      };
+
+      // ─── CATFISH (chancat, bluecat, flathead) ────────────────────
+      const CATFISH_PHASES = [
+        { name: 'Catfish Winter Deep',   min: 0,   max: 45,  color: '#4fc3f7', icon: '\u2744\uFE0F', short: 'Catfish inactive and deep. Cut shad on heavy slip sinker. Target slow deep holes and river bends.' },
+        { name: 'Catfish Spring Feed',   min: 45,  max: 65,  color: '#ab47bc', icon: '\uD83C\uDF21\uFE0F', short: 'Catfish feeding up before spawn. Great action on livers and cut shad. Current edges and channel bends.' },
+        { name: 'Catfish Spawn',         min: 65,  max: 75,  color: '#f44336', icon: '\uD83D\uDD25', short: 'Channel and flathead cats on nests. Flatheads in deep timber, channels in shallow rocky cover. Big baits = big fish.' },
+        { name: 'Catfish Post-Spawn',    min: 75,  max: 82,  color: '#66bb6a', icon: '\uD83C\uDF3F', short: 'Post-spawn catfish feeding aggressively. Current seams and channel transitions are gold.' },
+        { name: 'Catfish Summer Night',  min: 82,  max: 999, color: '#ffd54f', icon: '\uD83C\uDF19', short: 'Summer catfish go nocturnal. Night bite on cut shad and livers near current and structure. Best action 10pm-2am.' },
+      ];
+
+      const CATFISH_N4 = { name: 'Fresh Cut Shad (3" chunk, #3/0 circle hook)', sub: 'cut shad, circle hook', detail: 'Best big-cat bait. Keep it fresh. Target holes and tailwaters.' };
+      const CATFISH_N5 = { name: 'Chicken Liver on #2 Treble Hook (slip sinker rig)', sub: 'slip sinker, current edge', detail: 'Channel cat magnet. Let current carry scent.' };
+
+      const CATFISH_LURES_BY_PHASE = {
+        'Catfish Winter Deep': [
+          { name: 'Fresh Cut Shad (3" chunk, #3/0 circle hook)', sub: 'heavy sinker, deep hole', detail: 'GO-TO. Fish deep holes (20-30ft) with heavy weight. Slow night.' },
+          { name: 'Punch Bait / Stink Bait (dip tube rig)', sub: 'dip tube, still water', detail: 'Stink bait in slow deep holes. Long soak required.' },
+          CATFISH_N4, CATFISH_N5,
+        ],
+        'Catfish Spring Feed': [
+          { name: 'Chicken Liver on #2 Treble Hook (slip sinker rig)', sub: 'slip sinker, current edge', detail: 'GO-TO. Fish current seams and channel bends. Let scent drift.' },
+          { name: 'Live Nightcrawler on #4 Circle Hook (no weight, drift)', sub: 'drift, no weight', detail: 'Drift along bottom in current. Great for channel cats.' },
+          CATFISH_N4, CATFISH_N5,
+        ],
+        'Catfish Spawn': [
+          { name: 'Live Perch / Sunfish (3-4", #3/0 hook)', sub: 'live bait near structure', detail: 'GO-TO for flatheads. Fish near deep timber at night during spawn.' },
+          { name: 'Fresh Cut Shad (3" chunk, #3/0 circle hook)', sub: 'fresh cut bait', detail: 'Best for blue cats in tailwaters. Stay fresh, change every 30min.' },
+          CATFISH_N4, CATFISH_N5,
+        ],
+        'Catfish Post-Spawn': [
+          { name: 'Fresh Cut Shad (3" chunk, #3/0 circle hook)', sub: 'current seam, post-spawn', detail: 'GO-TO. Aggressive feeding. Current seams and tailraces loaded.' },
+          { name: 'Chicken Liver on #2 Treble Hook (slip sinker rig)', sub: 'slip sinker', detail: 'Set in current break. Post-spawn cats actively chasing scent.' },
+          CATFISH_N4, CATFISH_N5,
+        ],
+        'Catfish Summer Night': [
+          { name: 'Fresh Cut Shad (3" chunk, #3/0 circle hook)', sub: 'night, current edge', detail: 'GO-TO. Night bite is prime. Set multiple rods in current seams.' },
+          { name: 'Live Perch / Sunfish (3-4", #3/0 hook)', sub: 'live bait, night', detail: 'Big flatheads on live bait at night. Patience required.' },
+          CATFISH_N4, CATFISH_N5,
+        ],
+      };
+
+      const CATFISH_CALENDAR = [
+        { name: 'Catfish Winter Deep',  icon: '\u2744\uFE0F',    months: 'Dec\u2013Feb',      desc: 'Catfish inactive in deep holes. Heavy sinker rigs with cut shad. Slow action.', where: 'Deep river holes, channel bends, tailwater pools 15-30ft', lures: 'Cut shad, stink bait, heavy sinker rig' },
+        { name: 'Catfish Spring Feed',  icon: '\uD83C\uDF21\uFE0F', months: 'Mar\u2013May',      desc: 'Excellent feeding action on warming water. Best catfish time of year for many anglers.', where: 'Current seams, channel bends, tailwaters', lures: 'Chicken liver, cut shad, nightcrawler' },
+        { name: 'Catfish Spawn',        icon: '\uD83D\uDD25',    months: 'May\u2013Jul',      desc: 'Channel cats 65-75\u00B0F. Flatheads in deep timber cavities. Big baits = big fish.', where: 'Rocky banks, undercut banks, deep timber (flathead)', lures: 'Live perch (flathead), cut shad (blue), liver (channel)' },
+        { name: 'Catfish Post-Spawn',   icon: '\uD83C\uDF3F',    months: 'Jul\u2013Aug',      desc: 'Aggressive feeding phase. Current areas are hot. Multiple rod setup works well.', where: 'Current breaks, tailraces, channel transitions', lures: 'Cut shad, chicken liver, nightcrawler' },
+        { name: 'Catfish Summer Night', icon: '\uD83C\uDF19',    months: 'Jun\u2013Sep',      desc: 'Night bite rules in summer. 10pm-2am is prime. Current edges and bridge pilings.', where: 'Bridge pilings, current seams, riprapped banks', lures: 'Cut shad, chicken liver, stink bait' },
+        { name: 'Catfish Fall Return',  icon: '\uD83C\uDF42',    months: 'Oct\u2013Nov',      desc: 'Great fall catfish action as water cools. Day bites return. Good numbers near structure.', where: 'Deep channel bends, riprap, current edges', lures: 'Cut shad, nightcrawler, chicken liver' },
+      ];
+
+      const CATFISH_WHERE = {
+        'Catfish Winter Deep':   'Deep river holes (15-30ft), main channel bends, and slow tailwater pools.',
+        'Catfish Spring Feed':   'Current seams, channel bend outside edges, tailrace areas below dams.',
+        'Catfish Spawn':         'Rocky undercut banks (channel cat), deep timber cavities (flathead), sandy banks.',
+        'Catfish Post-Spawn':    'Current transitions, tailwater riffles, active feeding areas near current.',
+        'Catfish Summer Night':  'Bridge pilings, riprap banks, current seams. Night fishing 10pm-2am.',
+      };
+      const CATFISH_WHAT = {
+        'Catfish Winter Deep':   'Heavy sinker rigs with cut shad in deep holes. Stink bait for channel cats.',
+        'Catfish Spring Feed':   'Chicken liver drifted in current. Cut shad near channel bends. Nightcrawler drift.',
+        'Catfish Spawn':         'Live perch for flatheads near timber. Fresh cut shad for blues. Big baits at night.',
+        'Catfish Post-Spawn':    'Multiple rod setup in current seams. Fresh cut shad is best. Circle hook prevents gut hooks.',
+        'Catfish Summer Night':  'Set rods at 10pm in current seams. Cut shad for blues, live perch for flatheads. Long soaks.',
+      };
+
+      // ─── TROUT (rainbow, browntrout, cutthroat, brook) ───────────
+      const TROUT_PHASES = [
+        { name: 'Trout Winter Tailwater', min: 0,   max: 48,  color: '#4fc3f7', icon: '\u2744\uFE0F', short: 'Best winter trout fishing of the year. Tailwaters stay 45-55\u00B0F year-round. San Juan worm and midge patterns dominate.' },
+        { name: 'Trout Stocking Active',  min: 48,  max: 58,  color: '#29b6f6', icon: '\uD83D\uDCC5', short: 'AGFC stocking season. Fresh stockers are aggressive — PowerBait and spinners work immediately. Check stocking schedules.' },
+        { name: 'Trout Spring Prime',     min: 58,  max: 68,  color: '#66bb6a', icon: '\uD83C\uDF3F', short: 'Best trout season for wild fish. Hatches active, fish feeding near surface. Dry flies and nymphs excel.' },
+        { name: 'Trout Fall Run',         min: 45,  max: 58,  color: '#ff6b35', icon: '\uD83C\uDF42', short: 'Brown trout spawn run in fall. Large aggressive fish in tailwaters. Streamer and egg patterns work.' },
+      ];
+
+      const TROUT_N4 = { name: 'San Juan Worm (red/pink, #12)', sub: 'dead drift, near bottom', detail: 'Deadliest tailwater fly. Dead drift along the bottom.' };
+      const TROUT_N5 = { name: 'Mepps Aglia #2 Spinner (gold blade, squirrel tail)', sub: 'cast upstream, steady retrieve', detail: 'Best all-around trout spinner. Works all seasons.' };
+
+      const TROUT_LURES_BY_PHASE = {
+        'Trout Winter Tailwater': [
+          { name: 'San Juan Worm (red/pink, #12)', sub: 'dead drift near bottom', detail: 'GO-TO. Dead drift along tailwater bottom. Trout can\'t resist.' },
+          { name: 'Woolly Bugger (olive/black, #8)', sub: 'strip retrieve or dead drift', detail: 'Larger pattern for big browns and rainbows.' },
+          TROUT_N4, TROUT_N5,
+        ],
+        'Trout Stocking Active': [
+          { name: 'PowerBait Dough (rainbow/chartreuse, #14 treble)', sub: 'float rig, 12" off bottom', detail: 'GO-TO for stockers. Berkley scent carries far. Leave it soaking.' },
+          { name: 'Mepps Aglia #2 Spinner (gold blade, squirrel tail)', sub: 'cast upstream, retrieve', detail: 'Stockers hit spinners immediately. Steady retrieve.' },
+          TROUT_N4, TROUT_N5,
+        ],
+        'Trout Spring Prime': [
+          { name: 'Elk Hair Caddis (tan, #14)', sub: 'dry fly, dead drift', detail: 'GO-TO during caddis hatches. Evening dry fly action is excellent.' },
+          { name: 'Mepps Aglia #2 Spinner (gold blade, squirrel tail)', sub: 'upstream cast', detail: 'Cast upstream in riffles. Retrieve through runs and pools.' },
+          TROUT_N4, TROUT_N5,
+        ],
+        'Trout Fall Run': [
+          { name: 'Woolly Bugger (olive/black, #8)', sub: 'streamer, strip fast', detail: 'GO-TO for fall brown trout. Strip aggressively near spawning browns.' },
+          { name: 'Salmon Egg / Egg Pattern Fly (bead, 6mm pink)', sub: 'dead drift indicator', detail: 'Egg patterns deadly in fall below dam outlets.' },
+          TROUT_N4, TROUT_N5,
+        ],
+      };
+
+      const TROUT_CALENDAR = [
+        { name: 'Trout Winter Tailwater', icon: '\u2744\uFE0F',    months: 'Dec\u2013Feb',      desc: 'Best time of year in AR tailwaters. Stable temps, less pressure, big fish feeding on midges and worms.', where: 'Bull Shoals, Norfork, Greers Ferry tailwaters', lures: 'San Juan worm, midge, Woolly Bugger' },
+        { name: 'Trout Stocking Season',  icon: '\uD83D\uDCC5',    months: 'Nov\u2013Apr',      desc: 'AGFC stocks regularly. Fresh stockers bite PowerBait and spinners. Check agfc.com for schedule.', where: 'Stocked tailwaters and lakes, below access areas', lures: 'PowerBait, Rooster Tail, Mepps spinner' },
+        { name: 'Trout Spring Prime',     icon: '\uD83C\uDF3F',    months: 'Mar\u2013May',      desc: 'Insect hatches begin. Dry fly fishing excellent. Wild fish feeding near surface.', where: 'Riffle-run-pool sequences in tailwaters', lures: 'Elk Hair Caddis, Adams dry fly, San Juan worm' },
+        { name: 'Trout Fall Brown Run',   icon: '\uD83C\uDF42',    months: 'Oct\u2013Nov',      desc: 'Brown trout spawn run. Aggressive large fish. Streamers and egg patterns near current seams.', where: 'Norfork and Bull Shoals tailwaters, main current lanes', lures: 'Woolly Bugger, egg pattern, Mepps spinner' },
+      ];
+
+      const TROUT_WHERE = {
+        'Trout Winter Tailwater': 'Bull Shoals, Norfork, and Greers Ferry tailwaters. Riffle-to-pool transitions hold the most fish.',
+        'Trout Stocking Active':  'Stocked areas near public access. Check AGFC schedule at agfc.com for exact locations.',
+        'Trout Spring Prime':     'Riffles, runs, and pool heads where insects emerge. Look for rising fish.',
+        'Trout Fall Run':         'Main current lanes in tailwaters. Below dam outlets where brown trout congregate.',
+      };
+      const TROUT_WHAT = {
+        'Trout Winter Tailwater': 'Dead drift San Juan worm or midge along the bottom. Woolly Bugger stripped through pools for big fish.',
+        'Trout Stocking Active':  'PowerBait on float rig 12" off bottom. Mepps or Rooster Tail spinner upstream retrieve.',
+        'Trout Spring Prime':     'Match the hatch. Elk Hair Caddis in evening. San Juan worm for subsurface. Mepps in riffles.',
+        'Trout Fall Run':         'Strip Woolly Bugger aggressively near spawning browns. Egg pattern dead drift at run mouths.',
+      };
+
+      // ─── WALLEYE / SAUGER / SAUGEYE (walleye, sauger, saugeye) ──
+      const WALLEYE_PHASES = [
+        { name: 'Walleye Winter Hold',  min: 0,   max: 38,  color: '#4fc3f7', icon: '\u2744\uFE0F', short: 'Walleye deep and slow. Vertical jig with jigging Rapala over structure. Night bite best even in winter.' },
+        { name: 'Walleye Pre-Spawn',    min: 38,  max: 44,  color: '#29b6f6', icon: '\uD83C\uDF21\uFE0F', short: 'Fish staging near spawning gravel and rocky banks. Jig-and-minnow along channel edges. Dawn and dusk windows.' },
+        { name: 'Walleye Spawn Run',    min: 44,  max: 50,  color: '#ff6b35', icon: '\uD83D\uDD25', short: 'Walleye moving to rocky shallows and gravel bars at 44-50\u00B0F. Night bite on spawning fish — crankbaits along riprap.' },
+        { name: 'Walleye Post-Spawn',   min: 50,  max: 60,  color: '#66bb6a', icon: '\uD83C\uDF3F', short: 'Aggressive post-spawn feed. Crawler harness and crankbaits along hard bottom transition. Morning and evening.' },
+        { name: 'Walleye Summer Pattern', min: 60, max: 75, color: '#ffd54f', icon: '\u2600\uFE0F', short: 'Walleye on deep structure at low light. Night fishing is premier. Bottom bouncers and jigging Rapala.' },
+        { name: 'Walleye Fall Active',  min: 48,  max: 60,  color: '#ff7043', icon: '\uD83C\uDF42', short: 'Fall walleye chase shad near main lake structure. Crankbaits and jig-minnow combos. Excellent pre-winter action.' },
+      ];
+
+      const WALLEYE_N4 = { name: 'Jig + Live Minnow (1/4oz chartreuse jighead)', sub: '1/4oz, live minnow', detail: 'Never fails for walleye. Bounce along bottom structure.' };
+      const WALLEYE_N5 = { name: 'Jigging Rapala (VMC #5, silver/blue)', sub: 'vertical jigging', detail: 'Lift-fall presentation at thermocline. Walleye can\'t resist it.' };
+
+      const WALLEYE_LURES_BY_PHASE = {
+        'Walleye Winter Hold': [
+          { name: 'Jigging Rapala (VMC #5, silver/blue)', sub: 'vertical jigging', detail: 'GO-TO. Slow vertical jigging over deep main lake structure at dusk.' },
+          { name: 'Jig + Live Minnow (1/4oz chartreuse jighead)', sub: '1/4oz, slow bounce', detail: 'Drag painfully slow along bottom through the coldest days.' },
+          WALLEYE_N4, WALLEYE_N5,
+        ],
+        'Walleye Pre-Spawn': [
+          { name: 'Jig + Live Minnow (1/4oz chartreuse jighead)', sub: '1/4oz, channel edges', detail: 'GO-TO. Bounce along channel-to-gravel transitions at dusk.' },
+          { name: 'Flicker Shad Crankbait (size 5, fire tiger)', sub: 'fire tiger, shallow', detail: 'Cast parallel to rocky banks and riprap.' },
+          WALLEYE_N4, WALLEYE_N5,
+        ],
+        'Walleye Spawn Run': [
+          { name: 'Flicker Shad Crankbait (size 5, fire tiger)', sub: 'fire tiger, slow troll', detail: 'GO-TO. Troll along rocky points and riprap at night.' },
+          { name: 'Jig + Live Minnow (1/4oz chartreuse jighead)', sub: 'pitch to rocks', detail: 'Pitch near rocky shallows and gravel bars at night.' },
+          WALLEYE_N4, WALLEYE_N5,
+        ],
+        'Walleye Post-Spawn': [
+          { name: 'Nightcrawler Harness (spinner blades, #4 hook)', sub: 'Colorado blade, slow troll', detail: 'GO-TO. Slow troll hard bottom transitions. Deadly in spring.' },
+          { name: 'Bottom Bouncer + Crankbait (3/4oz bouncer, shad)', sub: 'troll at 1.5mph', detail: 'Work channel edges and hard transitions. Snap bottom.' },
+          WALLEYE_N4, WALLEYE_N5,
+        ],
+        'Walleye Summer Pattern': [
+          { name: 'Jigging Rapala (VMC #5, silver/blue)', sub: 'deep vertical, night', detail: 'GO-TO. Night fish deep structure (15-25ft). Lift-fall.' },
+          { name: 'Bottom Bouncer + Crankbait (3/4oz bouncer, shad)', sub: 'deep troll at dusk', detail: 'Troll deep channel edges at dusk and dawn.' },
+          WALLEYE_N4, WALLEYE_N5,
+        ],
+        'Walleye Fall Active': [
+          { name: 'Flicker Shad Crankbait (size 5, fire tiger)', sub: 'fire tiger, fall troll', detail: 'GO-TO. Troll main lake structure as water cools.' },
+          { name: 'Jig + Live Minnow (1/4oz chartreuse jighead)', sub: 'pitch to points', detail: 'Pitch to main lake points and secondary structure.' },
+          WALLEYE_N4, WALLEYE_N5,
+        ],
+      };
+
+      const WALLEYE_CALENDAR = [
+        { name: 'Walleye Winter Hold',    icon: '\u2744\uFE0F',    months: 'Dec\u2013Jan',      desc: 'Deep main lake structure. Night bite only. Vertical jigging with Rapala or live minnow jig.', where: 'Main lake humps and channel bends 20-30ft', lures: 'Jigging Rapala, jig + minnow' },
+        { name: 'Walleye Pre-Spawn',      icon: '\uD83C\uDF21\uFE0F', months: 'Jan\u2013Feb',      desc: 'Staging near gravel and rocky banks. Early season run beginning. Low-light bites.', where: 'Channel edges near rocky banks and riprap', lures: 'Jig + minnow, crankbait' },
+        { name: 'Walleye Spawn Run',      icon: '\uD83D\uDD25',    months: 'Feb\u2013Mar',      desc: 'Main spawning run on gravel and rocky shallows at 44-50\u00B0F. Night bite premier.', where: 'Rocky points, riprap, gravel shallows', lures: 'Crankbait at night, jig + minnow' },
+        { name: 'Walleye Post-Spawn',     icon: '\uD83C\uDF3F',    months: 'Mar\u2013May',      desc: 'Aggressive post-spawn feeding. Crawler harness and crankbaits on hard bottom.', where: 'Hard bottom transitions, channel edges, points', lures: 'Nightcrawler harness, bottom bouncer, crankbait' },
+        { name: 'Walleye Summer Deep',    icon: '\u2600\uFE0F',    months: 'Jun\u2013Sep',      desc: 'Deep structure bite. Night fishing excellent. Use electronics to find deep schools.', where: 'Main lake ledges and structure 15-25ft', lures: 'Jigging Rapala, bottom bouncer, deep troll' },
+        { name: 'Walleye Fall Active',    icon: '\uD83C\uDF42',    months: 'Oct\u2013Nov',      desc: 'Excellent fall action as water cools. Shad-chasing schools accessible near main structure.', where: 'Main lake points, shad schools, structure', lures: 'Crankbait, jig + minnow, trolling' },
+      ];
+
+      const WALLEYE_WHERE = {
+        'Walleye Winter Hold':    'Main lake humps and channel bends (20-30ft). Night bite is best even in winter.',
+        'Walleye Pre-Spawn':      'Channel-to-rocky-bank transitions and riprap staging areas near spawning flats.',
+        'Walleye Spawn Run':      'Gravel shallows, rocky points, and riprap banks at night when fish are most active.',
+        'Walleye Post-Spawn':     'Hard bottom transitions, channel bend outer edges, main lake points in 8-15ft.',
+        'Walleye Summer Pattern': 'Main lake ledges and deep structure (15-25ft). Electronics are essential.',
+        'Walleye Fall Active':    'Main lake points, shad concentration areas, and transition structure.',
+      };
+      const WALLEYE_WHAT = {
+        'Walleye Winter Hold':    'Vertical jig with Rapala or drag live minnow jig. Slow and deep. Night only.',
+        'Walleye Pre-Spawn':      'Jig-and-minnow bounced along channel edges at dusk. Crankbait parallel to rocky banks.',
+        'Walleye Spawn Run':      'Crankbait trolled along rocky points at night. Jig pitched to gravel shallows.',
+        'Walleye Post-Spawn':     'Nightcrawler harness slow-trolled on hard bottom. Bottom bouncer + crankbait along transitions.',
+        'Walleye Summer Pattern': 'Jigging Rapala over deep structure at night. Bottom bouncer troll at dawn.',
+        'Walleye Fall Active':    'Crankbait trolled over main lake structure. Jig-and-minnow pitched to points.',
+      };
+
+      // ─── SPECIALTY (paddlefish, lngar, alligar, bowfin) ──────────
+      const SPECIALTY_PHASES = [
+        { name: 'Specialty Winter Cold',    min: 0,   max: 45,  color: '#4fc3f7', icon: '\u2744\uFE0F', short: 'Specialty species sluggish. Paddlefish deep in channels. Gar and bowfin near deep cover. Minimal activity.' },
+        { name: 'Specialty Spring Active',  min: 45,  max: 68,  color: '#66bb6a', icon: '\uD83C\uDF3F', short: 'Best time for gar and bowfin. Spawning activity increases aggression. Target backwaters and shallow vegetation.' },
+        { name: 'Specialty Summer Warm',    min: 68,  max: 999, color: '#ffd54f', icon: '\u2600\uFE0F', short: 'Peak gar and bowfin season. Surface rolling visible. Dawn/dusk best. Paddlefish snag season varies — check regulations.' },
+      ];
+
+      const SPECIALTY_N4 = { name: 'Rope Lure (nylon rope frayed, unweighted)', sub: 'frayed nylon, 6-8"', detail: 'Traditional gar lure. No hook needed — teeth tangle in rope.' };
+      const SPECIALTY_N5 = { name: 'Spinnerbait 3/8oz (chartreuse/white skirt)', sub: 'willow blade, slow roll', detail: 'Works for bowfin and gar near vegetation. Slow-roll.' };
+
+      const SPECIALTY_LURES_BY_PHASE = {
+        'Specialty Winter Cold': [
+          { name: 'Large Sucker / Carp Bait (6-8", freeline)', sub: 'large live bait, deep', detail: 'GO-TO for alligator gar near deep slow backwaters in winter.' },
+          { name: 'Rope Lure (nylon rope frayed, unweighted)', sub: 'cast near surface rolls', detail: 'Even in cool weather, gar will strike rope near surface.' },
+          SPECIALTY_N4, SPECIALTY_N5,
+        ],
+        'Specialty Spring Active': [
+          { name: 'Rope Lure (nylon rope frayed, unweighted)', sub: 'cast to spawning gar', detail: 'GO-TO for longnose and alligator gar. Prime season.' },
+          { name: 'Spinnerbait 3/8oz (chartreuse/white skirt)', sub: 'through vegetation', detail: 'Excellent for bowfin in spawning backwaters.' },
+          SPECIALTY_N4, SPECIALTY_N5,
+        ],
+        'Specialty Summer Warm': [
+          { name: 'Rope Lure (nylon rope frayed, unweighted)', sub: 'cast to surface rolling gar', detail: 'GO-TO. Gar roll on the surface to breathe. Cast right to them.' },
+          { name: 'Large Sucker / Carp Bait (6-8", freeline)', sub: 'large live bait, backwater', detail: 'Best for trophy alligator gar in slow warm backwaters.' },
+          SPECIALTY_N4, SPECIALTY_N5,
+        ],
+      };
+
+      const SPECIALTY_CALENDAR = [
+        { name: 'Specialty Winter Cold',   icon: '\u2744\uFE0F',    months: 'Dec\u2013Feb',      desc: 'Minimal activity. Paddlefish deepest in main channels. Gar and bowfin near deep cover.', where: 'Deep main channels (paddlefish), deep backwater cover (gar/bowfin)', lures: 'Large live bait for gar, snagging rig for paddlefish (regulated)' },
+        { name: 'Specialty Spring Active', icon: '\uD83C\uDF3F',    months: 'Mar\u2013May',      desc: 'Gar and bowfin spawning. Very aggressive. Best time of year for all specialty species.', where: 'Shallow backwaters, floodplain areas, vegetation edges', lures: 'Rope lure (gar), spinnerbait (bowfin), large live bait' },
+        { name: 'Specialty Summer Warm',   icon: '\u2600\uFE0F',    months: 'Jun\u2013Oct',      desc: 'Gar rolling on surface to breathe — easiest time to find them. Dawn is prime.', where: 'Slow backwaters, oxbow lakes, bayous', lures: 'Rope lure, large live bait, spinnerbait' },
+      ];
+
+      const SPECIALTY_WHERE = {
+        'Specialty Winter Cold':    'Deep main channels (paddlefish), slow deep backwater cover (gar and bowfin). Minimal activity.',
+        'Specialty Spring Active':  'Shallow backwaters, floodplain sloughs, and vegetation edges where spawning occurs.',
+        'Specialty Summer Warm':    'Slow oxbow lakes, bayous, and backwaters. Watch for surface rolling gar at dawn.',
+      };
+      const SPECIALTY_WHAT = {
+        'Specialty Winter Cold':    'Large live bait still-fished near deep cover. Rope lure if gar are active near surface.',
+        'Specialty Spring Active':  'Rope lure cast to spawning gar. Spinnerbait slow-rolled through bowfin vegetation.',
+        'Specialty Summer Warm':    'Cast rope lure directly to surface-rolling gar at dawn. Large live bait in slow backwaters.',
+      };
+
       // ─── SHARED TECHNIQUE LOOKUP DATA ─────────────────────────
       const WB_WHERE = {
         'Winter Hold':
@@ -6440,11 +6882,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       const ALL_SPECIES_IDS = SPECIES_CATALOG.flatMap((g) => g.species.map((s) => s.id));
 
       // All crappie sub-types that share CR phases, lure maps, and tips
-      const CRAPPIE_IDS = new Set(['cr', 'blkcrappie', 'whtcrappie']);
+      const CRAPPIE_IDS    = new Set(['cr', 'blkcrappie', 'whtcrappie']);
+      const BLACK_BASS_IDS = new Set(['lmb', 'smb', 'spb', 'kyb']);
+      const STRIPER_IDS    = new Set(['striper', 'hybrid']);
+      const SUNFISH_IDS    = new Set(['bluegill', 'redear', 'greensf', 'warmouth']);
+      const CATFISH_IDS    = new Set(['chancat', 'bluecat', 'flathead']);
+      const TROUT_IDS      = new Set(['rainbow', 'browntrout', 'cutthroat', 'brook']);
+      const WALLEYE_IDS    = new Set(['walleye', 'sauger', 'saugeye']);
+      const SPECIALTY_IDS  = new Set(['paddlefish', 'lngar', 'alligar', 'bowfin']);
 
       // Species with fully-authored phase/lure/calendar data.
       // All others show a "coming soon" stub instead of silently falling back to WB data.
-      const IMPLEMENTED_SPECIES = new Set(['wb', 'cr', 'blkcrappie', 'whtcrappie']);
+      const IMPLEMENTED_SPECIES = new Set([
+        'wb', 'cr', 'blkcrappie', 'whtcrappie',
+        'lmb', 'smb', 'spb', 'kyb',
+        'striper', 'hybrid',
+        'bluegill', 'redear', 'greensf', 'warmouth',
+        'chancat', 'bluecat', 'flathead',
+        'rainbow', 'browntrout', 'cutthroat', 'brook',
+        'walleye', 'sauger', 'saugeye',
+        'paddlefish', 'lngar', 'alligar', 'bowfin',
+      ]);
 
       // Returns true when species-specific phase/lure/calendar data is fully authored.
       // @param {string} speciesId
@@ -6461,6 +6919,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       function getSpeciesSpawnTrigger(speciesId) {
         if (CRAPPIE_IDS.has(speciesId)) return 60;
         if (speciesId === 'wb') return 50;
+        if (speciesId === 'smb') return 58;
+        if (BLACK_BASS_IDS.has(speciesId)) return 63;
+        if (STRIPER_IDS.has(speciesId)) return 62;
+        if (SUNFISH_IDS.has(speciesId)) return 68;
+        if (speciesId === 'bluecat') return 65;
+        if (speciesId === 'chancat' || speciesId === 'flathead') return 70;
+        if (speciesId === 'sauger') return 48;
+        if (speciesId === 'walleye' || speciesId === 'saugeye') return 50;
+        if (speciesId === 'browntrout') return 52;
+        // rainbow, cutthroat, brook: stocking-driven, no temp-based spawn trigger
+        // specialty (paddlefish, gar, bowfin): no spawn signal modeled
         return null;
       }
 
@@ -6471,6 +6940,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       function getSpeciesScoutTemp(speciesId) {
         if (CRAPPIE_IDS.has(speciesId)) return 55;
         if (speciesId === 'wb') return 45;
+        if (speciesId === 'smb') return 52;
+        if (BLACK_BASS_IDS.has(speciesId)) return 58;
+        if (STRIPER_IDS.has(speciesId)) return 55;
+        if (SUNFISH_IDS.has(speciesId)) return 62;
+        if (CATFISH_IDS.has(speciesId)) return 62;
+        if (speciesId === 'sauger') return 42;
+        if (speciesId === 'walleye' || speciesId === 'saugeye') return 44;
         return null;
       }
 
@@ -6481,8 +6957,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         { id: 'access', icon: '\uD83D\uDCCD', label: 'Access' },
       ];
 
+      function _getPhaseList(species) {
+        if (CRAPPIE_IDS.has(species))    return CR_PHASES;
+        if (species === 'wb')             return WB_PHASES;
+        if (BLACK_BASS_IDS.has(species)) return BASS_PHASES;
+        if (STRIPER_IDS.has(species))    return STRIPER_PHASES;
+        if (SUNFISH_IDS.has(species))    return SUNFISH_PHASES;
+        if (CATFISH_IDS.has(species))    return CATFISH_PHASES;
+        if (TROUT_IDS.has(species))      return TROUT_PHASES;
+        if (WALLEYE_IDS.has(species))    return WALLEYE_PHASES;
+        if (SPECIALTY_IDS.has(species))  return SPECIALTY_PHASES;
+        return WB_PHASES;
+      }
+
       function getPhase(temp, species) {
-        const list = CRAPPIE_IDS.has(species) ? CR_PHASES : WB_PHASES;
+        const list = _getPhaseList(species);
         if (temp === null || temp === undefined) return list[0];
         for (const p of list) {
           if (temp >= p.min && temp < p.max) return p;
@@ -6491,12 +6980,64 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       function getPhaseIndex(temp, species) {
-        const list = CRAPPIE_IDS.has(species) ? CR_PHASES : WB_PHASES;
+        const list = _getPhaseList(species);
         if (temp === null || temp === undefined) return 0;
         for (let i = 0; i < list.length; i++) {
           if (temp >= list[i].min && temp < list[i].max) return i;
         }
         return list.length - 1;
+      }
+
+      function _getLureMap(species) {
+        if (CRAPPIE_IDS.has(species))    return CR_LURES_BY_PHASE;
+        if (species === 'wb')             return LURES_BY_PHASE;
+        if (BLACK_BASS_IDS.has(species)) return BASS_LURES_BY_PHASE;
+        if (STRIPER_IDS.has(species))    return STRIPER_LURES_BY_PHASE;
+        if (SUNFISH_IDS.has(species))    return SUNFISH_LURES_BY_PHASE;
+        if (CATFISH_IDS.has(species))    return CATFISH_LURES_BY_PHASE;
+        if (TROUT_IDS.has(species))      return TROUT_LURES_BY_PHASE;
+        if (WALLEYE_IDS.has(species))    return WALLEYE_LURES_BY_PHASE;
+        if (SPECIALTY_IDS.has(species))  return SPECIALTY_LURES_BY_PHASE;
+        return LURES_BY_PHASE;
+      }
+
+      function _getCalendar(species) {
+        if (CRAPPIE_IDS.has(species))    return CR_CALENDAR;
+        if (species === 'wb')             return WB_CALENDAR;
+        if (BLACK_BASS_IDS.has(species)) return BASS_CALENDAR;
+        if (STRIPER_IDS.has(species))    return STRIPER_CALENDAR;
+        if (SUNFISH_IDS.has(species))    return SUNFISH_CALENDAR;
+        if (CATFISH_IDS.has(species))    return CATFISH_CALENDAR;
+        if (TROUT_IDS.has(species))      return TROUT_CALENDAR;
+        if (WALLEYE_IDS.has(species))    return WALLEYE_CALENDAR;
+        if (SPECIALTY_IDS.has(species))  return SPECIALTY_CALENDAR;
+        return WB_CALENDAR;
+      }
+
+      function _getWhereMap(species) {
+        if (CRAPPIE_IDS.has(species))    return CR_WHERE;
+        if (species === 'wb')             return WB_WHERE;
+        if (BLACK_BASS_IDS.has(species)) return BASS_WHERE;
+        if (STRIPER_IDS.has(species))    return STRIPER_WHERE;
+        if (SUNFISH_IDS.has(species))    return SUNFISH_WHERE;
+        if (CATFISH_IDS.has(species))    return CATFISH_WHERE;
+        if (TROUT_IDS.has(species))      return TROUT_WHERE;
+        if (WALLEYE_IDS.has(species))    return WALLEYE_WHERE;
+        if (SPECIALTY_IDS.has(species))  return SPECIALTY_WHERE;
+        return WB_WHERE;
+      }
+
+      function _getWhatMap(species) {
+        if (CRAPPIE_IDS.has(species))    return CR_WHAT;
+        if (species === 'wb')             return WB_WHAT;
+        if (BLACK_BASS_IDS.has(species)) return BASS_WHAT;
+        if (STRIPER_IDS.has(species))    return STRIPER_WHAT;
+        if (SUNFISH_IDS.has(species))    return SUNFISH_WHAT;
+        if (CATFISH_IDS.has(species))    return CATFISH_WHAT;
+        if (TROUT_IDS.has(species))      return TROUT_WHAT;
+        if (WALLEYE_IDS.has(species))    return WALLEYE_WHAT;
+        if (SPECIALTY_IDS.has(species))  return SPECIALTY_WHAT;
+        return WB_WHAT;
       }
 
       function getWxIcon(forecast) {
@@ -7517,7 +8058,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             const stationLabel = usgs.summaryStationLabel || usgs.primaryStationLabel || 'USGS station';
             lines.push(`\uD83D\uDCCF Gage: ${usgs.gage.toFixed(2)} ft at ${stationLabel}*`);
           }
-          const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+          const lureMap = _getLureMap(species);
           const clarity = deriveClarity(water, usgs?.flow);
           if (temp !== null) {
             const topLures = scoreLures(phase.name, clarity, usgs?.flow, lureMap, 'artificial');
@@ -9181,7 +9722,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       function TackleBox({ phase, clarity, flow, species, water, segment, onClose }) {
-        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lureMap = _getLureMap(species);
         const [baitMode, setBaitMode] = React.useState(function() {
           try { return localStorage.getItem('pfg_tackle_mode') || 'artificial'; } catch(e) { return 'artificial'; }
         });
@@ -9328,16 +9869,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           return <SpeciesStubCard species={species} />;
         }
         const phase = getPhase(temp, species);
-        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lureMap = _getLureMap(species);
         const lures = lureMap[phase.name] || Object.values(lureMap)[1];
         const [showTackleBox, setShowTackleBox] = React.useState(false);
         const clarity = deriveClarity(water, usgs && usgs.flow);
 
         const whereNow =
-          (CRAPPIE_IDS.has(species) ? CR_WHERE : WB_WHERE)[phase.name] ||
+          _getWhereMap(species)[phase.name] ||
           'Check electronics and target structure.';
         const whatThrow =
-          (CRAPPIE_IDS.has(species) ? CR_WHAT : WB_WHAT)[phase.name] ||
+          _getWhatMap(species)[phase.name] ||
           'Match the hatch and adjust retrieve speed.';
 
         return (
@@ -9434,7 +9975,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       function TechniquesTab({ temp, water, species, segment, usgs }) {
-        const calendarData = CRAPPIE_IDS.has(species) ? CR_CALENDAR : WB_CALENDAR;
+        const calendarData = _getCalendar(species);
         const w = WATERS[water];
         const speciesName = getSpeciesDisplayName(species);
 
@@ -9490,7 +10031,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       function VideosTab({ temp, water, species, segment }) {
         const phase = getPhase(temp, species);
-        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lureMap = _getLureMap(species);
         const lures = lureMap[phase.name] || Object.values(lureMap)[1];
         const speciesName = getSpeciesDisplayName(species);
 
@@ -9553,7 +10094,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       function BuyTab({ temp, water, species, segment }) {
         const phase = getPhase(temp, species);
-        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lureMap = _getLureMap(species);
         const lures = lureMap[phase.name] || Object.values(lureMap)[1];
         const speciesName = getSpeciesDisplayName(species);
 
@@ -10019,7 +10560,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
       // ─── MEDIA + GEAR SHELF ──────────────────────────────────────
       function MediaGearShelf({ temp, water, species, segment }) {
         const phase = getPhase(temp, species);
-        const lureMap = CRAPPIE_IDS.has(species) ? CR_LURES_BY_PHASE : LURES_BY_PHASE;
+        const lureMap = _getLureMap(species);
         const lures = lureMap[phase.name] || Object.values(lureMap)[1]; // fallback: pre-spawn phase (index 1)
         const speciesName = getSpeciesDisplayName(species);
         return (
