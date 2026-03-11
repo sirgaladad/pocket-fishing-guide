@@ -7324,32 +7324,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const falling = trend < -BARO_TREND_THRESHOLD;
 
         if (pressureInHg == null)
-          return { label: 'Unknown', cls: 'baro-unknown', icon: '\u2753', feedingAdvice: 'Pressure data unavailable.' };
+          return { label: 'Unknown', cls: 'baro-unknown', icon: '❓', feedingAdvice: 'Pressure data unavailable.' };
         if (pressureInHg < 29.60)
-          return { label: 'Very Low', cls: 'baro-low', icon: '\uD83D\uDD34', feedingAdvice: 'Post-storm slump — fish slow and deep. Wait 1\u20132 days for activity to resume.' };
+          return { label: 'Very Low', cls: 'baro-low', icon: '🔴', feedingAdvice: 'Post-storm slump — fish slow and deep. Wait 1–2 days for activity to resume.' };
         if (pressureInHg < 29.90)
           return {
-            label: falling ? 'Falling \u2014 Pre-Front' : 'Low',
-            cls: 'baro-prefrontal', icon: '\uD83D\uDD25',
-            feedingAdvice: 'Pre-front feeding window \u2014 fish are actively chasing. This is prime time. Get out now.',
+            label: falling ? 'Falling — Pre-Front' : 'Low',
+            cls: 'baro-prefrontal', icon: '🔥',
+            feedingAdvice: 'Pre-front feeding window — fish are actively chasing. This is prime time. Get out now.',
           };
         if (pressureInHg <= 30.10)
           return {
-            label: rising ? 'Rising \u2014 Stabilizing' : falling ? 'Falling' : 'Stable Optimal',
-            cls: 'baro-optimal', icon: '\u2705',
+            label: rising ? 'Rising — Stabilizing' : falling ? 'Falling' : 'Stable Optimal',
+            cls: 'baro-optimal', icon: '✅',
             feedingAdvice: rising
               ? 'Pressure stabilizing post-front. Fish becoming more active. Standard presentations work.'
               : falling
                 ? 'Pressure is falling, which can trigger feeding. Fish may become more active as a front approaches.'
-                : 'Stable optimal pressure \u2014 steady feeding patterns. Reliable bites on mid-depth structure.',
+                : 'Stable optimal pressure — steady feeding patterns. Reliable bites on mid-depth structure.',
           };
         if (pressureInHg <= 30.40)
           return {
-            label: rising ? 'Rising \u2014 Post-Front' : 'High \u2014 Stable',
-            cls: 'baro-high', icon: '\uD83D\uDCC8',
-            feedingAdvice: 'High stable pressure \u2014 fish slower and deeper. Finesse techniques and bottom presentations.',
+            label: rising ? 'Rising — Post-Front' : 'High — Stable',
+            cls: 'baro-high', icon: '📈',
+            feedingAdvice: 'High stable pressure — fish slower and deeper. Finesse techniques and bottom presentations.',
           };
-        return { label: 'Very High', cls: 'baro-veryhigh', icon: '\uD83D\uDCCA', feedingAdvice: 'Very high pressure \u2014 fish sluggish. Go deep or fish slow. Early morning/late evening best.' };
+        return { label: 'Very High', cls: 'baro-veryhigh', icon: '📊', feedingAdvice: 'Very high pressure — fish sluggish. Go deep or fish slow. Early morning/late evening best.' };
       }
 
       // ─── MOON PHASE UTILITY ──────────────────────────────────────────────────
@@ -8855,19 +8855,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           ? Math.max(2, Math.min(98, ((pressure - BARO_MIN) / (BARO_MAX - BARO_MIN)) * 100))
           : null;
 
-        const trendArrow = pressureTrend == null ? '' :
-          pressureTrend > BARO_TREND_THRESHOLD ? ' \u2197 Rising' :
-          pressureTrend < -BARO_TREND_THRESHOLD ? ' \u2198 Falling' :
-          ' \u2192 Stable';
+        const trendLabel = pressureTrend == null ? '' :
+          pressureTrend > BARO_TREND_THRESHOLD ? '↗ Rising' :
+          pressureTrend < -BARO_TREND_THRESHOLD ? '↘ Falling' :
+          '→ Stable';
+        const baroReading = pressure != null
+          ? `${pressure.toFixed(2)} inHg${trendLabel ? ` ${trendLabel}` : ''}`
+          : null;
 
         return (
           <div className="card">
-            <div className="card-title">\uD83C\uDF2C\uFE0F Wind &amp; Pressure Conditions</div>
+            <div className="card-title">🌬️ Wind &amp; Pressure Conditions</div>
             <div className="wind-baro-card">
 
               {/* ── WIND SECTION ── */}
               <div>
-                <div className="wb-section-title">\uD83D\uDEA9 Wind Conditions</div>
+                <div className="wb-section-title">🚩 Wind Conditions</div>
                 {period ? (
                   <>
                     <div className="wind-dir-display">
@@ -8889,13 +8892,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     )}
                     {gustMph != null && (
                       <div className="wb-gust-note">
-                        \uD83C\uDF2A\uFE0F Gusts up to {gustMph} mph
+                        🌪️ Gusts up to {gustMph} mph
                         {gustMph >= 20 ? ' — use caution on open water' : ''}
                       </div>
                     )}
                     {windCat?.advisory && (
                       <div className="sca-banner sca-banner-inline">
-                        <span className="sca-banner-icon">\uD83D\uDEA9</span>
+                        <span className="sca-banner-icon">🚩</span>
                         <span>
                           <strong>Small Craft Advisory conditions.</strong> Sustained winds {windMph} mph.
                           Consider postponing open-water trips and check your local marine forecast.
@@ -8913,12 +8916,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
               {/* ── BAROMETRIC PRESSURE SECTION ── */}
               <div>
-                <div className="wb-section-title">\uD83D\uDCCA Barometric Pressure</div>
+                <div className="wb-section-title">📊 Barometric Pressure</div>
                 {pressure != null ? (
                   <>
                     <div className="baro-header">
-                      <span className="baro-value">{pressure.toFixed(2)} inHg</span>
-                      <span className="baro-trend-label">{trendArrow}</span>
+                      <span className="baro-value">{baroReading}</span>
                     </div>
                     <div className="baro-bar">
                       <div
@@ -8928,18 +8930,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
                     <div className="baro-zone-labels">
                       <span>Very Low</span>
-                      <span>\uD83D\uDD25 Pre-Front</span>
-                      <span>\u2705 Optimal</span>
+                      <span>🔥 Pre-Front</span>
+                      <span>✅ Optimal</span>
                       <span>Post-Front</span>
                       <span>High</span>
                     </div>
                     <div className={`baro-feeding ${baroCat.cls}`}>
-                      {baroCat.icon} <strong>{baroCat.label}</strong> \u2014 {baroCat.feedingAdvice}
+                      {baroCat.icon} <strong>{baroCat.label}</strong> — {baroCat.feedingAdvice}
                     </div>
                   </>
                 ) : (
                   <div className="baro-unavailable">
-                    Pressure data unavailable \u2014 NWS observation station may be offline.
+                    Pressure data unavailable — NWS observation station may be offline.
                   </div>
                 )}
               </div>
@@ -9239,16 +9241,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div className="hero-pill">
                       {'\uD83D\uDCA7'}{' '}
                       <span className="pill-val">
-                        {usgs.flow.toLocaleString()}
-                      </span>{' '}
-                      cfs
+                        {usgs.flow.toLocaleString()} cfs
+                      </span>
                     </div>
                   )}
                   {hasGage && (
                     <div className="hero-pill">
                       {'\uD83D\uDCCF'}{' '}
-                      <span className="pill-val">{usgs.gage.toFixed(2)}</span>{' '}
-                      ft
+                      <span className="pill-val">{usgs.gage.toFixed(2)} ft</span>
                     </div>
                   )}
                   {isSpeciesImplemented(species) && (
@@ -9568,22 +9568,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
                 {isPostSpawnPhase && (
                   <div className="post-spawn-baro-card">
-                    <div className="post-spawn-baro-title">\uD83C\uDF3F Post-Spawn Feeding Patterns</div>
+                    <div className="post-spawn-baro-title">🌿 Post-Spawn Feeding Patterns</div>
                     <div className="post-spawn-baro-row">
-                      <span className="post-spawn-baro-row-icon">\uD83D\uDD25</span>
-                      <span><strong>Falling pressure:</strong> Best post-spawn window \u2014 fish hungry and chasing. Fast-movers: spinners, chatterbaits, lipless cranks.</span>
+                      <span className="post-spawn-baro-row-icon">🔥</span>
+                      <span><strong>Falling pressure:</strong> Best post-spawn window — fish hungry and chasing. Fast-movers: spinners, chatterbaits, lipless cranks.</span>
                     </div>
                     <div className="post-spawn-baro-row">
-                      <span className="post-spawn-baro-row-icon">\u2197\uFE0F</span>
-                      <span><strong>Rising pressure:</strong> Fish recovering and sluggish. Slow down \u2014 Texas-rigged worms, Carolina rigs at 8\u201315ft structure transitions.</span>
+                      <span className="post-spawn-baro-row-icon">↗️</span>
+                      <span><strong>Rising pressure:</strong> Fish recovering and sluggish. Slow down — Texas-rigged worms, Carolina rigs at 8–15ft structure transitions.</span>
                     </div>
                     <div className="post-spawn-baro-row">
-                      <span className="post-spawn-baro-row-icon">\u2192</span>
+                      <span className="post-spawn-baro-row-icon">→</span>
                       <span><strong>Stable pressure:</strong> Steady but finesse-dependent. Find the right structure and work it methodically. Early morning bite most reliable.</span>
                     </div>
                     {wxObs?.pressure != null && (
                       <div style={{marginTop:8, fontSize:12, color:'var(--accent)', fontWeight:600}}>
-                        Current: {wxObs.pressure.toFixed(2)} inHg {'\u2014 '}{getBaroCategory(wxObs.pressure, wxObs.pressureTrend).label}
+                        Current: {wxObs.pressure.toFixed(2)} inHg — {getBaroCategory(wxObs.pressure, wxObs.pressureTrend).label}
                       </div>
                     )}
                   </div>
