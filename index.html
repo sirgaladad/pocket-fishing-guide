@@ -8602,13 +8602,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       // Prime lure master loading on script execution
       primeLureMaster();
 
-      function deriveClarity(waterKey, flow, turbidityFNU) {
+      function deriveClarity(waterKey, flow, turbidityVal, turbidityUnit) {
         const w = WATERS[waterKey] || {};
         const wtype = w.subtype || w.type || '';
-        // Turbidity sensor overrides flow-rate estimate when available
-        if (Number.isFinite(turbidityFNU)) {
-          if (turbidityFNU > 50) return 'muddy';
-          if (turbidityFNU > 12) return 'stained';
+        // Turbidity sensor overrides flow-rate estimate when available.
+        // Only apply FNU thresholds when unit is FNU (or unknown/legacy); NTU
+        // scale differs enough that we fall through to flow-rate estimate instead.
+        if (Number.isFinite(turbidityVal) && turbidityUnit !== 'NTU') {
+          if (turbidityVal > 50) return 'muddy';
+          if (turbidityVal > 12) return 'stained';
           return 'clear';
         }
         if (wtype === 'reservoir') return 'clear';
@@ -8903,12 +8905,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           }
           // Turbidity sensor: 63680 = FNU (preferred), 00076 = NTU (fallback)
           // Used to harden water clarity signal beyond flow-rate estimates
-          if ((code === '63680' || code === '00076') && result.turbidity === null) {
+          if (code === '63680' || code === '00076') {
             const vals = rawVals.filter((v) => parseFloat(v.value) > -99999);
             if (vals.length > 0) {
               const latest = vals[vals.length - 1];
-              result.turbidity = +parseFloat(latest.value).toFixed(1);
-              result.turbidityUnit = code === '63680' ? 'FNU' : 'NTU';
+              const turbidityVal = +parseFloat(latest.value).toFixed(1);
+              // Prefer FNU (63680) when present; only use NTU (00076) as a fallback
+              if (code === '63680' || result.turbidity === null) {
+                result.turbidity = turbidityVal;
+                result.turbidityUnit = code === '63680' ? 'FNU' : 'NTU';
+              }
             }
           }
         }
@@ -9141,14 +9147,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           if (!resp.ok) return null;
           const data = await resp.json();
           const vals = data?.hourly?.surface_pressure || [];
-          if (vals.length < 2) return null;
+          if (!Array.isArray(vals) || vals.length === 0) return null;
           const HP_TO_INHG = 0.02953;
-          const latest = vals[0];
-          const prev = vals[1];
-          if (latest === null || latest === undefined) return null;
+          // Find the last one or two non-null / defined pressure readings (latest first).
+          const latestTwo = [];
+          for (let i = vals.length - 1; i >= 0 && latestTwo.length < 2; i--) {
+            const v = vals[i];
+            if (v !== null && v !== undefined) {
+              latestTwo.push(v);
+            }
+          }
+          if (latestTwo.length === 0) return null;
+          const latest = latestTwo[0];
+          const prev = latestTwo[1];
           const pressure = Math.round(latest * HP_TO_INHG * 100) / 100;
           const pressureTrend =
-            prev !== null && prev !== undefined
+            prev !== undefined
               ? Math.round((latest - prev) * HP_TO_INHG * 1000) / 1000
               : null;
           return { pressure, pressureTrend, pressureSource: 'open-meteo' };
@@ -9239,7 +9253,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             lines.push(`\uD83D\uDCCF Gage: ${usgs.gage.toFixed(2)} ft at ${stationLabel}*`);
           }
           const lureMap = _getLureMap(species);
-          const clarity = deriveClarity(water, usgs?.flow, usgs?.turbidity);
+          const clarity = deriveClarity(water, usgs?.flow, usgs?.turbidity, usgs?.turbidityUnit);
           if (temp !== null) {
             const topLures = scoreLures(phase.name, clarity, usgs?.flow, lureMap, 'artificial');
             const topLure = topLures?.[0];
@@ -11317,7 +11331,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const lureMap = _getLureMap(species);
         const lures = lureMap[phase.name] || Object.values(lureMap)[1];
         const [showTackleBox, setShowTackleBox] = React.useState(false);
-        const clarity = deriveClarity(water, usgs && usgs.flow, usgs && usgs.turbidity);
+        const clarity = deriveClarity(water, usgs && usgs.flow, usgs && usgs.turbidity, usgs && usgs.turbidityUnit);
 
         const whereNow =
           _getWhereMap(species)[phase.name] ||
@@ -12525,7 +12539,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
             // Tier 3: Open-Meteo soil temperature proxy
             if (!Number.isFinite(merged.temp) && w.lat && w.lon) {
               try {
-                const omTemp = await fetchOpenMeteoTemp(w.lat, w.lon, w.type);
+                const omTemp = await fetchOpenMeteoTemp(w.lat, w.lon, w.subtype || w.type);
                 if (Number.isFinite(omTemp)) {
                   merged.temp = omTemp;
                   merged.tempSource = 'estimated';

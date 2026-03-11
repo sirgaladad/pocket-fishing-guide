@@ -258,7 +258,11 @@ async function main() {
     let tempDateTime = temperature.dateTime;
     if (tempValue === null) {
       const coords = coordsByStation[id];
-      if (coords && coords.lat && coords.lng) {
+      if (
+        coords &&
+        Number.isFinite(coords.lat) &&
+        Number.isFinite(coords.lng)
+      ) {
         const estimated = fetchOpenMeteoTemp(coords.lat, coords.lng);
         if (estimated !== null) {
           tempValue = estimated;

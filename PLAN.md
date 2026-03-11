@@ -158,7 +158,7 @@ lakeGreeson: {
 - Add `fetchOpenMeteoTemp(lat, lon)` function
 - Load `usgs_gauges.json` for station coordinates
 - Apply Open-Meteo fallback when `temperature.value === null`
-- Tag records with `tempSource: 'open-meteo-fallback'`
+- Tag records with `tempSource: 'open-meteo-estimated'`
 
 ### 8. `index.html`
 - Add `fetchOpenMeteoTemp(lat, lon, waterType)` — runtime Tier 3
