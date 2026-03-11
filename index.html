@@ -73,6 +73,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         --blue: #2196f3;
         --spawn: #ff6b35;
         --yellow: #ffd54f;
+        --baro-color-low:        #d32f2f;
+        --baro-color-prefrontal: #f57c00;
+        --baro-color-optimal:    #388e3c;
+        --baro-color-high:       #5c9ed6;
+        --baro-color-veryhigh:   #78909c;
         --radius: 12px;
         --radius-sm: 8px;
       }
@@ -1085,6 +1090,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         color: var(--text3);
         font-style: italic;
       }
+      .wb-divider     { height: 1px; background: var(--bg3); }
+      .wind-dir-abbr  { margin-right: 4px; }
+      .sca-banner-inline { margin-top: 10px; }
       /* Barometric pressure bar */
       .baro-header {
         display: flex;
@@ -1105,11 +1113,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         height: 10px;
         background: linear-gradient(
           90deg,
-          #d32f2f 0%,
-          #f57c00 22%,
-          #388e3c 50%,
-          #5c9ed6 78%,
-          #78909c 100%
+          var(--baro-color-low)        0%,
+          var(--baro-color-prefrontal) 22%,
+          var(--baro-color-optimal)    50%,
+          var(--baro-color-high)       78%,
+          var(--baro-color-veryhigh)   100%
         );
         border-radius: 5px;
         margin: 8px 0 4px;
@@ -1143,11 +1151,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         border-radius: 6px;
         border-left: 3px solid var(--accent);
       }
-      .baro-feeding.baro-prefrontal { border-left-color: #f57c00; }
-      .baro-feeding.baro-optimal    { border-left-color: #388e3c; }
-      .baro-feeding.baro-high       { border-left-color: #5c9ed6; }
-      .baro-feeding.baro-low        { border-left-color: #d32f2f; }
-      .baro-feeding.baro-veryhigh   { border-left-color: #78909c; }
+      .baro-feeding.baro-prefrontal { border-left-color: var(--baro-color-prefrontal); }
+      .baro-feeding.baro-optimal    { border-left-color: var(--baro-color-optimal); }
+      .baro-feeding.baro-high       { border-left-color: var(--baro-color-high); }
+      .baro-feeding.baro-low        { border-left-color: var(--baro-color-low); }
+      .baro-feeding.baro-veryhigh   { border-left-color: var(--baro-color-veryhigh); }
       .baro-unavailable {
         font-size: 12px;
         color: var(--text3);
@@ -7306,11 +7314,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         return m ? parseInt(m[1], 10) : null;
       }
 
-      // Returns barometric pressure category given pressure in inHg and 3-hr trend.
+      // Shared threshold for barometric pressure trend (inHg): used in getBaroCategory and Pro Tip.
+      const BARO_TREND_THRESHOLD = 0.03;
+
+      // Returns barometric pressure category given pressure in inHg and recent trend.
       function getBaroCategory(pressureInHg, trendInHg) {
         const trend = trendInHg ?? 0;
-        const rising  = trend > 0.03;
-        const falling = trend < -0.03;
+        const rising  = trend > BARO_TREND_THRESHOLD;
+        const falling = trend < -BARO_TREND_THRESHOLD;
 
         if (pressureInHg == null)
           return { label: 'Unknown', cls: 'baro-unknown', icon: '\u2753', feedingAdvice: 'Pressure data unavailable.' };
@@ -7328,7 +7339,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             cls: 'baro-optimal', icon: '\u2705',
             feedingAdvice: rising
               ? 'Pressure stabilizing post-front. Fish becoming more active. Standard presentations work.'
-              : 'Stable optimal pressure \u2014 steady feeding patterns. Reliable bites on mid-depth structure.',
+              : falling
+                ? 'Pressure is falling, which can trigger feeding. Fish may become more active as a front approaches.'
+                : 'Stable optimal pressure \u2014 steady feeding patterns. Reliable bites on mid-depth structure.',
           };
         if (pressureInHg <= 30.40)
           return {
@@ -8344,10 +8357,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             : Promise.reject('no obs stations url'),
         ]);
 
-        const periods =
-          fcResp.status === 'fulfilled'
-            ? fcResp.value?.properties?.periods || []
-            : [];
+        if (fcResp.status !== 'fulfilled') {
+          // Forecast fetch is required; surface failure to the caller
+          throw new Error('NWS forecast fetch failed');
+        }
+        const periods = fcResp.value?.properties?.periods || [];
 
         let pressure = null;
         let pressureTrend = null;
@@ -8858,10 +8872,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                       )}
                       <div className="wind-dir-info">
                         <div className="wind-speed-line">
-                          {windDir && <span style={{marginRight:4}}>{windDir}</span>}
+                          {windDir && <span className="wind-dir-abbr">{windDir}</span>}
                           {windMph != null ? `${windMph} mph` : windSpeedStr || 'n/a'}
                         </div>
-                        {windDir && <div className="wind-dir-label">From {windDir}</div>}
+                        {windDir && <div className="wind-dir-label">Blowing toward {windDir}</div>}
                       </div>
                     </div>
                     {windCat && (
@@ -8876,7 +8890,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                       </div>
                     )}
                     {windCat?.advisory && (
-                      <div className="sca-banner" style={{marginTop:10}}>
+                      <div className="sca-banner sca-banner-inline">
                         <span className="sca-banner-icon">\uD83D\uDEA9</span>
                         <span>
                           <strong>Small Craft Advisory conditions.</strong> Sustained winds {windMph} mph.
@@ -8891,7 +8905,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </div>
 
               {/* ── DIVIDER ── */}
-              <div style={{height:1, background:'var(--bg3)'}} />
+              <div className="wb-divider" />
 
               {/* ── BAROMETRIC PRESSURE SECTION ── */}
               <div>
@@ -10010,11 +10024,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const allPeriods = forecast.slice(0, 14);
         const dayPeriods = forecast.filter((p) => p.isDaytime).slice(0, 7);
 
-        // Pre-compute which periods trigger a Small Craft Advisory (≥23 mph sustained)
+        // Pre-compute which periods trigger a Small Craft Advisory (≥25 mph sustained)
         // Only look at the next 6 periods (3 days) to avoid distant-future false alarms
         const scaPeriods = allPeriods.slice(0, 6).filter((p) => {
           const mph = parseWindSpeed(p.windSpeed);
-          return mph != null && mph >= 23;
+          return mph != null && mph >= 25;
         });
         const [showMoonModal, setShowMoonModal] = React.useState(false);
         const [, _moonTick] = React.useState(0);
@@ -10202,9 +10216,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div className="fw-card-title">{'\uD83D\uDCA1'} Pro Tip</div>
                 <div className="fw-card-body">
                   {wxObs?.pressure != null
-                    ? wxObs.pressureTrend != null && wxObs.pressureTrend < -0.05
+                    ? wxObs.pressureTrend != null && wxObs.pressureTrend < -BARO_TREND_THRESHOLD
                       ? `Pressure is dropping fast (${wxObs.pressure.toFixed(2)} inHg \u2198). This is the prime pre-front feeding window \u2014 get out today, the bite will slow after the front passes.`
-                      : wxObs.pressureTrend != null && wxObs.pressureTrend > 0.05
+                      : wxObs.pressureTrend != null && wxObs.pressureTrend > BARO_TREND_THRESHOLD
                         ? `Pressure rising (${wxObs.pressure.toFixed(2)} inHg \u2197) after a front. Fish transitioning back to structure \u2014 slow your presentation and target 8\u201315ft depths.`
                         : `Stable pressure (${wxObs.pressure.toFixed(2)} inHg). Consistent feeding patterns \u2014 find the right structure and fish can be caught on a reliable pattern.`
                     : dayPeriods[0]?.temperature > 60
@@ -11781,6 +11795,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
               });
             } else {
               console.warn('NWS error:', nwsData.reason);
+              setWxObs({ pressure: null, pressureTrend: null }); // clear stale obs
             }
             if (
               usgsData.status === 'rejected' &&
