@@ -34,7 +34,10 @@ const OPEN_METEO_BASE = "https://api.open-meteo.com/v1/forecast";
 /**
  * Fetch soil temperature from Open-Meteo as a water temperature proxy.
  * Used when a USGS station has no 00010 temperature sensor.
- * Applies a correction offset: rivers run ~3°F cooler than soil surface.
+ *
+ * Uses 6 cm soil depth (more thermally stable than bare surface) with
+ * month-specific correction offsets and Ozark groundwater-based minimum
+ * floors to avoid unrealistically cold estimates for spring-fed rivers.
  *
  * @param {number} lat
  * @param {number} lng
@@ -43,19 +46,30 @@ const OPEN_METEO_BASE = "https://api.open-meteo.com/v1/forecast";
 function fetchOpenMeteoTemp(lat, lng) {
   const url =
     `${OPEN_METEO_BASE}?latitude=${lat}&longitude=${lng}` +
-    `&hourly=soil_temperature_0cm&forecast_days=1&timezone=America%2FChicago`;
+    `&hourly=soil_temperature_0cm,soil_temperature_6cm&forecast_days=1&timezone=America%2FChicago`;
   try {
     const raw = execFileSync("curl", ["-sS", "--max-time", "20", url], {
       encoding: "utf8",
       stdio: ["ignore", "pipe", "pipe"],
     });
     const data = JSON.parse(raw);
-    const vals = (data && data.hourly && data.hourly.soil_temperature_0cm) || [];
-    // Most recent non-null reading
-    const latest = [...vals].reverse().find((v) => v !== null && v !== undefined);
+    // Prefer 6 cm depth — more thermally stable than bare surface layer
+    const vals6 = (data && data.hourly && data.hourly.soil_temperature_6cm) || [];
+    const vals0 = (data && data.hourly && data.hourly.soil_temperature_0cm) || [];
+    const latest =
+      [...vals6].reverse().find((v) => v !== null && v !== undefined) ??
+      [...vals0].reverse().find((v) => v !== null && v !== undefined);
     if (latest === undefined || latest === null) return null;
-    // Correction: soil surface runs ~1.7°C warmer than river water on average
-    return Math.round((latest - 1.7) * 10) / 10;
+    // Month-specific correction offsets (°C): smaller in spring/summer when
+    // stream temps track groundwater more closely than surface soil.
+    const month = new Date().getMonth();
+    const riverOffsets = [2.2, 2.0, 1.5, 1.2, 1.0, 0.8, 0.7, 0.7, 0.9, 1.2, 1.8, 2.0];
+    const offsetC = riverOffsets[month];
+    // Seasonal minimum floors (°C) — Ozark groundwater baselines.
+    // Prevents unrealistically cold estimates for spring-fed rivers.
+    const riverFloorsC = [3.3, 4.4, 10.0, 13.3, 16.7, 19.4, 21.7, 21.7, 18.3, 13.9, 8.9, 4.4];
+    const floorC = riverFloorsC[month];
+    return Math.round(Math.max(latest - offsetC, floorC) * 10) / 10;
   } catch (_) {
     return null;
   }

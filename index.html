@@ -8752,21 +8752,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (dayPeriods.length === 0) return null;
 
         const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+        const month = new Date().getMonth(); // 0 = Jan … 11 = Dec
+        // Seasonal minimum temperature floors (°F) for Ozark spring-fed rivers.
+        // Groundwater contribution keeps streams warmer than air-based estimates in
+        // winter/early spring; these floors prevent unrealistically cold readings.
+        const riverFloors = [38, 40, 50, 56, 62, 67, 71, 71, 65, 57, 48, 40];
+        const lakeFloors  = [36, 38, 45, 52, 58, 63, 67, 67, 61, 53, 44, 38];
+        // Spring (Mar–Jun) and summer (Jul–Sep): use tighter air-to-water offsets
+        // because groundwater dominates stream temperature over surface air exchange.
+        const isSpring = month >= 2 && month <= 5;
+        const isSummer = month >= 6 && month <= 8;
         const estimated = dayPeriods.map((p) => {
           const air = p.temperature;
           const offset =
             waterType === 'river'
-              ? air < 45
-                ? 10
-                : air < 60
-                  ? 8
-                  : 6
-              : air < 45
-                ? 12
-                : air < 60
-                  ? 10
-                  : 8;
-          const temp = clamp(air - offset, 34, 88);
+              ? isSpring || isSummer
+                ? air < 55 ? 4 : air < 70 ? 3 : 2
+                : air < 45 ? 10 : air < 60 ? 8 : 6
+              : isSpring || isSummer
+                ? air < 55 ? 6 : air < 70 ? 5 : 4
+                : air < 45 ? 12 : air < 60 ? 10 : 8;
+          const floorF = waterType === 'river' ? riverFloors[month] : lakeFloors[month];
+          const temp = clamp(Math.max(air - offset, floorF), 34, 88);
           return { day: p.name, avg: +temp.toFixed(1) };
         });
 
@@ -9339,22 +9346,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       // Water temperature fallback — Open-Meteo soil temperature proxy.
       // Called when all USGS 00010 sensors return null for a given water.
       // Returns estimated water temp in °F, or null on failure.
-      // Correction: rivers run ~3°F cooler than soil surface; reservoirs ~5°F.
+      // Uses 6 cm soil depth (more thermally stable than 0 cm surface layer) with
+      // month-specific correction offsets and Ozark groundwater-based minimum floors.
       // For lakes/reservoirs this is now also used inside applyLakeTempFallback (Tier 3b).
       async function fetchOpenMeteoTemp(lat, lon, waterType) {
         try {
           const url =
             `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-            `&hourly=soil_temperature_0cm&forecast_days=1&timezone=America%2FChicago`;
+            `&hourly=soil_temperature_0cm,soil_temperature_6cm&forecast_days=1&timezone=America%2FChicago`;
           const resp = await fetch(url);
           if (!resp.ok) return null;
           const data = await resp.json();
-          const vals = data?.hourly?.soil_temperature_0cm || [];
-          const latestC = [...vals].reverse().find((v) => v !== null && v !== undefined);
+          // Prefer 6 cm depth — more thermally stable than bare surface layer
+          const vals6 = data?.hourly?.soil_temperature_6cm || [];
+          const vals0 = data?.hourly?.soil_temperature_0cm || [];
+          const latestC =
+            [...vals6].reverse().find((v) => v !== null && v !== undefined) ??
+            [...vals0].reverse().find((v) => v !== null && v !== undefined);
           if (latestC === undefined || latestC === null) return null;
-          // Convert soil °C → estimated water °F with correction offset
-          const offsetC = waterType === 'reservoir' ? 2.8 : 1.7; // ~5°F or ~3°F
-          const waterC = latestC - offsetC;
+          // Month-specific soil-to-water correction offsets (°C).
+          // Smaller offsets in spring/summer when stream temps track groundwater closely.
+          const month = new Date().getMonth();
+          const riverOffsets     = [2.2, 2.0, 1.5, 1.2, 1.0, 0.8, 0.7, 0.7, 0.9, 1.2, 1.8, 2.0];
+          const reservoirOffsets = [3.5, 3.3, 2.8, 2.5, 2.2, 2.0, 1.8, 1.8, 2.0, 2.2, 2.8, 3.3];
+          const offsetC = waterType === 'reservoir' ? reservoirOffsets[month] : riverOffsets[month];
+          // Seasonal minimum floors (°C) — Ozark groundwater baselines.
+          // Prevents unrealistically cold estimates for spring-fed rivers in winter/spring.
+          const riverFloorsC     = [3.3, 4.4, 10.0, 13.3, 16.7, 19.4, 21.7, 21.7, 18.3, 13.9, 8.9, 4.4];
+          const reservoirFloorsC = [2.2, 3.3,  7.2, 11.1, 14.4, 17.2, 19.4, 19.4, 16.1, 11.7, 6.7, 3.3];
+          const floorC = waterType === 'reservoir' ? reservoirFloorsC[month] : riverFloorsC[month];
+          const waterC = Math.max(latestC - offsetC, floorC);
           return +((waterC * 9) / 5 + 32).toFixed(1);
         } catch (_) {
           return null;
@@ -9423,7 +9444,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const phase = getPhase(temp, species);
         const spawnTrigger = getSpeciesSpawnTrigger(species);
         const speciesName = getSpeciesDisplayName(species);
-        const tempIsEstimated = usgs?.tempSource === 'estimated' || usgs?.tempSource === 'seasonal-normal';
+        const tempIsEstimated = usgs?.tempSource === 'estimated' || usgs?.tempSource === 'seasonal-normal' || usgs?.tempSource === 'open-meteo-estimated';
         const triggerDist =
           (temp !== null && Number.isFinite(spawnTrigger))
             ? Math.max(0, spawnTrigger - temp).toFixed(1)
@@ -10106,7 +10127,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const isTailwater = TAXONOMY.waterTypeMap[water] === 'tailwater';
         const genScheduleUrl = WATERS[water]?.generationScheduleUrl || null;
         const tempSourceLabel = usgs?.tempSourceLabel || 'No temperature feed';
-        const tempIsEstimated = usgs?.tempSource === 'estimated' || usgs?.tempSource === 'seasonal-normal';
+        const tempIsEstimated = usgs?.tempSource === 'estimated' || usgs?.tempSource === 'seasonal-normal' || usgs?.tempSource === 'open-meteo-estimated';
         const gageTrend7 = usgs?.gageTrend7 ?? null;
         const flowTrend7 = usgs?.flowTrend7 ?? null;
         const gageStatus = !hasGage
