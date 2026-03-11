@@ -7350,6 +7350,49 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         // a "Season Guide" label instead of "No Species Data" so the UI stays consistent.
         if (!Number.isFinite(spawnTrigger)) {
           if (isSpeciesImplemented(species)) {
+            // Tailwater trout (rainbow, cutthroat, brook): cold dam releases keep temps
+            // 48-60°F year-round — always within preferred range. There is no "too cold"
+            // condition for these species in a tailwater context (AGFC; Quigley et al.).
+            // Signal quality is generation-driven (USACE/SWPA schedule), not temperature-driven.
+            if (TROUT_IDS.has(species) && waterSubtype === 'tailwater') {
+              let signal = 'go';
+              let icon = '\uD83C\uDFA3';
+              let label = 'GO FISH!';
+              let cls = 'go';
+              let signal_score = 65;
+              let condition_label = 'Year-Round Tailwater';
+              let wading_safety = null;
+
+              if (Number.isFinite(usgs?.flow)) {
+                if (usgs.flow > 3000) {
+                  signal_score = Math.max(0, signal_score - 15);
+                  condition_label += ' / High Generation';
+                  wading_safety = {
+                    safe: false,
+                    label: 'Not Safe',
+                    note: 'High generation releases. Do not wade.',
+                  };
+                } else if (usgs.flow < 300) {
+                  signal_score = Math.max(0, signal_score - 5);
+                  condition_label += ' / Low Generation';
+                  wading_safety = {
+                    safe: true,
+                    label: 'Good Wading',
+                    note: 'Low generation. Wading conditions generally safe.',
+                  };
+                } else {
+                  signal_score = Math.min(100, signal_score + 5);
+                  condition_label += ' / Active Generation';
+                  wading_safety = {
+                    safe: false,
+                    label: 'Caution',
+                    note: 'Active generation. Check dam schedule before wading.',
+                  };
+                }
+              }
+              return { signal, icon, label, cls, signal_score, condition_label, wading_safety };
+            }
+
             return {
               signal: "wait",
               icon: "\uD83D\uDCC5",
@@ -8623,15 +8666,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                           {CRAPPIE_IDS.has(species) ? 'bed spawn' : 'spawn'} trigger
                         </span>
                       </>
+                    ) : verdict.label === 'SEASON' ? (
+                      <>
+                        SEASON GUIDE{' '}
+                        <span className="hero-hl">
+                          Check AGFC stocking schedule for{' '}
+                          {getSpeciesDisplayName(species).toLowerCase()}
+                        </span>
+                      </>
                     ) : (
                       <>
                         {isSpeciesImplemented(species) ? (
                           <>
-                            HOLD TIGHT{' '}
-                            <span className="hero-hl">
-                              Water still cold for{' '}
-                              {getSpeciesDisplayName(species).toLowerCase()}
-                            </span>
+                            {TROUT_IDS.has(species) ? (
+                              <>
+                                HEADS UP{' '}
+                                <span className="hero-hl">
+                                  Approaching spawn temp for{' '}
+                                  {getSpeciesDisplayName(species).toLowerCase()}
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                HOLD TIGHT{' '}
+                                <span className="hero-hl">
+                                  Water still cold for{' '}
+                                  {getSpeciesDisplayName(species).toLowerCase()}
+                                </span>
+                              </>
+                            )}
                           </>
                         ) : (
                           <>
