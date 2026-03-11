@@ -9303,7 +9303,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           } catch (_) { /* non-fatal */ }
         }
 
-        // Tier 3b: Monthly historical normals
+        // Tier 3b: Open-Meteo soil temperature proxy (dynamic current-conditions estimate)
+        // Applied before static monthly normals so warm/cool spells are captured.
+        if (!Number.isFinite(merged.temp)) {
+          const w = WATERS[waterKey];
+          if (w?.lat && w?.lon) {
+            try {
+              const omTemp = await fetchOpenMeteoTemp(w.lat, w.lon, w.subtype || w.type || 'reservoir');
+              if (Number.isFinite(omTemp)) {
+                merged.temp = omTemp;
+                merged.tempSource = 'estimated';
+                merged.tempSourceLabel = 'Open-Meteo estimate';
+                merged.tempSourceNote =
+                  'Estimated from soil surface temperature. Live sensor unavailable — actual temperature may vary ±3–5°F.';
+              }
+            } catch (_) { /* non-fatal */ }
+          }
+        }
+
+        // Tier 3c: Monthly historical normals (last resort)
         if (!Number.isFinite(merged.temp)) {
           await loadReservoirNormals(); // ensure normals are loaded before lookup
           const normal = getSeasonalNormal(waterKey);
@@ -9318,12 +9336,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
       }
 
-      // Tier 3 water temperature fallback — Open-Meteo soil temperature proxy.
+      // Water temperature fallback — Open-Meteo soil temperature proxy.
       // Called when all USGS 00010 sensors return null for a given water.
       // Returns estimated water temp in °F, or null on failure.
       // Correction: rivers run ~3°F cooler than soil surface; reservoirs ~5°F.
-      // NOTE: This is only used for rivers/tailwaters. Lakes/reservoirs use
-      //       CWMS snapshot (Tier 3a) or monthly normals (Tier 3b) instead.
+      // For lakes/reservoirs this is now also used inside applyLakeTempFallback (Tier 3b).
       async function fetchOpenMeteoTemp(lat, lon, waterType) {
         try {
           const url =
