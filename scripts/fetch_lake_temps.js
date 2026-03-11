@@ -50,14 +50,14 @@ const RESERVOIR_MAP = {
  * @param {string} url
  * @returns {Object|null}
  */
-function curlJson(url) {
+async function curlJson(url) {
   try {
-    const raw = execFileSync(
-      "curl",
-      ["-sS", "--max-time", "30", "-H", "Accept: application/json;version=2", url],
-      { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }
-    );
-    return JSON.parse(raw);
+    const resp = await fetch(url, {
+      headers: { Accept: "application/json;version=2" },
+      signal: AbortSignal.timeout(30000), // 30s timeout
+    });
+    if (!resp.ok) return null;
+    return await resp.json();
   } catch (_) {
     return null;
   }
