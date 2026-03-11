@@ -31,6 +31,13 @@ const PARAM_TEMPERATURE = "00010";
 // Open-Meteo soil temperature proxy endpoint (no API key required)
 const OPEN_METEO_BASE = "https://api.open-meteo.com/v1/forecast";
 
+// Month-specific soil-to-water correction offsets (°C) for rivers.
+// Smaller offsets in spring/summer when stream temps track groundwater more closely.
+const RIVER_OFFSETS_BY_MONTH  = [2.2, 2.0, 1.5, 1.2, 1.0, 0.8, 0.7, 0.7, 0.9, 1.2, 1.8, 2.0];
+// Seasonal minimum floors (°C) — Ozark groundwater baselines.
+// Prevents unrealistically cold estimates for spring-fed rivers in winter/spring.
+const RIVER_FLOORS_C_BY_MONTH = [3.3, 4.4, 10.0, 13.3, 16.7, 19.4, 21.7, 21.7, 18.3, 13.9, 8.9, 4.4];
+
 /**
  * Fetch soil temperature from Open-Meteo as a water temperature proxy.
  * Used when a USGS station has no 00010 temperature sensor.
@@ -53,22 +60,35 @@ function fetchOpenMeteoTemp(lat, lng) {
       stdio: ["ignore", "pipe", "pipe"],
     });
     const data = JSON.parse(raw);
-    // Prefer 6 cm depth — more thermally stable than bare surface layer
+    // Prefer 6 cm depth — more thermally stable than bare surface layer.
+    // Track index to retrieve the matching timestamp for month derivation.
     const vals6 = (data && data.hourly && data.hourly.soil_temperature_6cm) || [];
     const vals0 = (data && data.hourly && data.hourly.soil_temperature_0cm) || [];
-    const latest =
-      [...vals6].reverse().find((v) => v !== null && v !== undefined) ??
-      [...vals0].reverse().find((v) => v !== null && v !== undefined);
+    let latest = undefined;
+    let latestIdx = -1;
+    for (let i = vals6.length - 1; i >= 0; i--) {
+      if (vals6[i] != null) { latest = vals6[i]; latestIdx = i; break; }
+    }
+    if (latest === undefined) {
+      for (let i = vals0.length - 1; i >= 0; i--) {
+        if (vals0[i] != null) { latest = vals0[i]; latestIdx = i; break; }
+      }
+    }
     if (latest === undefined || latest === null) return null;
-    // Month-specific correction offsets (°C): smaller in spring/summer when
-    // stream temps track groundwater more closely than surface soil.
-    const month = new Date().getMonth();
-    const riverOffsets = [2.2, 2.0, 1.5, 1.2, 1.0, 0.8, 0.7, 0.7, 0.9, 1.2, 1.8, 2.0];
-    const offsetC = riverOffsets[month];
-    // Seasonal minimum floors (°C) — Ozark groundwater baselines.
-    // Prevents unrealistically cold estimates for spring-fed rivers.
-    const riverFloorsC = [3.3, 4.4, 10.0, 13.3, 16.7, 19.4, 21.7, 21.7, 18.3, 13.9, 8.9, 4.4];
-    const floorC = riverFloorsC[month];
+    // Derive month from the API response timestamp (America/Chicago) to match
+    // the data timezone and avoid off-by-one errors near month boundaries.
+    const times = (data && data.hourly && data.hourly.time) || [];
+    const timeStr = latestIdx >= 0 ? times[latestIdx] : null;
+    // Open-Meteo returns timestamps as "YYYY-MM-DDTHH:MM" in the requested timezone,
+    // so slicing the month digits is safe and avoids any UTC-conversion ambiguity.
+    const month = timeStr
+      ? parseInt(timeStr.slice(5, 7), 10) - 1
+      : +new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", month: "numeric" }).format(new Date()) - 1;
+    // Guard against unexpected timestamp formats or out-of-range indices.
+    if (!Number.isFinite(month) || month < 0 || month > 11) return null;
+    const offsetC = RIVER_OFFSETS_BY_MONTH[month];
+    const floorC  = RIVER_FLOORS_C_BY_MONTH[month];
+    if (!Number.isFinite(offsetC) || !Number.isFinite(floorC)) return null;
     return Math.round(Math.max(latest - offsetC, floorC) * 10) / 10;
   } catch (_) {
     return null;
