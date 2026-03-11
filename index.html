@@ -9329,7 +9329,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 merged.tempSource = 'estimated';
                 merged.tempSourceLabel = 'Open-Meteo estimate';
                 merged.tempSourceNote =
-                  'Estimated from 6 cm soil temperature with month-specific seasonal corrections. Live sensor unavailable — actual temperature may vary ±3–5°F.';
+                  'Estimated from local soil temperature (prefers 6 cm, may fall back to 0 cm) with month-specific seasonal corrections. Live sensor unavailable — actual temperature may vary ±3–5°F.';
               }
             } catch (_) { /* non-fatal */ }
           }
@@ -9388,6 +9388,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           const month = timeStr
             ? parseInt(timeStr.slice(5, 7), 10) - 1
             : +new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', month: 'numeric' }).format(new Date()) - 1;
+          // Guard against unexpected timestamp formats or out-of-range values.
+          if (!Number.isFinite(month) || month < 0 || month > 11) return null;
           // Month-specific soil-to-water correction offsets (°C).
           // Smaller offsets in spring/summer when stream temps track groundwater closely.
           // Lakes and reservoirs are thermally similar (larger, deeper bodies) and share
@@ -12872,7 +12874,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                   merged.tempSource = 'estimated';
                   merged.tempSourceLabel = 'Open-Meteo soil proxy';
                   merged.tempSourceNote =
-                    'Estimated from 6 cm soil temperature with month-specific seasonal corrections — not a direct water sensor reading.';
+                    'Estimated from Open-Meteo soil temperature (6 cm where available, 0 cm otherwise) with month-specific seasonal corrections — not a direct water sensor reading.';
                 }
               } catch (_) { /* non-fatal */ }
             }

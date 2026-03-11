@@ -84,8 +84,11 @@ function fetchOpenMeteoTemp(lat, lng) {
     const month = timeStr
       ? parseInt(timeStr.slice(5, 7), 10) - 1
       : +new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", month: "numeric" }).format(new Date()) - 1;
+    // Guard against unexpected timestamp formats or out-of-range indices.
+    if (!Number.isFinite(month) || month < 0 || month > 11) return null;
     const offsetC = RIVER_OFFSETS_BY_MONTH[month];
     const floorC  = RIVER_FLOORS_C_BY_MONTH[month];
+    if (!Number.isFinite(offsetC) || !Number.isFinite(floorC)) return null;
     return Math.round(Math.max(latest - offsetC, floorC) * 10) / 10;
   } catch (_) {
     return null;
