@@ -124,9 +124,9 @@
     },
     {
       "station_id": "07049000",
-      "label": "War Eagle Creek near Hindsville",
-      "river": "War Eagle Creek",
-      "proximity": "upper tributary of Beaver Lake",
+      "label": "Kings River near Berryville",
+      "river": "Kings River",
+      "proximity": "near Berryville, Carroll County",
       "type": "gage",
       "tailwater": false
     },
@@ -209,6 +209,150 @@
       "proximity": "near Norfork, toward Norfork River confluence",
       "type": "gage",
       "tailwater": true
+    },
+    {
+      "station_id": "07049100",
+      "label": "Kings River near Trigger",
+      "river": "Kings River",
+      "proximity": "downstream of Berryville near Trigger, Madison County",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07049300",
+      "label": "War Eagle Creek near Hindsville",
+      "river": "War Eagle Creek",
+      "proximity": "near Hindsville, Madison County — upper Beaver Lake tributary",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07247000",
+      "label": "Mulberry River at Mulberry",
+      "river": "Mulberry River",
+      "proximity": "at Mulberry, Crawford County",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07246500",
+      "label": "Mulberry River near Natural Dam",
+      "river": "Mulberry River",
+      "proximity": "near Natural Dam, upper Crawford County",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07247500",
+      "label": "Piney Creek near Hatfield",
+      "river": "Piney Creek",
+      "proximity": "near Hatfield, Johnson County — Ozark National Forest",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07055646",
+      "label": "Crooked Creek at Pyatt",
+      "river": "Crooked Creek",
+      "proximity": "at Pyatt, Marion County",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07055500",
+      "label": "Crooked Creek at Everton",
+      "river": "Crooked Creek",
+      "proximity": "at Everton, upper Boone County",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07069500",
+      "label": "Strawberry River near Imboden",
+      "river": "Strawberry River",
+      "proximity": "near Imboden, Lawrence County",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07069000",
+      "label": "Strawberry River at Evening Shade",
+      "river": "Strawberry River",
+      "proximity": "at Evening Shade, Sharp County",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07340300",
+      "label": "Cossatot River near Vandervoort",
+      "river": "Cossatot River",
+      "proximity": "near Vandervoort, Polk County — Wild and Scenic reach",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07356500",
+      "label": "Little Missouri River near Murfreesboro",
+      "river": "Little Missouri River",
+      "proximity": "near Murfreesboro, Pike County — above Lake Greeson",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07257000",
+      "label": "Fourche LaFave River near Gravelly",
+      "river": "Fourche LaFave River",
+      "proximity": "near Gravelly, Yell County",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07252000",
+      "label": "Arkansas River at Van Buren",
+      "river": "Arkansas River",
+      "proximity": "at Van Buren, Crawford County — Fort Smith area",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07255000",
+      "label": "Arkansas River at Dardanelle",
+      "river": "Arkansas River",
+      "proximity": "at Dardanelle, Yell County — below Lake Dardanelle dam",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07263000",
+      "label": "Arkansas River at Little Rock",
+      "river": "Arkansas River",
+      "proximity": "at Little Rock, Pulaski County",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07363500",
+      "label": "Saline River near Benton",
+      "river": "Saline River",
+      "proximity": "near Benton, Saline County",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07361500",
+      "label": "Saline River near Dierks",
+      "river": "Saline River",
+      "proximity": "near Dierks, Howard County — upper Saline",
+      "type": "gage",
+      "tailwater": false
+    },
+    {
+      "station_id": "07340000",
+      "label": "Little River near Horatio",
+      "river": "Little River",
+      "proximity": "near Horatio, Sevier County",
+      "type": "gage",
+      "tailwater": false
     }
   ]
 }

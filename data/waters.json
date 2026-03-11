@@ -484,6 +484,246 @@
         "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/ouachita.htm"
       },
       "generation_schedule_url": "https://www.swl.usace.army.mil/Missions/Recreation/Lakes/Lake-Ouachita/"
+    },
+    {
+      "id": "wb_kings_river",
+      "name": "Kings River",
+      "type": "river",
+      "managing_agency": "AGFC/USFS",
+      "parent_system": "White River System",
+      "county": ["Carroll", "Madison"],
+      "primary_species": [
+        "sp_smallmouth_bass",
+        "sp_spotted_bass",
+        "sp_channel_catfish",
+        "sp_longear_sunfish"
+      ],
+      "has_segments": true
+    },
+    {
+      "id": "wb_mulberry_river",
+      "name": "Mulberry River",
+      "type": "river",
+      "managing_agency": "AGFC/USFS",
+      "parent_system": "Arkansas River",
+      "county": ["Crawford", "Franklin", "Johnson"],
+      "primary_species": [
+        "sp_smallmouth_bass",
+        "sp_channel_catfish",
+        "sp_longear_sunfish"
+      ],
+      "has_segments": true
+    },
+    {
+      "id": "wb_war_eagle_creek",
+      "name": "War Eagle Creek",
+      "type": "stream",
+      "managing_agency": "AGFC",
+      "parent_system": "White River System",
+      "county": ["Madison", "Benton"],
+      "primary_species": [
+        "sp_smallmouth_bass",
+        "sp_largemouth_bass",
+        "sp_channel_catfish"
+      ],
+      "has_segments": false
+    },
+    {
+      "id": "wb_crooked_creek",
+      "name": "Crooked Creek",
+      "type": "stream",
+      "managing_agency": "AGFC",
+      "parent_system": "White River System",
+      "county": ["Marion", "Baxter", "Boone"],
+      "primary_species": [
+        "sp_smallmouth_bass",
+        "sp_rock_bass",
+        "sp_channel_catfish"
+      ],
+      "has_segments": false
+    },
+    {
+      "id": "wb_strawberry_river",
+      "name": "Strawberry River",
+      "type": "river",
+      "managing_agency": "AGFC",
+      "parent_system": null,
+      "county": ["Izard", "Sharp", "Lawrence"],
+      "primary_species": [
+        "sp_smallmouth_bass",
+        "sp_largemouth_bass",
+        "sp_channel_catfish",
+        "sp_rainbow_trout"
+      ],
+      "has_segments": true
+    },
+    {
+      "id": "wb_piney_creek",
+      "name": "Piney Creek",
+      "type": "stream",
+      "managing_agency": "AGFC/USFS",
+      "parent_system": "Arkansas River",
+      "county": ["Johnson"],
+      "primary_species": [
+        "sp_smallmouth_bass",
+        "sp_longear_sunfish",
+        "sp_channel_catfish"
+      ],
+      "has_segments": false
+    },
+    {
+      "id": "wb_cossatot_river",
+      "name": "Cossatot River",
+      "type": "river",
+      "managing_agency": "AGFC/ASP",
+      "parent_system": "Red River",
+      "county": ["Polk", "Howard"],
+      "primary_species": [
+        "sp_smallmouth_bass",
+        "sp_largemouth_bass",
+        "sp_longear_sunfish"
+      ],
+      "has_segments": true
+    },
+    {
+      "id": "wb_little_missouri_river",
+      "name": "Little Missouri River",
+      "type": "river",
+      "managing_agency": "AGFC",
+      "parent_system": "Red River",
+      "county": ["Pike", "Howard", "Polk"],
+      "primary_species": [
+        "sp_largemouth_bass",
+        "sp_smallmouth_bass",
+        "sp_channel_catfish"
+      ],
+      "has_segments": false
+    },
+    {
+      "id": "wb_caddo_river",
+      "name": "Caddo River",
+      "type": "river",
+      "managing_agency": "AGFC",
+      "parent_system": "Ouachita River",
+      "county": ["Montgomery", "Pike", "Clark"],
+      "primary_species": [
+        "sp_smallmouth_bass",
+        "sp_largemouth_bass",
+        "sp_channel_catfish"
+      ],
+      "has_segments": true
+    },
+    {
+      "id": "wb_fourche_lafave_river",
+      "name": "Fourche LaFave River",
+      "type": "river",
+      "managing_agency": "AGFC",
+      "parent_system": "Arkansas River",
+      "county": ["Perry", "Yell", "Scott"],
+      "primary_species": [
+        "sp_smallmouth_bass",
+        "sp_largemouth_bass",
+        "sp_channel_catfish"
+      ],
+      "has_segments": false
+    },
+    {
+      "id": "wb_lake_greeson",
+      "name": "Lake Greeson",
+      "type": "reservoir",
+      "managing_agency": "USACE/AGFC",
+      "parent_system": "Little Missouri River",
+      "county": ["Pike", "Howard"],
+      "primary_species": [
+        "sp_largemouth_bass",
+        "sp_crappie",
+        "sp_striped_bass",
+        "sp_channel_catfish",
+        "sp_walleye"
+      ],
+      "has_segments": false,
+      "usace": {
+        "project_id": "greeson",
+        "tabular_url": "https://www.swl-wc.usace.army.mil/pages/data/tabular/htm/greeson.htm"
+      }
+    },
+    {
+      "id": "wb_arkansas_river",
+      "name": "Arkansas River",
+      "type": "river",
+      "managing_agency": "USACE/AGFC",
+      "parent_system": "Arkansas River",
+      "county": ["Crawford", "Sebastian", "Pope", "Yell", "Conway", "Pulaski"],
+      "primary_species": [
+        "sp_sauger",
+        "sp_white_bass",
+        "sp_channel_catfish",
+        "sp_blue_catfish",
+        "sp_flathead_catfish",
+        "sp_striped_bass"
+      ],
+      "has_segments": true
+    },
+    {
+      "id": "wb_saline_river",
+      "name": "Saline River",
+      "type": "river",
+      "managing_agency": "AGFC",
+      "parent_system": "Ouachita River",
+      "county": ["Garland", "Saline", "Grant", "Howard"],
+      "primary_species": [
+        "sp_largemouth_bass",
+        "sp_crappie",
+        "sp_channel_catfish",
+        "sp_blue_catfish"
+      ],
+      "has_segments": false
+    },
+    {
+      "id": "wb_little_river",
+      "name": "Little River",
+      "type": "river",
+      "managing_agency": "AGFC",
+      "parent_system": "Red River",
+      "county": ["Sevier", "Little River"],
+      "primary_species": [
+        "sp_largemouth_bass",
+        "sp_crappie",
+        "sp_channel_catfish",
+        "sp_blue_catfish"
+      ],
+      "has_segments": false
+    },
+    {
+      "id": "wb_lake_chicot",
+      "name": "Lake Chicot",
+      "type": "lake",
+      "managing_agency": "AGFC/USFWS",
+      "parent_system": "Mississippi Delta",
+      "county": ["Chicot"],
+      "primary_species": [
+        "sp_crappie",
+        "sp_largemouth_bass",
+        "sp_channel_catfish",
+        "sp_blue_catfish",
+        "sp_buffalo"
+      ],
+      "has_segments": false
+    },
+    {
+      "id": "wb_lake_monticello",
+      "name": "Lake Monticello",
+      "type": "lake",
+      "managing_agency": "AGFC",
+      "parent_system": "Bayou Bartholomew",
+      "county": ["Drew"],
+      "primary_species": [
+        "sp_largemouth_bass",
+        "sp_crappie",
+        "sp_channel_catfish",
+        "sp_bream"
+      ],
+      "has_segments": false
     }
   ]
 }

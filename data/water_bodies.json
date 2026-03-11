@@ -303,7 +303,7 @@
       },
       "source_ids": {
         "agfc_slug": "beaver-lake",
-        "usgs_site_id": "07049000",
+        "usgs_site_id": null,
         "usace_project": "Beaver",
         "usace_district": "SWL"
       }
@@ -654,6 +654,490 @@
       },
       "source_ids": {
         "agfc_slug": "lake-conway",
+        "usgs_site_id": null,
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_kings_river",
+      "name": "Kings River",
+      "display_name": "Kings River",
+      "short_name": "Kings River",
+      "water_body_type": "river",
+      "parent_river": "Kings River",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Berryville area",
+        "to_point": "Beaver Lake",
+        "length_miles": 60
+      },
+      "state": "AR",
+      "counties": ["Carroll", "Madison"],
+      "region": "Ozarks",
+      "huc8_code": "11010001",
+      "coordinates": {
+        "centroid_lat": 36.3500,
+        "centroid_lng": -93.6500
+      },
+      "source_ids": {
+        "agfc_slug": "kings-river",
+        "usgs_site_id": "07049000",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_mulberry_river",
+      "name": "Mulberry River",
+      "display_name": "Mulberry River",
+      "short_name": "Mulberry River",
+      "water_body_type": "river",
+      "parent_river": "Mulberry River",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Natural Dam",
+        "to_point": "Arkansas River confluence near Mulberry",
+        "length_miles": 55
+      },
+      "state": "AR",
+      "counties": ["Crawford", "Franklin", "Johnson"],
+      "region": "Arkansas River Valley",
+      "huc8_code": "11110102",
+      "coordinates": {
+        "centroid_lat": 35.5000,
+        "centroid_lng": -93.8000
+      },
+      "source_ids": {
+        "agfc_slug": "mulberry-river",
+        "usgs_site_id": "07247000",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_war_eagle_creek",
+      "name": "War Eagle Creek",
+      "display_name": "War Eagle Creek",
+      "short_name": "War Eagle Creek",
+      "water_body_type": "stream",
+      "parent_river": "War Eagle Creek",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Hindsville",
+        "to_point": "Beaver Lake",
+        "length_miles": 40
+      },
+      "state": "AR",
+      "counties": ["Madison", "Benton"],
+      "region": "Ozarks",
+      "huc8_code": "11010001",
+      "coordinates": {
+        "centroid_lat": 36.1800,
+        "centroid_lng": -93.7500
+      },
+      "source_ids": {
+        "agfc_slug": "war-eagle-creek",
+        "usgs_site_id": "07049300",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_crooked_creek",
+      "name": "Crooked Creek",
+      "display_name": "Crooked Creek",
+      "short_name": "Crooked Creek",
+      "water_body_type": "stream",
+      "parent_river": "Crooked Creek",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Everton",
+        "to_point": "White River confluence near Yellville",
+        "length_miles": 70
+      },
+      "state": "AR",
+      "counties": ["Marion", "Baxter", "Boone"],
+      "region": "Ozarks",
+      "huc8_code": "11010004",
+      "coordinates": {
+        "centroid_lat": 36.3600,
+        "centroid_lng": -92.6800
+      },
+      "source_ids": {
+        "agfc_slug": "crooked-creek",
+        "usgs_site_id": "07055646",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_strawberry_river",
+      "name": "Strawberry River",
+      "display_name": "Strawberry River",
+      "short_name": "Strawberry River",
+      "water_body_type": "river",
+      "parent_river": "Strawberry River",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Evening Shade",
+        "to_point": "Black River confluence near Imboden",
+        "length_miles": 75
+      },
+      "state": "AR",
+      "counties": ["Izard", "Sharp", "Lawrence"],
+      "region": "Ozarks",
+      "huc8_code": "11010005",
+      "coordinates": {
+        "centroid_lat": 36.1000,
+        "centroid_lng": -91.5500
+      },
+      "source_ids": {
+        "agfc_slug": "strawberry-river",
+        "usgs_site_id": "07069500",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_piney_creek",
+      "name": "Piney Creek",
+      "display_name": "Piney Creek (Ozark National Forest)",
+      "short_name": "Piney Creek",
+      "water_body_type": "stream",
+      "parent_river": "Piney Creek",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Haw Creek Falls area",
+        "to_point": "Arkansas River confluence",
+        "length_miles": 40
+      },
+      "state": "AR",
+      "counties": ["Johnson"],
+      "region": "Arkansas River Valley",
+      "huc8_code": "11110101",
+      "coordinates": {
+        "centroid_lat": 35.6000,
+        "centroid_lng": -93.4000
+      },
+      "source_ids": {
+        "agfc_slug": "piney-creek-ozark",
+        "usgs_site_id": "07247500",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_cossatot_river",
+      "name": "Cossatot River",
+      "display_name": "Cossatot River",
+      "short_name": "Cossatot River",
+      "water_body_type": "river",
+      "parent_river": "Cossatot River",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Vandervoort",
+        "to_point": "Millwood Lake",
+        "length_miles": 45
+      },
+      "state": "AR",
+      "counties": ["Polk", "Howard"],
+      "region": "Ouachitas",
+      "huc8_code": "08040101",
+      "coordinates": {
+        "centroid_lat": 34.4000,
+        "centroid_lng": -94.1000
+      },
+      "source_ids": {
+        "agfc_slug": "cossatot-river",
+        "usgs_site_id": "07340300",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_little_missouri_river",
+      "name": "Little Missouri River",
+      "display_name": "Little Missouri River (above Lake Greeson)",
+      "short_name": "Little Missouri River",
+      "water_body_type": "river",
+      "parent_river": "Little Missouri River",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Murfreesboro",
+        "to_point": "Lake Greeson (Narrows Reservoir)",
+        "length_miles": 35
+      },
+      "state": "AR",
+      "counties": ["Pike", "Howard", "Polk"],
+      "region": "Ouachitas",
+      "huc8_code": "08040101",
+      "coordinates": {
+        "centroid_lat": 34.0700,
+        "centroid_lng": -93.8000
+      },
+      "source_ids": {
+        "agfc_slug": "little-missouri-river",
+        "usgs_site_id": "07356500",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_caddo_river",
+      "name": "Caddo River",
+      "display_name": "Caddo River (above DeGray Lake)",
+      "short_name": "Caddo River",
+      "water_body_type": "river",
+      "parent_river": "Caddo River",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Caddo Gap",
+        "to_point": "DeGray Lake",
+        "length_miles": 40
+      },
+      "state": "AR",
+      "counties": ["Montgomery", "Pike", "Clark"],
+      "region": "Ouachitas",
+      "huc8_code": "08040103",
+      "coordinates": {
+        "centroid_lat": 34.3300,
+        "centroid_lng": -93.6200
+      },
+      "source_ids": {
+        "agfc_slug": "caddo-river",
+        "usgs_site_id": "07359610",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_fourche_lafave_river",
+      "name": "Fourche LaFave River",
+      "display_name": "Fourche LaFave River",
+      "short_name": "Fourche LaFave River",
+      "water_body_type": "river",
+      "parent_river": "Fourche LaFave River",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Gravelly",
+        "to_point": "Nimrod Lake",
+        "length_miles": 50
+      },
+      "state": "AR",
+      "counties": ["Perry", "Yell", "Scott"],
+      "region": "Ouachitas",
+      "huc8_code": "08040201",
+      "coordinates": {
+        "centroid_lat": 34.9400,
+        "centroid_lng": -93.4000
+      },
+      "source_ids": {
+        "agfc_slug": "fourche-lafave-river",
+        "usgs_site_id": "07257000",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_lake_greeson",
+      "name": "Lake Greeson",
+      "display_name": "Lake Greeson (Narrows Reservoir)",
+      "short_name": "Lake Greeson",
+      "water_body_type": "reservoir",
+      "parent_river": "Little Missouri River",
+      "dam_controlled": true,
+      "dam_name": "Narrows Dam",
+      "dam_operator": "USACE",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Pike", "Howard"],
+      "region": "Ouachitas",
+      "huc8_code": "08040101",
+      "coordinates": {
+        "centroid_lat": 34.1200,
+        "centroid_lng": -93.7200
+      },
+      "source_ids": {
+        "agfc_slug": "lake-greeson",
+        "usgs_site_id": null,
+        "usace_project": "Narrows",
+        "usace_district": "SWL"
+      }
+    },
+    {
+      "water_body_id": "wb_arkansas_river",
+      "name": "Arkansas River",
+      "display_name": "Arkansas River",
+      "short_name": "Arkansas River",
+      "water_body_type": "river",
+      "parent_river": "Arkansas River",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Fort Smith / Van Buren",
+        "to_point": "Little Rock",
+        "length_miles": 150
+      },
+      "state": "AR",
+      "counties": ["Crawford", "Sebastian", "Pope", "Yell", "Conway", "Pulaski"],
+      "region": "Arkansas River Valley",
+      "huc8_code": "11110103",
+      "coordinates": {
+        "centroid_lat": 35.0700,
+        "centroid_lng": -92.6000
+      },
+      "source_ids": {
+        "agfc_slug": "arkansas-river",
+        "usgs_site_id": "07252000",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_saline_river",
+      "name": "Saline River",
+      "display_name": "Saline River",
+      "short_name": "Saline River",
+      "water_body_type": "river",
+      "parent_river": "Saline River",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Dierks area",
+        "to_point": "Ouachita River confluence",
+        "length_miles": 180
+      },
+      "state": "AR",
+      "counties": ["Garland", "Saline", "Grant", "Howard"],
+      "region": "Ouachitas",
+      "huc8_code": "08040203",
+      "coordinates": {
+        "centroid_lat": 34.2000,
+        "centroid_lng": -92.7000
+      },
+      "source_ids": {
+        "agfc_slug": "saline-river",
+        "usgs_site_id": "07363500",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_little_river",
+      "name": "Little River",
+      "display_name": "Little River",
+      "short_name": "Little River",
+      "water_body_type": "river",
+      "parent_river": "Little River",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": {
+        "from_point": "Horatio / Sevier County",
+        "to_point": "Red River confluence",
+        "length_miles": 80
+      },
+      "state": "AR",
+      "counties": ["Sevier", "Little River"],
+      "region": "Coastal Plains",
+      "huc8_code": "11140204",
+      "coordinates": {
+        "centroid_lat": 33.8000,
+        "centroid_lng": -94.2000
+      },
+      "source_ids": {
+        "agfc_slug": "little-river",
+        "usgs_site_id": "07340000",
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_lake_chicot",
+      "name": "Lake Chicot",
+      "display_name": "Lake Chicot",
+      "short_name": "Lake Chicot",
+      "water_body_type": "lake",
+      "parent_river": "Mississippi River oxbow",
+      "dam_controlled": false,
+      "dam_name": null,
+      "dam_operator": null,
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Chicot"],
+      "region": "Delta",
+      "huc8_code": "08050001",
+      "coordinates": {
+        "centroid_lat": 33.0800,
+        "centroid_lng": -91.2800
+      },
+      "source_ids": {
+        "agfc_slug": "lake-chicot",
+        "usgs_site_id": null,
+        "usace_project": null,
+        "usace_district": null
+      }
+    },
+    {
+      "water_body_id": "wb_lake_monticello",
+      "name": "Lake Monticello",
+      "display_name": "Lake Monticello",
+      "short_name": "Lake Monticello",
+      "water_body_type": "lake",
+      "parent_river": "Bayou Bartholomew",
+      "dam_controlled": true,
+      "dam_name": "Lake Monticello Dam",
+      "dam_operator": "AGFC",
+      "upstream_reservoir": null,
+      "managed_reach": null,
+      "state": "AR",
+      "counties": ["Drew"],
+      "region": "Delta",
+      "huc8_code": "08050002",
+      "coordinates": {
+        "centroid_lat": 33.6400,
+        "centroid_lng": -91.8000
+      },
+      "source_ids": {
+        "agfc_slug": "lake-monticello",
         "usgs_site_id": null,
         "usace_project": null,
         "usace_district": null

@@ -241,6 +241,255 @@
           ]
         }
       ]
+    },
+    {
+      "river_id": "kings-river",
+      "name": "Kings River",
+      "sections": [
+        {
+          "section_id": "kings-river-upper",
+          "name": "Upper Kings River",
+          "description": "Kings River from headwaters near Berryville to Trigger",
+          "segments": [
+            {
+              "segment_id": "kings-river-berryville",
+              "name": "Berryville to Trigger",
+              "description": "Premier Ozark smallmouth reach, excellent wading and float access",
+              "primary_station_id": "07049000"
+            }
+          ]
+        },
+        {
+          "section_id": "kings-river-lower",
+          "name": "Lower Kings River",
+          "description": "Kings River from Trigger to Beaver Lake",
+          "segments": [
+            {
+              "segment_id": "kings-river-trigger-to-beaver",
+              "name": "Trigger to Beaver Lake",
+              "description": "Lower Kings River float reach approaching Beaver Lake",
+              "primary_station_id": "07049100"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "river_id": "mulberry-river",
+      "name": "Mulberry River",
+      "sections": [
+        {
+          "section_id": "mulberry-river-upper",
+          "name": "Upper Mulberry River",
+          "description": "Mulberry River from Natural Dam area to mid-river",
+          "segments": [
+            {
+              "segment_id": "mulberry-river-natural-dam",
+              "name": "Natural Dam to Turner Bend",
+              "description": "Upper Mulberry — classic Ozark smallmouth float",
+              "primary_station_id": "07246500"
+            }
+          ]
+        },
+        {
+          "section_id": "mulberry-river-lower",
+          "name": "Lower Mulberry River",
+          "description": "Mulberry River from Turner Bend to Arkansas River confluence",
+          "segments": [
+            {
+              "segment_id": "mulberry-river-turner-to-mouth",
+              "name": "Turner Bend to Mulberry",
+              "description": "Lower Mulberry approaching the Arkansas River",
+              "primary_station_id": "07247000"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "river_id": "war-eagle-creek",
+      "name": "War Eagle Creek",
+      "sections": [
+        {
+          "section_id": "war-eagle-main",
+          "name": "War Eagle Creek",
+          "description": "War Eagle Creek from Hindsville to Beaver Lake",
+          "segments": [
+            {
+              "segment_id": "war-eagle-hindsville-to-beaver",
+              "name": "Hindsville to Beaver Lake",
+              "description": "War Eagle Creek smallmouth and largemouth reach",
+              "primary_station_id": "07049300"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "river_id": "crooked-creek",
+      "name": "Crooked Creek",
+      "sections": [
+        {
+          "section_id": "crooked-creek-upper",
+          "name": "Upper Crooked Creek",
+          "description": "Crooked Creek from Everton to mid-river",
+          "segments": [
+            {
+              "segment_id": "crooked-creek-everton",
+              "name": "Everton to Harrison area",
+              "description": "Upper Crooked Creek smallmouth reach",
+              "primary_station_id": "07055500"
+            }
+          ]
+        },
+        {
+          "section_id": "crooked-creek-lower",
+          "name": "Lower Crooked Creek",
+          "description": "Crooked Creek from Pyatt to White River confluence",
+          "segments": [
+            {
+              "segment_id": "crooked-creek-pyatt",
+              "name": "Pyatt to White River",
+              "description": "Lower Crooked Creek approaching White River confluence",
+              "primary_station_id": "07055646"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "river_id": "strawberry-river",
+      "name": "Strawberry River",
+      "sections": [
+        {
+          "section_id": "strawberry-river-upper",
+          "name": "Upper Strawberry River",
+          "description": "Strawberry River from Evening Shade to mid-river",
+          "segments": [
+            {
+              "segment_id": "strawberry-river-evening-shade",
+              "name": "Evening Shade to Poughkeepsie",
+              "description": "Upper Strawberry River smallmouth and bass reach",
+              "primary_station_id": "07069000"
+            }
+          ]
+        },
+        {
+          "section_id": "strawberry-river-lower",
+          "name": "Lower Strawberry River",
+          "description": "Strawberry River from Poughkeepsie to Black River confluence",
+          "segments": [
+            {
+              "segment_id": "strawberry-river-imboden",
+              "name": "Poughkeepsie to Imboden",
+              "description": "Lower Strawberry River float reach",
+              "primary_station_id": "07069500"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "river_id": "cossatot-river",
+      "name": "Cossatot River",
+      "sections": [
+        {
+          "section_id": "cossatot-wild-scenic",
+          "name": "Wild and Scenic Reach",
+          "description": "Cossatot River Wild and Scenic reach through Cossatot River State Park Natural Area",
+          "segments": [
+            {
+              "segment_id": "cossatot-vandervoort-to-millwood",
+              "name": "Vandervoort to Millwood Lake",
+              "description": "Premier Ouachita smallmouth and whitewater reach",
+              "primary_station_id": "07340300"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "river_id": "little-missouri-river",
+      "name": "Little Missouri River",
+      "sections": [
+        {
+          "section_id": "little-missouri-above-greeson",
+          "name": "Above Lake Greeson",
+          "description": "Little Missouri River above Narrows Dam / Lake Greeson",
+          "segments": [
+            {
+              "segment_id": "little-missouri-murfreesboro",
+              "name": "Murfreesboro to Lake Greeson",
+              "description": "Upper Little Missouri River smallmouth and largemouth reach",
+              "primary_station_id": "07356500"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "river_id": "fourche-lafave-river",
+      "name": "Fourche LaFave River",
+      "sections": [
+        {
+          "section_id": "fourche-lafave-upper",
+          "name": "Upper Fourche LaFave",
+          "description": "Fourche LaFave River from Gravelly to Nimrod Lake",
+          "segments": [
+            {
+              "segment_id": "fourche-lafave-gravelly-to-nimrod",
+              "name": "Gravelly to Nimrod Lake",
+              "description": "Fourche LaFave River smallmouth and largemouth float reach",
+              "primary_station_id": "07257000"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "river_id": "arkansas-river",
+      "name": "Arkansas River",
+      "sections": [
+        {
+          "section_id": "arkansas-river-fort-smith",
+          "name": "Fort Smith Area",
+          "description": "Arkansas River from Fort Smith / Van Buren to Dardanelle",
+          "segments": [
+            {
+              "segment_id": "arkansas-river-van-buren",
+              "name": "Van Buren to Dardanelle",
+              "description": "Arkansas River below Fort Smith — sauger, white bass, catfish",
+              "primary_station_id": "07252000"
+            }
+          ]
+        },
+        {
+          "section_id": "arkansas-river-dardanelle",
+          "name": "Below Lake Dardanelle",
+          "description": "Arkansas River below Lake Dardanelle Dam to Little Rock",
+          "segments": [
+            {
+              "segment_id": "arkansas-river-dardanelle-dam",
+              "name": "Dardanelle to Little Rock",
+              "description": "Arkansas River below Dardanelle Dam — sauger and white bass staging",
+              "primary_station_id": "07255000"
+            }
+          ]
+        },
+        {
+          "section_id": "arkansas-river-little-rock",
+          "name": "Little Rock Area",
+          "description": "Arkansas River through Little Rock metro",
+          "segments": [
+            {
+              "segment_id": "arkansas-river-little-rock",
+              "name": "Little Rock Reach",
+              "description": "Urban Arkansas River — sauger, catfish, striped bass",
+              "primary_station_id": "07263000"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -91,6 +91,12 @@ const SOURCES = {
     reservoirName: "DeGray",
     url: "https://r.jina.ai/http://www.mvk-wc.usace.army.mil/resrep.htm",
   },
+  lakeGreeson: {
+    name: "Lake Greeson (Narrows Reservoir)",
+    provider: "USACE-SWL",
+    format: "swl-tabular",
+    url: "https://r.jina.ai/http://www.swl-wc.usace.army.mil/pages/data/tabular/htm/greeson.htm",
+  },
 };
 
 // Tailwaters that share dam data with their upstream reservoir.
