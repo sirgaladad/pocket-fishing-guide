@@ -1093,6 +1093,76 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       .wb-divider     { height: 1px; background: var(--bg3); }
       .wind-dir-abbr  { margin-right: 4px; }
       .sca-banner-inline { margin-top: 10px; }
+      /* WindBaroCard: current conditions header row */
+      .wb-conditions-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: var(--text2);
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--bg3);
+        flex-wrap: wrap;
+      }
+      .wb-conditions-icon { font-size: 16px; flex-shrink: 0; }
+      .wb-conditions-desc { flex: 1; min-width: 0; }
+      .wb-conditions-temp { font-weight: 700; color: var(--text1); flex-shrink: 0; }
+      /* WindBaroCard: thunderstorm danger block */
+      .wb-storm-danger {
+        background: rgba(183, 28, 28, 0.15);
+        border: 1px solid rgba(183, 28, 28, 0.4);
+        border-left: 3px solid #d32f2f;
+        border-radius: 6px;
+        padding: 10px 12px;
+        font-size: 12px;
+        color: #ef9a9a;
+        margin-bottom: 12px;
+        line-height: 1.5;
+      }
+      /* Thunderstorm safety badge in 7-day forecast rows */
+      .wind-badge.storm {
+        background: rgba(183, 28, 28, 0.85);
+        color: #fff;
+        border: 1px solid #d32f2f;
+        white-space: nowrap;
+      }
+      /* Barometric pressure source badge */
+      .baro-source-badge {
+        font-size: 9px;
+        font-weight: 700;
+        background: var(--bg3);
+        color: var(--text3);
+        padding: 2px 5px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        vertical-align: middle;
+      }
+      /* Barometric pressure numeric trend delta */
+      .baro-trend-delta {
+        font-size: 11px;
+        color: var(--text2);
+        vertical-align: middle;
+      }
+      /* Desktop: side-by-side wind & baro columns */
+      @media (min-width: 600px) {
+        #root { max-width: 720px; }
+        .wind-baro-card {
+          flex-direction: row;
+          align-items: flex-start;
+          gap: 0;
+        }
+        .wind-baro-card > div { flex: 1; padding: 0 16px; }
+        .wind-baro-card > div:first-child { padding-left: 0; }
+        .wind-baro-card > div:last-child { padding-right: 0; }
+        .wb-divider {
+          width: 1px;
+          height: auto;
+          align-self: stretch;
+          margin: 0;
+        }
+      }
       /* Barometric pressure bar */
       .baro-header {
         display: flex;
@@ -7957,6 +8027,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         return '\uD83C\uDF24\uFE0F';
       }
 
+      // Returns a hazard object when shortForecast describes dangerous weather, or null otherwise.
+      // Used to override wind condition badges and surface safety warnings in the UI.
+      // Thunderstorms carry lightning risk regardless of wind speed — never "Ideal" overall.
+      function getWeatherHazard(shortForecast) {
+        const s = (shortForecast || '').toLowerCase();
+        if (
+          s.includes('thunder') ||
+          s.includes('tornado') ||
+          s.includes('hurricane') ||
+          s.includes('tropical storm') ||
+          s.includes('severe thunderstorm')
+        ) {
+          return { label: 'Thunderstorm \u2014 Stay Off Water', cls: 'storm', icon: '\u26C8\uFE0F' };
+        }
+        return null;
+      }
+
       // ─── WIND & BAROMETRIC PRESSURE UTILITIES ────────────────────────────────
 
       // Extracts the highest numeric mph from NWS wind strings like "5 to 10 mph" or "15 mph".
@@ -7968,10 +8055,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       // Returns wind category metadata based on sustained speed in mph.
+      // NOTE: 'Ideal Wind' means wind speed is optimal for fishing (feeding conditions) —
+      // it does NOT indicate overall weather safety. Use getWeatherHazard() for safety checks.
       function getWindCategory(mph) {
         if (mph == null) return { label: 'Unknown', cls: 'calm', icon: '\uD83C\uDF2C\uFE0F', color: '#90a4ae', advisory: false };
         if (mph <= 5)  return { label: 'Calm',               cls: 'calm',     icon: '\uD83E\uDEB6', color: '#42a5f5', advisory: false };
-        if (mph <= 15) return { label: 'Ideal Conditions',   cls: 'ideal',    icon: '\uD83C\uDF2C\uFE0F', color: '#66bb6a', advisory: false };
+        if (mph <= 15) return { label: 'Ideal Wind',         cls: 'ideal',    icon: '\uD83C\uDF2C\uFE0F', color: '#66bb6a', advisory: false };
         if (mph <= 20) return { label: 'Breezy',             cls: 'breezy',   icon: '\uD83C\uDF2C\uFE0F', color: '#ffa726', advisory: false };
         if (mph <= 25) return { label: 'Rough — use caution', cls: 'rough',  icon: '\u26A0\uFE0F', color: '#ef5350', advisory: false };
         return { label: 'Small Craft Advisory',              cls: 'advisory', icon: '\uD83D\uDEA9', color: '#d32f2f', advisory: true };
@@ -9612,8 +9701,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const windArrow = windDir ? getWindDirArrow(windDir) : null;
         const gustMph = parseGust(period?.detailedForecast);
 
+        // Current weather condition context
+        const shortForecast = period?.shortForecast || null;
+        const currentTemp = period?.temperature ?? null;
+        const weatherHazard = shortForecast ? getWeatherHazard(shortForecast) : null;
+
         const pressure = wxObs?.pressure ?? null;
         const pressureTrend = wxObs?.pressureTrend ?? null;
+        const pressureSource = wxObs?.pressureSource ?? null;
         const baroCat = getBaroCategory(pressure, pressureTrend);
 
         // Position the baro marker: scale 29.40–30.60 → 0–100%
@@ -9634,6 +9729,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         return (
           <div className="card">
             <div className="card-title">🌬️ Wind &amp; Pressure Conditions</div>
+
+            {/* ── CURRENT CONDITIONS HEADER ── */}
+            {shortForecast && (
+              <div className="wb-conditions-header">
+                <span className="wb-conditions-icon">{getWxIcon(shortForecast)}</span>
+                <span className="wb-conditions-desc">{shortForecast}</span>
+                {currentTemp != null && <span className="wb-conditions-temp">{currentTemp}°F</span>}
+              </div>
+            )}
+
+            {/* ── THUNDERSTORM SAFETY WARNING ── */}
+            {weatherHazard && (
+              <div className="wb-storm-danger">
+                ⛈️ <strong>Thunderstorm — Stay off the water.</strong> Lightning risk is life-threatening.
+                Wind speed may be favorable for fish feeding, but safety comes first.
+              </div>
+            )}
+
             <div className="wind-baro-card">
 
               {/* ── WIND SECTION ── */}
@@ -9689,6 +9802,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   <>
                     <div className="baro-header">
                       <span className="baro-value">{baroReading}</span>
+                      {pressureSource && (
+                        <span className="baro-source-badge">
+                          {pressureSource === 'nws' ? 'NWS' : 'Open-Meteo'}
+                        </span>
+                      )}
+                      {pressureTrend != null && Math.abs(pressureTrend) >= BARO_TREND_THRESHOLD && (
+                        <span className="baro-trend-delta">
+                          {pressureTrend > 0 ? '+' : ''}{pressureTrend.toFixed(3)} inHg
+                        </span>
+                      )}
                     </div>
                     <div className="baro-bar">
                       <div
@@ -10867,6 +10990,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               {allPeriods.map((p, i) => {
                 const mph = parseWindSpeed(p.windSpeed);
                 const wCat = mph != null ? getWindCategory(mph) : null;
+                const hazard = getWeatherHazard(p.shortForecast);
                 const arrow = p.windDirection ? getWindDirArrow(p.windDirection) : null;
                 const gustMph = parseGust(p.detailedForecast);
                 return (
@@ -10884,9 +11008,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                           <div className="fc-wind-row">
                             {arrow && <span className="fc-wind-dir">{arrow} {p.windDirection}</span>}
                             <span className="fc-wind">{p.windSpeed}</span>
-                            {wCat && (
-                              <span className={`wind-badge ${wCat.cls}`}>{wCat.label}</span>
-                            )}
+                            {hazard
+                              ? <span className="wind-badge storm">{hazard.icon} {hazard.label}</span>
+                              : wCat && <span className={`wind-badge ${wCat.cls}`}>{wCat.label}</span>
+                            }
                           </div>
                           {gustMph != null && (
                             <div className="fc-gust-note">
