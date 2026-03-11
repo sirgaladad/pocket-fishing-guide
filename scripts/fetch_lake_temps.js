@@ -84,7 +84,7 @@ function unavailable(timeseriesId = null) {
   return { tempC: null, tempF: null, source: "cwms-unavailable", dateTime: null, timeseriesId };
 }
 
-function main() {
+async function main() {
   const generatedAt = new Date().toISOString();
 
   // ── Step 1: Fetch CWMS Temp-Water catalog for each district office ─────────
@@ -94,7 +94,7 @@ function main() {
       `${CWMS_BASE}/catalog/timeseries` +
       `?office=${office}&like=Temp-Water&page-size=500`;
     console.log(`Fetching CWMS catalog for office ${office}…`);
-    const data = curlJson(url);
+    const data = await curlJson(url);
     catalogByOffice[office] = data?.entries || [];
     console.log(`  → ${catalogByOffice[office].length} Temp-Water entries`);
     if (catalogByOffice[office].length > 0) {
@@ -133,7 +133,7 @@ function main() {
       `&unit=F`;                              // request Fahrenheit directly
 
     console.log(`  [${waterKey}] Fetching "${matched.name}"…`);
-    const tsData = curlJson(tsUrl);
+    const tsData = await curlJson(tsUrl);
 
     // CWMS returns values as [[epoch_ms, value, quality_code], …]
     // Quality code 5 = missing/rejected; 0 = good; 3 = estimated.
@@ -158,10 +158,25 @@ function main() {
   }
 
   // ── Overall status ────────────────────────────────────────────────────────
-  const results    = Object.values(lakes);
-  const liveCount  = results.filter((r) => r.source === "cwms").length;
-  const allFailed  = liveCount === 0;
-  const overallStatus = allFailed ? "error" : liveCount < results.length ? "degraded" : "ok";
+  // Distinguish between lakes that intentionally have no sensor (cwms-unavailable,
+  // timeseriesId === null) and lakes where a sensor was found but data fetch failed
+  // (cwms-unavailable, timeseriesId !== null).  Only the latter count as errors.
+  const results        = Object.values(lakes);
+  const liveCount      = results.filter((r) => r.source === "cwms").length;
+  const fetchErrCount  = results.filter(
+    (r) => r.source === "cwms-unavailable" && r.timeseriesId !== null
+  ).length;
+  const sensored       = liveCount + fetchErrCount;
+  let overallStatus;
+  if (sensored === 0) {
+    overallStatus = "ok";       // no CWMS sensors configured — expected
+  } else if (fetchErrCount > 0 && liveCount === 0) {
+    overallStatus = "error";    // all sensors failed to return data
+  } else if (fetchErrCount > 0) {
+    overallStatus = "degraded"; // some sensors failed
+  } else {
+    overallStatus = "ok";       // all live sensors working
+  }
 
   const output = { status: overallStatus, generatedAt, lakes };
 
@@ -169,8 +184,11 @@ function main() {
   fs.writeFileSync(OUT_PATH, JSON.stringify(output, null, 2) + "\n", "utf8");
   console.log(`Wrote ${OUT_PATH}`);
   console.log(
-    `Status: ${overallStatus} — ${liveCount}/${results.length} lakes have live CWMS data`
+    `Status: ${overallStatus} — ${liveCount} live / ${fetchErrCount} fetch-errors / ${results.length - sensored} no-sensor (total ${results.length} lakes)`
   );
 }
 
-main();
+main().catch((err) => {
+  console.error("fetch_lake_temps fatal error:", err);
+  process.exit(1);
+});
