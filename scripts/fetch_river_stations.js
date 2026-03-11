@@ -20,12 +20,46 @@ const { execFileSync } = require("child_process");
 
 const RIVERS_MAP_PATH = path.resolve(__dirname, "..", "data", "rivers_map.json");
 const REGISTRY_PATH = path.resolve(__dirname, "..", "data", "stations_registry.json");
+const GAUGES_PATH = path.resolve(__dirname, "..", "data", "usgs_gauges.json");
 const SNAPSHOT_PATH = path.resolve(__dirname, "..", "data", "river_stations_snapshot.json");
 
 // USGS parameter codes
 const PARAM_GAGE_HEIGHT = "00065";
 const PARAM_STREAMFLOW = "00060";
 const PARAM_TEMPERATURE = "00010";
+
+// Open-Meteo soil temperature proxy endpoint (no API key required)
+const OPEN_METEO_BASE = "https://api.open-meteo.com/v1/forecast";
+
+/**
+ * Fetch soil temperature from Open-Meteo as a water temperature proxy.
+ * Used when a USGS station has no 00010 temperature sensor.
+ * Applies a correction offset: rivers run ~3°F cooler than soil surface.
+ *
+ * @param {number} lat
+ * @param {number} lng
+ * @returns {number|null} Estimated water temperature in °C, or null on failure.
+ */
+function fetchOpenMeteoTemp(lat, lng) {
+  const url =
+    `${OPEN_METEO_BASE}?latitude=${lat}&longitude=${lng}` +
+    `&hourly=soil_temperature_0cm&forecast_days=1&timezone=America%2FChicago`;
+  try {
+    const raw = execFileSync("curl", ["-sS", "--max-time", "20", url], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    const data = JSON.parse(raw);
+    const vals = (data && data.hourly && data.hourly.soil_temperature_0cm) || [];
+    // Most recent non-null reading
+    const latest = [...vals].reverse().find((v) => v !== null && v !== undefined);
+    if (latest === undefined || latest === null) return null;
+    // Correction: soil surface runs ~1.7°C warmer than river water on average
+    return Math.round((latest - 1.7) * 10) / 10;
+  } catch (_) {
+    return null;
+  }
+}
 
 const USGS_BASE_URL =
   "https://waterservices.usgs.gov/nwis/iv/?format=json&parameterCd=" +
@@ -146,6 +180,19 @@ async function main() {
     (registry.stations || []).map((s) => [s.station_id, s])
   );
 
+  // ── Load USGS gauges for coordinate lookup (needed for Open-Meteo fallback) ─
+  let coordsByStation = {};
+  try {
+    const gauges = JSON.parse(fs.readFileSync(GAUGES_PATH, "utf8"));
+    for (const g of (gauges.usgs_gauges || [])) {
+      if (g.usgs_site_number && g.coordinates) {
+        coordsByStation[g.usgs_site_number] = g.coordinates;
+      }
+    }
+  } catch (_) {
+    // Non-fatal — Open-Meteo fallback will simply be skipped if coordinates unavailable
+  }
+
   // ── Load previous snapshot for delta calculation ──────────────────────────
   let previousSnapshot = null;
   try {
@@ -202,6 +249,26 @@ async function main() {
       note = `No current readings returned by USGS for station ${id}. Station may be offline or ID may be inactive.`;
     }
 
+    // ── Open-Meteo temperature fallback ──────────────────────────────────────
+    // When USGS 00010 sensor is absent, estimate water temp from Open-Meteo
+    // soil surface temperature with a correction offset. Tagged as 'estimated'
+    // so the UI can distinguish live sensor data from proxy estimates.
+    let tempSource = "usgs";
+    let tempValue = temperature.value;
+    let tempDateTime = temperature.dateTime;
+    if (tempValue === null) {
+      const coords = coordsByStation[id];
+      if (coords && coords.lat && coords.lng) {
+        const estimated = fetchOpenMeteoTemp(coords.lat, coords.lng);
+        if (estimated !== null) {
+          tempValue = estimated;
+          tempDateTime = new Date().toISOString();
+          tempSource = "open-meteo-estimated";
+          console.log(`  [${id}] No USGS temp — used Open-Meteo proxy: ${estimated}°C`);
+        }
+      }
+    }
+
     const prev = previousById[id] || null;
 
     return {
@@ -227,11 +294,12 @@ async function main() {
           : null,
       },
       temperature: {
-        value: temperature.value,
+        value: tempValue,
         unit: "°C",
-        dateTime: temperature.dateTime,
+        dateTime: tempDateTime,
+        source: tempSource,
         delta: prev && prev.temperature
-          ? calcDelta(temperature.value, prev.temperature.value)
+          ? calcDelta(tempValue, prev.temperature.value)
           : null,
       },
     };
