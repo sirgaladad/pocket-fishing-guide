@@ -972,6 +972,30 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         font-size: 10px;
         color: var(--text3);
       }
+      /* ─── DEDICATED WIND COLUMN (forecast tab) ─── */
+      .fc-wind-col {
+        width: 78px;
+        flex-shrink: 0;
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+      }
+      .fc-wind-col-dir {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text1);
+      }
+      .fc-wind-col-speed {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text2);
+      }
+      .fc-wind-col-gust {
+        font-size: 9px;
+        color: #ffa726;
+      }
       /* ─── ENHANCED WIND ROW (forecast tab) ─── */
       .fc-wind-row {
         display: flex;
@@ -3065,8 +3089,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             {
               id: '07076000',
               label: 'Little Red River near Heber Springs',
-              note: 'Primary downstream signal for Greers Ferry releases.',
-              primary: true,
+              note: 'Supplementary downstream tailwater signal for Greers Ferry releases.',
             },
             {
               id: '07075000',
@@ -7159,6 +7182,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         return null;
       }
 
+      // Returns post-spawn detection config { tempThreshold, earliestMonth } for the species,
+      // or null for trout (stocking-driven, no thermal post-spawn tracking).
+      // earliestMonth is 1-based (5 = May, 6 = June, etc.)
+      function getPostSpawnRange(speciesId) {
+        if (CRAPPIE_IDS.has(speciesId))    return { tempThreshold: 65, earliestMonth: 5 };
+        if (speciesId === 'wb')            return { tempThreshold: 55, earliestMonth: 5 };
+        if (BLACK_BASS_IDS.has(speciesId)) return { tempThreshold: 68, earliestMonth: 6 };
+        if (STRIPER_IDS.has(speciesId))    return { tempThreshold: 65, earliestMonth: 6 };
+        if (SUNFISH_IDS.has(speciesId))    return { tempThreshold: 72, earliestMonth: 7 };
+        if (CATFISH_IDS.has(speciesId))    return { tempThreshold: 76, earliestMonth: 8 };
+        if (speciesId === 'walleye' || speciesId === 'saugeye') return { tempThreshold: 55, earliestMonth: 5 };
+        if (speciesId === 'sauger')        return { tempThreshold: 52, earliestMonth: 5 };
+        if (SPECIALTY_IDS.has(speciesId))  return { tempThreshold: 70, earliestMonth: 7 };
+        return null; // trout — stocking-driven, no post-spawn tracking
+      }
+
       const TABS = [
         { id: 'signals', icon: '\uD83D\uDCCA', label: 'Signals' },
         { id: 'forecast', icon: '\u2600\uFE0F', label: 'Forecast' },
@@ -7907,6 +7946,44 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const hasScores = artificial.some(l => l.condition_score);
         if (!hasScores) return artificial;
         return [...artificial].sort((a, b) => calcScore(b) - calcScore(a));
+      }
+
+      // Seasonal historical water temperature averages by water body subtype.
+      // Index 0 unused; indices 1-12 = January-December (°F, Arkansas ~35°N latitude).
+      const WATER_TEMP_HISTORICAL = {
+        tailwater: [0, 48, 48, 50, 54, 58, 62, 62, 62, 60, 56, 51, 48],
+        reservoir: [0, 47, 48, 51, 57, 64, 72, 82, 84, 76, 66, 57, 50],
+        lake:      [0, 46, 47, 54, 62, 72, 80, 86, 88, 78, 66, 56, 49],
+        river:     [0, 44, 46, 52, 60, 68, 74, 80, 82, 74, 62, 52, 46],
+        stream:    [0, 44, 45, 50, 58, 66, 72, 78, 80, 72, 60, 51, 45],
+      };
+
+      function getHistoricalWaterTemp(waterDef) {
+        const month = new Date().getMonth() + 1; // 1-based
+        const subtype = waterDef?.subtype || waterDef?.type || 'reservoir';
+        const table = WATER_TEMP_HISTORICAL[subtype] || WATER_TEMP_HISTORICAL.reservoir;
+        const temp = table[month];
+        if (!Number.isFinite(temp)) return null;
+
+        // Build a 7-day simulated trend by interpolating current month toward next
+        const nextMonth = month === 12 ? 1 : month + 1;
+        const nextTemp = table[nextMonth];
+        const weeklyDelta = (nextTemp - temp) / 4; // approx 1-week change
+        const temps7 = Array.from({ length: 7 }, (_, i) => ({
+          day: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][i],
+          avg: +(temp + weeklyDelta * (i / 6)).toFixed(1),
+        }));
+
+        return {
+          temp,
+          tempTrend24: +(weeklyDelta / 7).toFixed(2),
+          tempTrend7: +weeklyDelta.toFixed(1),
+          temps7,
+          tempSource: 'historical',
+          tempSourceLabel: 'Seasonal historical estimate',
+          tempSourceNote:
+            'No live water-temperature sensor available; using regional seasonal averages for this water type.',
+        };
       }
 
       function estimateTempFromForecast(forecast, waterType) {
@@ -8801,12 +8878,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         return (
           <div className="card">
-            <div className="card-title">\uD83C\uDF2C\uFE0F Wind &amp; Pressure Conditions</div>
+            <div className="card-title">{'\uD83C\uDF2C\uFE0F'} Wind &amp; Pressure Conditions</div>
             <div className="wind-baro-card">
 
               {/* ── WIND SECTION ── */}
               <div>
-                <div className="wb-section-title">\uD83D\uDEA9 Wind Conditions</div>
+                <div className="wb-section-title">{'\uD83D\uDEA9'} Wind Conditions</div>
                 {period ? (
                   <>
                     <div className="wind-dir-display">
@@ -8828,13 +8905,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     )}
                     {gustMph != null && (
                       <div className="wb-gust-note">
-                        \uD83C\uDF2A\uFE0F Gusts up to {gustMph} mph
+                        {'\uD83C\uDF2A\uFE0F'} Gusts up to {gustMph} mph
                         {gustMph >= 20 ? ' — use caution on open water' : ''}
                       </div>
                     )}
                     {windCat?.advisory && (
                       <div className="sca-banner" style={{marginTop:10}}>
-                        <span className="sca-banner-icon">\uD83D\uDEA9</span>
+                        <span className="sca-banner-icon">{'\uD83D\uDEA9'}</span>
                         <span>
                           <strong>Small Craft Advisory conditions.</strong> Sustained winds {windMph} mph.
                           Consider postponing open-water trips and check your local marine forecast.
@@ -8843,7 +8920,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     )}
                   </>
                 ) : (
-                  <div className="wb-no-wind">Wind data loading\u2026</div>
+                  <div className="wb-no-wind">Wind data loading…</div>
                 )}
               </div>
 
@@ -8852,7 +8929,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
               {/* ── BAROMETRIC PRESSURE SECTION ── */}
               <div>
-                <div className="wb-section-title">\uD83D\uDCCA Barometric Pressure</div>
+                <div className="wb-section-title">{'\uD83D\uDCCA'} Barometric Pressure</div>
                 {pressure != null ? (
                   <>
                     <div className="baro-header">
@@ -8867,18 +8944,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
                     <div className="baro-zone-labels">
                       <span>Very Low</span>
-                      <span>\uD83D\uDD25 Pre-Front</span>
-                      <span>\u2705 Optimal</span>
+                      <span>{'\uD83D\uDD25'} Pre-Front</span>
+                      <span>{'\u2705'} Optimal</span>
                       <span>Post-Front</span>
                       <span>High</span>
                     </div>
                     <div className={`baro-feeding ${baroCat.cls}`}>
-                      {baroCat.icon} <strong>{baroCat.label}</strong> \u2014 {baroCat.feedingAdvice}
+                      {baroCat.icon} <strong>{baroCat.label}</strong>{' — '}{baroCat.feedingAdvice}
                     </div>
                   </>
                 ) : (
                   <div className="baro-unavailable">
-                    Pressure data unavailable \u2014 NWS observation station may be offline.
+                    Pressure data unavailable — NWS observation station may be offline.
                   </div>
                 )}
               </div>
@@ -8971,33 +9048,60 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const msPct = (t) => ((t - minT) / (maxT - minT)) * 100;
 
         // Determine if we're in post-spawn/summer range so the tracker can shift milestones
-        const isPostSpawnPhase = hasTemp && (
-          CRAPPIE_IDS.has(species) ? temp >= 60 : temp >= 55
-        );
+        const postSpawnRange = getPostSpawnRange(species);
+        const currentMonth = new Date().getMonth() + 1; // 1-based
+        const isPostSpawnPhase = hasTemp && postSpawnRange != null &&
+          temp >= postSpawnRange.tempThreshold &&
+          currentMonth >= postSpawnRange.earliestMonth;
 
-        const milestones = CRAPPIE_IDS.has(species)
-          ? isPostSpawnPhase
-            ? [
-                { label: 'Pull-Back',    temp: 68, color: '#66bb6a' },
-                { label: 'Deep Timber',  temp: 72, color: '#ffd54f' },
-                { label: 'Night Pattern', temp: 75, color: '#ffa726' },
-              ]
-            : [
-                { label: 'Move',      temp: 48, color: '#ab47bc' },
-                { label: 'Stage',     temp: 55, color: '#e040fb' },
-                { label: 'Bed Spawn', temp: 60, color: '#f44336' },
-              ]
-          : isPostSpawnPhase
-            ? [
-                { label: 'Return',       temp: 62, color: '#66bb6a' },
-                { label: 'Recovery',     temp: 65, color: '#ffd54f' },
-                { label: 'Summer Schools', temp: 68, color: '#ffa726' },
-              ]
-            : [
-                { label: 'Staging',  temp: 45, color: '#29b6f6' },
-                { label: 'Spawn',    temp: 50, color: '#ff6b35' },
-                { label: 'Peak Run', temp: 55, color: '#f44336' },
-              ];
+        // Hero pill wind + baro (distinct from WindBaroCard scope variables)
+        const heroPeriod = Array.isArray(forecast) ? (forecast.find((p) => p.isDaytime) || forecast[0]) : null;
+        const heroWindMph = parseWindSpeed(heroPeriod?.windSpeed);
+        const heroWindCat = heroWindMph != null ? getWindCategory(heroWindMph) : null;
+        const heroBaroCat = wxObs?.pressure != null ? getBaroCategory(wxObs.pressure, wxObs.pressureTrend) : null;
+
+        // Build species-appropriate milestone list — pre-spawn or post-spawn depending on phase
+        let milestones;
+        if (CRAPPIE_IDS.has(species)) {
+          milestones = isPostSpawnPhase
+            ? [{ label: 'Pull-Back', temp: 68, color: '#66bb6a' }, { label: 'Deep Timber', temp: 72, color: '#ffd54f' }, { label: 'Night Pattern', temp: 75, color: '#ffa726' }]
+            : [{ label: 'Move', temp: 48, color: '#ab47bc' }, { label: 'Stage', temp: 55, color: '#e040fb' }, { label: 'Bed Spawn', temp: 60, color: '#f44336' }];
+        } else if (species === 'wb') {
+          milestones = isPostSpawnPhase
+            ? [{ label: 'Return', temp: 62, color: '#66bb6a' }, { label: 'Recovery', temp: 65, color: '#ffd54f' }, { label: 'Summer Schools', temp: 68, color: '#ffa726' }]
+            : [{ label: 'Staging', temp: 45, color: '#29b6f6' }, { label: 'Spawn', temp: 50, color: '#ff6b35' }, { label: 'Peak Run', temp: 55, color: '#f44336' }];
+        } else if (BLACK_BASS_IDS.has(species)) {
+          milestones = isPostSpawnPhase
+            ? [{ label: 'Post-Spawn', temp: 68, color: '#66bb6a' }, { label: 'Recovery', temp: 72, color: '#ffd54f' }, { label: 'Summer Deep', temp: 76, color: '#ffa726' }]
+            : [{ label: 'Pre-Spawn', temp: 55, color: '#29b6f6' }, { label: 'Staging', temp: 63, color: '#ff6b35' }, { label: 'Bed Spawn', temp: 68, color: '#f44336' }];
+        } else if (STRIPER_IDS.has(species)) {
+          milestones = isPostSpawnPhase
+            ? [{ label: 'Dispersal', temp: 65, color: '#66bb6a' }, { label: 'Open Water', temp: 70, color: '#ffd54f' }, { label: 'Summer Schooling', temp: 75, color: '#ffa726' }]
+            : [{ label: 'Pre-Spawn', temp: 55, color: '#29b6f6' }, { label: 'Run Up', temp: 62, color: '#ff6b35' }, { label: 'Spawn Peak', temp: 65, color: '#f44336' }];
+        } else if (SUNFISH_IDS.has(species)) {
+          milestones = isPostSpawnPhase
+            ? [{ label: 'Post-Spawn', temp: 72, color: '#66bb6a' }, { label: 'Summer Cycle', temp: 76, color: '#ffd54f' }]
+            : [{ label: 'Bedding', temp: 65, color: '#29b6f6' }, { label: 'Spawn', temp: 68, color: '#ff6b35' }, { label: 'Peak', temp: 72, color: '#f44336' }];
+        } else if (CATFISH_IDS.has(species)) {
+          milestones = isPostSpawnPhase
+            ? [{ label: 'Post-Spawn', temp: 76, color: '#66bb6a' }, { label: 'Summer Feed', temp: 80, color: '#ffd54f' }, { label: 'Nocturnal', temp: 84, color: '#ffa726' }]
+            : [{ label: 'Pre-Spawn', temp: 65, color: '#29b6f6' }, { label: 'Staging', temp: 70, color: '#ff6b35' }, { label: 'Spawn', temp: 76, color: '#f44336' }];
+        } else if (species === 'walleye' || species === 'saugeye') {
+          milestones = isPostSpawnPhase
+            ? [{ label: 'Dispersal', temp: 55, color: '#66bb6a' }, { label: 'Summer Deep', temp: 60, color: '#ffd54f' }]
+            : [{ label: 'Pre-Spawn', temp: 40, color: '#29b6f6' }, { label: 'Staging', temp: 48, color: '#ff6b35' }, { label: 'Spawn', temp: 55, color: '#f44336' }];
+        } else if (species === 'sauger') {
+          milestones = isPostSpawnPhase
+            ? [{ label: 'Dispersal', temp: 52, color: '#66bb6a' }, { label: 'Summer Deep', temp: 58, color: '#ffd54f' }]
+            : [{ label: 'Pre-Spawn', temp: 38, color: '#29b6f6' }, { label: 'Staging', temp: 45, color: '#ff6b35' }, { label: 'Spawn', temp: 52, color: '#f44336' }];
+        } else if (SPECIALTY_IDS.has(species)) {
+          milestones = isPostSpawnPhase
+            ? [{ label: 'Post-Spawn', temp: 70, color: '#66bb6a' }, { label: 'Summer', temp: 75, color: '#ffd54f' }]
+            : [{ label: 'Pre-Spawn', temp: 60, color: '#29b6f6' }, { label: 'Staging', temp: 65, color: '#ff6b35' }, { label: 'Spawn', temp: 70, color: '#f44336' }];
+        } else {
+          // Trout and any unmatched species — simple pre-spawn only (trout uses stocking, no post-spawn)
+          milestones = [{ label: 'Active', temp: 45, color: '#29b6f6' }, { label: 'Peak', temp: 52, color: '#ffd54f' }, { label: 'Summer Stress', temp: 65, color: '#ffa726' }];
+        }
 
         // Day forecasts for weather cards
         const dayPeriods = (forecast || [])
@@ -9179,6 +9283,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                       }}
                     >
                       {phase.icon} <span className="pill-val">{phase.name}</span>
+                    </div>
+                  )}
+                  {heroWindMph != null && (
+                    <div className="hero-pill" style={{borderColor: (heroWindCat?.color ?? '#90a4ae') + '44', color: heroWindCat?.color ?? 'var(--text2)'}}>
+                      {'\uD83C\uDF2C\uFE0F'} <span className="pill-val">{heroWindMph} mph</span>
+                    </div>
+                  )}
+                  {wxObs?.pressure != null && (
+                    <div className="hero-pill" style={{borderColor: (heroBaroCat?.color ?? '#90a4ae') + '44', color: heroBaroCat?.color ?? 'var(--text2)'}}>
+                      {'\uD83D\uDCCA'} <span className="pill-val">{wxObs.pressure.toFixed(2)}</span>
                     </div>
                   )}
                 </div>
@@ -9487,17 +9601,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
                 {isPostSpawnPhase && (
                   <div className="post-spawn-baro-card">
-                    <div className="post-spawn-baro-title">\uD83C\uDF3F Post-Spawn Feeding Patterns</div>
+                    <div className="post-spawn-baro-title">{'\uD83C\uDF3F'} Post-Spawn Feeding Patterns</div>
                     <div className="post-spawn-baro-row">
-                      <span className="post-spawn-baro-row-icon">\uD83D\uDD25</span>
-                      <span><strong>Falling pressure:</strong> Best post-spawn window \u2014 fish hungry and chasing. Fast-movers: spinners, chatterbaits, lipless cranks.</span>
+                      <span className="post-spawn-baro-row-icon">{'\uD83D\uDD25'}</span>
+                      <span><strong>Falling pressure:</strong> Best post-spawn window — fish hungry and chasing. Fast-movers: spinners, chatterbaits, lipless cranks.</span>
                     </div>
                     <div className="post-spawn-baro-row">
-                      <span className="post-spawn-baro-row-icon">\u2197\uFE0F</span>
-                      <span><strong>Rising pressure:</strong> Fish recovering and sluggish. Slow down \u2014 Texas-rigged worms, Carolina rigs at 8\u201315ft structure transitions.</span>
+                      <span className="post-spawn-baro-row-icon">{'\u2197\uFE0F'}</span>
+                      <span><strong>Rising pressure:</strong> Fish recovering and sluggish. Slow down — Texas-rigged worms, Carolina rigs at 8–15ft structure transitions.</span>
                     </div>
                     <div className="post-spawn-baro-row">
-                      <span className="post-spawn-baro-row-icon">\u2192</span>
+                      <span className="post-spawn-baro-row-icon">{'\u2192'}</span>
                       <span><strong>Stable pressure:</strong> Steady but finesse-dependent. Find the right structure and work it methodically. Early morning bite most reliable.</span>
                     </div>
                     {wxObs?.pressure != null && (
@@ -10030,26 +10144,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
                     <div className="fc-detail">
                       <div className="fc-desc">{p.shortForecast}</div>
-                      {p.windSpeed && (
-                        <div>
-                          <div className="fc-wind-row">
-                            {arrow && <span className="fc-wind-dir">{arrow} {p.windDirection}</span>}
-                            <span className="fc-wind">{p.windSpeed}</span>
-                            {wCat && (
-                              <span className={`wind-badge ${wCat.cls}`}>{wCat.label}</span>
-                            )}
+                    </div>
+                    <div className="fc-wind-col">
+                      {p.windSpeed ? (
+                        <>
+                          <div className="fc-wind-col-dir">
+                            {arrow && <span>{arrow} </span>}{p.windDirection || ''}
                           </div>
+                          <div className="fc-wind-col-speed">{mph != null ? `${mph} mph` : p.windSpeed}</div>
+                          {wCat && <span className={`wind-badge ${wCat.cls}`}>{wCat.label}</span>}
                           {gustMph != null && (
-                            <div className="fc-gust-note">
-                              Gusts {gustMph} mph{gustMph >= 20 ? ' \u26A0\uFE0F' : ''}
-                            </div>
+                            <div className="fc-wind-col-gust">Gust {gustMph}{gustMph >= 20 ? ' \u26A0\uFE0F' : ''}</div>
                           )}
-                        </div>
+                        </>
+                      ) : (
+                        <div className="fc-wind-col-speed">—</div>
                       )}
                     </div>
-                    <div className="fc-daynight">
-                      {getNightEmoji(p, i)}
-                    </div>
+                    {!p.isDaytime && (
+                      <div className="fc-daynight">
+                        {getNightEmoji(p, i)}
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -10566,7 +10682,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
               ))}
               <button className="tackle-box-trigger" onClick={() => setShowTackleBox(true)}>
-                {'\uD83C\uDF92'} Open Tackle Box \u2014 Top 5 Condition-Ranked
+                {'\uD83C\uDF92'} Open Tackle Box — Top 5 Condition-Ranked
               </button>
             </div>
             {showTackleBox && (
@@ -11271,15 +11387,19 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                     merged.temps7 = u.temps7;
                 }
 
-                if (
-                  !Number.isFinite(merged.temp) &&
-                  nwsData.status === 'fulfilled'
-                ) {
-                  const est = estimateTempFromForecast(nwsData.value, w.type);
-                  if (est) {
-                    merged.temp = est.temp;
-                    merged.tempTrend7 = est.tempTrend7;
-                    merged.temps7 = est.temps7;
+                if (!Number.isFinite(merged.temp)) {
+                  const hist = getHistoricalWaterTemp(w);
+                  if (hist) {
+                    merged.temp = hist.temp;
+                    merged.tempTrend7 = hist.tempTrend7;
+                    merged.temps7 = hist.temps7;
+                  } else if (nwsData.status === 'fulfilled') {
+                    const est = estimateTempFromForecast(nwsData.value, w.type);
+                    if (est) {
+                      merged.temp = est.temp;
+                      merged.tempTrend7 = est.tempTrend7;
+                      merged.temps7 = est.temps7;
+                    }
                   }
                 }
 
@@ -11687,19 +11807,29 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
               merged.feetBelowFloodPool = null;
             }
 
-            if (
-              !Number.isFinite(merged.temp) &&
-              nwsData.status === 'fulfilled'
-            ) {
-              const est = estimateTempFromForecast(nwsData.value?.periods ?? nwsData.value, w.type);
-              if (est) {
-                merged.temp = est.temp;
-                merged.tempTrend24 = est.tempTrend24;
-                merged.tempTrend7 = est.tempTrend7;
-                merged.temps7 = est.temps7;
-                merged.tempSource = est.tempSource;
-                merged.tempSourceLabel = est.tempSourceLabel;
-                merged.tempSourceNote = est.tempSourceNote;
+            if (!Number.isFinite(merged.temp)) {
+              // Fallback 1: seasonal historical averages (preferred over air-temp estimate)
+              const hist = getHistoricalWaterTemp(w);
+              if (hist) {
+                merged.temp = hist.temp;
+                merged.tempTrend24 = hist.tempTrend24;
+                merged.tempTrend7 = hist.tempTrend7;
+                merged.temps7 = hist.temps7;
+                merged.tempSource = hist.tempSource;
+                merged.tempSourceLabel = hist.tempSourceLabel;
+                merged.tempSourceNote = hist.tempSourceNote;
+              } else if (nwsData.status === 'fulfilled') {
+                // Fallback 2: NWS air-temp estimation (last resort)
+                const est = estimateTempFromForecast(nwsData.value?.periods ?? nwsData.value, w.type);
+                if (est) {
+                  merged.temp = est.temp;
+                  merged.tempTrend24 = est.tempTrend24;
+                  merged.tempTrend7 = est.tempTrend7;
+                  merged.temps7 = est.temps7;
+                  merged.tempSource = est.tempSource;
+                  merged.tempSourceLabel = est.tempSourceLabel;
+                  merged.tempSourceNote = est.tempSourceNote;
+                }
               }
             }
 
