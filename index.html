@@ -972,6 +972,214 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         font-size: 10px;
         color: var(--text3);
       }
+      /* ─── ENHANCED WIND ROW (forecast tab) ─── */
+      .fc-wind-row {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 3px;
+        flex-wrap: wrap;
+      }
+      .fc-wind-dir {
+        font-size: 11px;
+        color: var(--text2);
+        font-weight: 600;
+      }
+      .wind-badge {
+        font-size: 9px;
+        font-weight: 800;
+        padding: 1px 5px;
+        border-radius: 3px;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+      }
+      .wind-badge.calm     { background: #1a237e22; color: #90caf9; border: 1px solid #1a237e44; }
+      .wind-badge.ideal    { background: #1b5e2022; color: #a5d6a7; border: 1px solid #1b5e2044; }
+      .wind-badge.breezy   { background: #e65100aa; color: #ffe0b2; border: 1px solid #e6510066; }
+      .wind-badge.rough    { background: #b71c1caa; color: #ffcdd2; border: 1px solid #b71c1c66; }
+      .wind-badge.advisory { background: #b71c1c;   color: #fff;    border: 1px solid #d32f2f; }
+      .fc-gust-note {
+        font-size: 9px;
+        color: #ffa726;
+        margin-top: 1px;
+      }
+      /* Small Craft Advisory banner in forecast card */
+      .sca-banner {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #b71c1c22;
+        border: 1px solid #b71c1c66;
+        border-radius: 6px;
+        padding: 8px 12px;
+        margin-bottom: 10px;
+        font-size: 12px;
+        color: #ef9a9a;
+        line-height: 1.4;
+      }
+      .sca-banner-icon {
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+      /* ─── WIND & BARO CARD (Signals tab) ─── */
+      .wind-baro-card {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .wb-section-title {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--text3);
+        margin-bottom: 8px;
+      }
+      .wind-dir-display {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 6px;
+      }
+      .wind-dir-arrow {
+        font-size: 30px;
+        line-height: 1;
+        flex-shrink: 0;
+      }
+      .wind-dir-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .wind-speed-line {
+        font-size: 20px;
+        font-weight: 800;
+        line-height: 1;
+      }
+      .wind-dir-label {
+        font-size: 11px;
+        color: var(--text2);
+      }
+      .wind-cat-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        margin-top: 4px;
+      }
+      .wind-cat-badge.calm     { background: #0d47a133; color: #90caf9; }
+      .wind-cat-badge.ideal    { background: #1b5e2033; color: #a5d6a7; }
+      .wind-cat-badge.breezy   { background: #e6510033; color: #ffcc80; }
+      .wind-cat-badge.rough    { background: #b71c1c44; color: #ffcdd2; }
+      .wind-cat-badge.advisory { background: #b71c1c;   color: #fff;   }
+      .wb-gust-note {
+        font-size: 11px;
+        color: #ffa726;
+        margin-top: 4px;
+      }
+      .wb-no-wind {
+        font-size: 12px;
+        color: var(--text3);
+        font-style: italic;
+      }
+      /* Barometric pressure bar */
+      .baro-header {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+      .baro-value {
+        font-size: 20px;
+        font-weight: 800;
+      }
+      .baro-trend-label {
+        font-size: 12px;
+        color: var(--text2);
+      }
+      .baro-bar {
+        position: relative;
+        height: 10px;
+        background: linear-gradient(
+          90deg,
+          #d32f2f 0%,
+          #f57c00 22%,
+          #388e3c 50%,
+          #5c9ed6 78%,
+          #78909c 100%
+        );
+        border-radius: 5px;
+        margin: 8px 0 4px;
+        overflow: visible;
+      }
+      .baro-marker {
+        position: absolute;
+        top: -7px;
+        width: 20px;
+        height: 24px;
+        background: #fff;
+        border-radius: 10px;
+        transform: translateX(-50%);
+        box-shadow: 0 0 8px rgba(255,255,255,0.5);
+        z-index: 2;
+      }
+      .baro-zone-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 9px;
+        color: var(--text3);
+        padding: 0 2px;
+      }
+      .baro-feeding {
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--text2);
+        line-height: 1.5;
+        padding: 8px 10px;
+        background: var(--bg3);
+        border-radius: 6px;
+        border-left: 3px solid var(--accent);
+      }
+      .baro-feeding.baro-prefrontal { border-left-color: #f57c00; }
+      .baro-feeding.baro-optimal    { border-left-color: #388e3c; }
+      .baro-feeding.baro-high       { border-left-color: #5c9ed6; }
+      .baro-feeding.baro-low        { border-left-color: #d32f2f; }
+      .baro-feeding.baro-veryhigh   { border-left-color: #78909c; }
+      .baro-unavailable {
+        font-size: 12px;
+        color: var(--text3);
+        font-style: italic;
+        padding: 4px 0;
+      }
+      /* Post-spawn feeding pattern card */
+      .post-spawn-baro-card {
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin-top: 4px;
+      }
+      .post-spawn-baro-title {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .post-spawn-baro-row {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+        margin-bottom: 6px;
+        font-size: 12px;
+        color: var(--text2);
+        line-height: 1.4;
+      }
+      .post-spawn-baro-row-icon {
+        flex-shrink: 0;
+        font-size: 14px;
+      }
       .fc-daynight {
         font-size: 18px;
         width: 28px;
@@ -7058,6 +7266,79 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         return '\uD83C\uDF24\uFE0F';
       }
 
+      // ─── WIND & BAROMETRIC PRESSURE UTILITIES ────────────────────────────────
+
+      // Extracts the highest numeric mph from NWS wind strings like "5 to 10 mph" or "15 mph".
+      function parseWindSpeed(str) {
+        if (!str) return null;
+        const nums = str.match(/\d+/g);
+        if (!nums || nums.length === 0) return null;
+        return parseInt(nums[nums.length - 1], 10);
+      }
+
+      // Returns wind category metadata based on sustained speed in mph.
+      function getWindCategory(mph) {
+        if (mph == null) return { label: 'Unknown', cls: 'calm', icon: '\uD83C\uDF2C\uFE0F', color: '#90a4ae', advisory: false };
+        if (mph <= 5)  return { label: 'Calm',               cls: 'calm',     icon: '\uD83E\uDEB6', color: '#42a5f5', advisory: false };
+        if (mph <= 15) return { label: 'Ideal Conditions',   cls: 'ideal',    icon: '\uD83C\uDF2C\uFE0F', color: '#66bb6a', advisory: false };
+        if (mph <= 20) return { label: 'Breezy',             cls: 'breezy',   icon: '\uD83C\uDF2C\uFE0F', color: '#ffa726', advisory: false };
+        if (mph <= 25) return { label: 'Rough — use caution', cls: 'rough',  icon: '\u26A0\uFE0F', color: '#ef5350', advisory: false };
+        return { label: 'Small Craft Advisory',              cls: 'advisory', icon: '\uD83D\uDEA9', color: '#d32f2f', advisory: true };
+      }
+
+      // Maps an NWS cardinal direction string to a Unicode directional arrow
+      // showing where the wind is *going* (opposite of origin).
+      function getWindDirArrow(dir) {
+        const map = {
+          N: '\u2193', NNE: '\u2193', NE: '\u2199', ENE: '\u2190',
+          E: '\u2190', ESE: '\u2190', SE: '\u2196', SSE: '\u2191',
+          S: '\u2191', SSW: '\u2191', SW: '\u2197', WSW: '\u2192',
+          W: '\u2192', WNW: '\u2192', NW: '\u2198', NNW: '\u2193',
+        };
+        return map[(dir || '').toUpperCase()] || '\u2192';
+      }
+
+      // Extracts gust speed from NWS detailedForecast text.
+      // Returns numeric mph or null if no gusts mentioned.
+      function parseGust(detailedForecast) {
+        if (!detailedForecast) return null;
+        const m = detailedForecast.match(/gusts?\s+(?:up\s+to|as\s+high\s+as)?\s*(\d+)\s*mph/i);
+        return m ? parseInt(m[1], 10) : null;
+      }
+
+      // Returns barometric pressure category given pressure in inHg and 3-hr trend.
+      function getBaroCategory(pressureInHg, trendInHg) {
+        const trend = trendInHg ?? 0;
+        const rising  = trend > 0.03;
+        const falling = trend < -0.03;
+
+        if (pressureInHg == null)
+          return { label: 'Unknown', cls: 'baro-unknown', icon: '\u2753', feedingAdvice: 'Pressure data unavailable.' };
+        if (pressureInHg < 29.60)
+          return { label: 'Very Low', cls: 'baro-low', icon: '\uD83D\uDD34', feedingAdvice: 'Post-storm slump — fish slow and deep. Wait 1\u20132 days for activity to resume.' };
+        if (pressureInHg < 29.90)
+          return {
+            label: falling ? 'Falling \u2014 Pre-Front' : 'Low',
+            cls: 'baro-prefrontal', icon: '\uD83D\uDD25',
+            feedingAdvice: 'Pre-front feeding window \u2014 fish are actively chasing. This is prime time. Get out now.',
+          };
+        if (pressureInHg <= 30.10)
+          return {
+            label: rising ? 'Rising \u2014 Stabilizing' : falling ? 'Falling' : 'Stable Optimal',
+            cls: 'baro-optimal', icon: '\u2705',
+            feedingAdvice: rising
+              ? 'Pressure stabilizing post-front. Fish becoming more active. Standard presentations work.'
+              : 'Stable optimal pressure \u2014 steady feeding patterns. Reliable bites on mid-depth structure.',
+          };
+        if (pressureInHg <= 30.40)
+          return {
+            label: rising ? 'Rising \u2014 Post-Front' : 'High \u2014 Stable',
+            cls: 'baro-high', icon: '\uD83D\uDCC8',
+            feedingAdvice: 'High stable pressure \u2014 fish slower and deeper. Finesse techniques and bottom presentations.',
+          };
+        return { label: 'Very High', cls: 'baro-veryhigh', icon: '\uD83D\uDCCA', feedingAdvice: 'Very high pressure \u2014 fish sluggish. Go deep or fish slow. Early morning/late evening best.' };
+      }
+
       // ─── MOON PHASE UTILITY ──────────────────────────────────────────────────
       // Phase data is fetched from the USNO (US Naval Observatory) free API:
       //   https://aa.usno.navy.mil/api/moon/phases/date?date=YYYY-MM-DD&nump=20
@@ -7310,7 +7591,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         )
           score -= 3;
         if (s.includes('snow') || s.includes('ice')) score -= 3;
-        if (s.includes('wind') && s.includes('strong')) score -= 1;
+        // Numeric wind scoring — replaces the simple text check
+        const windMph = parseWindSpeed(period.windSpeed);
+        if (windMph != null) {
+          if (windMph >= 6 && windMph <= 15) score += 1; // sweet spot
+          else if (windMph > 20 && windMph <= 25) score -= 1;
+          else if (windMph > 25) score -= 2;
+        } else if (s.includes('wind') && s.includes('strong')) {
+          score -= 1; // fallback for unparseable strings
+        }
         if (temp >= 45 && temp <= 70) score += 1;
         if (temp < 32 || temp > 95) score -= 2;
         if (score >= 7) return { label: 'Best', cls: 'best' };
@@ -8034,6 +8323,68 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         return fcData.properties?.periods || [];
       }
 
+      // Extended NWS fetch that also retrieves current barometric pressure
+      // from the nearest observation station. Returns { periods, pressure, pressureTrend }.
+      // Gracefully degrades — if observation fetch fails, pressure fields are null.
+      async function fetchNWSWithObs(lat, lon) {
+        const pts = await fetch(`https://api.weather.gov/points/${lat},${lon}`);
+        if (!pts.ok) throw new Error('NWS points error');
+        const ptsData = await pts.json();
+        const fcUrl = ptsData.properties?.forecast;
+        const obsStationsUrl = ptsData.properties?.observationStations;
+        if (!fcUrl) throw new Error('No forecast URL');
+
+        // Forecast fetch (required) + observation stations fetch (optional) in parallel
+        const [fcResp, obsStResp] = await Promise.allSettled([
+          fetch(fcUrl).then((r) => (r.ok ? r.json() : Promise.reject('fc error'))),
+          obsStationsUrl
+            ? fetch(obsStationsUrl + '?limit=1').then((r) =>
+                r.ok ? r.json() : Promise.reject('obs stations error')
+              )
+            : Promise.reject('no obs stations url'),
+        ]);
+
+        const periods =
+          fcResp.status === 'fulfilled'
+            ? fcResp.value?.properties?.periods || []
+            : [];
+
+        let pressure = null;
+        let pressureTrend = null;
+        try {
+          if (obsStResp.status === 'fulfilled') {
+            const stationId =
+              obsStResp.value?.features?.[0]?.properties?.stationIdentifier;
+            if (stationId) {
+              const obsResp = await fetch(
+                `https://api.weather.gov/stations/${stationId}/observations?limit=4`
+              );
+              if (obsResp.ok) {
+                const obsData = await obsResp.json();
+                const features = obsData.features || [];
+                const latestPa =
+                  features[0]?.properties?.barometricPressure?.value;
+                const olderPa =
+                  features[3]?.properties?.barometricPressure?.value;
+                const PA_TO_INHG = 0.0002953;
+                if (latestPa != null) {
+                  pressure = Math.round(latestPa * PA_TO_INHG * 100) / 100;
+                  if (olderPa != null) {
+                    pressureTrend =
+                      Math.round((latestPa - olderPa) * PA_TO_INHG * 1000) /
+                      1000;
+                  }
+                }
+              }
+            }
+          }
+        } catch (_) {
+          // Observation fetch failures are non-fatal
+        }
+
+        return { periods, pressure, pressureTrend };
+      }
+
       // ─── COMPONENTS ─────────────────────────────────────────────
       function Loading() {
         return (
@@ -8461,12 +8812,132 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         );
       }
 
+      // ─── WIND & BAROMETRIC PRESSURE CARD ────────────────────────────────────
+      // Displays current wind conditions (from the nearest forecast period) and
+      // barometric pressure (from NWS observations). Both sections gracefully
+      // degrade when data is unavailable.
+      function WindBaroCard({ forecast, wxObs }) {
+        // Pull current wind from the first forecast period (today)
+        const period = Array.isArray(forecast) ? (forecast.find((p) => p.isDaytime) || forecast[0]) : null;
+        const windSpeedStr = period?.windSpeed || null;
+        const windDir = period?.windDirection || null;
+        const windMph = parseWindSpeed(windSpeedStr);
+        const windCat = windMph != null ? getWindCategory(windMph) : null;
+        const windArrow = windDir ? getWindDirArrow(windDir) : null;
+        const gustMph = parseGust(period?.detailedForecast);
+
+        const pressure = wxObs?.pressure ?? null;
+        const pressureTrend = wxObs?.pressureTrend ?? null;
+        const baroCat = getBaroCategory(pressure, pressureTrend);
+
+        // Position the baro marker: scale 29.40–30.60 → 0–100%
+        const BARO_MIN = 29.40;
+        const BARO_MAX = 30.60;
+        const baroMarkerPct = pressure != null
+          ? Math.max(2, Math.min(98, ((pressure - BARO_MIN) / (BARO_MAX - BARO_MIN)) * 100))
+          : null;
+
+        const trendArrow = pressureTrend == null ? '' :
+          pressureTrend > 0.03 ? ' \u2197 Rising' :
+          pressureTrend < -0.03 ? ' \u2198 Falling' :
+          ' \u2192 Stable';
+
+        return (
+          <div className="card">
+            <div className="card-title">\uD83C\uDF2C\uFE0F Wind &amp; Pressure Conditions</div>
+            <div className="wind-baro-card">
+
+              {/* ── WIND SECTION ── */}
+              <div>
+                <div className="wb-section-title">\uD83D\uDEA9 Wind Conditions</div>
+                {period ? (
+                  <>
+                    <div className="wind-dir-display">
+                      {windArrow && (
+                        <div className="wind-dir-arrow">{windArrow}</div>
+                      )}
+                      <div className="wind-dir-info">
+                        <div className="wind-speed-line">
+                          {windDir && <span style={{marginRight:4}}>{windDir}</span>}
+                          {windMph != null ? `${windMph} mph` : windSpeedStr || 'n/a'}
+                        </div>
+                        {windDir && <div className="wind-dir-label">From {windDir}</div>}
+                      </div>
+                    </div>
+                    {windCat && (
+                      <div className={`wind-cat-badge ${windCat.cls}`}>
+                        {windCat.icon} {windCat.label}
+                      </div>
+                    )}
+                    {gustMph != null && (
+                      <div className="wb-gust-note">
+                        \uD83C\uDF2A\uFE0F Gusts up to {gustMph} mph
+                        {gustMph >= 20 ? ' — use caution on open water' : ''}
+                      </div>
+                    )}
+                    {windCat?.advisory && (
+                      <div className="sca-banner" style={{marginTop:10}}>
+                        <span className="sca-banner-icon">\uD83D\uDEA9</span>
+                        <span>
+                          <strong>Small Craft Advisory conditions.</strong> Sustained winds {windMph} mph.
+                          Consider postponing open-water trips and check your local marine forecast.
+                        </span>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="wb-no-wind">Wind data loading\u2026</div>
+                )}
+              </div>
+
+              {/* ── DIVIDER ── */}
+              <div style={{height:1, background:'var(--bg3)'}} />
+
+              {/* ── BAROMETRIC PRESSURE SECTION ── */}
+              <div>
+                <div className="wb-section-title">\uD83D\uDCCA Barometric Pressure</div>
+                {pressure != null ? (
+                  <>
+                    <div className="baro-header">
+                      <span className="baro-value">{pressure.toFixed(2)} inHg</span>
+                      <span className="baro-trend-label">{trendArrow}</span>
+                    </div>
+                    <div className="baro-bar">
+                      <div
+                        className="baro-marker"
+                        style={{left: `${baroMarkerPct}%`}}
+                      />
+                    </div>
+                    <div className="baro-zone-labels">
+                      <span>Very Low</span>
+                      <span>\uD83D\uDD25 Pre-Front</span>
+                      <span>\u2705 Optimal</span>
+                      <span>Post-Front</span>
+                      <span>High</span>
+                    </div>
+                    <div className={`baro-feeding ${baroCat.cls}`}>
+                      {baroCat.icon} <strong>{baroCat.label}</strong> \u2014 {baroCat.feedingAdvice}
+                    </div>
+                  </>
+                ) : (
+                  <div className="baro-unavailable">
+                    Pressure data unavailable \u2014 NWS observation station may be offline.
+                  </div>
+                )}
+              </div>
+
+            </div>
+          </div>
+        );
+      }
+
       function DashboardTab({
         usgs,
         forecast,
         water,
         species,
         loading,
+        wxObs,
       }) {
         const [stationModalOpen, setStationModalOpen] = useState(false);
         if (loading) return <Loading />;
@@ -8542,16 +9013,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           : 0;
         const msPct = (t) => ((t - minT) / (maxT - minT)) * 100;
 
-        const milestones =
-          CRAPPIE_IDS.has(species)
+        // Determine if we're in post-spawn/summer range so the tracker can shift milestones
+        const isPostSpawnPhase = hasTemp && (
+          CRAPPIE_IDS.has(species) ? temp >= 60 : temp >= 55
+        );
+
+        const milestones = CRAPPIE_IDS.has(species)
+          ? isPostSpawnPhase
             ? [
-                { label: 'Move', temp: 48, color: '#ab47bc' },
-                { label: 'Stage', temp: 55, color: '#e040fb' },
-                { label: 'Bed Spawn', temp: 60, color: '#f44336' },
+                { label: 'Pull-Back',    temp: 68, color: '#66bb6a' },
+                { label: 'Deep Timber',  temp: 72, color: '#ffd54f' },
+                { label: 'Night Pattern', temp: 75, color: '#ffa726' },
               ]
             : [
-                { label: 'Staging', temp: 45, color: '#29b6f6' },
-                { label: 'Spawn', temp: 50, color: '#ff6b35' },
+                { label: 'Move',      temp: 48, color: '#ab47bc' },
+                { label: 'Stage',     temp: 55, color: '#e040fb' },
+                { label: 'Bed Spawn', temp: 60, color: '#f44336' },
+              ]
+          : isPostSpawnPhase
+            ? [
+                { label: 'Return',       temp: 62, color: '#66bb6a' },
+                { label: 'Recovery',     temp: 65, color: '#ffd54f' },
+                { label: 'Summer Schools', temp: 68, color: '#ffa726' },
+              ]
+            : [
+                { label: 'Staging',  temp: 45, color: '#29b6f6' },
+                { label: 'Spawn',    temp: 50, color: '#ff6b35' },
                 { label: 'Peak Run', temp: 55, color: '#f44336' },
               ];
 
@@ -8653,8 +9140,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                       <>
                         {verdict.label}{' '}
                         <span className="hero-hl">
-                          {getSpeciesDisplayName(species)} spawn
-                          temps reached!
+                          {isPostSpawnPhase
+                            ? `${getSpeciesDisplayName(species)} \uD83C\uDF3F Post-Spawn Pattern \u2014 pressure-driven feeding`
+                            : `${getSpeciesDisplayName(species)} spawn temps reached!`}
                         </span>
                       </>
                     ) : verdict.label === 'SCOUT' ? (
@@ -8990,7 +9478,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             {hasTemp && isSpeciesImplemented(species) && (
               <div className="card">
                 <div className="card-title">
-                  {'\uD83D\uDCCA'} Spawn Temperature Tracker
+                  {isPostSpawnPhase
+                    ? '\uD83C\uDF3F Post-Spawn Pattern Tracker'
+                    : '\uD83D\uDCCA Spawn Temperature Tracker'}
                 </div>
                 <div className="spawn-labels">
                   <span>
@@ -8998,19 +9488,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     {'\u00B0'}F
                   </span>
                   {CRAPPIE_IDS.has(species) ? (
-                    <>
-                      <span>48{'\u00B0'} Move</span>
-                      <span>55{'\u00B0'} Stage</span>
-                      <span>60{'\u00B0'} Bed</span>
-                      <span>68{'\u00B0'}</span>
-                    </>
+                    isPostSpawnPhase ? (
+                      <>
+                        <span>60{'\u00B0'} Spawn</span>
+                        <span>68{'\u00B0'} Pull-Back</span>
+                        <span>72{'\u00B0'} Deep</span>
+                        <span>75{'\u00B0'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>48{'\u00B0'} Move</span>
+                        <span>55{'\u00B0'} Stage</span>
+                        <span>60{'\u00B0'} Bed</span>
+                        <span>68{'\u00B0'}</span>
+                      </>
+                    )
                   ) : (
-                    <>
-                      <span>45{'\u00B0'} Stage</span>
-                      <span>50{'\u00B0'} Spawn</span>
-                      <span>55{'\u00B0'} Peak</span>
-                      <span>60{'\u00B0'}</span>
-                    </>
+                    isPostSpawnPhase ? (
+                      <>
+                        <span>55{'\u00B0'} Peak</span>
+                        <span>62{'\u00B0'} Return</span>
+                        <span>65{'\u00B0'} Recovery</span>
+                        <span>68{'\u00B0'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>45{'\u00B0'} Stage</span>
+                        <span>50{'\u00B0'} Spawn</span>
+                        <span>55{'\u00B0'} Peak</span>
+                        <span>60{'\u00B0'}</span>
+                      </>
+                    )
                   )}
                   <span>
                     {maxT}
@@ -9033,14 +9541,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         {m.label}
                       </div>
                       <div className="spawn-ms-dist">
-                        {Math.max(0, m.temp - temp).toFixed(1)}
-                        {'\u00B0'}F away
+                        {temp >= m.temp
+                          ? '\u2713 Reached'
+                          : `${(m.temp - temp).toFixed(1)}\u00B0F away`}
                       </div>
                     </div>
                   ))}
                 </div>
+                {isPostSpawnPhase && (
+                  <div className="post-spawn-baro-card">
+                    <div className="post-spawn-baro-title">\uD83C\uDF3F Post-Spawn Feeding Patterns</div>
+                    <div className="post-spawn-baro-row">
+                      <span className="post-spawn-baro-row-icon">\uD83D\uDD25</span>
+                      <span><strong>Falling pressure:</strong> Best post-spawn window \u2014 fish hungry and chasing. Fast-movers: spinners, chatterbaits, lipless cranks.</span>
+                    </div>
+                    <div className="post-spawn-baro-row">
+                      <span className="post-spawn-baro-row-icon">\u2197\uFE0F</span>
+                      <span><strong>Rising pressure:</strong> Fish recovering and sluggish. Slow down \u2014 Texas-rigged worms, Carolina rigs at 8\u201315ft structure transitions.</span>
+                    </div>
+                    <div className="post-spawn-baro-row">
+                      <span className="post-spawn-baro-row-icon">\u2192</span>
+                      <span><strong>Stable pressure:</strong> Steady but finesse-dependent. Find the right structure and work it methodically. Early morning bite most reliable.</span>
+                    </div>
+                    {wxObs?.pressure != null && (
+                      <div style={{marginTop:8, fontSize:12, color:'var(--accent)', fontWeight:600}}>
+                        Current: {wxObs.pressure.toFixed(2)} inHg {'\u2014 '}{getBaroCategory(wxObs.pressure, wxObs.pressureTrend).label}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
+
+            {/* WIND & BAROMETRIC PRESSURE CARD */}
+            <WindBaroCard forecast={forecast} wxObs={wxObs} />
 
             {/* 7-DAY WATER TEMP TREND */}
             {usgs?.temps7?.length > 0 && (
@@ -9470,11 +10004,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         );
       }
 
-      function ForecastTab({ forecast, water, species }) {
+      function ForecastTab({ forecast, water, species, wxObs }) {
         if (!forecast || forecast.length === 0) return <Loading />;
         const w = WATERS[water];
         const allPeriods = forecast.slice(0, 14);
         const dayPeriods = forecast.filter((p) => p.isDaytime).slice(0, 7);
+
+        // Pre-compute which periods trigger a Small Craft Advisory (≥23 mph sustained)
+        // Only look at the next 6 periods (3 days) to avoid distant-future false alarms
+        const scaPeriods = allPeriods.slice(0, 6).filter((p) => {
+          const mph = parseWindSpeed(p.windSpeed);
+          return mph != null && mph >= 23;
+        });
         const [showMoonModal, setShowMoonModal] = React.useState(false);
         const [, _moonTick] = React.useState(0);
 
@@ -9520,31 +10061,61 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               />
             )}
 
+            {/* Small Craft Advisory banner — shown when ≥23 mph sustained in next 3 days */}
+            {scaPeriods.length > 0 && (
+              <div className="sca-banner">
+                <span className="sca-banner-icon">\uD83D\uDEA9</span>
+                <span>
+                  <strong>Small Craft Advisory conditions forecast.</strong>{' '}
+                  Sustained winds {parseWindSpeed(scaPeriods[0].windSpeed)} mph
+                  {scaPeriods[0].name ? ` — ${scaPeriods[0].name}` : ''}.
+                  Check your local marine forecast before heading out.
+                </span>
+              </div>
+            )}
+
             <div className="card">
               <div className="card-title">
                 {'\u2600\uFE0F'} 7-Day Forecast {'\u2014'} {w.name} Area
               </div>
-              {allPeriods.map((p, i) => (
-                <div className="fc-row" key={i}>
-                  <div className="fc-icon">{getWxIcon(p.shortForecast)}</div>
-                  <div className="fc-day">{p.name}</div>
-                  <div className="fc-temp">
-                    {p.temperature}
-                    {'\u00B0'}
+              {allPeriods.map((p, i) => {
+                const mph = parseWindSpeed(p.windSpeed);
+                const wCat = mph != null ? getWindCategory(mph) : null;
+                const arrow = p.windDirection ? getWindDirArrow(p.windDirection) : null;
+                const gustMph = parseGust(p.detailedForecast);
+                return (
+                  <div className="fc-row" key={i}>
+                    <div className="fc-icon">{getWxIcon(p.shortForecast)}</div>
+                    <div className="fc-day">{p.name}</div>
+                    <div className="fc-temp">
+                      {p.temperature}
+                      {'\u00B0'}
+                    </div>
+                    <div className="fc-detail">
+                      <div className="fc-desc">{p.shortForecast}</div>
+                      {p.windSpeed && (
+                        <div>
+                          <div className="fc-wind-row">
+                            {arrow && <span className="fc-wind-dir">{arrow} {p.windDirection}</span>}
+                            <span className="fc-wind">{p.windSpeed}</span>
+                            {wCat && (
+                              <span className={`wind-badge ${wCat.cls}`}>{wCat.label}</span>
+                            )}
+                          </div>
+                          {gustMph != null && (
+                            <div className="fc-gust-note">
+                              Gusts {gustMph} mph{gustMph >= 20 ? ' \u26A0\uFE0F' : ''}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    <div className="fc-daynight">
+                      {getNightEmoji(p, i)}
+                    </div>
                   </div>
-                  <div className="fc-detail">
-                    <div className="fc-desc">{p.shortForecast}</div>
-                    {p.windSpeed && (
-                      <div className="fc-wind">
-                        {p.windSpeed} {p.windDirection}
-                      </div>
-                    )}
-                  </div>
-                  <div className="fc-daynight">
-                    {getNightEmoji(p, i)}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="card">
@@ -9568,26 +10139,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 if (s.includes('sunny')) notes.push('Sunny');
                 else if (s.includes('cloudy')) notes.push('Cloudy');
                 if (s.includes('rain')) notes.push('Rain expected');
+                const mph = parseWindSpeed(p.windSpeed);
+                const wCat = mph != null ? getWindCategory(mph) : null;
                 const windNote = p.windSpeed
-                  ? `, ${p.windSpeed} ${p.windDirection || ''}`
+                  ? `, ${mph != null ? mph + ' mph' : p.windSpeed} ${p.windDirection || ''}${wCat ? ' (' + wCat.label + ')' : ''}`
                   : '';
 
+                // Barometric context from wxObs (available only if observation fetch succeeded)
+                const pressure = wxObs?.pressure ?? null;
+                const pressureTrend = wxObs?.pressureTrend ?? null;
+                const baroCat = pressure != null ? getBaroCategory(pressure, pressureTrend) : null;
+                const baroFalling = pressureTrend != null && pressureTrend < -0.03;
+                const baroRising  = pressureTrend != null && pressureTrend > 0.03;
+
                 let advice = '';
-                if (rating.cls === 'best')
-                  advice =
-                    'Perfect conditions for scouting pre-spawn staging areas at creek mouths.';
-                else if (s.includes('overcast') || s.includes('cloudy'))
-                  advice =
-                    'Overcast can be excellent for white bass \u2014 less spooky.';
-                else if (s.includes('rain') && !s.includes('heavy'))
-                  advice = 'Light rain can trigger feeding activity.';
-                else if (
+                const isFront =
                   s.includes('front') ||
-                  (i > 0 && p.temperature < dayPeriods[i - 1]?.temperature - 5)
-                )
-                  advice =
-                    'Post-front conditions often produce excellent bites as barometric pressure stabilizes.';
-                else advice = 'Monitor conditions and adjust approach.';
+                  (i > 0 && p.temperature < (dayPeriods[i - 1]?.temperature ?? 999) - 5);
+                const isPostFront =
+                  i > 0 && p.temperature > (dayPeriods[i - 1]?.temperature ?? 0) + 2;
+
+                if (wCat?.advisory)
+                  advice = '\uD83D\uDEA9 Small craft advisory winds (' + mph + ' mph). Stay off open water \u2014 safety first.';
+                else if (wCat?.cls === 'rough')
+                  advice = 'Rough winds (' + mph + ' mph). Shore fishing or sheltered coves only. Fish main lake points on the lee shore.';
+                else if (rating.cls === 'best' && (baroCat?.cls === 'baro-prefrontal' || baroCat?.cls === 'baro-optimal'))
+                  advice = 'Prime window \u2014 ideal wind + stable/pre-front pressure. Fish are active. Work creek mouths and mid-depth structure aggressively.';
+                else if (rating.cls === 'best')
+                  advice = 'Excellent conditions. Ideal wind for stealth \u2014 cast parallel to wind lines where baitfish stack.';
+                else if (isFront && baroFalling)
+                  advice = 'Pre-front feeding window. Falling pressure triggers aggressive biting \u2014 capitalize in the 6\u201312 hrs before the front arrives.';
+                else if (isPostFront && baroRising)
+                  advice = 'Post-front conditions. Pressure stabilizing \u2014 fish coming back on the bite. Target deeper structure and slow down presentations.';
+                else if (isFront)
+                  advice = 'Post-front conditions often produce excellent bites as barometric pressure stabilizes.';
+                else if (s.includes('overcast') || s.includes('cloudy'))
+                  advice = 'Overcast reduces light penetration \u2014 fish feed more aggressively and stay shallower. Great all-day bite potential.';
+                else if (s.includes('rain') && !s.includes('heavy'))
+                  advice = 'Light rain can trigger feeding activity and cools surface temps \u2014 try topwater near structure.';
+                else advice = 'Monitor conditions and adjust approach. Check barometric trend for feeding timing.';
 
                 return (
                   <div className={`fw-card ${cls}`} key={i}>
@@ -9611,9 +10201,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <div className="fw-card tip">
                 <div className="fw-card-title">{'\uD83D\uDCA1'} Pro Tip</div>
                 <div className="fw-card-body">
-                  {dayPeriods[0]?.temperature > 60
-                    ? `Those warm days (${dayPeriods[0]?.temperature}\u00B0F air) will push water temp up \u2014 could break 45\u00B0F soon. Monitor closely.`
-                    : 'Watch for warming trends in the forecast. Consecutive warm days push water temperature toward spawn triggers faster than a single warm day.'}
+                  {wxObs?.pressure != null
+                    ? wxObs.pressureTrend != null && wxObs.pressureTrend < -0.05
+                      ? `Pressure is dropping fast (${wxObs.pressure.toFixed(2)} inHg \u2198). This is the prime pre-front feeding window \u2014 get out today, the bite will slow after the front passes.`
+                      : wxObs.pressureTrend != null && wxObs.pressureTrend > 0.05
+                        ? `Pressure rising (${wxObs.pressure.toFixed(2)} inHg \u2197) after a front. Fish transitioning back to structure \u2014 slow your presentation and target 8\u201315ft depths.`
+                        : `Stable pressure (${wxObs.pressure.toFixed(2)} inHg). Consistent feeding patterns \u2014 find the right structure and fish can be caught on a reliable pattern.`
+                    : dayPeriods[0]?.temperature > 60
+                      ? `Those warm days (${dayPeriods[0]?.temperature}\u00B0F air) will push water temp up. Monitor closely and watch for barometric pressure drops \u2014 they trigger the best feeding windows.`
+                      : 'Watch for warming trends in the forecast. Consecutive warm days push water temperature toward spawn triggers faster than a single warm day. A falling barometer on a warm day is prime fishing time.'}
                 </div>
               </div>
             </div>
@@ -11029,6 +11625,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
         const [navOpen, setNavOpen] = useState(false);
         const [usgs, setUsgs] = useState(null);
         const [forecast, setForecast] = useState(null);
+        const [wxObs, setWxObs] = useState(null);
         const [error, setError] = useState(null);
         const [loading, setLoading] = useState(true);
         const [riverSection, setRiverSection] = useState(null);
@@ -11093,7 +11690,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                     }))
                   : getWaterStations(w)
               ),
-              fetchNWS(w.lat, w.lon),
+              fetchNWSWithObs(w.lat, w.lon),
               fetchUSACESnapshot(water),
             ]);
             const merged =
@@ -11157,7 +11754,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
               !Number.isFinite(merged.temp) &&
               nwsData.status === 'fulfilled'
             ) {
-              const est = estimateTempFromForecast(nwsData.value, w.type);
+              const est = estimateTempFromForecast(nwsData.value?.periods ?? nwsData.value, w.type);
               if (est) {
                 merged.temp = est.temp;
                 merged.tempTrend24 = est.tempTrend24;
@@ -11175,8 +11772,16 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
               console.warn('USACE snapshot error:', usaceData.reason);
             setUsgs(merged);
 
-            if (nwsData.status === 'fulfilled') setForecast(nwsData.value);
-            else console.warn('NWS error:', nwsData.reason);
+            if (nwsData.status === 'fulfilled') {
+              const nwsVal = nwsData.value;
+              setForecast(nwsVal?.periods ?? nwsVal ?? []);
+              setWxObs({
+                pressure: nwsVal?.pressure ?? null,
+                pressureTrend: nwsVal?.pressureTrend ?? null,
+              });
+            } else {
+              console.warn('NWS error:', nwsData.reason);
+            }
             if (
               usgsData.status === 'rejected' &&
               nwsData.status === 'rejected' &&
@@ -11347,11 +11952,12 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                     water={water}
                     species={species}
                     loading={loading}
+                    wxObs={wxObs}
                   />
                 </>
               )}
               {tab === 'forecast' && (
-                <ForecastTab forecast={forecast} water={water} species={species} />
+                <ForecastTab forecast={forecast} water={water} species={species} wxObs={wxObs} />
               )}
               {tab === 'techniques' && (
                 <TechniquesTab temp={temp} water={water} species={species} segment={segment} usgs={usgs} />
