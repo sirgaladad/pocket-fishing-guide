@@ -9201,10 +9201,76 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         return { periods, pressure, pressureTrend };
       }
 
+      // ── Lake temperature snapshot (CWMS build-time data) ──────────────────
+      // Cached load of data/lake_temps_snapshot.json — produced by
+      // scripts/fetch_lake_temps.js which queries the USACE CWMS REST API at
+      // build/deploy time for each Arkansas reservoir.
+      let lakeTempsSnapshotCache = null;
+      async function loadLakeTempsSnapshot() {
+        if (lakeTempsSnapshotCache !== null) return lakeTempsSnapshotCache;
+        try {
+          const resp = await fetch(`data/lake_temps_snapshot.json?v=${Date.now()}`, {
+            cache: 'no-store',
+          });
+          if (!resp.ok) {
+            lakeTempsSnapshotCache = {};
+            return lakeTempsSnapshotCache;
+          }
+          const data = await resp.json();
+          lakeTempsSnapshotCache = data?.lakes || {};
+        } catch (_) {
+          lakeTempsSnapshotCache = {};
+        }
+        return lakeTempsSnapshotCache;
+      }
+
+      // Monthly water temperature normals (°F) for AR reservoirs and lakes.
+      // Index 0 = January … 11 = December.
+      // Derived from USGS historical parameter 00010 records and published lake data.
+      // Used as Tier 3b fallback for lakes when no live CWMS sensor reading is available.
+      const AR_RESERVOIR_TEMP_NORMALS = {
+        greers:        [42, 43, 47, 55, 64, 73, 81, 83, 77, 67, 56, 46],
+        bullshoals:    [41, 42, 45, 53, 62, 71, 79, 81, 75, 65, 55, 45],
+        beaver:        [41, 42, 45, 53, 63, 71, 79, 81, 75, 64, 54, 44],
+        norfork:       [41, 42, 45, 53, 62, 71, 79, 81, 75, 65, 55, 45],
+        ouachita:      [46, 47, 52, 60, 69, 77, 83, 85, 79, 69, 59, 50],
+        degray:        [47, 48, 53, 61, 70, 78, 84, 86, 80, 70, 60, 50],
+        millwood:      [48, 49, 55, 64, 73, 80, 86, 88, 82, 71, 61, 51],
+        blueMountain:  [44, 45, 50, 59, 68, 76, 82, 84, 78, 68, 57, 47],
+        nimrod:        [44, 45, 50, 59, 68, 76, 82, 84, 78, 68, 57, 47],
+        dardanelle:    [44, 45, 50, 59, 68, 76, 82, 85, 79, 68, 57, 47],
+        lakeGreeson:   [46, 47, 52, 60, 69, 77, 83, 85, 79, 69, 59, 50],
+        maumelle:      [44, 45, 50, 59, 68, 76, 82, 83, 78, 67, 57, 47],
+        hamilton:      [47, 48, 53, 62, 71, 79, 84, 86, 80, 70, 60, 51],
+        catherine:     [47, 48, 53, 62, 71, 79, 84, 86, 80, 70, 60, 51],
+        conway:        [44, 45, 51, 60, 69, 77, 82, 84, 78, 68, 57, 47],
+        lakeChicot:    [48, 50, 56, 65, 74, 81, 86, 88, 82, 71, 62, 52],
+        lakeMonticello:[47, 49, 55, 64, 73, 80, 85, 87, 81, 70, 60, 51],
+      };
+      const MONTH_NAMES = [
+        'January','February','March','April','May','June',
+        'July','August','September','October','November','December',
+      ];
+
+      /**
+       * Return the monthly normal temperature (°F) for the given water key,
+       * or null if no normals entry exists for that key.
+       *
+       * @param {string} waterKey - Key from the WATERS constant.
+       * @returns {number|null}
+       */
+      function getSeasonalNormal(waterKey) {
+        const normals = AR_RESERVOIR_TEMP_NORMALS[waterKey];
+        if (!Array.isArray(normals)) return null;
+        return normals[new Date().getMonth()] ?? null;
+      }
+
       // Tier 3 water temperature fallback — Open-Meteo soil temperature proxy.
       // Called when all USGS 00010 sensors return null for a given water.
       // Returns estimated water temp in °F, or null on failure.
       // Correction: rivers run ~3°F cooler than soil surface; reservoirs ~5°F.
+      // NOTE: This is only used for rivers/tailwaters. Lakes/reservoirs use
+      //       CWMS snapshot (Tier 3a) or monthly normals (Tier 3b) instead.
       async function fetchOpenMeteoTemp(lat, lon, waterType) {
         try {
           const url =
@@ -9287,7 +9353,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const phase = getPhase(temp, species);
         const spawnTrigger = getSpeciesSpawnTrigger(species);
         const speciesName = getSpeciesDisplayName(species);
-        const tempIsEstimated = usgs?.tempSource === 'estimated';
+        const tempIsEstimated = usgs?.tempSource === 'estimated' || usgs?.tempSource === 'seasonal-normal';
         const triggerDist =
           (temp !== null && Number.isFinite(spawnTrigger))
             ? Math.max(0, spawnTrigger - temp).toFixed(1)
@@ -9970,7 +10036,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const isTailwater = TAXONOMY.waterTypeMap[water] === 'tailwater';
         const genScheduleUrl = WATERS[water]?.generationScheduleUrl || null;
         const tempSourceLabel = usgs?.tempSourceLabel || 'No temperature feed';
-        const tempIsEstimated = usgs?.tempSource === 'estimated';
+        const tempIsEstimated = usgs?.tempSource === 'estimated' || usgs?.tempSource === 'seasonal-normal';
         const gageTrend7 = usgs?.gageTrend7 ?? null;
         const flowTrend7 = usgs?.flowTrend7 ?? null;
         const gageStatus = !hasGage
@@ -12245,6 +12311,22 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                     merged.temps7 = u.temps7;
                 }
 
+                // Lakes/reservoirs: CWMS snapshot → monthly normals
+                const isLakeOrRes = w.type === 'lake' || w.subtype === 'reservoir';
+                if (!Number.isFinite(merged.temp) && isLakeOrRes) {
+                  try {
+                    const snapshot = await loadLakeTempsSnapshot();
+                    const lakeData = snapshot[key];
+                    if (lakeData && lakeData.source === 'cwms' && Number.isFinite(lakeData.tempF)) {
+                      merged.temp = lakeData.tempF;
+                    }
+                  } catch (_) { /* non-fatal */ }
+                }
+                if (!Number.isFinite(merged.temp) && isLakeOrRes) {
+                  const normal = getSeasonalNormal(key);
+                  if (Number.isFinite(normal)) merged.temp = normal;
+                }
+
                 if (
                   !Number.isFinite(merged.temp) &&
                   nwsData.status === 'fulfilled'
@@ -12661,8 +12743,45 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
               merged.feetBelowFloodPool = null;
             }
 
-            // Tier 3: Open-Meteo soil temperature proxy
-            if (!Number.isFinite(merged.temp) && w.lat && w.lon) {
+            // Tier 3: Temperature fallback — split by water type.
+            //   Lakes/reservoirs: CWMS build-time snapshot → monthly historical normals
+            //   Rivers/tailwaters: Open-Meteo soil temperature proxy (unchanged)
+            const isLakeOrReservoir =
+              w.type === 'lake' || w.subtype === 'reservoir';
+
+            if (!Number.isFinite(merged.temp) && isLakeOrReservoir) {
+              // Tier 3a: CWMS build-time snapshot (USACE reservoir sensors)
+              try {
+                const snapshot = await loadLakeTempsSnapshot();
+                const lakeData = snapshot[water];
+                if (lakeData && lakeData.source === 'cwms' && Number.isFinite(lakeData.tempF)) {
+                  merged.temp = lakeData.tempF;
+                  merged.tempSource = 'cwms-snapshot';
+                  merged.tempSourceLabel = 'CWMS live reading';
+                  merged.tempSourceNote =
+                    `USACE CWMS water temperature sensor (${lakeData.timeseriesId || 'USACE CWMS'}).` +
+                    (lakeData.dateTime
+                      ? ` Reading from ${new Date(lakeData.dateTime).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' })}.`
+                      : '');
+                }
+              } catch (_) { /* non-fatal */ }
+            }
+
+            if (!Number.isFinite(merged.temp) && isLakeOrReservoir) {
+              // Tier 3b: Monthly historical normals (replaces soil proxy for lakes)
+              const normal = getSeasonalNormal(water);
+              if (Number.isFinite(normal)) {
+                merged.temp = normal;
+                merged.tempSource = 'seasonal-normal';
+                merged.tempSourceLabel = 'Seasonal historical avg';
+                merged.tempSourceNote =
+                  `Based on ${MONTH_NAMES[new Date().getMonth()]} historical average for this reservoir. ` +
+                  `Actual temperature may vary ±5°F depending on current conditions.`;
+              }
+            }
+
+            if (!Number.isFinite(merged.temp) && !isLakeOrReservoir && w.lat && w.lon) {
+              // Tier 3c: Open-Meteo soil proxy — rivers and tailwaters only
               try {
                 const omTemp = await fetchOpenMeteoTemp(w.lat, w.lon, w.subtype || w.type);
                 if (Number.isFinite(omTemp)) {

@@ -41,6 +41,8 @@ jobs:
           node-version: "20"
       - name: Build USACE Snapshot
         run: node scripts/fetch_usace_levels.js
+      - name: Fetch Lake Water Temperatures (CWMS)
+        run: node scripts/fetch_lake_temps.js
       - name: Validate Station Registry
         run: node scripts/validate_stations.js
       - name: Fetch River Station Readings

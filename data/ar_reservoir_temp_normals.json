@@ -1,0 +1,30 @@
+{
+  "_description": "Monthly water temperature normals (°F) for Arkansas reservoirs and lakes.",
+  "_usage": "Array index 0 = January … 11 = December. Used as Tier 3 fallback when no live sensor data is available. Values derived from USGS historical records, published lake studies, and observed seasonal patterns.",
+  "_accuracy": "±4–6°F. Actual temperature varies with annual precipitation, air temperature, and reservoir stratification. Values represent long-term mid-month surface averages.",
+  "_sources": {
+    "NW_Ozark_reservoirs": "USGS Arkansas Water Science Center historical parameter 00010 data; White River reservoir thermal profiles. Deep, clear-water Ozark impoundments warm slowly — winter readings remain colder longer than south AR lakes.",
+    "Ouachita_reservoirs": "USGS Lower Mississippi-Gulf Water Science Center; Ouachita National Forest water quality studies. Slightly warmer than NW AR due to lower elevation and more solar exposure.",
+    "Coastal_Plain_lakes": "AGFC weekly fishing reports (multi-year); USGS gauges on Ouachita and Red Rivers. Shallowest and warmest category.",
+    "Central_AR_urban": "USGS 07263300 (Lake Maumelle) historical 00010 readings; observed reports from CAW and AGFC."
+  },
+  "_lastReviewed": "2026-03-11",
+
+  "greers":       [42, 43, 47, 55, 64, 73, 81, 83, 77, 67, 56, 46],
+  "bullshoals":   [41, 42, 45, 53, 62, 71, 79, 81, 75, 65, 55, 45],
+  "beaver":       [41, 42, 45, 53, 63, 71, 79, 81, 75, 64, 54, 44],
+  "norfork":      [41, 42, 45, 53, 62, 71, 79, 81, 75, 65, 55, 45],
+  "ouachita":     [46, 47, 52, 60, 69, 77, 83, 85, 79, 69, 59, 50],
+  "degray":       [47, 48, 53, 61, 70, 78, 84, 86, 80, 70, 60, 50],
+  "millwood":     [48, 49, 55, 64, 73, 80, 86, 88, 82, 71, 61, 51],
+  "blueMountain": [44, 45, 50, 59, 68, 76, 82, 84, 78, 68, 57, 47],
+  "nimrod":       [44, 45, 50, 59, 68, 76, 82, 84, 78, 68, 57, 47],
+  "dardanelle":   [44, 45, 50, 59, 68, 76, 82, 85, 79, 68, 57, 47],
+  "lakeGreeson":  [46, 47, 52, 60, 69, 77, 83, 85, 79, 69, 59, 50],
+  "maumelle":     [44, 45, 50, 59, 68, 76, 82, 83, 78, 67, 57, 47],
+  "hamilton":     [47, 48, 53, 62, 71, 79, 84, 86, 80, 70, 60, 51],
+  "catherine":    [47, 48, 53, 62, 71, 79, 84, 86, 80, 70, 60, 51],
+  "conway":       [44, 45, 51, 60, 69, 77, 82, 84, 78, 68, 57, 47],
+  "lakeChicot":   [48, 50, 56, 65, 74, 81, 86, 88, 82, 71, 62, 52],
+  "lakeMonticello":[47, 49, 55, 64, 73, 80, 85, 87, 81, 70, 60, 51]
+}

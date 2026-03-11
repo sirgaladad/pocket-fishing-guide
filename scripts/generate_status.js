@@ -14,6 +14,7 @@ const path = require("path");
 
 const USACE_PATH = path.resolve(__dirname, "..", "data", "usace_levels.json");
 const RIVER_STATIONS_PATH = path.resolve(__dirname, "..", "data", "river_stations_snapshot.json");
+const LAKE_TEMPS_PATH = path.resolve(__dirname, "..", "data", "lake_temps_snapshot.json");
 const OUT_PATH = path.resolve(__dirname, "..", "data", "status.json");
 
 function main() {
@@ -67,6 +68,21 @@ function main() {
     riverStationsStatus = "not_available";
   }
 
+  // ── Lake temperature snapshot (build-time CWMS) ──────────────────────────
+  let lakeTempsStatus = "not_available";
+  let lakeTempsLiveCount = 0;
+  let lakeTempsTotalCount = 0;
+
+  try {
+    const lakeSnap = JSON.parse(fs.readFileSync(LAKE_TEMPS_PATH, "utf8"));
+    lakeTempsStatus = lakeSnap.status || "unknown";
+    const entries = Object.values(lakeSnap.lakes || {});
+    lakeTempsTotalCount = entries.length;
+    lakeTempsLiveCount = entries.filter((e) => e.source === "cwms").length;
+  } catch (_) {
+    // Snapshot not yet generated; non-fatal
+  }
+
   // ── Overall status ───────────────────────────────────────────────────────
   // USGS and NWS are live browser fetches; their health is not known at
   // build time, so overall status reflects only the USACE snapshot.
@@ -93,6 +109,12 @@ function main() {
         status: riverStationsStatus,
         note: "River segment station readings fetched at build time from USGS Water Services via fetch_river_stations.js.",
         stationCount: riverStationCount,
+      },
+      lakeTempsCWMS: {
+        status: lakeTempsStatus,
+        note: "Arkansas reservoir water temperatures fetched at build time from the USACE CWMS REST API (cwms-data.usace.army.mil). Falls back to monthly historical normals for lakes without CWMS sensors.",
+        liveCount: lakeTempsLiveCount,
+        totalCount: lakeTempsTotalCount,
       },
     },
   };
