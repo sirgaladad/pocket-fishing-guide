@@ -8358,8 +8358,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         ]);
 
         if (fcResp.status !== 'fulfilled') {
-          // Forecast fetch is required; surface failure to the caller
-          throw new Error('NWS forecast fetch failed');
+          // Forecast fetch is required; surface failure to the caller with context
+          const reason = fcResp.reason;
+          const message = reason
+            ? `NWS forecast fetch failed: ${String(reason)}`
+            : 'NWS forecast fetch failed';
+          throw new Error(message, reason ? { cause: reason } : undefined);
         }
         const periods = fcResp.value?.properties?.periods || [];
 
@@ -8852,8 +8856,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           : null;
 
         const trendArrow = pressureTrend == null ? '' :
-          pressureTrend > 0.03 ? ' \u2197 Rising' :
-          pressureTrend < -0.03 ? ' \u2198 Falling' :
+          pressureTrend > BARO_TREND_THRESHOLD ? ' \u2197 Rising' :
+          pressureTrend < -BARO_TREND_THRESHOLD ? ' \u2198 Falling' :
           ' \u2192 Stable';
 
         return (
@@ -8875,7 +8879,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                           {windDir && <span className="wind-dir-abbr">{windDir}</span>}
                           {windMph != null ? `${windMph} mph` : windSpeedStr || 'n/a'}
                         </div>
-                        {windDir && <div className="wind-dir-label">Blowing toward {windDir}</div>}
+                        {windDir && <div className="wind-dir-label">From {windDir}</div>}
                       </div>
                     </div>
                     {windCat && (
@@ -10024,11 +10028,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const allPeriods = forecast.slice(0, 14);
         const dayPeriods = forecast.filter((p) => p.isDaytime).slice(0, 7);
 
-        // Pre-compute which periods trigger a Small Craft Advisory (≥25 mph sustained)
+        // Pre-compute which periods trigger a Small Craft Advisory — align with getWindCategory()
         // Only look at the next 6 periods (3 days) to avoid distant-future false alarms
         const scaPeriods = allPeriods.slice(0, 6).filter((p) => {
           const mph = parseWindSpeed(p.windSpeed);
-          return mph != null && mph >= 25;
+          return mph != null && getWindCategory(mph).advisory;
         });
         const [showMoonModal, setShowMoonModal] = React.useState(false);
         const [, _moonTick] = React.useState(0);
@@ -10163,8 +10167,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 const pressure = wxObs?.pressure ?? null;
                 const pressureTrend = wxObs?.pressureTrend ?? null;
                 const baroCat = pressure != null ? getBaroCategory(pressure, pressureTrend) : null;
-                const baroFalling = pressureTrend != null && pressureTrend < -0.03;
-                const baroRising  = pressureTrend != null && pressureTrend > 0.03;
+                const baroFalling = pressureTrend != null && pressureTrend < -BARO_TREND_THRESHOLD;
+                const baroRising  = pressureTrend != null && pressureTrend > BARO_TREND_THRESHOLD;
 
                 let advice = '';
                 const isFront =
@@ -11796,6 +11800,9 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
             } else {
               console.warn('NWS error:', nwsData.reason);
               setWxObs({ pressure: null, pressureTrend: null }); // clear stale obs
+              setError(
+                'NWS forecast data is currently unavailable. Please try again shortly.'
+              );
             }
             if (
               usgsData.status === 'rejected' &&
