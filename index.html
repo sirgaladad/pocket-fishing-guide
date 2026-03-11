@@ -1153,9 +1153,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           align-items: flex-start;
           gap: 0;
         }
-        .wind-baro-card > div { flex: 1; padding: 0 16px; }
-        .wind-baro-card > div:first-child { padding-left: 0; }
-        .wind-baro-card > div:last-child { padding-right: 0; }
+        .wind-baro-card > div:not(.wb-divider) { flex: 1; padding: 0 16px; }
+        .wind-baro-card > div:not(.wb-divider):first-child { padding-left: 0; }
+        .wind-baro-card > div:not(.wb-divider):last-child { padding-right: 0; }
         .wb-divider {
           width: 1px;
           height: auto;
