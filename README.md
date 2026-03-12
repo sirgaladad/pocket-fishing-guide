@@ -7,7 +7,7 @@
 
 A lightweight, mobile-first **fishing intelligence app** for Arkansas waters. Built as a single-file React app that runs entirely in your browser—no servers, no build step, no dependencies to manage. Just real-time fishing data in your pocket.
 
-**Now covering 23 major Arkansas water bodies** with comprehensive White Bass and Crappie fishing intelligence:
+**Now covering 39 Arkansas waters** — lakes, rivers, tailwaters, and streams — with comprehensive White Bass and Crappie fishing intelligence:
 - **Lake Maumelle** (Central AR primary drinking water reservoir) 
 - **White River** (Legendary tailwater and spawn run)
 - **Buffalo National River** (Wild scenic river)
@@ -22,7 +22,7 @@ A lightweight, mobile-first **fishing intelligence app** for Arkansas waters. Bu
 
 ## Features
 
-- **Visual Dashboard Overview**: Compare all 23 Arkansas waters at a glance with temperature heat maps, spawn phase indicators, and 7-day trend sparklines
+- **Visual Dashboard Overview**: Compare all 39 Arkansas waters at a glance with temperature heat maps, spawn phase indicators, and 7-day trend sparklines
 - **🎒 Tackle Box**: Condition-ranked top-5 lures per species and phase, scored by water clarity, flow rate, and temperature. Each lure includes a How-To video link and direct purchase option. Sourced from AGFC weekly reports.
 - **Phase-Based Fishing Intelligence**: Species-specific, temperature-driven fishing phases (6 per species) with science-backed recommendations
 - **Live Water Data**: Real-time temperature, flow rate, and gage height from USGS Water Services
