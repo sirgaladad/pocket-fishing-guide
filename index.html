@@ -9263,7 +9263,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       // Monthly water temperature normals (°F) for AR reservoirs and lakes.
       // Index 0 = January … 11 = December.
       // Single source of truth: data/ar_reservoir_temp_normals.json.
-      // Used as Tier 3b fallback for lakes when no live CWMS sensor reading is available.
+      // Used as Tier 3c fallback for lakes when no live CWMS or Open-Meteo reading is available.
       const AR_RESERVOIR_TEMP_NORMALS = {};
       let reservoirNormalsCache = null;
       async function loadReservoirNormals() {
@@ -12894,18 +12894,18 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
             }
 
             // Tier 3: Temperature fallback — split by water type.
-            //   Lakes/reservoirs: CWMS build-time snapshot → monthly historical normals
+            //   Lakes/reservoirs: CWMS build-time snapshot → Open-Meteo proxy → monthly historical normals
             //   Rivers/tailwaters: Open-Meteo soil temperature proxy (unchanged)
             const isLakeOrReservoir =
               w.type === 'lake' || w.subtype === 'reservoir';
 
             if (!Number.isFinite(merged.temp) && isLakeOrReservoir) {
-              // Tiers 3a + 3b: shared helper (CWMS snapshot → monthly normals)
+              // Tiers 3a–3c: shared helper (CWMS snapshot → Open-Meteo proxy → monthly normals)
               await applyLakeTempFallback(merged, water);
             }
 
             if (!Number.isFinite(merged.temp) && !isLakeOrReservoir && w.lat && w.lon) {
-              // Tier 3c: Open-Meteo soil proxy — rivers and tailwaters only
+              // Rivers/tailwaters: Open-Meteo soil proxy (direct, no CWMS/normals path)
               try {
                 const omTemp = await fetchOpenMeteoTemp(w.lat, w.lon, w.subtype || w.type);
                 if (Number.isFinite(omTemp)) {
