@@ -9784,9 +9784,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </button>
                   </div>
 
-                  <div className="fb-label">Rating (optional)</div>
-                  <div className="fb-scale-hint">1 = bad &nbsp;·&nbsp; 5 = good</div>
-                  <div className="fb-scale">
+                  <div id="fb-rating-label" className="fb-label">Rating (optional)</div>
+                  <div id="fb-rating-hint" className="fb-scale-hint">1 = bad &nbsp;·&nbsp; 5 = good</div>
+                  <div
+                    className="fb-scale"
+                    role="group"
+                    aria-labelledby="fb-rating-label"
+                    aria-describedby="fb-rating-hint"
+                  >
                     {[1, 2, 3, 4, 5].map((n) => (
                       <button
                         key={n}
