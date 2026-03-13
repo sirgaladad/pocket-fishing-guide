@@ -1953,6 +1953,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         font-weight: 700;
         margin-bottom: 5px;
       }
+      .fb-scale-hint {
+        font-size: 10px;
+        color: var(--text3);
+        margin-bottom: 6px;
+        letter-spacing: 0.4px;
+      }
       .fb-select {
         width: 100%;
         background: var(--bg);
@@ -9779,6 +9785,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   </div>
 
                   <div className="fb-label">Rating (optional)</div>
+                  <div className="fb-scale-hint">1 = bad &nbsp;·&nbsp; 5 = good</div>
                   <div className="fb-scale">
                     {[1, 2, 3, 4, 5].map((n) => (
                       <button
