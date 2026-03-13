@@ -9678,32 +9678,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           return parts.join('\n\n');
         };
 
-        const submit = async () => {
+        const submit = () => {
           const body = buildBody();
           const summary = problem || 'User feedback';
           const sentimentTag = sentiment
             ? `${sentiment[0].toUpperCase() + sentiment.slice(1)} `
             : '';
           const ratingTag = score ? `${score}/5 • ` : '';
-          const issueUrl =
-            'https://github.com/sirgaladad/pocket-fishing-guide/issues/new?' +
-            'template=' +
-            encodeURIComponent('feedback.md') +
-            '&labels=' +
-            encodeURIComponent('user-feedback') +
-            '&title=' +
-            encodeURIComponent(
-              `[Feedback] ${cat || 'General'}: ${sentimentTag}${ratingTag}${summary.slice(0, 55)}`
-            ) +
+          const subject = `[Feedback] ${cat || 'General'}: ${sentimentTag}${ratingTag}${summary.slice(0, 55)}`;
+          const mailtoUrl =
+            'mailto:support@talewatersandtides.com?' +
+            'subject=' +
+            encodeURIComponent(subject) +
             '&body=' +
             encodeURIComponent(body);
 
-          const popup = window.open(issueUrl, '_blank', 'noopener,noreferrer');
-          if (!popup) window.location.href = issueUrl;
+          // Open mailto synchronously to preserve user-gesture context.
+          // Capture the return value; null means the popup was blocked.
+          const emailOpened = window.open(mailtoUrl);
+          if (!emailOpened) window.location.href = mailtoUrl;
 
-          try {
-            await navigator.clipboard.writeText(body);
-          } catch {}
+          // Fire clipboard write without await so it doesn't block the flow.
+          navigator.clipboard.writeText(body).catch(() => {});
+
           setOpen(false);
           setCat('');
           setPriority('Medium');
@@ -9714,8 +9711,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           setProblem('');
           setOutcome('');
           setContact('');
-          setToast(true);
-          setTimeout(() => setToast(false), 3000);
+          if (emailOpened) {
+            setToast(true);
+            setTimeout(() => setToast(false), 3000);
+          }
         };
 
         return (
@@ -9855,8 +9854,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   </details>
 
                   <p className="fb-hint">
-                    Best practice: include one specific example (screen + action
-                    + result). That helps us ship fixes faster.
+                    Your feedback opens a pre-filled email to{' '}
+                    <strong>support@talewatersandtides.com</strong> — no account
+                    needed. Include one specific example (screen + action +
+                    result) so we can fix it faster.
                   </p>
                   <div className="fb-actions">
                     <button
@@ -9881,7 +9882,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </div>
             )}
             {toast && (
-              <div className="fb-toast">✅ Thanks for your feedback!</div>
+              <div className="fb-toast">✅ Email draft opened — thanks for your feedback!</div>
             )}
           </>
         );
