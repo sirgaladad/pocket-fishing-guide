@@ -9377,6 +9377,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       // Uses 6 cm soil depth (more thermally stable than 0 cm surface layer) with
       // month-specific correction offsets and Ozark groundwater-based minimum floors.
       // For lakes/reservoirs this is now also used inside applyLakeTempFallback (Tier 3b).
+      // Estimate near-surface water temperature from Open-Meteo soil temps.
+      // Uses the warmer of 0 cm and 6 cm soil depths as the base temperature
+      // so we capture fast surface warming while avoiding unrealistically cold snaps.
       async function fetchOpenMeteoTemp(lat, lon, waterType) {
         try {
           const url =
