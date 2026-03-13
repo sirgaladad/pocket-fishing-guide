@@ -9263,7 +9263,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       // Monthly water temperature normals (°F) for AR reservoirs and lakes.
       // Index 0 = January … 11 = December.
       // Single source of truth: data/ar_reservoir_temp_normals.json.
-      // Used as Tier 3b fallback for lakes when no live CWMS sensor reading is available.
+      // Used as Tier 3c fallback for lakes when no live CWMS or Open-Meteo reading is available.
       const AR_RESERVOIR_TEMP_NORMALS = {};
       let reservoirNormalsCache = null;
       async function loadReservoirNormals() {
@@ -9310,7 +9310,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       /**
        * Apply lake/reservoir temperature fallback tiers to a merged data object.
        *   Tier 3a: CWMS build-time snapshot (USACE reservoir sensors)
-       *   Tier 3b: Monthly historical normals (from ar_reservoir_temp_normals.json)
+       *   Tier 3b: Open-Meteo soil temperature proxy (dynamic current-conditions estimate)
+       *   Tier 3c: Monthly historical normals (from ar_reservoir_temp_normals.json)
        *
        * Only modifies merged.temp (and source fields) when temp is not yet finite.
        * Non-destructive: safe to call even when USGS already resolved a value.
@@ -9374,12 +9375,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       // Water temperature fallback — Open-Meteo soil temperature proxy.
       // Called when all USGS 00010 sensors return null for a given water.
       // Returns estimated water temp in °F, or null on failure.
-      // Uses 6 cm soil depth (more thermally stable than 0 cm surface layer) with
-      // month-specific correction offsets and Ozark groundwater-based minimum floors.
-      // For lakes/reservoirs this is now also used inside applyLakeTempFallback (Tier 3b).
-      // Estimate near-surface water temperature from Open-Meteo soil temps.
       // Uses the warmer of 0 cm and 6 cm soil depths as the base temperature
       // so we capture fast surface warming while avoiding unrealistically cold snaps.
+      // Month-specific correction offsets and Ozark groundwater-based minimum floors applied.
+      // For lakes/reservoirs this is used inside applyLakeTempFallback (Tier 3b).
       async function fetchOpenMeteoTemp(lat, lon, waterType) {
         try {
           const url =
@@ -12895,18 +12894,18 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
             }
 
             // Tier 3: Temperature fallback — split by water type.
-            //   Lakes/reservoirs: CWMS build-time snapshot → monthly historical normals
+            //   Lakes/reservoirs: CWMS build-time snapshot → Open-Meteo proxy → monthly historical normals
             //   Rivers/tailwaters: Open-Meteo soil temperature proxy (unchanged)
             const isLakeOrReservoir =
               w.type === 'lake' || w.subtype === 'reservoir';
 
             if (!Number.isFinite(merged.temp) && isLakeOrReservoir) {
-              // Tiers 3a + 3b: shared helper (CWMS snapshot → monthly normals)
+              // Tiers 3a–3c: shared helper (CWMS snapshot → Open-Meteo proxy → monthly normals)
               await applyLakeTempFallback(merged, water);
             }
 
             if (!Number.isFinite(merged.temp) && !isLakeOrReservoir && w.lat && w.lon) {
-              // Tier 3c: Open-Meteo soil proxy — rivers and tailwaters only
+              // Rivers/tailwaters: Open-Meteo soil proxy (direct, no CWMS/normals path)
               try {
                 const omTemp = await fetchOpenMeteoTemp(w.lat, w.lon, w.subtype || w.type);
                 if (Number.isFinite(omTemp)) {
