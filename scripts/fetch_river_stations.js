@@ -77,10 +77,9 @@ function fetchOpenMeteoTemp(lat, lng) {
     // during cold snaps the deeper 6 cm stays more stable (cold-snap resistance).
     const v6 = vals6[latestIdx];
     const v0 = vals0[latestIdx];
-    let latest;
-    if (v6 != null && v0 != null) { latest = Math.max(v6, v0); }
-    else { latest = v6 != null ? v6 : v0; }
-    if (latest == null) return null;
+    // Use `?? -Infinity` to safely handle nulls in Math.max,
+    // which would otherwise coerce null to 0.
+    const latest = Math.max(v6 ?? -Infinity, v0 ?? -Infinity);
     // Derive month from the API response timestamp (America/Chicago) to match
     // the data timezone and avoid off-by-one errors near month boundaries.
     const times = (data && data.hourly && data.hourly.time) || [];
