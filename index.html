@@ -1030,7 +1030,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       .wind-baro-card {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 20px;
+      }
+      /* Mobile: give each section vertical breathing room */
+      .wind-baro-card > div:not(.wb-divider) {
+        padding: 4px 0;
       }
       .wb-section-title {
         font-size: 10px;
@@ -1190,7 +1194,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           var(--baro-color-veryhigh)   100%
         );
         border-radius: 5px;
-        margin: 8px 0 4px;
+        margin: 12px 0 6px;
         overflow: visible;
       }
       .baro-marker {
