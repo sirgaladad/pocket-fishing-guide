@@ -9678,7 +9678,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           return parts.join('\n\n');
         };
 
-        const submit = async () => {
+        const submit = () => {
           const body = buildBody();
           const summary = problem || 'User feedback';
           const sentimentTag = sentiment
@@ -9693,11 +9693,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             '&body=' +
             encodeURIComponent(body);
 
-          try {
-            await navigator.clipboard.writeText(body);
-          } catch {}
+          // Open mailto synchronously to preserve user-gesture context.
+          // Capture the return value; null means the popup was blocked.
+          const emailOpened = window.open(mailtoUrl);
+          if (!emailOpened) window.location.href = mailtoUrl;
 
-          window.open(mailtoUrl);
+          // Fire clipboard write without await so it doesn't block the flow.
+          navigator.clipboard.writeText(body).catch(() => {});
+
           setOpen(false);
           setCat('');
           setPriority('Medium');
@@ -9708,8 +9711,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           setProblem('');
           setOutcome('');
           setContact('');
-          setToast(true);
-          setTimeout(() => setToast(false), 3000);
+          if (emailOpened) {
+            setToast(true);
+            setTimeout(() => setToast(false), 3000);
+          }
         };
 
         return (
