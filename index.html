@@ -9310,7 +9310,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       /**
        * Apply lake/reservoir temperature fallback tiers to a merged data object.
        *   Tier 3a: CWMS build-time snapshot (USACE reservoir sensors)
-       *   Tier 3b: Monthly historical normals (from ar_reservoir_temp_normals.json)
+       *   Tier 3b: Open-Meteo soil temperature proxy (dynamic current-conditions estimate)
+       *   Tier 3c: Monthly historical normals (from ar_reservoir_temp_normals.json)
        *
        * Only modifies merged.temp (and source fields) when temp is not yet finite.
        * Non-destructive: safe to call even when USGS already resolved a value.
@@ -9374,12 +9375,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       // Water temperature fallback — Open-Meteo soil temperature proxy.
       // Called when all USGS 00010 sensors return null for a given water.
       // Returns estimated water temp in °F, or null on failure.
-      // Uses 6 cm soil depth (more thermally stable than 0 cm surface layer) with
-      // month-specific correction offsets and Ozark groundwater-based minimum floors.
-      // For lakes/reservoirs this is now also used inside applyLakeTempFallback (Tier 3b).
-      // Estimate near-surface water temperature from Open-Meteo soil temps.
       // Uses the warmer of 0 cm and 6 cm soil depths as the base temperature
       // so we capture fast surface warming while avoiding unrealistically cold snaps.
+      // Month-specific correction offsets and Ozark groundwater-based minimum floors applied.
+      // For lakes/reservoirs this is used inside applyLakeTempFallback (Tier 3b).
       async function fetchOpenMeteoTemp(lat, lon, waterType) {
         try {
           const url =
