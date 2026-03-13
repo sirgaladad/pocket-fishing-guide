@@ -9400,10 +9400,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           // both upper-bound warming signal AND cold-snap resistance.
           const v6 = vals6[latestIdx];
           const v0 = vals0[latestIdx];
-          let latestC;
-          if (v6 != null && v0 != null) { latestC = Math.max(v6, v0); }
-          else { latestC = v6 ?? v0; }
-          if (latestC == null) return null;
+          // Use `?? -Infinity` to safely handle nulls in Math.max,
+          // which would otherwise coerce null to 0.
+          const latestC = Math.max(v6 ?? -Infinity, v0 ?? -Infinity);
           // Derive month from the API response timestamp (America/Chicago timezone).
           // Open-Meteo returns "YYYY-MM-DDTHH:MM" strings in the requested timezone,
           // so parsing the month digits directly avoids UTC-conversion ambiguity near
