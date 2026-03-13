@@ -8775,7 +8775,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         // Groundwater contribution keeps streams warmer than air-based estimates in
         // winter/early spring; these floors prevent unrealistically cold readings.
         const riverFloors = [38, 40, 50, 56, 62, 67, 71, 71, 65, 57, 48, 40];
-        const lakeFloors  = [36, 38, 45, 52, 58, 63, 67, 67, 61, 53, 44, 38];
+        // Mar raised 45→50, Apr raised 52→54: aligns NWS air-estimate floors with
+        // the lowest AR lake historical normals for early spring.
+        const lakeFloors  = [36, 38, 50, 54, 58, 63, 67, 67, 61, 53, 44, 38];
         // Lakes and reservoirs are thermally similar standing bodies; treat them
         // the same as reservoirs when selecting floors and offsets.
         const isLakeLike = waterType !== 'river';
@@ -9348,7 +9350,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 merged.tempSource = 'estimated';
                 merged.tempSourceLabel = 'Open-Meteo estimate';
                 merged.tempSourceNote =
-                  'Estimated from local soil temperature (prefers 6 cm, may fall back to 0 cm) with month-specific seasonal corrections. Live sensor unavailable — actual temperature may vary ±3–5°F.';
+                  'Estimated from local soil temperature (warmer of 0 cm surface / 6 cm depth) with month-specific seasonal corrections. Upper-maximum bias applied — surface warms faster during spring warming trends; 6 cm provides cold-snap stability. Live sensor unavailable — actual temperature may vary ±3–5°F.';
               }
             } catch (_) { /* non-fatal */ }
           }
@@ -9383,20 +9385,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           const resp = await fetch(url);
           if (!resp.ok) return null;
           const data = await resp.json();
-          // Prefer 6 cm depth — more thermally stable than bare surface layer.
-          // Track index to retrieve the matching timestamp for month derivation.
           const vals6 = data?.hourly?.soil_temperature_6cm || [];
           const vals0 = data?.hourly?.soil_temperature_0cm || [];
-          let latestC;
+          // Find the latest index where at least one depth reading is available.
           let latestIdx = -1;
-          for (let i = vals6.length - 1; i >= 0; i--) {
-            if (vals6[i] != null) { latestC = vals6[i]; latestIdx = i; break; }
+          for (let i = Math.max(vals6.length, vals0.length) - 1; i >= 0; i--) {
+            if (vals6[i] != null || vals0[i] != null) { latestIdx = i; break; }
           }
-          if (latestC == null) {
-            for (let i = vals0.length - 1; i >= 0; i--) {
-              if (vals0[i] != null) { latestC = vals0[i]; latestIdx = i; break; }
-            }
-          }
+          if (latestIdx < 0) return null;
+          // Use the warmer of the two soil depths as the base temperature.
+          // During a spring warming trend the 0 cm surface warms faster and captures
+          // active heating; during cold snaps the deeper 6 cm stays more stable and
+          // avoids an unrealistically cold reading — so taking the max gives us
+          // both upper-bound warming signal AND cold-snap resistance.
+          const v6 = vals6[latestIdx];
+          const v0 = vals0[latestIdx];
+          let latestC;
+          if (v6 != null && v0 != null) { latestC = Math.max(v6, v0); }
+          else { latestC = v6 ?? v0; }
           if (latestC == null) return null;
           // Derive month from the API response timestamp (America/Chicago timezone).
           // Open-Meteo returns "YYYY-MM-DDTHH:MM" strings in the requested timezone,
@@ -9413,8 +9419,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           // Smaller offsets in spring/summer when stream temps track groundwater closely.
           // Lakes and reservoirs are thermally similar (larger, deeper bodies) and share
           // the same calibration; rivers use tighter offsets due to groundwater dominance.
-          const riverOffsets     = [2.2, 2.0, 1.5, 1.2, 1.0, 0.8, 0.7, 0.7, 0.9, 1.2, 1.8, 2.0];
-          const reservoirOffsets = [3.5, 3.3, 2.8, 2.5, 2.2, 2.0, 1.8, 1.8, 2.0, 2.2, 2.8, 3.3];
+          const riverOffsets     = [2.2, 2.0, 0.8, 0.7, 1.0, 0.8, 0.7, 0.7, 0.9, 1.2, 1.8, 2.0];
+          // Mar/Apr/May offsets reduced: spring warming causes 0 cm surface to run
+          // warmer than 6 cm; combined with taking max(0cm,6cm) this aligns estimates
+          // with observed lake temps during active warm-season pre-spawn/spawn windows.
+          const reservoirOffsets = [3.5, 3.3, 1.8, 1.5, 1.2, 2.0, 1.8, 1.8, 2.0, 2.2, 2.8, 3.3];
           // Treat 'lake' the same as 'reservoir' — both are larger standing bodies
           // that thermally behave differently from groundwater-fed streams.
           const isLakeLike = waterType === 'reservoir' || waterType === 'lake';
@@ -9422,7 +9431,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           // Seasonal minimum floors (°C) — Ozark groundwater baselines.
           // Prevents unrealistically cold estimates for spring-fed rivers in winter/spring.
           const riverFloorsC     = [3.3, 4.4, 10.0, 13.3, 16.7, 19.4, 21.7, 21.7, 18.3, 13.9, 8.9, 4.4];
-          const reservoirFloorsC = [2.2, 3.3,  7.2, 11.1, 14.4, 17.2, 19.4, 19.4, 16.1, 11.7, 6.7, 3.3];
+          // Mar raised 7.2→10.0 (45→50°F), Apr raised 11.1→12.2 (52→54°F):
+          // Prevents estimates from falling below the lowest historical normals for
+          // AR lakes in early spring even during brief cold snaps.
+          const reservoirFloorsC = [2.2, 3.3, 10.0, 12.2, 14.4, 17.2, 19.4, 19.4, 16.1, 11.7, 6.7, 3.3];
           const floorC = isLakeLike ? reservoirFloorsC[month] : riverFloorsC[month];
           const waterC = Math.max(latestC - offsetC, floorC);
           return +((waterC * 9) / 5 + 32).toFixed(1);

@@ -33,7 +33,9 @@ const OPEN_METEO_BASE = "https://api.open-meteo.com/v1/forecast";
 
 // Month-specific soil-to-water correction offsets (°C) for rivers.
 // Smaller offsets in spring/summer when stream temps track groundwater more closely.
-const RIVER_OFFSETS_BY_MONTH  = [2.2, 2.0, 1.5, 1.2, 1.0, 0.8, 0.7, 0.7, 0.9, 1.2, 1.8, 2.0];
+// Mar/Apr reduced (1.5→0.8, 1.2→0.7): combined with taking max(0cm,6cm) soil depth
+// this better matches observed river temps during spring pre-spawn/spawn warming.
+const RIVER_OFFSETS_BY_MONTH  = [2.2, 2.0, 0.8, 0.7, 1.0, 0.8, 0.7, 0.7, 0.9, 1.2, 1.8, 2.0];
 // Seasonal minimum floors (°C) — Ozark groundwater baselines.
 // Prevents unrealistically cold estimates for spring-fed rivers in winter/spring.
 const RIVER_FLOORS_C_BY_MONTH = [3.3, 4.4, 10.0, 13.3, 16.7, 19.4, 21.7, 21.7, 18.3, 13.9, 8.9, 4.4];
@@ -42,9 +44,11 @@ const RIVER_FLOORS_C_BY_MONTH = [3.3, 4.4, 10.0, 13.3, 16.7, 19.4, 21.7, 21.7, 1
  * Fetch soil temperature from Open-Meteo as a water temperature proxy.
  * Used when a USGS station has no 00010 temperature sensor.
  *
- * Uses 6 cm soil depth (more thermally stable than bare surface) with
- * month-specific correction offsets and Ozark groundwater-based minimum
- * floors to avoid unrealistically cold estimates for spring-fed rivers.
+ * Uses the warmer of 0 cm (surface) and 6 cm soil depth as the base:
+ * 0 cm responds faster to warming trends (upper-bound bias in spring);
+ * 6 cm is more stable during cold snaps (cold-snap resistance).
+ * Month-specific correction offsets and Ozark groundwater-based minimum
+ * floors prevent unrealistically cold estimates for spring-fed rivers.
  *
  * @param {number} lat
  * @param {number} lng
@@ -60,21 +64,23 @@ function fetchOpenMeteoTemp(lat, lng) {
       stdio: ["ignore", "pipe", "pipe"],
     });
     const data = JSON.parse(raw);
-    // Prefer 6 cm depth — more thermally stable than bare surface layer.
-    // Track index to retrieve the matching timestamp for month derivation.
     const vals6 = (data && data.hourly && data.hourly.soil_temperature_6cm) || [];
     const vals0 = (data && data.hourly && data.hourly.soil_temperature_0cm) || [];
-    let latest = undefined;
+    // Find the latest index where at least one depth reading is available.
     let latestIdx = -1;
-    for (let i = vals6.length - 1; i >= 0; i--) {
-      if (vals6[i] != null) { latest = vals6[i]; latestIdx = i; break; }
+    for (let i = Math.max(vals6.length, vals0.length) - 1; i >= 0; i--) {
+      if (vals6[i] != null || vals0[i] != null) { latestIdx = i; break; }
     }
-    if (latest === undefined) {
-      for (let i = vals0.length - 1; i >= 0; i--) {
-        if (vals0[i] != null) { latest = vals0[i]; latestIdx = i; break; }
-      }
-    }
-    if (latest === undefined || latest === null) return null;
+    if (latestIdx < 0) return null;
+    // Use the warmer of the two soil depths as the base temperature.
+    // During spring warming the 0 cm surface responds faster (upper-bound bias);
+    // during cold snaps the deeper 6 cm stays more stable (cold-snap resistance).
+    const v6 = vals6[latestIdx];
+    const v0 = vals0[latestIdx];
+    let latest;
+    if (v6 != null && v0 != null) { latest = Math.max(v6, v0); }
+    else { latest = v6 != null ? v6 : v0; }
+    if (latest == null) return null;
     // Derive month from the API response timestamp (America/Chicago) to match
     // the data timezone and avoid off-by-one errors near month boundaries.
     const times = (data && data.hourly && data.hourly.time) || [];
