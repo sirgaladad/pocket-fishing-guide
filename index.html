@@ -80,6 +80,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         --baro-color-veryhigh:   #78909c;
         --radius: 12px;
         --radius-sm: 8px;
+        --spacing-xs: 4px;
+        --spacing-sm: 8px;
+        --spacing-md: 12px;
+        --spacing-xl: 20px;
       }
       body {
         font-family: 'Inter', system-ui, sans-serif;
@@ -1030,7 +1034,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       .wind-baro-card {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: var(--spacing-xl);
+      }
+      /* Mobile: give each section vertical breathing room */
+      .wind-baro-card > div:not(.wb-divider) {
+        padding: var(--spacing-xs) 0;
       }
       .wb-section-title {
         font-size: 10px;
@@ -1190,7 +1198,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           var(--baro-color-veryhigh)   100%
         );
         border-radius: 5px;
-        margin: 8px 0 4px;
+        margin: var(--spacing-md) 0 var(--spacing-sm);
         overflow: visible;
       }
       .baro-marker {
