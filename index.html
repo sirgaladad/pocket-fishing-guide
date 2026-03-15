@@ -12453,7 +12453,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                   {weatherHazard && (
                     <div className="conditions-chip hazard">
                       <span role="img" aria-label="hazard warning">⚠️</span>{' '}
-                      {weatherHazard.icon}{' '}{weatherHazard.label}
+                      <span aria-hidden="true">{weatherHazard.icon}</span>{' '}{weatherHazard.label}
                     </div>
                   )}
                   {windCat && (
