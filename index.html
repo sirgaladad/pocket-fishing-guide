@@ -862,6 +862,64 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         color: #fff;
         font-weight: 700;
       }
+      .hero-pill.wind {
+        background: rgba(59, 130, 246, 0.15);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        color: #60a5fa;
+      }
+      .hero-pill.wind .pill-val {
+        color: #93c5fd;
+      }
+      .hero-pill.pressure-low {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #f87171;
+      }
+      .hero-pill.pressure-low .pill-val {
+        color: #fca5a5;
+      }
+      .hero-pill.pressure-stable {
+        background: rgba(34, 197, 94, 0.15);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        color: #4ade80;
+      }
+      .hero-pill.pressure-stable .pill-val {
+        color: #86efac;
+      }
+      .hero-pill.pressure-rising {
+        background: rgba(250, 204, 21, 0.15);
+        border: 1px solid rgba(250, 204, 21, 0.3);
+        color: #facc15;
+      }
+      .hero-pill.pressure-rising .pill-val {
+        color: #fde047;
+      }
+      .hero-pill.pressure-falling {
+        background: rgba(249, 115, 22, 0.15);
+        border: 1px solid rgba(249, 115, 22, 0.3);
+        color: #fb923c;
+      }
+      .hero-pill.pressure-falling .pill-val {
+        color: #fdba74;
+      }
+      .hero-pill.storm-alert {
+        background: rgba(220, 38, 38, 0.25);
+        border: 1px solid rgba(220, 38, 38, 0.5);
+        color: #fca5a5;
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      .hero-pill.storm-alert .pill-val {
+        color: #fff;
+        font-weight: 900;
+      }
+      @keyframes pulse {
+        0%, 100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.85;
+        }
+      }
 
       /* ─── SHARE SNAPSHOT ─── */
       .share-btn {
@@ -9985,7 +10043,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
               {/* ── WIND SECTION ── */}
               <div>
-                <div className="wb-section-title">🚩 Wind Conditions</div>
+                <div className="wb-section-title">🌬️ Wind Conditions</div>
                 {period ? (
                   <>
                     <div className="wind-dir-display">
@@ -10031,7 +10089,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
               {/* ── BAROMETRIC PRESSURE SECTION ── */}
               <div>
-                <div className="wb-section-title">📊 Barometric Pressure</div>
+                <div className="wb-section-title">⏱️ Barometric Pressure</div>
                 {pressure != null ? (
                   <>
                     <div className="baro-header">
@@ -10270,6 +10328,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     note: 'Moderate flow often improves oxygen and feeding activity.',
                   };
 
+        // Wind and pressure data for hero pills
+        const currentPeriod = Array.isArray(forecast) ? (forecast.find((p) => p.isDaytime) || forecast[0]) : null;
+        const windSpeedStr = currentPeriod?.windSpeed || null;
+        const windDir = currentPeriod?.windDirection || null;
+        const windMph = parseWindSpeed(windSpeedStr);
+        const windCat = windMph != null ? getWindCategory(windMph) : null;
+        const shortForecast = currentPeriod?.shortForecast?.toLowerCase() || '';
+        const weatherHazard = shortForecast ? getWeatherHazard(shortForecast) : null;
+        const pressure = wxObs?.pressure ?? null;
+        const pressureTrend = wxObs?.pressureTrend ?? null;
+        const baroCat = pressure != null ? getBaroCategory(pressure, pressureTrend) : null;
+
         return (
           <>
 
@@ -10385,6 +10455,44 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                       }}
                     >
                       {phase.icon} <span className="pill-val">{phase.name}</span>
+                    </div>
+                  )}
+                  {weatherHazard && weatherHazard.severity === 'high' && (
+                    <div className="hero-pill storm-alert">
+                      {weatherHazard.icon}{' '}
+                      <span className="pill-val">{weatherHazard.label}</span>
+                    </div>
+                  )}
+                  {windCat && (
+                    <div className="hero-pill wind">
+                      {windCat.icon}{' '}
+                      <span className="pill-val">
+                        {windCat.label} {windMph}mph
+                      </span>
+                    </div>
+                  )}
+                  {baroCat && baroCat.label !== 'Unknown' && (
+                    <div
+                      className={`hero-pill ${
+                        baroCat.cls === 'baro-low' ? 'pressure-low' :
+                        baroCat.cls === 'baro-prefrontal' ? 'pressure-falling' :
+                        baroCat.cls === 'baro-optimal' ? 'pressure-stable' :
+                        baroCat.cls === 'baro-high' ? 'pressure-rising' :
+                        baroCat.cls === 'baro-veryhigh' ? 'pressure-rising' :
+                        'pressure-stable'
+                      }`}
+                    >
+                      {baroCat.icon}{' '}
+                      <span className="pill-val">
+                        {baroCat.label.includes('—')
+                          ? baroCat.label.split('—')[0].trim()
+                          : baroCat.label
+                        }
+                        {pressureTrend != null && Math.abs(pressureTrend) >= BARO_TREND_THRESHOLD
+                          ? (pressureTrend > 0 ? ' ↑' : ' ↓')
+                          : ''
+                        }
+                      </span>
                     </div>
                   )}
                 </div>
