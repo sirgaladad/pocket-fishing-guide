@@ -17,7 +17,7 @@ The first hypothesis: a single lake done right is more valuable than 50 lakes do
 - **39 Arkansas water bodies** — lakes, rivers, tailwaters, streams across Ozark, Ouachita, and Delta regions
 - **3 live data sources** — USGS Water Services, NWS (National Weather Service), USACE (Army Corps of Engineers)
 - **No API keys required** — all public APIs, zero cost, zero vendor lock-in
-- **Automated 6-hour data refresh** — GitHub Actions fetches, validates, and snapshots all data on schedule
+- **Automated 6-hour data refresh** — GitHub Actions fetches and snapshots all data on a 6-hour schedule; full validation runs on relevant pushes/PRs
 - **20 JSON data files** — water bodies, species, lures, gauges, stations, regulations, access points, moon phases
 - **5-tier water temperature fallback** — USGS primary → USGS alternate → Open-Meteo soil proxy → NWS air temp offset → localStorage 48-hour cache
 - **USGS turbidity integration** — FNU/NTU sensor data overrides flow-based clarity derivation where available
