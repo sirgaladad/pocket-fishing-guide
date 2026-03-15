@@ -8,7 +8,25 @@ This is a **community-driven project**, and we believe that local knowledge is j
 
 ## How You Can Help
 
-### 1. Share Your Local Intel
+### 1. Submit a Screenshot <a name="screenshots-wanted"></a>
+
+Got the app open on the water? We'd love to show it.
+
+**What we're looking for:**
+- The app running on your phone at a lake, river, or boat ramp
+- Any tab — dashboard, tackle box, forecast, access points
+- Any Arkansas water body you fish
+
+**How to submit:**
+- Open a [GitHub Issue](../../issues) with the label `Screenshot`
+- Attach the image and tell us which water body and device you're using
+- We'll add the best ones to the README gallery
+
+No filters needed. Real fishing, real conditions.
+
+---
+
+### 2. Share Your Local Intel
 
 Know a hidden gem fishing spot? Found an amazing tackle shop? Have tips that work year-round on your favorite lake? **That's exactly what we need.**
 
@@ -23,7 +41,7 @@ Know a hidden gem fishing spot? Found an amazing tackle shop? Have tips that wor
 - Why you recommend them (friendly staff, best selection, fair prices, etc.)
 - Any special services (guide referrals, repair work, etc.)
 
-### 2. Contribute Code
+### 3. Contribute Code
 
 Love the idea of building a lightweight, no-build-step fishing app? Let's collaborate.
 
@@ -46,7 +64,7 @@ Love the idea of building a lightweight, no-build-step fishing app? Let's collab
 - Test on mobile devices or use your browser's device emulation
 - Check that USGS/NWS API calls work as expected
 
-### 3. Report Bugs
+### 4. Report Bugs
 
 Found something broken? Help us fix it.
 
@@ -56,7 +74,7 @@ Found something broken? Help us fix it.
 - Include your browser and device info if relevant
 - Screenshots are helpful!
 
-### 4. Request Features
+### 5. Request Features
 
 Have an idea for a new feature? We'd love to hear it.
 
@@ -72,7 +90,7 @@ Have an idea for a new feature? We'd love to hear it.
 
 **Pocket means local.** We'd rather have 10 deeply useful features for one lake than 100 shallow features across many lakes.
 
-This app is designed to help anglers get to know *their* waters better—not to be a comprehensive guide to every fishery in the world. Every feature should make you a better angler on *your* home waters, whether that's a small creek or a sprawling reservoir.
+This app covers 39 Arkansas waters and counting — but the goal isn't breadth for its own sake. Every water we add should have real depth: species-specific intelligence, local access info, and the kind of detail that actually helps you catch fish. Every feature should make you a better angler on *your* home waters, whether that's a small creek or a sprawling reservoir.
 
 ---
 
