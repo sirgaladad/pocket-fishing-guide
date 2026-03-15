@@ -18,7 +18,7 @@ A lightweight, mobile-first **fishing intelligence app** for Arkansas waters. Bu
 - **Beaver Lake** — Northwest AR trophy fishery
 - **Lake Ouachita** — Arkansas's largest and clearest lake
 - **DeGray Lake** — Resort lake near Hot Springs
-- **Lake Conway** — AGFC managed crappie hotspot
+- **Lake Conway** — AGFC managed crappie hotspot (currently under renovation)
 - **+ 30 more Arkansas waters** — Ozark rivers, Ouachita rivers, Delta lakes
 
 ---
