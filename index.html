@@ -513,6 +513,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         font-weight: 700;
       }
+      @media (prefers-reduced-motion: reduce) {
+        .conditions-chip.hazard {
+          animation: none;
+        }
+      }
 
       /* ─── LURE CARD ACTION PAIR (inline right) ─── */
       .lure-card-actions {
@@ -12428,27 +12433,31 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                 </div>
               )}
             </div>
-            {showStrip && (
+            {(showStrip || weatherHazard) && (
               <div className="conditions-strip-wrapper">
                 <div className="conditions-strip">
-                  <div className={`conditions-chip ${chipClass}`}>
-                    <span role="img" aria-label="thermometer">{'\uD83C\uDF21\uFE0F'}</span> {temp.toFixed(1)}{'\u00B0'}F
-                    {trendStr && <span className="conditions-chip-label">{trendStr}</span>}
-                  </div>
-                  <div className="conditions-chip">
-                    <span role="img" aria-label={phase.name}>{phase.icon}</span> {phase.name}
-                  </div>
-                  {Number.isFinite(usgs?.gage) && (
-                    <div className="conditions-chip">
-                      <span role="img" aria-label="ruler">{'\uD83D\uDCCF'}</span> {usgs.gage.toFixed(2)} ft
-                      <span className="conditions-chip-label">gage ht</span>
-                    </div>
-                  )}
-                  {Number.isFinite(usgs?.tempTrend7) && (
-                    <div className="conditions-chip">
-                      <span role="img" aria-label={usgs.tempTrend7 > 0 ? 'fire' : usgs.tempTrend7 < 0 ? 'snowflake' : 'right arrow'}>{usgs.tempTrend7 > 0 ? '\uD83D\uDD25' : usgs.tempTrend7 < 0 ? '\u2744\uFE0F' : '\u2192'}</span> {usgs.tempTrend7 > 0 ? '+' : ''}{usgs.tempTrend7}{'\u00B0'}/7d
-                      <span className="conditions-chip-label">trend</span>
-                    </div>
+                  {showStrip && (
+                    <>
+                      <div className={`conditions-chip ${chipClass}`}>
+                        <span role="img" aria-label="thermometer">{'\uD83C\uDF21\uFE0F'}</span> {temp.toFixed(1)}{'\u00B0'}F
+                        {trendStr && <span className="conditions-chip-label">{trendStr}</span>}
+                      </div>
+                      <div className="conditions-chip">
+                        <span role="img" aria-label={phase.name}>{phase.icon}</span> {phase.name}
+                      </div>
+                      {Number.isFinite(usgs?.gage) && (
+                        <div className="conditions-chip">
+                          <span role="img" aria-label="ruler">{'\uD83D\uDCCF'}</span> {usgs.gage.toFixed(2)} ft
+                          <span className="conditions-chip-label">gage ht</span>
+                        </div>
+                      )}
+                      {Number.isFinite(usgs?.tempTrend7) && (
+                        <div className="conditions-chip">
+                          <span role="img" aria-label={usgs.tempTrend7 > 0 ? 'fire' : usgs.tempTrend7 < 0 ? 'snowflake' : 'right arrow'}>{usgs.tempTrend7 > 0 ? '\uD83D\uDD25' : usgs.tempTrend7 < 0 ? '\u2744\uFE0F' : '\u2192'}</span> {usgs.tempTrend7 > 0 ? '+' : ''}{usgs.tempTrend7}{'\u00B0'}/7d
+                          <span className="conditions-chip-label">trend</span>
+                        </div>
+                      )}
+                    </>
                   )}
                   {weatherHazard && (
                     <div className="conditions-chip hazard">
