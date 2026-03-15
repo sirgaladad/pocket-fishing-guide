@@ -61,7 +61,7 @@ Success metric: p50 first-interaction time under 3 seconds on a mid-range phone.
 
 **Goal:** Know exactly how users engage with the app so every roadmap decision is grounded in data.
 
-GA4 is live (G-929WWD4EZ4). What's missing is a clean event taxonomy and funnel definition:
+GA4 is live via Google Tag Manager (`GTM-M36K8X2Q`; current Measurement ID: `G-929WWD4EZ4`). All analytics configuration lives in this GTM container — what's missing is a clean event taxonomy and funnel definition:
 
 | Event | Trigger |
 |-------|---------|
