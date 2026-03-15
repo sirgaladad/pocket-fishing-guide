@@ -493,6 +493,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         opacity: 0.7;
         margin-left: 2px;
       }
+      /* Wind chip variants */
+      .conditions-chip.wind-calm     { color: #90caf9; }
+      .conditions-chip.wind-ideal    { color: #a5d6a7; }
+      .conditions-chip.wind-breezy   { background: rgba(255,167,38,0.12); color: #ffcc80; border-color: rgba(255,167,38,0.25); }
+      .conditions-chip.wind-rough    { background: rgba(239,83,80,0.12);  color: #ef9a9a;  border-color: rgba(239,83,80,0.25); }
+      .conditions-chip.wind-advisory { background: rgba(211,47,47,0.18);  color: #ef9a9a;  border-color: rgba(211,47,47,0.35); }
+      /* Baro chip variants */
+      .conditions-chip.baro-low        { background: rgba(239,68,68,0.12);   color: #fca5a5; border-color: rgba(239,68,68,0.25); }
+      .conditions-chip.baro-prefrontal { background: rgba(251,146,60,0.12);  color: #fdba74; border-color: rgba(251,146,60,0.25); }
+      .conditions-chip.baro-optimal    { background: rgba(34,197,94,0.12);   color: #86efac; border-color: rgba(34,197,94,0.25); }
+      .conditions-chip.baro-high       { background: rgba(250,204,21,0.12);  color: #fde047; border-color: rgba(250,204,21,0.25); }
+      .conditions-chip.baro-veryhigh   { background: rgba(168,85,247,0.12); color: #d8b4fe; border-color: rgba(168,85,247,0.25); }
 
       /* ─── LURE CARD ACTION PAIR (inline right) ─── */
       .lure-card-actions {
@@ -8183,17 +8195,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (pressureInHg == null)
           return { label: 'Unknown', cls: 'baro-unknown', icon: '❓', feedingAdvice: 'Pressure data unavailable.' };
         if (pressureInHg < 29.60)
-          return { label: 'Very Low', cls: 'baro-low', icon: '🔴', feedingAdvice: 'Post-storm slump — fish slow and deep. Wait 1–2 days for activity to resume.' };
+          return { label: 'Very Low', cls: 'baro-low', icon: '🔻', feedingAdvice: 'Post-storm slump — fish slow and deep. Wait 1–2 days for activity to resume.' };
         if (pressureInHg < 29.90)
           return {
             label: falling ? 'Falling — Pre-Front' : 'Low',
-            cls: 'baro-prefrontal', icon: '🔥',
+            cls: 'baro-prefrontal', icon: '📉',
             feedingAdvice: 'Pre-front feeding window — fish are actively chasing. This is prime time. Get out now.',
           };
         if (pressureInHg <= 30.10)
           return {
             label: rising ? 'Rising — Stabilizing' : falling ? 'Falling' : 'Stable Optimal',
-            cls: 'baro-optimal', icon: '✅',
+            cls: 'baro-optimal', icon: '⚖️',
             feedingAdvice: rising
               ? 'Pressure stabilizing post-front. Fish becoming more active. Standard presentations work.'
               : falling
@@ -8206,7 +8218,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             cls: 'baro-high', icon: '📈',
             feedingAdvice: 'High stable pressure — fish slower and deeper. Finesse techniques and bottom presentations.',
           };
-        return { label: 'Very High', cls: 'baro-veryhigh', icon: '📊', feedingAdvice: 'Very high pressure — fish sluggish. Go deep or fish slow. Early morning/late evening best.' };
+        return { label: 'Very High', cls: 'baro-veryhigh', icon: '🔺', feedingAdvice: 'Very high pressure — fish sluggish. Go deep or fish slow. Early morning/late evening best.' };
       }
 
       // ─── MOON PHASE UTILITY ──────────────────────────────────────────────────
@@ -12288,7 +12300,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         buffalo: 'First national river \u00B7 wild & scenic',
       };
 
-function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, waterType, setWaterType, temp, usgs, loading, onRefresh }) {
+function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, waterType, setWaterType, temp, usgs, loading, onRefresh, forecast, wxObs }) {
         const w = WATERS[water];
         const showStrip = !loading && temp !== null;
         const isCrappie = CRAPPIE_IDS.has(species);
@@ -12303,6 +12315,13 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
           : '';
         const phase = showStrip ? getPhase(temp, species) : null;
         const showSegment = isRiverType(TAXONOMY.waterTypeMap[water]);
+        const fcPeriod = Array.isArray(forecast) ? (forecast.find((p) => p.isDaytime) || forecast[0]) : null;
+        const windSpeedStr = fcPeriod?.windSpeed || null;
+        const windMph = parseWindSpeed(windSpeedStr);
+        const windCat = windMph != null ? getWindCategory(windMph) : null;
+        const pressure = wxObs?.pressure ?? null;
+        const pressureTrend = wxObs?.pressureTrend ?? null;
+        const baroCat = showStrip && pressure != null ? getBaroCategory(pressure, pressureTrend) : null;
         return (
           <div className="lake-hero">
             <div className="hero-selects pfg-dropdown-nav">
@@ -12420,6 +12439,21 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                     <div className="conditions-chip">
                       <span role="img" aria-label={usgs.tempTrend7 > 0 ? 'fire' : usgs.tempTrend7 < 0 ? 'snowflake' : 'right arrow'}>{usgs.tempTrend7 > 0 ? '\uD83D\uDD25' : usgs.tempTrend7 < 0 ? '\u2744\uFE0F' : '\u2192'}</span> {usgs.tempTrend7 > 0 ? '+' : ''}{usgs.tempTrend7}{'\u00B0'}/7d
                       <span className="conditions-chip-label">trend</span>
+                    </div>
+                  )}
+                  {windCat && (
+                    <div className={`conditions-chip wind-${windCat.cls}`}>
+                      <span role="img" aria-label={windCat.label}>{windCat.icon}</span> {windCat.label}
+                      {windMph != null && <span className="conditions-chip-label">{windMph}mph</span>}
+                    </div>
+                  )}
+                  {baroCat && baroCat.label !== 'Unknown' && (
+                    <div className={`conditions-chip ${baroCat.cls}`}>
+                      <span role="img" aria-label={baroCat.label}>{baroCat.icon}</span>{' '}
+                      {baroCat.label.includes('—') ? baroCat.label.split('—')[0].trim() : baroCat.label}
+                      {pressureTrend != null && Math.abs(pressureTrend) >= BARO_TREND_THRESHOLD
+                        ? (pressureTrend > 0 ? ' \u2191' : ' \u2193')
+                        : ''}
                     </div>
                   )}
                 </div>
@@ -13242,6 +13276,8 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                   usgs={usgs}
                   loading={loading}
                   onRefresh={loadData}
+                  forecast={forecast}
+                  wxObs={wxObs}
                 />
                 <div className="tabs">
                   {tabs.map((t) => (
