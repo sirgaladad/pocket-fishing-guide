@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+> Planned for 0.4.0 — feature-complete and in final QA. See [ROADMAP.md](ROADMAP.md) for what's shipping next.
+
 ### Added
 - **Live Bait Toggle**: Artificial / Live Bait toggle in Tackle Box bottom-sheet header. Filters lure view by `bait_type`; falls back to *"Limited live bait data — check local bait shops"* when fewer than 2 live bait records match. Toggle state persists via `localStorage` key `pfg_tackle_mode`. Toggle buttons meet 44 px tap target with `role="button"` and `aria-pressed` a11y attributes
 - **`bait_type` field**: Added to all 21 lure records in `data/lure-master.json` (`"artificial"` | `"live"`). Seven new live bait master records added (lure_015–lure_021) covering White River white bass (live shad, nightcrawler) and crappie live minnow presentations
