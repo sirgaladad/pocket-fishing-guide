@@ -48,7 +48,7 @@ The first hypothesis: a single lake done right is more valuable than 50 lakes do
 - **Green Team AI triage** — auto-classifies `user-feedback` issues, swaps labels, updates project board
 - **Conventional commits** — enforced via commitlint with 72-char header limit
 - **ESLint + Prettier** — consistent code style across all scripts
-- **GA4 analytics** — measurement ID configured, custom event taxonomy in progress
+- **GA4 analytics via Google Tag Manager (`GTM-M36K8X2Q`)** — custom event taxonomy in progress
 
 ---
 
