@@ -10331,7 +10331,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         // Wind and pressure data for hero pills
         const currentPeriod = Array.isArray(forecast) ? (forecast.find((p) => p.isDaytime) || forecast[0]) : null;
         const windSpeedStr = currentPeriod?.windSpeed || null;
-        const windDir = currentPeriod?.windDirection || null;
         const windMph = parseWindSpeed(windSpeedStr);
         const windCat = windMph != null ? getWindCategory(windMph) : null;
         const shortForecast = currentPeriod?.shortForecast?.toLowerCase() || '';
@@ -10463,11 +10462,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                       <span className="pill-val">{weatherHazard.label}</span>
                     </div>
                   )}
-                  {windCat && (
+                  {(windCat || windSpeedStr) && (
                     <div className="hero-pill wind">
-                      {windCat.icon}{' '}
+                      {windCat ? windCat.icon : '💨'}{' '}
                       <span className="pill-val">
-                        {windCat.label} {windMph}mph
+                        {windCat
+                          ? (
+                            windMph != null
+                              ? `${windCat.label} ${windMph}mph`
+                              : (windSpeedStr || `${windCat.label} Unknown`)
+                            )
+                          : (windSpeedStr || 'Unknown wind')
+                        }
                       </span>
                     </div>
                   )}
