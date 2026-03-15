@@ -125,7 +125,7 @@ USGS / NWS / USACE APIs
   GitHub Pages → your browser
 ```
 
-Validation scripts (`scripts/validate-*.js`) run on every push to verify JSON schema integrity before deployment.
+Validation scripts (`scripts/validate-*.js`) run in CI for relevant data changes to verify JSON schema integrity, and you can also run them locally before deployment.
 
 ---
 
