@@ -40,6 +40,13 @@ const RIVER_OFFSETS_BY_MONTH  = [2.2, 2.0, 0.8, 0.7, 1.0, 0.8, 0.7, 0.7, 0.9, 1.
 // Prevents unrealistically cold estimates for spring-fed rivers in winter/spring.
 const RIVER_FLOORS_C_BY_MONTH = [3.3, 4.4, 10.0, 13.3, 16.7, 19.4, 21.7, 21.7, 18.3, 13.9, 8.9, 4.4];
 
+// Tailwater seasonal floors and ceilings (°C) — hypolimnion releases from deep
+// USACE dams (Bull Shoals, Norfork, Beaver, Greers Ferry) stay cold year-round.
+// Ceilings prevent Open-Meteo soil proxy from ever reporting warm seasonal temps
+// that are only realistic for surface streams, not cold dam-release tailwaters.
+const TAILWATER_FLOORS_C = [6.7, 6.7, 7.2, 7.8, 8.3, 8.9, 9.4, 9.4, 8.9, 8.3, 7.8, 7.2];
+const TAILWATER_CEILS_C  = [11.1, 11.1, 12.2, 13.3, 13.9, 14.4, 15.0, 15.0, 13.9, 13.3, 12.2, 11.1];
+
 /**
  * Fetch soil temperature from Open-Meteo as a water temperature proxy.
  * Used when a USGS station has no 00010 temperature sensor.
@@ -50,11 +57,12 @@ const RIVER_FLOORS_C_BY_MONTH = [3.3, 4.4, 10.0, 13.3, 16.7, 19.4, 21.7, 21.7, 1
  * Month-specific correction offsets and Ozark groundwater-based minimum
  * floors prevent unrealistically cold estimates for spring-fed rivers.
  *
- * @param {number} lat
- * @param {number} lng
+ * @param {number}  lat
+ * @param {number}  lng
+ * @param {boolean} [isTailwater=false] - When true, clamps result to cold hypolimnion range.
  * @returns {number|null} Estimated water temperature in °C, or null on failure.
  */
-function fetchOpenMeteoTemp(lat, lng) {
+function fetchOpenMeteoTemp(lat, lng, isTailwater = false) {
   const url =
     `${OPEN_METEO_BASE}?latitude=${lat}&longitude=${lng}` +
     `&hourly=soil_temperature_0cm,soil_temperature_6cm&forecast_days=1&timezone=America%2FChicago`;
@@ -94,7 +102,13 @@ function fetchOpenMeteoTemp(lat, lng) {
     const offsetC = RIVER_OFFSETS_BY_MONTH[month];
     const floorC  = RIVER_FLOORS_C_BY_MONTH[month];
     if (!Number.isFinite(offsetC) || !Number.isFinite(floorC)) return null;
-    return Math.round(Math.max(latest - offsetC, floorC) * 10) / 10;
+    const estimatedC = Math.max(latest - offsetC, floorC);
+    if (isTailwater) {
+      const twFloor = TAILWATER_FLOORS_C[month];
+      const twCeil  = TAILWATER_CEILS_C[month];
+      return Math.round(Math.min(Math.max(estimatedC, twFloor), twCeil) * 10) / 10;
+    }
+    return Math.round(estimatedC * 10) / 10;
   } catch (_) {
     return null;
   }
@@ -302,7 +316,7 @@ async function main() {
         Number.isFinite(coords.lat) &&
         Number.isFinite(coords.lng)
       ) {
-        const estimated = fetchOpenMeteoTemp(coords.lat, coords.lng);
+        const estimated = fetchOpenMeteoTemp(coords.lat, coords.lng, tailwater);
         if (estimated !== null) {
           tempValue = estimated;
           tempDateTime = new Date().toISOString();

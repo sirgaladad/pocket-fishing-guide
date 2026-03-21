@@ -8882,6 +8882,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         return [...artificial].sort((a, b) => calcScore(b) - calcScore(a));
       }
 
+      // Tailwater seasonal floors and ceilings (°F) — hypolimnion dam releases.
+      // White River, Norfork TW, Beaver TW, etc. stay 44–59°F year-round.
+      // Shared by estimateTempFromForecast() (Tier 4 NWS fallback) and
+      // fetchOpenMeteoTemp() (Tier 3b soil-proxy) to keep both tiers in sync.
+      const TW_FLOORS_F = [44, 44, 45, 46, 47, 48, 49, 49, 48, 47, 46, 45];
+      const TW_CEILS_F  = [52, 52, 54, 56, 57, 58, 59, 59, 57, 56, 54, 52];
+
       function estimateTempFromForecast(forecast, waterType) {
         const dayPeriods = (forecast || [])
           .filter((p) => p?.isDaytime && Number.isFinite(p?.temperature))
@@ -8898,7 +8905,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const lakeFloors  = [36, 38, 50, 54, 58, 63, 67, 67, 61, 53, 44, 38];
         // Lakes and reservoirs are thermally similar standing bodies; treat them
         // the same as reservoirs when selecting floors and offsets.
-        const isLakeLike = waterType !== 'river';
+        // NOTE: 'tailwater' is NOT lake-like — it needs its own cold-water handling.
+        const isLakeLike  = waterType === 'lake' || waterType === 'reservoir';
+        const isTailwater = waterType === 'tailwater';
         const estimated = dayPeriods.map((p) => {
           const air = p.temperature;
           // Derive month per-period from NWS startTime so estimates are correct even
@@ -8907,6 +8916,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           const pMonth = pTimeStr
             ? parseInt(pTimeStr.slice(5, 7), 10) - 1
             : +new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', month: 'numeric' }).format(new Date()) - 1;
+          // Tailwaters receive cold hypolimnion water from deep dams — NWS air temp
+          // has little bearing on release temperature. Apply a large fixed offset and
+          // hard ceiling so fallback estimates stay within the realistic dam-release range.
+          if (isTailwater) {
+            const raw = air - 15;
+            return { day: p.name, avg: +Math.min(Math.max(raw, TW_FLOORS_F[pMonth]), TW_CEILS_F[pMonth]).toFixed(1) };
+          }
           // Spring (Mar–Jun) and summer (Jul–Sep): use tighter air-to-water offsets
           // because groundwater dominates stream temperature over surface air exchange.
           const pIsSpring = pMonth >= 2 && pMonth <= 5;
@@ -9463,7 +9479,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           const w = WATERS[waterKey];
           if (w?.lat && w?.lon) {
             try {
-              const omTemp = await fetchOpenMeteoTemp(w.lat, w.lon, w.type || 'lake');
+              const omTemp = await fetchOpenMeteoTemp(w.lat, w.lon, w.subtype || w.type || 'lake');
               if (Number.isFinite(omTemp)) {
                 merged.temp = omTemp;
                 merged.tempSource = 'estimated';
@@ -9556,7 +9572,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           const reservoirFloorsC = [2.2, 3.3, 10.0, 12.2, 14.4, 17.2, 19.4, 19.4, 16.1, 11.7, 6.7, 3.3];
           const floorC = isLakeLike ? reservoirFloorsC[month] : riverFloorsC[month];
           const waterC = Math.max(latestC - offsetC, floorC);
-          return +((waterC * 9) / 5 + 32).toFixed(1);
+          const waterF = +((waterC * 9) / 5 + 32).toFixed(1);
+          // Tailwater seasonal floors and ceilings (°F) — hypolimnion releases from
+          // deep USACE dams stay cold year-round regardless of soil/air temperature.
+          // Ceilings prevent soil-proxy estimates from exceeding realistic dam-release
+          // temperatures even in midsummer; floors prevent impossibly cold readings.
+          if (waterType === 'tailwater') {
+            return +Math.min(Math.max(waterF, TW_FLOORS_F[month]), TW_CEILS_F[month]).toFixed(1);
+          }
+          return waterF;
         } catch (_) {
           return null;
         }
@@ -12688,7 +12712,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
                   !Number.isFinite(merged.temp) &&
                   nwsData.status === 'fulfilled'
                 ) {
-                  const est = estimateTempFromForecast(nwsData.value, w.type);
+                  const est = estimateTempFromForecast(nwsData.value, w.subtype || w.type);
                   if (est) {
                     merged.temp = est.temp;
                     merged.tempTrend7 = est.tempTrend7;
@@ -13130,7 +13154,7 @@ function LakeHero({ water, species, setSpecies, segment, setSegment, setWater, w
               !Number.isFinite(merged.temp) &&
               nwsData.status === 'fulfilled'
             ) {
-              const est = estimateTempFromForecast(nwsData.value?.periods ?? nwsData.value, w.type);
+              const est = estimateTempFromForecast(nwsData.value?.periods ?? nwsData.value, w.subtype || w.type);
               if (est) {
                 merged.temp = est.temp;
                 merged.tempTrend24 = est.tempTrend24;
