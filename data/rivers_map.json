@@ -15,13 +15,15 @@
               "segment_id": "white-river-beaver-dam",
               "name": "Below Beaver Dam",
               "description": "Immediately below Beaver Dam to Busch access",
-              "primary_station_id": "07049691"
+              "primary_station_id": "07049691",
+              "fallback_station_ids": ["07049698"]
             },
             {
               "segment_id": "white-river-busch",
               "name": "Busch to Eureka Springs area",
               "description": "Downstream of Beaver tailwater near Busch",
-              "primary_station_id": "07049698"
+              "primary_station_id": "07049698",
+              "fallback_station_ids": ["07049691"]
             }
           ]
         },
@@ -34,32 +36,57 @@
               "segment_id": "white-river-bull-shoals-dam",
               "name": "Below Bull Shoals Dam",
               "description": "Immediately below Bull Shoals Dam",
-              "primary_station_id": "07054501"
+              "primary_station_id": "07054501",
+              "fallback_station_ids": ["07054527", "07057370", "07060500"]
             },
             {
               "segment_id": "white-river-below-bull-shoals",
               "name": "Bull Shoals Dam to Cotter",
               "description": "Tailwater reach from dam to Cotter",
-              "primary_station_id": "07054527"
+              "primary_station_id": "07054527",
+              "fallback_station_ids": ["07054501", "07057370", "07060500"]
+            }
+          ]
+        },
+        {
+          "section_id": "white-river-cotter-calico-rock",
+          "name": "Cotter to Calico Rock",
+          "description": "White River from Cotter through Norfork confluence and Buffalo City to Calico Rock",
+          "segments": [
+            {
+              "segment_id": "white-river-norfork-confluence",
+              "name": "Norfork Confluence to Buffalo City",
+              "description": "White River below Norfork River confluence through Buffalo City area",
+              "primary_station_id": "07057370",
+              "fallback_station_ids": ["07054527", "07060500", "07061000"]
+            },
+            {
+              "segment_id": "white-river-buffalo-city-calico-rock",
+              "name": "Buffalo City to Calico Rock",
+              "description": "White River past Buffalo River confluence to Calico Rock",
+              "primary_station_id": "07060500",
+              "fallback_station_ids": ["07057370", "07061000"]
             }
           ]
         },
         {
           "section_id": "white-river-upper",
-          "name": "Upper White River",
-          "description": "White River from Calico Rock to Batesville",
+          "name": "Calico Rock to Batesville",
+          "description": "White River from Calico Rock through Guion to Batesville",
           "segments": [
             {
               "segment_id": "white-river-calico-rock",
               "name": "Calico Rock to Guion",
-              "description": "Upper White River below tailwaters",
-              "primary_station_id": "07061000"
+              "description": "White River below Calico Rock through Sylamore and Guion",
+              "primary_station_id": "07060500",
+              "fallback_station_ids": ["07057370", "07061000"]
             },
             {
               "segment_id": "white-river-batesville",
               "name": "Guion to Batesville",
               "description": "White River through Batesville reach",
-              "primary_station_id": "07061000"
+              "primary_station_id": "07061000",
+              "fallback_station_ids": ["07060500"]
             }
           ]
         },

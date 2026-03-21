@@ -239,6 +239,174 @@
       "regulations_zone_id": null,
       "source_ids": {
         "agfc_location_id": null,
+        "usgs_site_nearby": "07060500"
+      }
+    },
+    {
+      "location_id": "loc_flippin_access",
+      "name": "Flippin Public Access",
+      "water_body_id": "wb_white_river_bull_shoals_tailwater",
+      "location_type": "access_point",
+      "river_mile": 85.0,
+      "coordinates": {
+        "lat": 36.2792,
+        "lng": -92.5977
+      },
+      "county": "Marion",
+      "nearest_town": "Flippin",
+      "address_or_landmark": "Flippin, AR 72634 — below Crooked Creek confluence",
+      "access_types": ["wade_fishing", "boat_fishing", "bank_fishing"],
+      "amenities": ["parking", "boat_ramp"],
+      "mobility_accessible": false,
+      "agfc_property_type": "AGFC",
+      "notes": "Below the Crooked Creek confluence. Mix-bag regulations. Good trout wading access on both banks.",
+      "regulations_zone_id": "reg_bull_shoals_standard",
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07054527"
+      }
+    },
+    {
+      "location_id": "loc_norfork_bridge_access",
+      "name": "Norfork Bridge Access",
+      "water_body_id": "wb_white_river",
+      "location_type": "access_point",
+      "river_mile": null,
+      "coordinates": {
+        "lat": 36.2073,
+        "lng": -92.2797
+      },
+      "county": "Baxter",
+      "nearest_town": "Norfork",
+      "address_or_landmark": "AR-5 bridge, Norfork AR 72658",
+      "access_types": ["wade_fishing", "boat_fishing", "bank_fishing"],
+      "amenities": ["parking"],
+      "mobility_accessible": false,
+      "agfc_property_type": "AGFC",
+      "notes": "Near the Norfork River confluence. White bass staging area in spring. Check for seasonal USACE generation on both the White and Norfork.",
+      "regulations_zone_id": null,
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07057370"
+      }
+    },
+    {
+      "location_id": "loc_salesville_access",
+      "name": "Salesville River Access",
+      "water_body_id": "wb_white_river",
+      "location_type": "access_point",
+      "river_mile": null,
+      "coordinates": {
+        "lat": 36.2339,
+        "lng": -92.3114
+      },
+      "county": "Baxter",
+      "nearest_town": "Salesville",
+      "address_or_landmark": "Salesville, AR 72653 — near Norfork River confluence",
+      "access_types": ["boat_fishing", "bank_fishing"],
+      "amenities": ["parking", "boat_ramp"],
+      "mobility_accessible": false,
+      "agfc_property_type": "AGFC",
+      "notes": "Boat launch near the Norfork River confluence on the White River. Spring white bass and trout.",
+      "regulations_zone_id": null,
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07057370"
+      }
+    },
+    {
+      "location_id": "loc_buffalo_city_access",
+      "name": "Buffalo City Access",
+      "water_body_id": "wb_white_river",
+      "location_type": "access_point",
+      "river_mile": null,
+      "coordinates": {
+        "lat": 36.1508,
+        "lng": -92.1774
+      },
+      "county": "Baxter",
+      "nearest_town": "Buffalo City",
+      "address_or_landmark": "Buffalo City, AR — near Buffalo River confluence",
+      "access_types": ["boat_fishing", "bank_fishing"],
+      "amenities": ["parking", "boat_ramp"],
+      "mobility_accessible": false,
+      "agfc_property_type": "AGFC",
+      "notes": "Where the Buffalo National River meets the White River. Prime spring white bass staging area as fish run up both rivers. Also walleye and sauger.",
+      "regulations_zone_id": null,
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07060500"
+      }
+    },
+    {
+      "location_id": "loc_sylamore_access",
+      "name": "Sylamore Creek Access",
+      "water_body_id": "wb_white_river",
+      "location_type": "access_point",
+      "river_mile": null,
+      "coordinates": {
+        "lat": 36.1022,
+        "lng": -92.1057
+      },
+      "county": "Stone",
+      "nearest_town": "Sylamore",
+      "address_or_landmark": "Sylamore, AR — at Sylamore Creek confluence",
+      "access_types": ["wade_fishing", "boat_fishing", "bank_fishing"],
+      "amenities": ["parking", "boat_ramp"],
+      "mobility_accessible": false,
+      "agfc_property_type": "AGFC",
+      "notes": "Popular wade and float access below Calico Rock. Clear Ozark water. Smallmouth bass and trout in the creek mouth, catfish and white bass on the main White River.",
+      "regulations_zone_id": null,
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07060500"
+      }
+    },
+    {
+      "location_id": "loc_guion_access",
+      "name": "Guion Access",
+      "water_body_id": "wb_white_river",
+      "location_type": "access_point",
+      "river_mile": null,
+      "coordinates": {
+        "lat": 36.0589,
+        "lng": -91.9617
+      },
+      "county": "Izard",
+      "nearest_town": "Guion",
+      "address_or_landmark": "Guion, AR 72540 — AR-58 bridge",
+      "access_types": ["boat_fishing", "bank_fishing"],
+      "amenities": ["parking", "boat_ramp"],
+      "mobility_accessible": false,
+      "agfc_property_type": "AGFC",
+      "notes": "Public boat ramp between Calico Rock and Batesville. Good catfish, white bass, and walleye reach.",
+      "regulations_zone_id": null,
+      "source_ids": {
+        "agfc_location_id": null,
+        "usgs_site_nearby": "07061000"
+      }
+    },
+    {
+      "location_id": "loc_batesville_city_ramp",
+      "name": "Batesville City Ramp",
+      "water_body_id": "wb_white_river",
+      "location_type": "boat_ramp",
+      "river_mile": null,
+      "coordinates": {
+        "lat": 35.7695,
+        "lng": -91.6412
+      },
+      "county": "Independence",
+      "nearest_town": "Batesville",
+      "address_or_landmark": "Batesville, AR 72501 — White River Park boat ramp",
+      "access_types": ["boat_fishing", "bank_fishing"],
+      "amenities": ["parking", "restrooms", "boat_ramp"],
+      "mobility_accessible": true,
+      "agfc_property_type": "City",
+      "notes": "Main public launch in Batesville. USGS station 07061000 is nearby. White bass, walleye, sauger, and catfish.",
+      "regulations_zone_id": null,
+      "source_ids": {
+        "agfc_location_id": null,
         "usgs_site_nearby": "07061000"
       }
     }

@@ -59,6 +59,14 @@
       "tailwater": false
     },
     {
+      "station_id": "07060500",
+      "label": "White River at Calico Rock",
+      "river": "White River",
+      "proximity": "at Calico Rock, Izard County — downstream of Bull Shoals tailwater influence",
+      "type": "gage",
+      "tailwater": true
+    },
+    {
       "station_id": "07061000",
       "label": "White River at Batesville",
       "river": "White River",

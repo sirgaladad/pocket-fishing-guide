@@ -584,6 +584,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         border: 1px solid rgba(255, 255, 255, 0.1);
         vertical-align: middle;
       }
+      .temp-source-badge--estimated {
+        background: rgba(255, 170, 0, 0.15);
+        color: #ffaa00;
+        border-color: rgba(255, 170, 0, 0.4);
+      }
+      .temp-seasonal-notice {
+        font-size: 10px;
+        color: #ffaa00;
+        margin-top: 5px;
+        line-height: 1.4;
+        padding: 4px 6px;
+        background: rgba(255, 170, 0, 0.08);
+        border-left: 2px solid rgba(255, 170, 0, 0.5);
+        border-radius: 0 4px 4px 0;
+      }
       .temp-source-note {
         font-size: 10px;
         color: var(--text3);
@@ -10664,7 +10679,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <div className="card">
                 <div className="card-title">
                   {'\uD83C\uDF0A'} Water Temperature{' '}
-                  <span className="temp-source-badge">{tempSourceLabel}</span>
+                  <span className={`temp-source-badge${tempIsEstimated ? ' temp-source-badge--estimated' : ''}`}>
+                    {tempIsEstimated ? '\u26A0\uFE0F ' : ''}{tempSourceLabel}
+                  </span>
                 </div>
                 {hasTemp ? (
                   <>
@@ -10679,6 +10696,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     {usgs?.tempSourceNote && (
                       <div className="temp-source-note">
                         {usgs.tempSourceNote}
+                      </div>
+                    )}
+                    {isTailwater && tempIsEstimated && new Date().getMonth() < 5 && (
+                      <div className="temp-seasonal-notice">
+                        USACE D.O. temp sensors are removed Jan–May annually. Estimated value shown — actual cold-water release temp may differ.
+                      </div>
+                    )}
+                    {usgs?.lastReading && (
+                      <div className="temp-source-note">
+                        {'Reading: '}
+                        {(() => {
+                          const ms = Date.now() - new Date(usgs.lastReading).getTime();
+                          const h = Math.floor(ms / 3600000);
+                          const m = Math.floor((ms % 3600000) / 60000);
+                          return h > 0 ? `${h}h ${m}m ago` : `${m}m ago`;
+                        })()}
                       </div>
                     )}
                     <div className="trend-row">

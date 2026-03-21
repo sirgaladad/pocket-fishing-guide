@@ -120,24 +120,35 @@ const USGS_BASE_URL =
   "&siteStatus=all&sites=";
 
 /**
- * Collect the unique set of primary station IDs referenced across all
- * river segments in rivers_map.json.
+ * Collect all station IDs (primary + fallback) referenced across all
+ * river segments in rivers_map.json, and build a per-primary fallback map.
  *
  * @param {Object} riversMap - Parsed rivers_map.json content.
- * @returns {string[]} Deduplicated array of station IDs.
+ * @returns {{ allIds: string[], fallbackMap: Object.<string, string[]> }}
+ *   allIds     — deduplicated array of all station IDs to fetch in one batch.
+ *   fallbackMap — maps each primary_station_id to its ordered fallback list.
  */
-function collectPrimaryStationIds(riversMap) {
-  const ids = new Set();
+function collectStationData(riversMap) {
+  const allIds = new Set();
+  const fallbackMap = {};
   for (const river of (riversMap.rivers || [])) {
     for (const section of (river.sections || [])) {
       for (const segment of (section.segments || [])) {
-        if (segment.primary_station_id) {
-          ids.add(segment.primary_station_id);
+        const primary = segment.primary_station_id;
+        const fallbacks = Array.isArray(segment.fallback_station_ids)
+          ? segment.fallback_station_ids
+          : [];
+        if (primary) {
+          allIds.add(primary);
+          fallbackMap[primary] = fallbacks;
+          for (const fb of fallbacks) {
+            allIds.add(fb);
+          }
         }
       }
     }
   }
-  return Array.from(ids);
+  return { allIds: Array.from(allIds), fallbackMap };
 }
 
 /**
@@ -262,16 +273,21 @@ async function main() {
   }
 
   // ── Collect station IDs from river segments ───────────────────────────────
-  const stationIds = collectPrimaryStationIds(riversMap);
-  if (stationIds.length === 0) {
+  const { allIds, fallbackMap } = collectStationData(riversMap);
+  // Primary-only list drives the station records output.
+  const primaryIds = Object.keys(fallbackMap);
+  if (primaryIds.length === 0) {
     console.error("No primary station IDs found in rivers_map.json.");
     process.exit(1);
   }
 
-  console.log(`Fetching USGS readings for ${stationIds.length} river stations...`);
+  console.log(
+    `Fetching USGS readings for ${allIds.length} stations ` +
+    `(${primaryIds.length} primary + ${allIds.length - primaryIds.length} fallback)...`
+  );
 
-  // ── Fetch USGS data ───────────────────────────────────────────────────────
-  const usgsData = fetchUSGS(stationIds);
+  // ── Fetch USGS data — single batch includes primaries + all fallbacks ─────
+  const usgsData = fetchUSGS(allIds);
   const timeSeries =
     usgsData &&
     usgsData.value &&
@@ -279,8 +295,8 @@ async function main() {
       ? usgsData.value.timeSeries
       : [];
 
-  // ── Build station records ─────────────────────────────────────────────────
-  const stationRecords = stationIds.map((id) => {
+  // ── Build station records (one per primary station) ───────────────────────
+  const stationRecords = primaryIds.map((id) => {
     const reg = registryById[id];
     const label = reg ? reg.label : id;
     const tailwater = reg ? reg.tailwater : false;
@@ -302,13 +318,36 @@ async function main() {
       note = `No current readings returned by USGS for station ${id}. Station may be offline or ID may be inactive.`;
     }
 
-    // ── Open-Meteo temperature fallback ──────────────────────────────────────
-    // When USGS 00010 sensor is absent, estimate water temp from Open-Meteo
-    // soil surface temperature with a correction offset. Tagged as 'estimated'
-    // so the UI can distinguish live sensor data from proxy estimates.
+    // ── Temperature fallback chain ────────────────────────────────────────────
+    // Priority 1: Primary USGS 00010 sensor.
+    // Priority 2: Downstream USGS stations on the same reach (in fallback_station_ids order).
+    //             This handles seasonal USACE D.O. gage removal (Jan–May) and offline sensors
+    //             by sourcing actual cold-water readings from a nearby station before estimating.
+    // Priority 3: Open-Meteo soil temperature proxy — only when no USGS data exists anywhere
+    //             on the reach. Clamped to tailwater seasonal floors/ceilings when applicable.
     let tempSource = "usgs";
     let tempValue = temperature.value;
     let tempDateTime = temperature.dateTime;
+    let tempFallbackStationId = null;
+
+    if (tempValue === null) {
+      const fallbacks = fallbackMap[id] || [];
+      for (const fbId of fallbacks) {
+        const fbTemp = parseLatestValue(timeSeries, fbId, PARAM_TEMPERATURE);
+        if (fbTemp.value !== null) {
+          tempValue = fbTemp.value;
+          tempDateTime = fbTemp.dateTime;
+          tempSource = "usgs-downstream";
+          tempFallbackStationId = fbId;
+          const fbLabel = registryById[fbId] ? registryById[fbId].label : fbId;
+          console.log(
+            `  [${id}] No USGS temp on primary — using downstream station ${fbId} (${fbLabel}): ${fbTemp.value}°C`
+          );
+          break;
+        }
+      }
+    }
+
     if (tempValue === null) {
       const coords = coordsByStation[id];
       if (
@@ -321,7 +360,7 @@ async function main() {
           tempValue = estimated;
           tempDateTime = new Date().toISOString();
           tempSource = "open-meteo-estimated";
-          console.log(`  [${id}] No USGS temp — used Open-Meteo proxy: ${estimated}°C`);
+          console.log(`  [${id}] No USGS temp on any reach station — used Open-Meteo proxy: ${estimated}°C`);
         }
       }
     }
@@ -355,6 +394,7 @@ async function main() {
         unit: "°C",
         dateTime: tempDateTime,
         source: tempSource,
+        fallbackStationId: tempFallbackStationId,
         delta: prev && prev.temperature
           ? calcDelta(tempValue, prev.temperature.value)
           : null,

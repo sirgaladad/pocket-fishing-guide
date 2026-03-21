@@ -3,13 +3,26 @@
   "description": "River and stream segments for Arkansas water bodies. Used by the UI to localize fishing conditions and filter USGS station data. Lake and reservoir bodies do not require segments.",
   "segments": [
     {
-      "id": "seg_white_river_upper",
+      "id": "seg_white_river_cotter_calico_rock",
       "waterbody_id": "wb_white_river",
-      "name": "Upper White River",
-      "start_mile_marker": 0,
-      "end_mile_marker": 55,
+      "name": "Cotter to Calico Rock",
+      "start_mile_marker": null,
+      "end_mile_marker": null,
       "nearest_access": "Calico Rock Access",
       "primary_station_ids": [
+        "07057370",
+        "07060500"
+      ]
+    },
+    {
+      "id": "seg_white_river_upper",
+      "waterbody_id": "wb_white_river",
+      "name": "Calico Rock to Batesville",
+      "start_mile_marker": 0,
+      "end_mile_marker": 55,
+      "nearest_access": "Batesville City Ramp",
+      "primary_station_ids": [
+        "07060500",
         "07061000"
       ]
     },
